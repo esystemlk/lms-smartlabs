@@ -35,8 +35,8 @@ export function InstallPrompt({ isOpen, onClose, platform }: InstallPromptProps)
         </button>
 
         <div className="flex flex-col gap-4">
-          <div className="h-16 w-16 bg-brand-blue rounded-2xl flex items-center justify-center mx-auto shadow-lg">
-            <img src="/icons/icon-192x192.png" alt="App Icon" className="h-full w-full rounded-2xl" />
+          <div className="h-16 w-16 bg-white rounded-2xl flex items-center justify-center mx-auto shadow-lg overflow-hidden border border-gray-100">
+            <img src="/logo.png" alt="SMART LABS Logo" className="h-full w-full object-contain" />
           </div>
 
           <div className="text-center">
