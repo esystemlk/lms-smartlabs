@@ -62,6 +62,7 @@ export interface Lesson {
   published: boolean;
   createdAt: any;
   updatedAt: any;
+  type?: 'video' | 'quiz' | 'speaking' | 'writing' | 'reading' | 'listening';
 }
 
 export interface RecordedClass {
