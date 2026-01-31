@@ -270,7 +270,7 @@ export default function LoginPage() {
   );
 
   return (
-    <div className="min-h-screen w-full flex bg-white">
+    <div className="min-h-screen w-full flex bg-white overflow-x-hidden relative">
       {/* Left Panel - Desktop Only */}
       <div className="hidden md:flex w-1/2 lg:w-3/5 relative overflow-hidden flex-col justify-between p-12 bg-white">
         {/* Education/Tech Image - Full Opacity */}

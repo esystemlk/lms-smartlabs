@@ -40,9 +40,10 @@ export default function ProtectedLayout({
   }
 
   const isDashboard = pathname === "/dashboard";
+  const isLessonPage = pathname?.includes("/lessons/");
 
   return (
-    <div className="min-h-screen bg-background flex transition-colors duration-300">
+    <div className="min-h-screen bg-background flex transition-colors duration-300 overflow-x-hidden w-full relative">
       {/* Mobile Sidebar (Drawer) */}
       <Sidebar 
         isOpen={isMobileMenuOpen} 
@@ -54,7 +55,10 @@ export default function ProtectedLayout({
         <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
         <main className={clsx(
           "flex-1 max-w-7xl mx-auto w-full transition-all duration-300",
-          isCompact ? "pb-20 md:pb-0 p-2 md:p-4" : "pb-20 md:pb-0 p-4 md:p-8"
+          // Base bottom padding for mobile nav
+          "pb-20 md:pb-0",
+          // Conditional padding: Remove padding for lesson pages to allow full-width video/content
+          !isLessonPage && (isCompact ? "p-2 md:p-4" : "p-4 md:p-8")
         )}>
           {children}
         </main>
