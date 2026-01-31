@@ -24,7 +24,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { countries } from "@/data/countries";
 
-type AuthMode = "login" | "register" | "forgot-password" | "complete-profile";
+type AuthMode = "login" | "register" | "forgot-password";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -106,22 +106,7 @@ export default function LoginPage() {
     }
   };
 
-  // Handle Redirect Result (for Google Login)
-  useEffect(() => {
-    const handleRedirect = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-        if (result) {
-          await processAuthUser(result.user);
-        }
-      } catch (err) {
-        console.error("Redirect login error:", err);
-        setError("Failed to sign in with Google. Please try again.");
-      }
-    };
 
-    handleRedirect();
-  }, [auth]);
 
   const resetForm = () => {
     setError("");
@@ -147,8 +132,9 @@ export default function LoginPage() {
 
     try {
       const provider = new GoogleAuthProvider();
-      // Use signInWithRedirect for better PWA/Mobile support
-      await signInWithRedirect(auth, provider);
+      // Use signInWithPopup for better reliability
+      const result = await signInWithPopup(auth, provider);
+      await processAuthUser(result.user);
     } catch (err: any) {
       console.error(err);
       setError("Failed to sign in with Google. Please try again.");
@@ -156,61 +142,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleCompleteProfile = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!googleUser) return;
-    
-    setLoading(true);
-    setError("");
 
-    if (!country) {
-      setError("Please select a country");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      if (name !== googleUser.displayName) {
-        await updateProfile(googleUser, { displayName: name });
-      }
-
-      const developerEmails = [
-        "tikfese@gmail.com",
-        "thimira.vishwa2003@gmail.com"
-      ];
-
-      // Fetch existing user data to preserve fields
-      const userDocRef = doc(db, "users", googleUser.uid);
-      const userDoc = await getDoc(userDocRef);
-      const existingData = userDoc.exists() ? userDoc.data() : {};
-
-      // Determine role: Use existing role if available, otherwise check developer list or default to student
-      const role = existingData.role || (developerEmails.includes(googleUser.email || "") ? "developer" : "student");
-
-      const userData = {
-        uid: googleUser.uid,
-        name,
-        email: googleUser.email,
-        contact,
-        country,
-        gender,
-        role,
-        updatedAt: serverTimestamp(),
-        authProvider: "google",
-        // Only set createdAt if it doesn't exist
-        ...(existingData.createdAt ? {} : { createdAt: serverTimestamp() })
-      };
-
-      await setDoc(userDocRef, userData, { merge: true });
-
-      router.push("/dashboard");
-    } catch (err: any) {
-      console.error(err);
-      setError("Failed to save profile. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
 
 
@@ -385,13 +317,11 @@ export default function LoginPage() {
               {mode === 'login' && "𝒲𝑒𝓁𝒸𝑜𝓂𝑒 𝓉𝑜 𝒮𝑀𝒜𝑅𝒯 𝐿𝒜𝐵𝒮"}
               {mode === 'register' && "Create Account"}
               {mode === 'forgot-password' && "Reset Password"}
-              {mode === 'complete-profile' && "Complete Your Profile"}
             </h2>
             <p className="text-gray-500">
               {mode === 'login' && "Learn English Smarter"}
               {mode === 'register' && "Join our learning community"}
               {mode === 'forgot-password' && "Enter your email to reset password"}
-              {mode === 'complete-profile' && "Please provide a few more details to continue"}
             </p>
           </div>
 
@@ -640,118 +570,7 @@ export default function LoginPage() {
             </form>
           )}
 
-          {/* Complete Profile Form (For Google Sign In) */}
-          {mode === 'complete-profile' && (
-            <form onSubmit={handleCompleteProfile} className="space-y-4">
-              <div className="mb-4 p-4 bg-blue-50 text-blue-800 rounded-lg text-sm">
-                👋 Welcome! Please complete your profile to continue.
-              </div>
 
-              <Input
-                label="Full Name"
-                type="text"
-                placeholder="John Doe"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-
-              <Input
-                label="Email Address"
-                type="email"
-                value={email}
-                disabled
-                className="bg-gray-100 text-gray-500 cursor-not-allowed"
-              />
-
-              <Input
-                label="Contact No / WhatsApp"
-                type="tel"
-                placeholder="+94 77 123 4567"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
-                required
-              />
-
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-gray-700">Country</label>
-                <select
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                  required
-                  className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <option value="" disabled>Select your country</option>
-                  {countries.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-gray-700">Gender</label>
-                <div className="flex gap-4 mt-1">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="male"
-                      checked={gender === "male"}
-                      onChange={(e) => setGender(e.target.value)}
-                      className="text-brand-blue focus:ring-brand-blue"
-                    />
-                    <span className="text-sm text-gray-700">Male</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="female"
-                      checked={gender === "female"}
-                      onChange={(e) => setGender(e.target.value)}
-                      className="text-brand-blue focus:ring-brand-blue"
-                    />
-                    <span className="text-sm text-gray-700">Female</span>
-                  </label>
-                </div>
-              </div>
-
-              {error && (
-                <div className="p-3 rounded-lg bg-red-50 text-red-600 text-sm">
-                  {error}
-                </div>
-              )}
-
-              <Button
-                type="submit"
-                fullWidth
-                disabled={loading}
-                className="mt-4"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  "Complete Profile"
-                )}
-              </Button>
-
-              <div className="mt-4 text-center text-sm">
-                <button
-                  type="button"
-                  onClick={() => handleModeChange('login')}
-                  className="flex items-center justify-center gap-2 mx-auto font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  <ArrowLeft size={16} />
-                  Cancel
-                </button>
-              </div>
-            </form>
-          )}
 
           {/* Forgot Password Form */}
           {mode === 'forgot-password' && (
