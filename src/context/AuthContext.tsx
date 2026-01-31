@@ -29,22 +29,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let unsubscribeSnapshot: (() => void) | null = null;
+
     const unsubscribeAuth = onAuthStateChanged(auth, async (authUser) => {
+      // Unsubscribe from previous listener if exists
+      if (unsubscribeSnapshot) {
+        unsubscribeSnapshot();
+        unsubscribeSnapshot = null;
+      }
+
       setUser(authUser);
       
       if (authUser) {
         // Real-time listener for user data
-        const unsubscribeSnapshot = onSnapshot(doc(db, "users", authUser.uid), async (docSnapshot) => {
+        unsubscribeSnapshot = onSnapshot(doc(db, "users", authUser.uid), async (docSnapshot) => {
           if (docSnapshot.exists()) {
             const data = docSnapshot.data() as UserData;
             
             // Check if user should be a developer but isn't
             if (DEVELOPER_EMAILS.includes(authUser.email || "") && data.role !== "developer") {
-              await setDoc(doc(db, "users", authUser.uid), { 
-                ...data, 
-                role: "developer" 
-              }, { merge: true });
-              // The snapshot will fire again with the update
+              const updatedData: UserData = { ...data, role: "developer" };
+              await setDoc(doc(db, "users", authUser.uid), updatedData, { merge: true });
+              setUserData(updatedData);
             } else {
               setUserData(data);
             }
@@ -52,16 +58,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setUserData(null);
           }
           setLoading(false);
+        }, (error) => {
+          console.error("Error fetching user data:", error);
+          setLoading(false);
         });
-
-        return () => unsubscribeSnapshot();
       } else {
         setUserData(null);
         setLoading(false);
       }
     });
 
-    return () => unsubscribeAuth();
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeSnapshot) {
+        unsubscribeSnapshot();
+      }
+    };
   }, []);
 
   return (

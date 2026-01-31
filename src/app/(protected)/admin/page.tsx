@@ -12,7 +12,8 @@ import {
   Settings, 
   Loader2,
   ShieldAlert,
-  CreditCard
+  CreditCard,
+  MessageSquare
 } from "lucide-react";
 import { userService } from "@/services/userService";
 import { courseService } from "@/services/courseService";
@@ -141,6 +142,10 @@ export default function AdminPage() {
         
         {activeTab === "analytics" && (
           <AnalyticsTab users={users} courses={courses} />
+        )}
+
+        {activeTab === "support" && (
+          <SupportTab />
         )}
 
         {activeTab === "settings" && (
