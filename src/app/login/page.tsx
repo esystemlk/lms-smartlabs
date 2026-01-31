@@ -16,6 +16,7 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, getDocFromServer, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
+import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Eye, EyeOff, Loader2, ArrowLeft } from "lucide-react";
@@ -27,6 +28,7 @@ type AuthMode = "login" | "register" | "forgot-password" | "complete-profile";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { user: authUser, userData, loading: authLoading } = useAuth();
   const [mode, setMode] = useState<AuthMode>("login");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -45,6 +47,24 @@ export default function LoginPage() {
   const [country, setCountry] = useState("");
   const [gender, setGender] = useState("male");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  // Handle existing session and automatic redirection
+  useEffect(() => {
+    if (authLoading) return;
+
+    if (authUser) {
+      if (userData) {
+        // User is already logged in and has a profile -> Redirect to Dashboard
+        router.push("/dashboard");
+      } else if (mode !== 'complete-profile') {
+        // User is logged in (likely via Google) but has no profile -> Show Complete Profile form
+        setGoogleUser(authUser);
+        setName(authUser.displayName || "");
+        setEmail(authUser.email || "");
+        setMode("complete-profile");
+      }
+    }
+  }, [authUser, userData, authLoading, mode, router]);
 
   // Process user after successful authentication
   const processAuthUser = async (user: User) => {
