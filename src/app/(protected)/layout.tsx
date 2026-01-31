@@ -43,7 +43,7 @@ export default function ProtectedLayout({
   const isLessonPage = pathname?.includes("/lessons/");
 
   return (
-    <div className="min-h-screen bg-background flex transition-colors duration-300 w-full relative">
+    <div className="min-h-screen bg-background flex transition-colors duration-300 w-full relative overflow-x-hidden">
       {/* Mobile Sidebar (Drawer) */}
       <Sidebar 
         isOpen={isMobileMenuOpen} 
