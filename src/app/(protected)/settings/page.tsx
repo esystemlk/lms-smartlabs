@@ -178,10 +178,10 @@ export default function SettingsPage() {
         <p className="text-gray-500 dark:text-gray-400">Manage your account settings and preferences.</p>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8">
         {/* Sidebar Navigation */}
-        <div className="w-full md:w-64 flex-shrink-0">
-          <nav className="flex md:flex-col gap-2 overflow-x-auto md:overflow-visible pb-4 md:pb-0 no-scrollbar">
+        <div className="w-full md:w-64 flex-shrink-0 sticky top-20 z-10 bg-background/95 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none pb-2 md:pb-0">
+          <nav className="flex md:flex-col gap-2 overflow-x-auto md:overflow-visible pb-2 md:pb-0 no-scrollbar snap-x snap-mandatory">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -193,14 +193,14 @@ export default function SettingsPage() {
                     setMessage({ type: "", text: "" });
                   }}
                   className={clsx(
-                    "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 whitespace-nowrap",
+                    "flex items-center gap-2 md:gap-3 px-3 py-2 md:px-4 md:py-3 rounded-xl transition-all duration-200 whitespace-nowrap snap-start flex-shrink-0 border md:border-none",
                     isActive 
-                      ? "bg-brand-blue text-white shadow-md shadow-blue-200 dark:shadow-blue-900/20" 
-                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 bg-card"
+                      ? "bg-brand-blue text-white shadow-md shadow-blue-200 dark:shadow-blue-900/20 border-transparent" 
+                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 bg-card border-border"
                   )}
                 >
                   <Icon size={18} />
-                  <span className="font-medium">{tab.label}</span>
+                  <span className="font-medium text-sm md:text-base">{tab.label}</span>
                 </button>
               );
             })}

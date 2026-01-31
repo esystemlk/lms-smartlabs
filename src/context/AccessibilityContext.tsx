@@ -83,8 +83,12 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
     setState(defaultState);
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(prev => !prev);
+  };
+
   return (
-    <AccessibilityContext.Provider value={{ state, updateState, reset }}>
+    <AccessibilityContext.Provider value={{ state, updateState, reset, isMenuOpen, toggleMenu }}>
       {children}
       {state.readingGuide && <ReadingGuide />}
       {state.readingMask && <ReadingMask />}

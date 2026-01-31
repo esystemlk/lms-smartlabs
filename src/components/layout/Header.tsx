@@ -190,13 +190,27 @@ export function Header({ onMenuClick }: HeaderProps) {
                         'group flex w-full items-center rounded-lg px-2 py-2 text-sm'
                       )}
                       onClick={() => router.push('/settings')}
-                    >
-                      <Settings className="mr-2 h-4 w-4" />
-                      Settings
-                    </button>
-                  )}
-                </Menu.Item>
-              </div>
+                  >
+                    <Settings className="mr-2 h-4 w-4" />
+                    Settings
+                  </button>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <button
+                    className={clsx(
+                      active ? 'bg-gray-50 text-brand-blue' : 'text-gray-700',
+                      'group flex w-full items-center rounded-lg px-2 py-2 text-sm md:hidden'
+                    )}
+                    onClick={() => toggleMenu()}
+                  >
+                    <Accessibility className="mr-2 h-4 w-4" />
+                    Accessibility
+                  </button>
+                )}
+              </Menu.Item>
+            </div>
               <div className="p-1">
                 {userData?.role === "admin" && (
                   <Menu.Item>

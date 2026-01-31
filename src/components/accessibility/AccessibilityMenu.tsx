@@ -35,10 +35,7 @@ import {
 import { clsx } from "clsx";
 
 export function AccessibilityMenu() {
-  const [isOpen, setIsOpen] = useState(false);
-  const { state, updateState, reset } = useAccessibility();
-
-  const toggleOpen = () => setIsOpen(!isOpen);
+  const { state, updateState, reset, isMenuOpen, toggleMenu } = useAccessibility();
 
   const options = [
     // Text Adjustments
@@ -266,16 +263,19 @@ export function AccessibilityMenu() {
     <>
       {/* Floating Button */}
       <button
-        onClick={toggleOpen}
-        className="fixed bottom-24 left-6 md:bottom-8 md:left-8 z-[90] p-4 bg-brand-blue text-white rounded-full shadow-lg hover:bg-blue-700 hover:scale-105 transition-all focus:outline-none focus:ring-4 focus:ring-blue-300"
+        onClick={toggleMenu}
+        className="hidden md:block fixed bottom-24 left-6 md:bottom-8 md:left-8 z-[90] p-4 bg-brand-blue text-white rounded-full shadow-lg hover:bg-blue-700 hover:scale-105 transition-all focus:outline-none focus:ring-4 focus:ring-blue-300"
         aria-label="Accessibility Options"
       >
         <Accessibility size={28} />
       </button>
 
       {/* Popup Panel */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/20 z-[95] flex items-end md:items-center justify-center md:justify-start md:pl-24 pb-24 md:pb-0 backdrop-blur-sm animate-in fade-in">
+      {isMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/20 z-[95] flex items-end md:items-center justify-center md:justify-start md:pl-24 pb-24 md:pb-0 backdrop-blur-sm animate-in fade-in"
+          onClick={(e) => e.target === e.currentTarget && toggleMenu()}
+        >
           <div 
             className="bg-card dark:bg-slate-900 w-full md:w-[400px] max-h-[80vh] overflow-y-auto rounded-t-3xl md:rounded-2xl shadow-2xl border border-border flex flex-col animate-in slide-in-from-bottom-10"
             role="dialog"
@@ -303,7 +303,7 @@ export function AccessibilityMenu() {
                   Reset
                 </button>
                 <button 
-                  onClick={() => setIsOpen(false)}
+                  onClick={toggleMenu}
                   className="p-2 text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
                 >
                   <X size={20} />
