@@ -152,7 +152,7 @@ export function SupportTab() {
   };
 
   return (
-    <div className="h-[600px] flex bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+    <div className="relative h-[600px] flex bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
       {/* Sidebar - Chat List */}
       <div className={clsx(
         "w-full md:w-80 flex flex-col border-r border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800",

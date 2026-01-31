@@ -24,6 +24,7 @@ import { AnalyticsTab } from "@/components/admin/AnalyticsTab";
 import { CoursesTab } from "@/components/admin/CoursesTab";
 import { EnrollmentsTab } from "@/components/admin/EnrollmentsTab";
 import { SettingsTab } from "@/components/admin/SettingsTab";
+import { SupportTab } from "@/components/admin/SupportTab";
 import Link from "next/link";
 
 export default function AdminPage() {
