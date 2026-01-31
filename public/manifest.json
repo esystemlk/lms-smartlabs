@@ -2,6 +2,7 @@
   "name": "SMART LABS",
   "short_name": "SMART LABS",
   "description": "Learning Management System for English Institute",
+  "gcm_sender_id": "103953800507",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFFFFF",

@@ -6,6 +6,9 @@ import { useAuth } from "@/context/AuthContext";
 import { chatService } from "@/services/chatService";
 import { SupportChat } from "@/lib/types";
 import { Bell, X } from "lucide-react";
+import { messaging, db } from "@/lib/firebase";
+import { getToken, onMessage } from "firebase/messaging";
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 
 export function NotificationListener() {
   const { userData } = useAuth();
@@ -19,9 +22,26 @@ export function NotificationListener() {
       setPermission(Notification.permission);
       if (Notification.permission === "default") {
         setShowPermissionBanner(true);
+      } else if (Notification.permission === "granted") {
+        registerFcmToken();
       }
     }
-  }, []);
+  }, [userData]);
+
+  const registerFcmToken = async () => {
+    if (!messaging || !userData) return;
+    try {
+      const vapidKey = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY;
+      const token = await getToken(messaging, { vapidKey });
+      if (token) {
+        await updateDoc(doc(db, "users", userData.uid), {
+          fcmTokens: arrayUnion(token)
+        });
+      }
+    } catch (error) {
+      console.error("FCM Token registration failed:", error);
+    }
+  };
 
   const requestPermission = async () => {
     if (!("Notification" in window)) return;
@@ -35,11 +55,23 @@ export function NotificationListener() {
           body: "You will now receive alerts for new messages.",
           icon: "/icons/icon-192x192.png"
         });
+        await registerFcmToken();
       }
     } catch (error) {
       console.error("Error requesting notification permission:", error);
     }
   };
+
+  // Listen for FCM foreground messages
+  useEffect(() => {
+    if (messaging) {
+      const unsubscribe = onMessage(messaging, (payload) => {
+        // console.log("Foreground FCM message:", payload);
+        // Handled by Firestore listener or custom UI
+      });
+      return () => unsubscribe();
+    }
+  }, []);
 
   useEffect(() => {
     if (!userData) return;
