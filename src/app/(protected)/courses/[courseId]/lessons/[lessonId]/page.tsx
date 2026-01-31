@@ -30,6 +30,19 @@ export default function LessonPage() {
   const lessonId = params.lessonId as string;
   
   const [showSidebar, setShowSidebar] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isFocusMode, setIsFocusMode] = useState(false); // Local focus mode state for now
+
+  // Handle PiP Toggle
+  const togglePiP = async () => {
+    if (!videoRef.current) return;
+    if (document.pictureInPictureElement) {
+      await document.exitPictureInPicture();
+    } else {
+      await videoRef.current.requestPictureInPicture();
+    }
+  };
+
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
 
