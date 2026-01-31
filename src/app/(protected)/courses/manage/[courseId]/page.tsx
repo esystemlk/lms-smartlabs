@@ -458,10 +458,10 @@ export default function EditCoursePage() {
 
       {/* Tabs */}
       <div className="border-b border-gray-200 overflow-x-auto">
-        <div className="flex gap-6 min-w-max px-1">
+        <div className="flex gap-4 md:gap-6 min-w-max px-1">
           <button
             onClick={() => setActiveTab("settings")}
-            className={`pb-3 text-sm font-medium border-b-2 transition-colors ${
+            className={`pb-2 md:pb-3 text-sm font-medium border-b-2 transition-colors ${
               activeTab === "settings"
                 ? "border-brand-blue text-brand-blue"
                 : "border-transparent text-gray-500 hover:text-gray-700"
@@ -471,7 +471,7 @@ export default function EditCoursePage() {
           </button>
           <button
             onClick={() => setActiveTab("curriculum")}
-            className={`pb-3 text-sm font-medium border-b-2 transition-colors ${
+            className={`pb-2 md:pb-3 text-sm font-medium border-b-2 transition-colors ${
               activeTab === "curriculum"
                 ? "border-brand-blue text-brand-blue"
                 : "border-transparent text-gray-500 hover:text-gray-700"
@@ -481,7 +481,7 @@ export default function EditCoursePage() {
           </button>
           <button
             onClick={() => setActiveTab("batches")}
-            className={`pb-3 text-sm font-medium border-b-2 transition-colors ${
+            className={`pb-2 md:pb-3 text-sm font-medium border-b-2 transition-colors ${
               activeTab === "batches"
                 ? "border-brand-blue text-brand-blue"
                 : "border-transparent text-gray-500 hover:text-gray-700"
@@ -491,7 +491,7 @@ export default function EditCoursePage() {
           </button>
           <button
             onClick={() => setActiveTab("quiz")}
-            className={`pb-3 text-sm font-medium border-b-2 transition-colors ${
+            className={`pb-2 md:pb-3 text-sm font-medium border-b-2 transition-colors ${
               activeTab === "quiz"
                 ? "border-brand-blue text-brand-blue"
                 : "border-transparent text-gray-500 hover:text-gray-700"
@@ -504,7 +504,7 @@ export default function EditCoursePage() {
 
       {/* Settings Tab */}
       {activeTab === "settings" && (
-        <form onSubmit={handleUpdateCourse} className="max-w-2xl bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-6">
+        <form onSubmit={handleUpdateCourse} className="max-w-2xl bg-white rounded-xl md:rounded-2xl p-3 md:p-6 shadow-sm border border-gray-100 space-y-4 md:space-y-6">
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">Course Cover Image</label>
             <div className="flex items-center gap-4">

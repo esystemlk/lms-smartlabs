@@ -139,24 +139,24 @@ export default function DashboardPage() {
         </div>
       )}
 
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-6">
         {filteredItems.map((item) => (
           <button
             key={item.title}
             onClick={() => router.push(item.href)}
-            className="group flex flex-col items-start p-4 md:p-6 bg-white rounded-2xl shadow-soft hover:shadow-xl transition-all duration-300 border border-transparent hover:border-brand-blue/10 text-left h-full"
+            className="group flex flex-col items-start p-3 md:p-6 bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-transparent hover:border-brand-blue/10 text-left h-full"
           >
-            <div className={clsx("p-2.5 md:p-3 rounded-xl text-white mb-3 md:mb-4 transition-transform group-hover:scale-110", item.color)}>
-              <item.icon className="w-5 h-5 md:w-6 md:h-6" />
+            <div className={clsx("p-2 md:p-3 rounded-lg md:rounded-xl text-white mb-2 md:mb-4 transition-transform group-hover:scale-110", item.color)}>
+              <item.icon className="w-4 h-4 md:w-6 md:h-6" />
             </div>
-            <h3 className="text-sm md:text-lg font-bold text-gray-900 mb-1.5 md:mb-2 group-hover:text-brand-blue transition-colors line-clamp-1">
+            <h3 className="text-xs md:text-lg font-bold text-gray-900 mb-1 md:mb-2 group-hover:text-brand-blue transition-colors line-clamp-1">
               {item.title}
             </h3>
-            <p className="text-xs md:text-sm text-gray-500 mb-3 md:mb-4 line-clamp-2">
+            <p className="text-[10px] md:text-sm text-gray-500 mb-2 md:mb-4 line-clamp-2 leading-tight">
               {item.description}
             </p>
-            <div className="mt-auto flex items-center text-xs md:text-sm font-medium text-brand-blue opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-0 md:translate-x-[-10px] md:group-hover:translate-x-0 transition-transform">
-              Open <ArrowRight size={14} className="ml-1 md:w-4 md:h-4" />
+            <div className="mt-auto flex items-center text-[10px] md:text-sm font-medium text-brand-blue opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-0 md:translate-x-[-10px] md:group-hover:translate-x-0 transition-transform">
+              Open <ArrowRight size={12} className="ml-1 md:w-4 md:h-4" />
             </div>
           </button>
         ))}

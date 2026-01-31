@@ -29,13 +29,13 @@ export function GreetingWidget() {
   if (!mounted) return null;
 
   return (
-    <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl p-4 md:p-6 text-white shadow-lg overflow-hidden relative">
+    <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl md:rounded-2xl p-3 md:p-6 text-white shadow-lg overflow-hidden relative">
       <div className="relative z-10 flex items-center justify-between">
         <div>
-          <h2 className="text-xl md:text-3xl font-bold mb-1 flex items-center gap-2 md:gap-3">
+          <h2 className="text-lg md:text-3xl font-bold mb-1 flex items-center gap-2 md:gap-3">
             {greeting}, {userData?.name?.split(" ")[0]}!
           </h2>
-          <p className="text-blue-100 text-sm md:text-base font-medium opacity-90">
+          <p className="text-blue-100 text-xs md:text-base font-medium opacity-90">
             Ready to continue your learning journey?
           </p>
         </div>

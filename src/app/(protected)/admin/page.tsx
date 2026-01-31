@@ -106,12 +106,12 @@ export default function AdminPage() {
 
       {/* Tabs */}
       <div className="border-b border-gray-200">
-        <div className="flex gap-6 overflow-x-auto no-scrollbar pb-1 px-1 min-w-full sm:min-w-0">
+        <div className="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar pb-1 px-1 min-w-full sm:min-w-0">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`pb-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap flex items-center gap-2 ${
+              className={`pb-2 md:pb-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap flex items-center gap-2 ${
                 activeTab === tab.id
                   ? "border-brand-blue text-brand-blue"
                   : "border-transparent text-gray-500 hover:text-gray-700"

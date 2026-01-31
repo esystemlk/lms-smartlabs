@@ -172,7 +172,7 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto space-y-4 md:space-y-8 animate-in fade-in duration-500">
+    <div className="max-w-6xl mx-auto space-y-4 md:space-y-8 animate-in fade-in duration-500 pb-24 md:pb-8">
       <div>
         <h1 className="text-xl md:text-2xl font-bold text-foreground">Settings</h1>
         <p className="text-xs md:text-base text-gray-500 dark:text-gray-400">Manage your account settings and preferences.</p>

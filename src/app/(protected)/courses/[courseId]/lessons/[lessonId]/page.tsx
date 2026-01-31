@@ -191,7 +191,7 @@ export default function LessonPage() {
           "w-80 bg-white border-l border-gray-200 overflow-y-auto absolute md:relative inset-y-0 right-0 transform transition-transform duration-300 z-20 shadow-xl md:shadow-none h-full",
           showSidebar ? "translate-x-0" : "translate-x-full md:translate-x-0"
         )}>
-          <div className="p-4 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
+          <div className="p-3 md:p-4 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
             <h3 className="font-bold text-gray-900">Course Content</h3>
             <button className="md:hidden p-1" onClick={() => setShowSidebar(false)}>
               <ChevronLeft size={20} />

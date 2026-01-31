@@ -32,17 +32,17 @@ export default function WebsitesPage() {
   }
 
   return (
-    <div className="p-4 md:p-6 space-y-4 md:space-y-6 animate-in fade-in duration-500">
-      <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Our Websites</h1>
+    <div className="p-0 md:p-6 space-y-4 md:space-y-6 animate-in fade-in duration-500">
+      <h1 className="text-xl md:text-3xl font-bold text-gray-900">Our Websites</h1>
       
       {websites.length === 0 ? (
-        <div className="text-center py-12 md:py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
-          <Globe className="w-12 h-12 md:w-16 md:h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-base md:text-lg font-medium text-gray-900">No websites listed</h3>
-          <p className="text-sm md:text-base text-gray-500">Check back soon for our network updates.</p>
+        <div className="text-center py-8 md:py-20 bg-gray-50 rounded-xl md:rounded-3xl border border-dashed border-gray-200">
+          <Globe className="w-10 h-10 md:w-16 md:h-16 text-gray-300 mx-auto mb-3 md:mb-4" />
+          <h3 className="text-sm md:text-lg font-medium text-gray-900">No websites listed</h3>
+          <p className="text-xs md:text-base text-gray-500">Check back soon for our network updates.</p>
         </div>
       ) : (
-        <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {websites.map((site) => (
             <a 
               key={site.id} 
@@ -51,21 +51,21 @@ export default function WebsitesPage() {
               rel="noopener noreferrer"
               className="block group"
             >
-              <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all h-full flex flex-col">
-                <div className="flex items-center justify-between mb-3 md:mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-50 text-brand-blue rounded-lg group-hover:bg-brand-blue group-hover:text-white transition-colors">
-                      <Globe className="w-5 h-5" />
+              <div className="bg-white p-3 md:p-6 rounded-xl md:rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all h-full flex flex-col">
+                <div className="flex items-center justify-between mb-2 md:mb-4">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <div className="p-1.5 md:p-2 bg-blue-50 text-brand-blue rounded-lg group-hover:bg-brand-blue group-hover:text-white transition-colors">
+                      <Globe className="w-4 h-4 md:w-5 md:h-5" />
                     </div>
-                    <h2 className="text-xl font-bold text-gray-900 group-hover:text-brand-blue transition-colors">
+                    <h2 className="text-lg md:text-xl font-bold text-gray-900 group-hover:text-brand-blue transition-colors">
                       {site.name}
                     </h2>
                   </div>
-                  <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-brand-blue transition-colors" />
+                  <ExternalLink className="w-4 h-4 md:w-5 md:h-5 text-gray-400 group-hover:text-brand-blue transition-colors" />
                 </div>
-                <p className="text-gray-500 line-clamp-2 mb-4 flex-1">{site.description}</p>
+                <p className="text-gray-500 text-xs md:text-base line-clamp-2 mb-3 md:mb-4 flex-1">{site.description}</p>
                 {site.category && (
-                  <span className="inline-block px-2.5 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium w-fit">
+                  <span className="inline-block px-2 md:px-2.5 py-0.5 md:py-1 bg-gray-100 text-gray-600 rounded-full text-[10px] md:text-xs font-medium w-fit">
                     {site.category}
                   </span>
                 )}

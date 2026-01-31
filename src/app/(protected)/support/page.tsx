@@ -179,32 +179,32 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="h-[calc(100vh-8rem)] flex bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+    <div className="h-[calc(100vh-6rem)] md:h-[calc(100vh-8rem)] flex bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
       {/* Sidebar - Chat List */}
       <div className={clsx(
         "w-full md:w-80 flex flex-col border-r border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800",
         selectedChatId ? "hidden md:flex" : "flex"
       )}>
         {/* Header */}
-        <div className="p-4 border-b border-gray-100 dark:border-gray-700">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">Messages</h1>
+        <div className="p-3 md:p-4 border-b border-gray-100 dark:border-gray-700">
+          <div className="flex items-center justify-between mb-3 md:mb-4">
+            <h1 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">Messages</h1>
             <div className="flex gap-2">
                {/* Role Badge */}
-               <span className="px-2 py-1 bg-brand-blue/10 text-brand-blue text-xs rounded-lg font-medium uppercase">
+               <span className="px-2 py-1 bg-brand-blue/10 text-brand-blue text-[10px] md:text-xs rounded-lg font-medium uppercase">
                  {userData?.role}
                </span>
             </div>
           </div>
           
           <div className="relative mb-3">
-            <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
+            <Search className="absolute left-3 top-2.5 text-gray-400" size={16} />
             <input 
               type="text" 
               placeholder="Search users..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-900 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-blue/20"
+              className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-900 rounded-xl text-xs md:text-sm outline-none focus:ring-2 focus:ring-brand-blue/20"
             />
           </div>
 
@@ -214,7 +214,7 @@ export default function SupportPage() {
                 key={f}
                 onClick={() => setFilter(f as any)}
                 className={clsx(
-                  "px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors",
+                  "px-2.5 py-1 md:px-3 md:py-1.5 rounded-lg text-[10px] md:text-xs font-medium whitespace-nowrap transition-colors",
                   filter === f 
                     ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900" 
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
@@ -233,33 +233,33 @@ export default function SupportPage() {
               key={chat.id}
               onClick={() => setSelectedChatId(chat.id)}
               className={clsx(
-                "w-full p-4 flex items-start gap-3 border-b border-gray-50 dark:border-gray-800 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50 text-left relative",
+                "w-full p-3 md:p-4 flex items-start gap-3 border-b border-gray-50 dark:border-gray-800 transition-colors hover:bg-gray-50 dark:hover:bg-gray-700/50 text-left relative",
                 selectedChatId === chat.id ? "bg-blue-50 dark:bg-blue-900/10" : ""
               )}
             >
               <div className="relative">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-blue to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-brand-blue to-cyan-500 flex items-center justify-center text-white font-bold text-sm md:text-lg">
                   {chat.userName.charAt(0).toUpperCase()}
                 </div>
                 {chat.unreadByAdmin > 0 && (
-                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs flex items-center justify-center rounded-full border-2 border-white dark:border-gray-800">
+                  <div className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-red-500 text-white text-[10px] md:text-xs flex items-center justify-center rounded-full border-2 border-white dark:border-gray-800">
                     {chat.unreadByAdmin}
                   </div>
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-start mb-1">
-                  <h3 className="font-semibold text-gray-900 dark:text-white truncate pr-2">
+                <div className="flex justify-between items-start mb-0.5 md:mb-1">
+                  <h3 className="font-semibold text-gray-900 dark:text-white truncate pr-2 text-sm md:text-base">
                     {chat.userName}
                   </h3>
-                  <span className="text-xs text-gray-400 whitespace-nowrap">
+                  <span className="text-[10px] md:text-xs text-gray-400 whitespace-nowrap">
                     {chat.lastMessageAt?.seconds 
                       ? formatDistanceToNow(new Date(chat.lastMessageAt.seconds * 1000), { addSuffix: false }) 
                       : ''}
                   </span>
                 </div>
                 <p className={clsx(
-                  "text-sm truncate",
+                  "text-xs md:text-sm truncate",
                   chat.unreadByAdmin > 0 ? "text-gray-900 dark:text-white font-medium" : "text-gray-500"
                 )}>
                   {chat.lastMessage}
@@ -280,8 +280,8 @@ export default function SupportPage() {
           ))}
           {filteredChats.length === 0 && (
             <div className="p-8 text-center text-gray-400">
-              <MessageSquare size={48} className="mx-auto mb-4 opacity-20" />
-              <p>No conversations found</p>
+              <MessageSquare size={40} className="mx-auto mb-4 opacity-20" />
+              <p className="text-sm">No conversations found</p>
             </div>
           )}
         </div>
@@ -294,88 +294,88 @@ export default function SupportPage() {
       )}>
         {!selectedChatId ? (
           <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
-            <div className="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">
-              <MessageSquare size={48} className="text-gray-300 dark:text-gray-600" />
+            <div className="w-20 h-20 md:w-24 md:h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">
+              <MessageSquare size={40} className="text-gray-300 dark:text-gray-600 md:w-12 md:h-12" />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Select a conversation</h2>
-            <p className="max-w-xs text-center">Choose a chat from the list to view history and reply to messages.</p>
+            <h2 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-2">Select a conversation</h2>
+            <p className="max-w-xs text-center text-sm md:text-base">Choose a chat from the list to view history and reply to messages.</p>
           </div>
         ) : (
           <>
             {/* Chat Header */}
-            <div className="h-16 px-6 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
-              <div className="flex items-center gap-4">
+            <div className="h-14 md:h-16 px-4 md:px-6 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
+              <div className="flex items-center gap-3 md:gap-4">
                 <button 
                   onClick={() => setSelectedChatId(null)}
                   className="md:hidden p-2 -ml-2 text-gray-500 hover:bg-gray-100 rounded-full"
                 >
-                  <ArrowLeft size={20} />
+                  <ArrowLeft size={18} />
                 </button>
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-blue to-cyan-500 flex items-center justify-center text-white font-bold">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-brand-blue to-cyan-500 flex items-center justify-center text-white font-bold text-sm md:text-base">
                   {selectedChat?.userName.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900 dark:text-white">{selectedChat?.userName}</h3>
-                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <h3 className="font-bold text-gray-900 dark:text-white text-sm md:text-base">{selectedChat?.userName}</h3>
+                  <div className="flex items-center gap-2 text-[10px] md:text-xs text-gray-500">
                     <span>{selectedChat?.userEmail}</span>
-                    <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                    <span className="w-0.5 h-0.5 md:w-1 md:h-1 bg-gray-300 rounded-full"></span>
                     <span className="capitalize">{selectedChat?.userRole}</span>
                   </div>
                 </div>
               </div>
               
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 md:gap-2">
                 <button 
-                  className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-full transition-colors"
+                  className="p-1.5 md:p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-full transition-colors"
                   title="Mark Resolved"
                   onClick={() => chatService.closeChat(selectedChatId)}
                 >
-                  <CheckCircle size={20} />
+                  <CheckCircle size={18} className="md:w-5 md:h-5" />
                 </button>
-                <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-                  <MoreVertical size={20} />
+                <button className="p-1.5 md:p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
+                  <MoreVertical size={18} className="md:w-5 md:h-5" />
                 </button>
               </div>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6">
               {messages.map((msg) => {
                 const isMe = msg.senderId === userData?.uid;
                 return (
-                  <div key={msg.id} className={clsx("flex gap-4", isMe ? "flex-row-reverse" : "flex-row")}>
+                  <div key={msg.id} className={clsx("flex gap-2 md:gap-4", isMe ? "flex-row-reverse" : "flex-row")}>
                     <div className={clsx(
-                      "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0",
+                      "w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-[10px] md:text-xs font-bold shrink-0",
                       isMe ? "bg-brand-blue text-white" : "bg-gray-200 text-gray-600"
                     )}>
                       {isMe ? userData?.name.charAt(0) : msg.senderName.charAt(0)}
                     </div>
                     <div className={clsx(
-                      "max-w-[70%] space-y-1",
+                      "max-w-[75%] md:max-w-[70%] space-y-1",
                       isMe ? "items-end" : "items-start"
                     )}>
                       <div className="flex items-center gap-2 mb-1 px-1">
-                        <span className="text-xs font-medium text-gray-900 dark:text-white">{msg.senderName}</span>
+                        <span className="text-[10px] md:text-xs font-medium text-gray-900 dark:text-white">{msg.senderName}</span>
                         <span className="text-[10px] text-gray-400">
                           {msg.createdAt?.seconds ? formatDistanceToNow(new Date(msg.createdAt.seconds * 1000), { addSuffix: true }) : 'Just now'}
                         </span>
                       </div>
                       <div className={clsx(
-                        "p-4 rounded-2xl text-sm leading-relaxed shadow-sm",
+                        "p-3 md:p-4 rounded-2xl text-xs md:text-sm leading-relaxed shadow-sm",
                         isMe 
                           ? "bg-brand-blue text-white rounded-tr-none" 
                           : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700 rounded-tl-none"
                       )}>
                         {msg.type === "text" && <p>{msg.text}</p>}
                         {msg.type === "voice" && (
-                           <div className="flex items-center gap-3 min-w-[200px]">
-                             <div className="p-2 bg-white/20 rounded-full">
-                               <Play size={16} className="fill-current" />
+                           <div className="flex items-center gap-2 md:gap-3 min-w-[150px] md:min-w-[200px]">
+                             <div className="p-1.5 md:p-2 bg-white/20 rounded-full">
+                               <Play size={14} className="fill-current md:w-4 md:h-4" />
                              </div>
                              <div className="flex-1 h-1 bg-white/30 rounded-full overflow-hidden">
                                <div className="w-1/3 h-full bg-white"></div>
                              </div>
-                             <span className="text-xs opacity-80">Voice</span>
+                             <span className="text-[10px] md:text-xs opacity-80">Voice</span>
                              <audio src={msg.mediaUrl} className="hidden" />
                            </div>
                         )}
@@ -388,32 +388,32 @@ export default function SupportPage() {
             </div>
 
             {/* Input Area */}
-            <div className="p-4 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
-              <div className="max-w-4xl mx-auto flex items-end gap-3">
+            <div className="p-3 md:p-4 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
+              <div className="max-w-4xl mx-auto flex items-end gap-2 md:gap-3">
                 {isRecording ? (
-                  <div className="flex-1 flex items-center justify-between bg-red-50 dark:bg-red-900/20 p-3 rounded-2xl border border-red-100 dark:border-red-900/30 text-red-600">
-                    <div className="flex items-center gap-3">
+                  <div className="flex-1 flex items-center justify-between bg-red-50 dark:bg-red-900/20 p-2 md:p-3 rounded-xl md:rounded-2xl border border-red-100 dark:border-red-900/30 text-red-600">
+                    <div className="flex items-center gap-2 md:gap-3">
                       <div className="relative">
                         <span className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-20"></span>
-                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div className="w-2.5 h-2.5 md:w-3 md:h-3 bg-red-500 rounded-full"></div>
                       </div>
-                      <span className="font-medium font-mono">{formatTime(recordingTime)}</span>
-                      <span className="text-sm opacity-70">Recording voice message...</span>
+                      <span className="font-medium font-mono text-sm">{formatTime(recordingTime)}</span>
+                      <span className="text-xs md:text-sm opacity-70">Recording...</span>
                     </div>
                     <button 
                       onClick={stopRecording}
-                      className="flex items-center gap-2 px-4 py-1.5 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sm font-medium hover:bg-gray-50 transition-colors"
+                      className="flex items-center gap-2 px-3 py-1 md:px-4 md:py-1.5 bg-white dark:bg-gray-800 rounded-full shadow-sm text-xs md:text-sm font-medium hover:bg-gray-50 transition-colors"
                     >
-                      <StopCircle size={16} />
-                      Stop & Send
+                      <StopCircle size={14} className="md:w-4 md:h-4" />
+                      Stop
                     </button>
                   </div>
                 ) : (
                   <>
-                    <button className="p-3 text-gray-400 hover:text-brand-blue hover:bg-gray-50 rounded-xl transition-colors">
-                      <Paperclip size={20} />
+                    <button className="p-2 md:p-3 text-gray-400 hover:text-brand-blue hover:bg-gray-50 rounded-xl transition-colors">
+                      <Paperclip size={18} className="md:w-5 md:h-5" />
                     </button>
-                    <div className="flex-1 bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 focus-within:ring-2 focus-within:ring-brand-blue/20 transition-all">
+                    <div className="flex-1 bg-gray-50 dark:bg-gray-900 rounded-xl md:rounded-2xl border border-gray-100 dark:border-gray-800 focus-within:ring-2 focus-within:ring-brand-blue/20 transition-all">
                       <textarea
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
@@ -423,33 +423,28 @@ export default function SupportPage() {
                             handleSendMessage();
                           }
                         }}
-                        placeholder="Type your message..."
-                        className="w-full bg-transparent border-none px-4 py-3 focus:ring-0 text-sm resize-none max-h-32 min-h-[48px]"
+                        placeholder="Type message..."
+                        className="w-full bg-transparent border-none px-3 py-2.5 md:px-4 md:py-3 focus:ring-0 text-xs md:text-sm resize-none max-h-32 min-h-[40px] md:min-h-[48px]"
                         rows={1}
                       />
                     </div>
                     {newMessage.trim() ? (
                       <button 
                         onClick={handleSendMessage}
-                        className="p-3 bg-brand-blue text-white rounded-xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all hover:scale-105 active:scale-95"
+                        className="p-2 md:p-3 bg-brand-blue text-white rounded-xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all hover:scale-105 active:scale-95"
                       >
-                        <Send size={20} />
+                        <Send size={18} className="md:w-5 md:h-5" />
                       </button>
                     ) : (
                       <button 
                         onClick={startRecording}
-                        className="p-3 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+                        className="p-2 md:p-3 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors"
                       >
-                        <Mic size={22} />
+                        <Mic size={20} className="md:w-[22px] md:h-[22px]" />
                       </button>
                     )}
                   </>
                 )}
-              </div>
-              <div className="max-w-4xl mx-auto mt-2 text-center">
-                 <p className="text-[10px] text-gray-400">
-                   Press Enter to send, Shift + Enter for new line
-                 </p>
               </div>
             </div>
           </>

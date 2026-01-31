@@ -56,7 +56,7 @@ export default function ProtectedLayout({
         <main className={clsx(
           "flex-1 max-w-7xl mx-auto w-full transition-all duration-300",
           // Base bottom padding for mobile nav
-          "pb-20 md:pb-0",
+          "pb-24 md:pb-0",
           // Conditional padding: Remove padding for lesson pages to allow full-width video/content
           !isLessonPage && (isCompact ? "p-2 md:p-4" : "p-4 md:p-8")
         )}>
