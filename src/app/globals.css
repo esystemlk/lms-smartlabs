@@ -62,6 +62,10 @@ html {
 }
 
 /* App-like utilities */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
