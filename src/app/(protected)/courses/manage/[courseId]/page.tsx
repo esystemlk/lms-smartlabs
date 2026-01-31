@@ -123,7 +123,8 @@ export default function EditCoursePage() {
           category: courseData.category || "",
           tags: courseData.tags?.join(", ") || "",
           includesCertificate: courseData.includesCertificate || false,
-          resourceAvailabilityMonths: courseData.resourceAvailabilityMonths?.toString() || "3"
+          resourceAvailabilityMonths: courseData.resourceAvailabilityMonths?.toString() || "3",
+          instructorId: courseData.instructorId
         });
         if (courseData.image) {
           setImagePreview(courseData.image);
