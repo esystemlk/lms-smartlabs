@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/lib/firebase";
@@ -8,6 +8,8 @@ import { signOut } from "firebase/auth";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { VoiceNavigator } from "@/components/features/VoiceNavigator";
+import { usePWAInstall } from "@/hooks/usePWAInstall";
+import { InstallPrompt } from "@/components/features/InstallPrompt";
 import { 
   User, 
   Settings, 
@@ -17,7 +19,8 @@ import {
   Menu as MenuIcon,
   ChevronLeft,
   Home,
-  LayoutDashboard
+  LayoutDashboard,
+  Download
 } from "lucide-react";
 import { clsx } from "clsx";
 
@@ -30,6 +33,16 @@ export function Header({ onMenuClick }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const isDashboard = pathname === "/dashboard";
+  
+  const { isInstallable, promptInstall } = usePWAInstall();
+  const [showIOSPrompt, setShowIOSPrompt] = useState(false);
+
+  const handleInstallClick = async () => {
+    const outcome = await promptInstall();
+    if (outcome === 'ios') {
+      setShowIOSPrompt(true);
+    }
+  };
 
   const handleSignOut = async () => {
     try {
@@ -96,6 +109,18 @@ export function Header({ onMenuClick }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-4">
+        {/* Install App Button */}
+        {isInstallable && (
+          <button 
+            onClick={handleInstallClick}
+            className="flex items-center gap-2 p-2 md:px-3 md:py-1.5 text-brand-blue hover:bg-brand-blue/10 rounded-lg transition-colors animate-in fade-in"
+            title="Install App"
+          >
+            <Download size={20} />
+            <span className="hidden md:inline font-medium text-sm">Install App</span>
+          </button>
+        )}
+
         {/* Voice Navigation */}
         <VoiceNavigator />
 
@@ -208,6 +233,12 @@ export function Header({ onMenuClick }: HeaderProps) {
           </Transition>
         </Menu>
       </div>
+
+      <InstallPrompt 
+        isOpen={showIOSPrompt} 
+        onClose={() => setShowIOSPrompt(false)} 
+        platform="ios" 
+      />
     </header>
   );
 }
