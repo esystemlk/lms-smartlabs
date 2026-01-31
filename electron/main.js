@@ -37,7 +37,7 @@ function createWindow() {
   // In production (packaged app), use the deployed URL.
   // In development, use the local server or the environment variable.
   const startUrl = process.env.ELECTRON_START_URL || (app.isPackaged 
-    ? 'https://smartlabs-lms.vercel.app' // TODO: Update this with your actual Vercel URL
+    ? 'https://lms.smartlabs.lk/' 
     : 'http://localhost:3000');
     
   mainWindow.loadURL(startUrl);

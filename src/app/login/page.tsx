@@ -296,13 +296,12 @@ export default function LoginPage() {
         <div className="max-w-md w-full mx-auto">
           {/* Logo - Visible on All Screens */}
           <div className="mb-8 text-center flex justify-center">
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-2xl bg-white p-2 shadow-lg shadow-blue-100 border border-blue-50">
+            <div className="relative w-48 h-20 md:w-56 md:h-24">
               <Image 
                 src="/logo.png" 
                 alt="SMART LABS" 
-                width={200} 
-                height={200} 
-                className="w-full h-full object-contain"
+                fill 
+                className="object-contain"
                 priority
               />
             </div>
