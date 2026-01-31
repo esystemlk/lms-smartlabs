@@ -54,13 +54,11 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   overscroll-behavior: none; /* Prevent pull-to-refresh on mobile */
   transition: background-color 0.3s ease, color 0.3s ease;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
   width: 100%;
   position: relative;
 }
 
 html {
-  overflow-x: hidden;
 }
 
 /* App-like utilities */
