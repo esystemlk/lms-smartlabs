@@ -348,6 +348,43 @@ export default function EditCoursePage() {
     }
   };
 
+  const handleSaveRecording = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedBatchForRecordings) return;
+
+    setRecordingSaving(true);
+    try {
+      // Create a recording object
+      const recordingData = {
+        title: newRecording.title,
+        videoUrl: newRecording.videoUrl,
+        date: newRecording.date,
+        durationMinutes: parseInt(newRecording.durationMinutes) || 0,
+        batchId: selectedBatchForRecordings.id,
+        courseId: courseId
+      };
+
+      // Add to Firestore
+      await courseService.addRecording(courseId, selectedBatchForRecordings.id, recordingData);
+      
+      // Update local state if we had a way to fetch recordings, 
+      // but for now we'll just reset the form and show success
+      setNewRecording({
+        title: "",
+        videoUrl: "",
+        date: new Date().toISOString().split('T')[0],
+        durationMinutes: ""
+      });
+      
+      alert("Recording added successfully!");
+    } catch (error) {
+      console.error("Error adding recording:", error);
+      alert("Failed to add recording");
+    } finally {
+      setRecordingSaving(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
