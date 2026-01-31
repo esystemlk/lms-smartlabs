@@ -60,28 +60,28 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
       {/* Header / Controls */}
-      <div className="p-6 border-b border-gray-100 flex flex-col md:flex-row gap-4 justify-between items-center">
-        <h2 className="text-xl font-bold text-gray-900">User Management</h2>
+      <div className="p-4 md:p-6 border-b border-gray-100 flex flex-col md:flex-row gap-4 justify-between items-center">
+        <h2 className="text-lg md:text-xl font-bold text-gray-900">User Management</h2>
         
-        <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto items-center">
-          <div className="flex gap-4 w-full md:w-auto">
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 w-full md:w-auto items-center">
+          <div className="flex gap-3 md:gap-4 w-full md:w-auto">
             <div className="relative flex-1 md:w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
               <input 
                 type="text" 
                 placeholder="Search users..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                className="w-full pl-9 md:pl-10 pr-4 py-2 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
               />
             </div>
             
             <div className="relative">
-              <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+              <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
               <select 
                 value={roleFilter}
                 onChange={(e) => setRoleFilter(e.target.value)}
-                className="pl-10 pr-8 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all appearance-none bg-white"
+                className="pl-9 md:pl-10 pr-8 py-2 text-sm rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all appearance-none bg-white"
               >
                 <option value="all">All Roles</option>
                 <option value="student">Student</option>
@@ -93,7 +93,7 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
             </div>
           </div>
 
-          <Button onClick={() => setShowAddUserModal(true)}>
+          <Button onClick={() => setShowAddUserModal(true)} className="w-full md:w-auto text-sm">
             <UserPlus className="w-4 h-4 mr-2" />
             Add User
           </Button>
@@ -105,37 +105,37 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
         <table className="w-full">
           <thead className="bg-gray-50 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
             <tr>
-              <th className="px-6 py-4">User</th>
-              <th className="px-6 py-4">Role</th>
-              <th className="px-6 py-4">Contact</th>
-              <th className="px-6 py-4">Country</th>
-              <th className="px-6 py-4 text-right">Actions</th>
+              <th className="px-4 py-3 md:px-6 md:py-4">User</th>
+              <th className="px-4 py-3 md:px-6 md:py-4">Role</th>
+              <th className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4">Contact</th>
+              <th className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4">Country</th>
+              <th className="px-4 py-3 md:px-6 md:py-4 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
             {filteredUsers.map((user) => (
               <tr key={user.uid} className="hover:bg-gray-50/50 transition-colors">
-                <td className="px-6 py-4">
+                <td className="px-4 py-3 md:px-6 md:py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center font-bold text-gray-500 overflow-hidden">
+                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center font-bold text-gray-500 overflow-hidden">
                       {user.photoURL ? (
                         <img src={user.photoURL} alt={user.name} className="w-full h-full object-cover" />
                       ) : (
-                        user.name?.charAt(0).toUpperCase() || "U"
+                        <span className="text-xs md:text-base">{user.name?.charAt(0).toUpperCase() || "U"}</span>
                       )}
                     </div>
                     <div>
-                      <div className="font-medium text-gray-900">{user.name}</div>
-                      <div className="text-sm text-gray-500">{user.email}</div>
+                      <div className="font-medium text-gray-900 text-sm md:text-base">{user.name}</div>
+                      <div className="text-xs md:text-sm text-gray-500">{user.email}</div>
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4">
+                <td className="px-4 py-3 md:px-6 md:py-4">
                   {editingId === user.uid ? (
                     <select 
                       value={selectedRole}
                       onChange={(e) => setSelectedRole(e.target.value as UserRole)}
-                      className="text-sm rounded-lg border border-gray-300 p-1"
+                      className="text-xs md:text-sm rounded-lg border border-gray-300 p-1"
                       disabled={updating}
                     >
                       <option value="student">Student</option>
@@ -146,18 +146,18 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
                       <option value="developer">Developer</option>
                     </select>
                   ) : (
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${getRoleBadgeColor(user.role)}`}>
+                    <span className={`inline-flex items-center px-2 py-0.5 md:px-2.5 md:py-0.5 rounded-full text-[10px] md:text-xs font-medium capitalize ${getRoleBadgeColor(user.role)}`}>
                       {user.role}
                     </span>
                   )}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-500">
+                <td className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4 text-xs md:text-sm text-gray-500">
                   {user.contact || "-"}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-500">
+                <td className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4 text-xs md:text-sm text-gray-500">
                   {user.country || "-"}
                 </td>
-                <td className="px-6 py-4 text-right">
+                <td className="px-4 py-3 md:px-6 md:py-4 text-right">
                   {editingId === user.uid ? (
                     <div className="flex items-center justify-end gap-2">
                       <button 

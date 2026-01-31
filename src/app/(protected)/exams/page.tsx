@@ -33,29 +33,29 @@ export default function ExamsPage() {
   }
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 p-6">
+    <div className="space-y-4 md:space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 p-4 md:p-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold text-gray-900">Exams</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Exams</h1>
         <div className="flex gap-2">
           {/* Filter options could go here */}
         </div>
       </div>
       
       {exams.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center shadow-sm border border-gray-100">
-          <div className="w-16 h-16 bg-blue-50 text-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle2 className="w-8 h-8" />
+        <div className="bg-white rounded-3xl p-8 md:p-12 text-center shadow-sm border border-gray-100">
+          <div className="w-12 h-12 md:w-16 md:h-16 bg-blue-50 text-brand-blue rounded-full flex items-center justify-center mx-auto mb-4">
+            <CheckCircle2 className="w-6 h-6 md:w-8 md:h-8" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">No Upcoming Exams</h3>
-          <p className="text-gray-500 max-w-md mx-auto">
+          <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">No Upcoming Exams</h3>
+          <p className="text-sm md:text-base text-gray-500 max-w-md mx-auto">
             You're all caught up! Check back later for new exam schedules or review your past results.
           </p>
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {exams.map((exam) => (
-            <div key={exam.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-lg transition-all duration-300">
-              <div className="flex justify-between items-start mb-4">
+            <div key={exam.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6 hover:shadow-lg transition-all duration-300">
+              <div className="flex justify-between items-start mb-3 md:mb-4">
                 <span className="px-3 py-1 bg-blue-50 text-brand-blue rounded-full text-xs font-bold uppercase tracking-wider">
                   {exam.subject}
                 </span>

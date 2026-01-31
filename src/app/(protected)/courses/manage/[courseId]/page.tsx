@@ -457,8 +457,8 @@ export default function EditCoursePage() {
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-gray-200">
-        <div className="flex gap-6">
+      <div className="border-b border-gray-200 overflow-x-auto">
+        <div className="flex gap-6 min-w-max px-1">
           <button
             onClick={() => setActiveTab("settings")}
             className={`pb-3 text-sm font-medium border-b-2 transition-colors ${
@@ -880,7 +880,7 @@ export default function EditCoursePage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Input
                   label="Max Students"
                   type="number"

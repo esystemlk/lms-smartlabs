@@ -106,7 +106,7 @@ export default function AdminPage() {
 
       {/* Tabs */}
       <div className="border-b border-gray-200">
-        <div className="flex gap-6 overflow-x-auto no-scrollbar">
+        <div className="flex gap-6 overflow-x-auto no-scrollbar pb-1 px-1 min-w-full sm:min-w-0">
           {tabs.map((tab) => (
             <button
               key={tab.id}

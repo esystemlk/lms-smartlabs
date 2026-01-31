@@ -105,14 +105,14 @@ export default function ProfilePage() {
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold text-gray-900">Profile Settings</h1>
+      <h1 className="text-xl md:text-2xl font-bold text-gray-900">Profile Settings</h1>
       
-      <div className="bg-white dark:bg-card rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-border space-y-8">
+      <div className="bg-white dark:bg-card rounded-2xl p-4 md:p-8 shadow-sm border border-gray-100 dark:border-border space-y-6 md:space-y-8">
         
         {/* Profile Header */}
         <div className="flex flex-col items-center justify-center text-center">
           <div className="relative group cursor-pointer">
-            <div className="w-24 h-24 rounded-full bg-gray-100 dark:bg-gray-800 border-4 border-white dark:border-gray-700 shadow-md relative overflow-hidden">
+            <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gray-100 dark:bg-gray-800 border-4 border-white dark:border-gray-700 shadow-md relative overflow-hidden">
               {userData?.photoURL ? (
                 <Image 
                   src={userData.photoURL} 
@@ -121,7 +121,7 @@ export default function ProfilePage() {
                   className="object-cover"
                 />
               ) : (
-                <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-bold text-3xl">
+                <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-bold text-2xl md:text-3xl">
                   {userData?.name?.charAt(0).toUpperCase() || "U"}
                 </div>
               )}
@@ -148,24 +148,24 @@ export default function ProfilePage() {
 
           <button 
             onClick={() => setIsMemojiModalOpen(true)}
-            className="mt-4 text-sm text-brand-blue hover:text-blue-700 font-medium flex items-center gap-1"
+            className="mt-3 md:mt-4 text-xs md:text-sm text-brand-blue hover:text-blue-700 font-medium flex items-center gap-1"
           >
-            <Smile size={16} />
+            <Smile size={14} className="md:w-4 md:h-4" />
             Or create an avatar
           </button>
           
-          <h2 className="mt-4 text-xl font-bold text-gray-900 dark:text-white">
+          <h2 className="mt-3 md:mt-4 text-lg md:text-xl font-bold text-gray-900 dark:text-white">
             {userData?.name || "User Name"}
           </h2>
-          <p className="text-gray-500 dark:text-gray-400">{userData?.email}</p>
-          <span className="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+          <p className="text-sm text-gray-500 dark:text-gray-400">{userData?.email}</p>
+          <span className="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
             {userData?.role || "Student"}
           </span>
         </div>
         
         {/* Account Details Form */}
-        <form onSubmit={handleSave} className="space-y-6 pt-6 border-t border-gray-100 dark:border-border">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form onSubmit={handleSave} className="space-y-4 md:space-y-6 pt-4 md:pt-6 border-t border-gray-100 dark:border-border">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             <div className="md:col-span-2">
               <Input
                 label="Full Name"

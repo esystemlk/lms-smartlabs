@@ -172,7 +172,7 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500">
+    <div className="max-w-6xl mx-auto space-y-6 md:space-y-8 animate-in fade-in duration-500">
       <div>
         <h1 className="text-2xl font-bold text-foreground">Settings</h1>
         <p className="text-gray-500 dark:text-gray-400">Manage your account settings and preferences.</p>
@@ -211,7 +211,7 @@ export default function SettingsPage() {
         <div className="flex-1 min-w-0">
           {/* General Settings */}
           {activeTab === "general" && (
-            <div className="bg-card rounded-2xl p-6 shadow-soft space-y-6">
+            <div className="bg-card rounded-2xl p-4 md:p-6 shadow-soft space-y-6">
               <div>
                 <h2 className="text-lg font-bold text-foreground">Personal Information</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Update your personal details here.</p>
@@ -418,7 +418,7 @@ export default function SettingsPage() {
 
           {/* Appearance Settings */}
           {activeTab === "appearance" && (
-            <div className="bg-card rounded-2xl p-6 shadow-soft space-y-6">
+            <div className="bg-card rounded-2xl p-4 md:p-6 shadow-soft space-y-6">
               <div>
                 <h2 className="text-lg font-bold text-foreground">Appearance</h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Customize how the application looks.</p>

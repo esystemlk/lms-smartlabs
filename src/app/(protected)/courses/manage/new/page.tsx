@@ -171,7 +171,7 @@ export default function NewCoursePage() {
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Course Details Section */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-6">
+        <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 space-y-6">
           <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-2">Course Details</h2>
           
           {/* Image Upload */}
@@ -320,7 +320,7 @@ export default function NewCoursePage() {
                   </div>
 
                   {/* Batch Details */}
-                  <div className="space-y-4 col-span-2 md:col-span-2">
+                  <div className="space-y-4 col-span-1 md:col-span-2">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <Input
                         label="Batch Name"

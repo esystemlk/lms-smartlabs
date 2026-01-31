@@ -119,20 +119,20 @@ export default function CourseDetailsPage() {
   }
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+    <div className="space-y-4 md:space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <Link href="/courses" className="text-sm text-gray-500 hover:text-brand-blue mb-2 block">
             ← Back to Courses
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900">{course.title}</h1>
-          <p className="text-gray-500">{lessons.length} Lessons • {course.instructorName}</p>
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900">{course.title}</h1>
+          <p className="text-sm md:text-base text-gray-500">{lessons.length} Lessons • {course.instructorName}</p>
         </div>
         
         {accessGranted ? (
           lessons.length > 0 && (
             <Link href={`/courses/${courseId}/lessons/${lessons[0].id}`}>
-              <Button className="rounded-full shadow-lg shadow-blue-200">
+              <Button className="w-full md:w-auto rounded-full shadow-lg shadow-blue-200">
                 <PlayCircle className="mr-2 h-5 w-5" />
                 Continue Learning
               </Button>
@@ -140,7 +140,7 @@ export default function CourseDetailsPage() {
           )
         ) : (
           <Link href="/courses">
-            <Button className="rounded-full shadow-lg shadow-blue-200">
+            <Button className="w-full md:w-auto rounded-full shadow-lg shadow-blue-200">
               Enroll Now
             </Button>
           </Link>
@@ -148,7 +148,7 @@ export default function CourseDetailsPage() {
       </div>
 
       {!accessGranted && !checkingAccess && (
-        <div className="bg-yellow-50 border border-yellow-100 rounded-xl p-4 flex items-start gap-3">
+        <div className="bg-yellow-50 border border-yellow-100 rounded-xl p-3 md:p-4 flex items-start gap-3">
           <Lock className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" />
           <div className="text-sm text-yellow-800">
             <p className="font-semibold mb-1">Enrollment Required</p>
@@ -160,12 +160,12 @@ export default function CourseDetailsPage() {
       {/* Recorded Classes Section (Batch Specific) */}
       {accessGranted && enrolledBatch?.recordedClasses && enrolledBatch.recordedClasses.length > 0 && (
         <div className="bg-white rounded-2xl shadow-soft overflow-hidden">
-          <div className="p-6 border-b border-gray-100 bg-blue-50/50">
+          <div className="p-4 md:p-6 border-b border-gray-100 bg-blue-50/50">
             <div className="flex items-center gap-2">
               <Video className="w-5 h-5 text-brand-blue" />
               <h2 className="font-bold text-lg text-gray-900">Recorded Classes</h2>
             </div>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-xs md:text-sm text-gray-500 mt-1">
               Live class recordings from <span className="font-medium text-brand-blue">{enrolledBatch.name}</span>
             </p>
           </div>
@@ -176,13 +176,13 @@ export default function CourseDetailsPage() {
                 href={recording.videoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 hover:bg-blue-50 transition-colors group"
+                className="flex items-center gap-3 md:gap-4 p-3 md:p-4 hover:bg-blue-50 transition-colors group"
               >
                 <div className="flex-shrink-0 text-blue-300 group-hover:text-brand-blue">
-                  <PlayCircle size={24} />
+                  <PlayCircle size={20} className="md:w-6 md:h-6" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-medium text-gray-900 group-hover:text-brand-blue transition-colors">
+                  <h3 className="font-medium text-sm md:text-base text-gray-900 group-hover:text-brand-blue transition-colors line-clamp-1">
                     {recording.title}
                   </h3>
                   <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
@@ -195,8 +195,8 @@ export default function CourseDetailsPage() {
                     )}
                   </div>
                 </div>
-                <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Button size="sm" variant="ghost" className="rounded-full">
+                <div className="flex-shrink-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Button size="sm" variant="ghost" className="rounded-full h-8 text-xs md:text-sm">
                     Watch
                   </Button>
                 </div>
@@ -208,9 +208,9 @@ export default function CourseDetailsPage() {
 
       {/* Course Materials (Lessons) */}
       <div className="bg-white rounded-2xl shadow-soft overflow-hidden">
-        <div className="p-6 border-b border-gray-100">
+        <div className="p-4 md:p-6 border-b border-gray-100">
           <h2 className="font-bold text-lg">Course Materials</h2>
-          <p className="text-sm text-gray-500 mt-1">{course.description}</p>
+          <p className="text-xs md:text-sm text-gray-500 mt-1">{course.description}</p>
         </div>
         <div className="divide-y divide-gray-100">
           {lessons.length === 0 ? (
@@ -222,36 +222,36 @@ export default function CourseDetailsPage() {
               const content = (
                 <>
                   <div className="flex-shrink-0 text-gray-400 group-hover:text-brand-blue transition-colors">
-                    {accessGranted ? <Circle size={20} /> : <Lock size={20} />}
+                    {accessGranted ? <Circle size={16} className="md:w-5 md:h-5" /> : <Lock size={16} className="md:w-5 md:h-5" />}
                   </div>
-                  <div className="flex-shrink-0 w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg text-sm font-medium text-gray-500">
+                  <div className="flex-shrink-0 w-6 h-6 md:w-8 md:h-8 flex items-center justify-center bg-gray-100 rounded-lg text-xs md:text-sm font-medium text-gray-500">
                     {index + 1}
                   </div>
                   <div className="flex-1">
-                    <h3 className={`font-medium transition-colors ${accessGranted ? "text-gray-900 group-hover:text-brand-blue" : "text-gray-500"}`}>
+                    <h3 className={`font-medium text-sm md:text-base transition-colors ${accessGranted ? "text-gray-900 group-hover:text-brand-blue" : "text-gray-500"}`}>
                       {lesson.title}
                     </h3>
-                    <div className="flex items-center gap-3 mt-1">
-                      <span className="text-xs text-gray-500 flex items-center gap-1 bg-gray-100 px-2 py-0.5 rounded-full">
-                        {lesson.type === 'video' && <><PlayCircle size={12} /> Video</>}
-                        {lesson.type === 'speaking' && <><Mic size={12} /> Speaking</>}
-                        {lesson.type === 'listening' && <><Headphones size={12} /> Listening</>}
-                        {lesson.type === 'reading' && <><BookOpen size={12} /> Reading</>}
-                        {lesson.type === 'writing' && <><PenTool size={12} /> Writing</>}
-                        {lesson.type === 'quiz' && <><HelpCircle size={12} /> Quiz</>}
-                        {!lesson.type && <><PlayCircle size={12} /> Video</>}
+                    <div className="flex items-center gap-3 mt-1 flex-wrap">
+                      <span className="text-[10px] md:text-xs text-gray-500 flex items-center gap-1 bg-gray-100 px-2 py-0.5 rounded-full">
+                        {lesson.type === 'video' && <><PlayCircle size={10} className="md:w-3 md:h-3" /> Video</>}
+                        {lesson.type === 'speaking' && <><Mic size={10} className="md:w-3 md:h-3" /> Speaking</>}
+                        {lesson.type === 'listening' && <><Headphones size={10} className="md:w-3 md:h-3" /> Listening</>}
+                        {lesson.type === 'reading' && <><BookOpen size={10} className="md:w-3 md:h-3" /> Reading</>}
+                        {lesson.type === 'writing' && <><PenTool size={10} className="md:w-3 md:h-3" /> Writing</>}
+                        {lesson.type === 'quiz' && <><HelpCircle size={10} className="md:w-3 md:h-3" /> Quiz</>}
+                        {!lesson.type && <><PlayCircle size={10} className="md:w-3 md:h-3" /> Video</>}
                       </span>
 
                       {lesson.durationMinutes && (
-                        <span className="text-xs text-gray-500">
+                        <span className="text-[10px] md:text-xs text-gray-500">
                           {lesson.durationMinutes} mins
                         </span>
                       )}
                     </div>
                   </div>
                   {accessGranted && (
-                    <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Button size="sm" variant="ghost" className="rounded-full">
+                    <div className="flex-shrink-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button size="sm" variant="ghost" className="rounded-full h-8 text-xs md:text-sm">
                         Start
                       </Button>
                     </div>
@@ -263,14 +263,14 @@ export default function CourseDetailsPage() {
                 <Link 
                   key={lesson.id} 
                   href={`/courses/${courseId}/lessons/${lesson.id}`}
-                  className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors group"
+                  className="flex items-center gap-3 md:gap-4 p-3 md:p-4 hover:bg-gray-50 transition-colors group"
                 >
                   {content}
                 </Link>
               ) : (
                 <div 
                   key={lesson.id} 
-                  className="flex items-center gap-4 p-4 opacity-75 cursor-not-allowed bg-gray-50/50"
+                  className="flex items-center gap-3 md:gap-4 p-3 md:p-4 opacity-75 cursor-not-allowed bg-gray-50/50"
                 >
                   {content}
                 </div>

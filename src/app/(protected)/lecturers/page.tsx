@@ -44,11 +44,11 @@ export default function LecturersPage() {
   }
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
+    <div className="space-y-4 md:space-y-6 animate-in fade-in duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Lecturers</h1>
-          <p className="text-gray-500">Meet our expert instructors.</p>
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900">Lecturers</h1>
+          <p className="text-sm md:text-base text-gray-500">Meet our expert instructors.</p>
         </div>
         
         <div className="w-full md:w-72">
@@ -59,21 +59,21 @@ export default function LecturersPage() {
               placeholder="Search lecturers..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+              className="w-full pl-9 pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-sm"
             />
           </div>
         </div>
       </div>
 
       {filteredLecturers.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-2xl border border-gray-100">
+        <div className="text-center py-8 md:py-12 bg-white rounded-2xl border border-gray-100">
           <p className="text-gray-500">No lecturers found.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {filteredLecturers.map((lecturer) => (
-            <div key={lecturer.uid} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:border-brand-blue/30 transition-colors group">
-              <div className="w-24 h-24 rounded-full bg-gray-100 mb-4 overflow-hidden relative border-2 border-white shadow-sm">
+            <div key={lecturer.uid} className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center hover:border-brand-blue/30 transition-colors group">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gray-100 mb-3 md:mb-4 overflow-hidden relative border-2 border-white shadow-sm">
                 {lecturer.photoURL ? (
                   <Image 
                     src={lecturer.photoURL} 

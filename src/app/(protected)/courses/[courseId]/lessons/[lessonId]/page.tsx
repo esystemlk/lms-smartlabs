@@ -90,15 +90,16 @@ export default function LessonPage() {
   if (!currentLesson) return null;
 
   return (
+  return (
     <div className="flex flex-col h-[calc(100vh-theme(spacing.20))] md:h-[calc(100vh-theme(spacing.10))] -m-4 md:-m-8">
       {/* Mobile Header for Lesson */}
-      <div className="md:hidden flex items-center justify-between p-4 bg-white border-b border-gray-200">
-        <Link href={`/courses/${courseId}`} className="text-gray-500">
-          <ChevronLeft />
+      <div className="md:hidden flex items-center justify-between p-3 bg-white border-b border-gray-200 shrink-0">
+        <Link href={`/courses/${courseId}`} className="text-gray-500 p-1">
+          <ChevronLeft size={20} />
         </Link>
-        <span className="font-bold truncate max-w-[200px]">{currentLesson.title}</span>
-        <button onClick={() => setShowSidebar(!showSidebar)}>
-          <Menu className="text-gray-500" />
+        <span className="font-bold truncate max-w-[200px] text-sm">{currentLesson.title}</span>
+        <button onClick={() => setShowSidebar(!showSidebar)} className="p-1">
+          <Menu className="text-gray-500" size={20} />
         </button>
       </div>
 
@@ -109,7 +110,7 @@ export default function LessonPage() {
           isFocusMode && "fixed inset-0 z-50 justify-center"
         )}>
           <div className={clsx(
-            "aspect-video w-full bg-black relative flex items-center justify-center group",
+            "aspect-video w-full bg-black relative flex items-center justify-center group shrink-0",
             isFocusMode && "max-h-screen"
           )}>
             {currentLesson.videoUrl ? (
@@ -125,8 +126,8 @@ export default function LessonPage() {
               </video>
             ) : (
               <div className="text-white text-center p-8">
-                <PlayCircle size={64} className="mx-auto mb-4 opacity-50" />
-                <p>No video content available for this lesson.</p>
+                <PlayCircle size={48} className="mx-auto mb-4 opacity-50 md:w-16 md:h-16" />
+                <p className="text-sm md:text-base">No video content available for this lesson.</p>
               </div>
             )}
             
@@ -150,36 +151,36 @@ export default function LessonPage() {
           </div>
           
           <div className={clsx(
-            "p-6 bg-white flex-1 transition-opacity duration-300",
+            "p-4 md:p-6 bg-white flex-1 transition-opacity duration-300 overflow-y-auto",
             isFocusMode ? "hidden" : "opacity-100"
           )}>
-            <div className="flex items-center justify-between mb-2">
-              <h1 className="text-2xl font-bold text-gray-900">{currentLesson.title}</h1>
-              <div className="flex gap-2">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4 md:mb-6">
+              <h1 className="text-lg md:text-2xl font-bold text-gray-900 leading-tight">{currentLesson.title}</h1>
+              <div className="flex gap-2 shrink-0">
                  <Button 
                     variant="ghost" 
                     size="sm" 
                     onClick={() => setIsFocusMode(!isFocusMode)}
-                    className="text-gray-500 gap-2"
+                    className="text-gray-500 gap-2 h-8 md:h-9 text-xs md:text-sm"
                  >
-                    {isFocusMode ? <LightbulbOff size={18} /> : <Lightbulb size={18} />}
-                    <span className="hidden sm:inline">Focus Mode</span>
+                    {isFocusMode ? <LightbulbOff size={16} className="md:w-[18px] md:h-[18px]" /> : <Lightbulb size={16} className="md:w-[18px] md:h-[18px]" />}
+                    <span className="inline">Focus Mode</span>
                  </Button>
               </div>
             </div>
             {/* Module/Section info could go here if added to data model */}
             
-            <div className="flex flex-wrap gap-4 mb-8">
+            <div className="flex flex-wrap gap-3 md:gap-4 mb-6 md:mb-8">
               {/* Placeholder actions */}
-              <Button variant="secondary" className="gap-2">
+              <Button variant="secondary" className="gap-2 h-9 text-sm">
                 <CheckCircle size={16} />
                 Mark as Complete
               </Button>
             </div>
 
-            <div className="prose max-w-none">
-              <h3 className="font-bold">Lesson Notes</h3>
-              <div className="text-gray-600 whitespace-pre-wrap">
+            <div className="prose max-w-none text-sm md:text-base">
+              <h3 className="font-bold text-base md:text-lg">Lesson Notes</h3>
+              <div className="text-gray-600 whitespace-pre-wrap mt-2">
                 {currentLesson.content || "No notes available for this lesson."}
               </div>
             </div>
@@ -188,16 +189,16 @@ export default function LessonPage() {
 
         {/* Sidebar (Lesson List) */}
         <div className={clsx(
-          "w-80 bg-white border-l border-gray-200 overflow-y-auto absolute md:relative inset-y-0 right-0 transform transition-transform duration-300 z-20 shadow-xl md:shadow-none",
+          "w-80 bg-white border-l border-gray-200 overflow-y-auto absolute md:relative inset-y-0 right-0 transform transition-transform duration-300 z-20 shadow-xl md:shadow-none h-full",
           showSidebar ? "translate-x-0" : "translate-x-full md:translate-x-0"
         )}>
           <div className="p-4 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
             <h3 className="font-bold text-gray-900">Course Content</h3>
-            <button className="md:hidden" onClick={() => setShowSidebar(false)}>
-              <ChevronLeft />
+            <button className="md:hidden p-1" onClick={() => setShowSidebar(false)}>
+              <ChevronLeft size={20} />
             </button>
           </div>
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-gray-100 pb-20 md:pb-0">
             {lessons.map((lesson, index) => {
               const isActive = lesson.id === lessonId;
               return (
@@ -205,13 +206,13 @@ export default function LessonPage() {
                   key={lesson.id}
                   href={`/courses/${courseId}/lessons/${lesson.id}`}
                   className={clsx(
-                    "flex items-start gap-3 p-4 hover:bg-gray-50 transition-colors",
+                    "flex items-start gap-3 p-3 md:p-4 hover:bg-gray-50 transition-colors",
                     isActive && "bg-blue-50 border-l-4 border-brand-blue"
                   )}
                   onClick={() => setShowSidebar(false)}
                 >
                   <div className="mt-0.5 text-gray-400">
-                    <Circle size={16} />
+                    <Circle size={14} className="md:w-4 md:h-4" />
                   </div>
                   <div>
                     <p className={clsx(

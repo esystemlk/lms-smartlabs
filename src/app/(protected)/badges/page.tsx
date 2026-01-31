@@ -36,34 +36,34 @@ export default function BadgesPage() {
   }
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 p-6">
+    <div className="space-y-4 md:space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 p-4 md:p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">My Badges</h1>
-          <p className="text-gray-500">Earn badges by completing courses and challenges.</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">My Badges</h1>
+          <p className="text-sm md:text-base text-gray-500">Earn badges by completing courses and challenges.</p>
         </div>
       </div>
       
       {badges.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center shadow-sm border border-gray-100">
-          <div className="w-16 h-16 bg-yellow-50 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Award className="w-8 h-8" />
+        <div className="bg-white rounded-3xl p-8 md:p-12 text-center shadow-sm border border-gray-100">
+          <div className="w-12 h-12 md:w-16 md:h-16 bg-yellow-50 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Award className="w-6 h-6 md:w-8 md:h-8" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">No Badges Yet</h3>
-          <p className="text-gray-500 max-w-md mx-auto">
+          <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">No Badges Yet</h3>
+          <p className="text-sm md:text-base text-gray-500 max-w-md mx-auto">
             Complete courses and participate in activities to start earning your collection!
           </p>
         </div>
       ) : (
-        <div className="grid gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid gap-4 md:gap-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {badges.map((badge) => (
-            <div key={badge.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center text-center hover:shadow-lg transition-all">
-              <div className="w-24 h-24 mb-4 relative">
+            <div key={badge.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6 flex flex-col items-center text-center hover:shadow-lg transition-all">
+              <div className="w-20 h-20 md:w-24 md:h-24 mb-3 md:mb-4 relative">
                 {badge.imageUrl ? (
                   <img src={badge.imageUrl} alt={badge.name} className="w-full h-full object-contain" />
                 ) : (
                   <div className="w-full h-full bg-gray-100 rounded-full flex items-center justify-center text-gray-300">
-                    <Award className="w-12 h-12" />
+                    <Award className="w-10 h-10 md:w-12 md:h-12" />
                   </div>
                 )}
                 {!badge.earnedAt && (

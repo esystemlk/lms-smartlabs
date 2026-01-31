@@ -297,7 +297,7 @@ export default function LoginPage() {
       </div>
 
       {/* Right Panel - Auth Forms */}
-      <div className="w-full md:w-1/2 lg:w-2/5 flex flex-col justify-center px-8 md:px-16 lg:px-24 py-12 bg-white overflow-y-auto max-h-screen">
+      <div className="w-full md:w-1/2 lg:w-2/5 flex flex-col justify-center px-6 md:px-16 lg:px-24 py-12 bg-white overflow-y-auto max-h-screen">
         <div className="max-w-md w-full mx-auto">
           {/* Logo - Visible on All Screens */}
           <div className="mb-8 text-center flex justify-center">

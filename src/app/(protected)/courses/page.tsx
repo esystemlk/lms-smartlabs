@@ -153,32 +153,32 @@ export default function CoursesPage() {
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       
       {/* Hero Section */}
-      <section className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8 md:p-12 shadow-xl">
+      <section className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 md:p-12 shadow-xl">
         <div className="relative z-10 max-w-2xl">
-          <h1 className="text-3xl md:text-5xl font-bold mb-4 leading-tight">
+          <h1 className="text-2xl md:text-5xl font-bold mb-3 md:mb-4 leading-tight">
             Master Your Future with <span className="text-yellow-300">Smart Labs</span>
           </h1>
-          <p className="text-blue-100 text-lg mb-8">
+          <p className="text-blue-100 text-sm md:text-lg mb-6 md:mb-8">
             Join thousands of students learning cutting-edge technologies. Select a course, choose your batch, and start your journey today.
           </p>
           <div className="flex gap-4">
-            <Button variant="ghost" className="bg-white/20 hover:bg-white/30 text-white border-0">
+            <Button variant="ghost" className="bg-white/20 hover:bg-white/30 text-white border-0 text-sm md:text-base">
               Browse Courses
             </Button>
           </div>
         </div>
         
         {/* Decorative Circles */}
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 bg-blue-500/30 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 md:w-96 md:h-96 bg-white/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-48 h-48 md:w-72 md:h-72 bg-blue-500/30 rounded-full blur-3xl"></div>
       </section>
 
       {/* Course Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
         {courses.map((course) => (
           <div key={course.id} className="group bg-white dark:bg-card rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-border overflow-hidden flex flex-col h-full">
             {/* Image */}
-            <div className="relative h-48 bg-gray-100 dark:bg-gray-800 overflow-hidden">
+            <div className="relative h-40 md:h-48 bg-gray-100 dark:bg-gray-800 overflow-hidden">
               {course.image ? (
                 <Image
                   src={course.image}
@@ -188,7 +188,7 @@ export default function CoursesPage() {
                 />
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-300 dark:text-gray-600">
-                  <BookOpen className="w-16 h-16" />
+                  <BookOpen className="w-12 h-12 md:w-16 md:h-16" />
                 </div>
               )}
               <div className="absolute top-4 right-4 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-brand-blue shadow-sm">
@@ -197,8 +197,8 @@ export default function CoursesPage() {
             </div>
 
             {/* Content */}
-            <div className="p-6 flex flex-col flex-1">
-              <div className="mb-4">
+            <div className="p-4 md:p-6 flex flex-col flex-1">
+              <div className="mb-3 md:mb-4">
                 <div className="flex items-center gap-2 mb-2">
                   {course.level && (
                     <span className="px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-300">
@@ -216,16 +216,16 @@ export default function CoursesPage() {
                     </span>
                   )}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-1 group-hover:text-brand-blue transition-colors">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 line-clamp-1 group-hover:text-brand-blue transition-colors">
                   {course.title}
                 </h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+                <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
                   {course.description}
                 </p>
               </div>
 
               {course.tags && course.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1 mb-4">
+                <div className="flex flex-wrap gap-1 mb-3 md:mb-4">
                   {course.tags.slice(0, 3).map((tag, i) => (
                     <span key={i} className="text-[10px] text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">
                       #{tag}
@@ -234,7 +234,7 @@ export default function CoursesPage() {
                 </div>
               )}
 
-              <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 mb-6">
+              <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400 mb-4 md:mb-6">
                 <div className="flex items-center gap-1">
                   <Users size={14} />
                   <span>{course.instructorName}</span>
@@ -247,15 +247,15 @@ export default function CoursesPage() {
 
               <div className="mt-auto flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-xs text-gray-400 uppercase tracking-wider">Price</span>
-                  <span className="text-xl font-bold text-brand-blue">
+                  <span className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider">Price</span>
+                  <span className="text-lg md:text-xl font-bold text-brand-blue">
                     {course.price && course.price > 0 ? `LKR ${course.price.toLocaleString()}` : "Free"}
                   </span>
                 </div>
                 <Button 
                   onClick={() => handleOpenEnrollModal(course)}
                   variant="secondary"
-                  className="shadow-lg shadow-blue-500/20"
+                  className="shadow-lg shadow-blue-500/20 text-xs md:text-sm h-8 md:h-10"
                 >
                   Enroll Now
                 </Button>

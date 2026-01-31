@@ -126,10 +126,10 @@ export function QuizBuilder({ courseId, onSuccess, initialData }: QuizBuilderPro
         </div>
 
         {questions.map((q, qIndex) => (
-          <div key={q.id} className="bg-gray-50 p-6 rounded-xl border border-gray-200 relative group">
+          <div key={q.id} className="bg-gray-50 p-4 md:p-6 rounded-xl border border-gray-200 relative group">
             <button 
               onClick={() => removeQuestion(qIndex)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute top-2 right-2 md:top-4 md:right-4 text-gray-400 hover:text-red-500 md:opacity-0 md:group-hover:opacity-100 transition-opacity p-2"
             >
               <Trash2 size={18} />
             </button>
