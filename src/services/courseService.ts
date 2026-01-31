@@ -9,7 +9,9 @@ import {
   query, 
   where, 
   orderBy, 
-  serverTimestamp 
+  serverTimestamp,
+  arrayUnion,
+  arrayRemove
 } from "firebase/firestore";
 import { db, storage } from "@/lib/firebase";
 import { Course, Lesson, Batch } from "@/lib/types";
@@ -170,7 +172,7 @@ export const courseService = {
     await deleteDoc(docRef);
   },
 
-  async addRecordedClassToBatch(courseId: string, batchId: string, recording: any) {
+  async addRecording(courseId: string, batchId: string, recording: any) {
     const batchRef = doc(db, COURSES_COLLECTION, courseId, BATCHES_COLLECTION, batchId);
     await updateDoc(batchRef, {
       recordedClasses: arrayUnion(recording),

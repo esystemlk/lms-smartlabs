@@ -350,7 +350,7 @@ export default function EditCoursePage() {
 
   const handleSaveRecording = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedBatchForRecordings) return;
+    if (!selectedBatch) return;
 
     setRecordingSaving(true);
     try {
@@ -360,12 +360,12 @@ export default function EditCoursePage() {
         videoUrl: newRecording.videoUrl,
         date: newRecording.date,
         durationMinutes: parseInt(newRecording.durationMinutes) || 0,
-        batchId: selectedBatchForRecordings.id,
+        batchId: selectedBatch.id,
         courseId: courseId
       };
 
       // Add to Firestore
-      await courseService.addRecording(courseId, selectedBatchForRecordings.id, recordingData);
+      await courseService.addRecording(courseId, selectedBatch.id, recordingData);
       
       // Update local state if we had a way to fetch recordings, 
       // but for now we'll just reset the form and show success
@@ -382,6 +382,33 @@ export default function EditCoursePage() {
       alert("Failed to add recording");
     } finally {
       setRecordingSaving(false);
+    }
+  };
+
+  const handleDeleteRecording = async (recordingId: string) => {
+    if (!selectedBatch) return;
+    if (!confirm("Are you sure you want to delete this recording?")) return;
+
+    try {
+      await courseService.removeRecordedClassFromBatch(courseId, selectedBatch.id, { id: recordingId });
+      
+      // Update local state
+      const updatedRecordings = (selectedBatch.recordedClasses || []).filter(r => r.id !== recordingId);
+      setSelectedBatch({
+        ...selectedBatch,
+        recordedClasses: updatedRecordings
+      });
+      
+      // Also update the batch in the batches list
+      setBatches(batches.map(b => 
+        b.id === selectedBatch.id 
+          ? { ...b, recordedClasses: updatedRecordings }
+          : b
+      ));
+
+    } catch (error) {
+      console.error("Error deleting recording:", error);
+      alert("Failed to delete recording");
     }
   };
 

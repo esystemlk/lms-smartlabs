@@ -16,7 +16,8 @@ import {
   Bell,
   Menu as MenuIcon,
   ChevronLeft,
-  Home
+  Home,
+  LayoutDashboard
 } from "lucide-react";
 import { clsx } from "clsx";
 

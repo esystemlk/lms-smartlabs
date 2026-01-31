@@ -1,10 +1,12 @@
 import { Timestamp } from "firebase/firestore";
 
+export type UserRole = "student" | "admin" | "instructor" | "lecturer" | "developer" | "superadmin" | "service";
+
 export interface UserData {
   uid: string;
   email: string;
   name: string;
-  role: "student" | "admin" | "instructor" | "lecturer";
+  role: UserRole;
   createdAt: any;
   contact?: string;
   country?: string;
@@ -143,4 +145,31 @@ export interface QuizAttempt {
   score: number;
   passed: boolean;
   completedAt: any;
+}
+
+export interface SupportChat {
+  id: string;
+  userId: string;
+  userName: string;
+  userEmail?: string;
+  userRole?: string;
+  status: "active" | "pending" | "closed";
+  unreadByAdmin: number;
+  unreadByUser: number;
+  lastMessage?: string;
+  lastMessageAt: any;
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface ChatMessage {
+  id: string;
+  chatId: string;
+  senderId: string;
+  senderName: string;
+  text: string;
+  type: "text" | "voice" | "image" | "file" | "link";
+  mediaUrl?: string;
+  createdAt: any;
+  readBy?: string[];
 }

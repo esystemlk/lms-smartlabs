@@ -21,7 +21,8 @@ import {
   Clock,
   User,
   ArrowLeft,
-  StopCircle
+  StopCircle,
+  Play
 } from "lucide-react";
 import { clsx } from "clsx";
 import { formatDistanceToNow } from "date-fns";

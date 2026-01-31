@@ -5,16 +5,18 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { auth } from "@/lib/firebase";
-import { signOut } from "firebase/auth";
+import { signOut, updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Camera, Loader2, LogOut } from "lucide-react";
+import { Camera, Loader2, LogOut, Smile } from "lucide-react";
 import { userService } from "@/services/userService";
+import { MemojiSelector } from "@/components/features/MemojiSelector";
 
 export default function ProfilePage() {
   const { userData } = useAuth();
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
+  const [isMemojiModalOpen, setIsMemojiModalOpen] = useState(false);
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -32,6 +34,23 @@ export default function ProfilePage() {
     } catch (error) {
       console.error("Error uploading profile image:", error);
       alert("Failed to upload profile image");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleMemojiSelect = async (url: string) => {
+    if (!userData) return;
+    setUploading(true);
+    try {
+      await userService.updateProfile(userData.uid, { photoURL: url });
+      // Also update Auth profile for consistency
+      if (auth.currentUser) {
+        await updateProfile(auth.currentUser, { photoURL: url });
+      }
+    } catch (error) {
+      console.error("Error updating avatar:", error);
+      alert("Failed to update avatar");
     } finally {
       setUploading(false);
     }
@@ -125,6 +144,13 @@ export default function ProfilePage() {
           </Button>
         </div>
       </div>
+
+      <MemojiSelector 
+        isOpen={isMemojiModalOpen}
+        onClose={() => setIsMemojiModalOpen(false)}
+        onSelect={handleMemojiSelect}
+        currentImage={userData?.photoURL}
+      />
     </div>
   );
 }
