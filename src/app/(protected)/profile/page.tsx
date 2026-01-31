@@ -21,7 +21,12 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [isMemojiModalOpen, setIsMemojiModalOpen] = useState(false);
   
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    contact: string;
+    country: string;
+    gender: "male" | "female";
+  }>({
     name: "",
     contact: "",
     country: "",
@@ -34,7 +39,7 @@ export default function ProfilePage() {
         name: userData.name || "",
         contact: userData.contact || "",
         country: userData.country || "",
-        gender: userData.gender || "male"
+        gender: (userData.gender as "male" | "female") || "male"
       });
     }
   }, [userData]);
@@ -204,7 +209,7 @@ export default function ProfilePage() {
                     name="gender"
                     value="male"
                     checked={formData.gender === "male"}
-                    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, gender: e.target.value as "male" | "female" })}
                     className="text-brand-blue focus:ring-brand-blue"
                   />
                   <span className="text-sm text-gray-700 dark:text-gray-300">Male</span>
@@ -215,7 +220,7 @@ export default function ProfilePage() {
                     name="gender"
                     value="female"
                     checked={formData.gender === "female"}
-                    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, gender: e.target.value as "male" | "female" })}
                     className="text-brand-blue focus:ring-brand-blue"
                   />
                   <span className="text-sm text-gray-700 dark:text-gray-300">Female</span>

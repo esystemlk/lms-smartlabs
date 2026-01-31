@@ -358,7 +358,7 @@ export default function LoginPage() {
         {/* Bottom Text Content */}
         <div className="relative z-20 mt-auto">
           <div className="text-[12px] text-brand-blue font-bold font-footer uppercase tracking-widest leading-loose">
-            <p className="mb-1">Website developed & powered by ESystemLK</p>
+            <p className="mb-1">Developed & powered by ESystemLK</p>
             <p>© SMART LABS PVT LTD. All rights reserved</p>
           </div>
         </div>
