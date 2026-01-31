@@ -172,13 +172,13 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6 md:space-y-8 animate-in fade-in duration-500">
+    <div className="max-w-6xl mx-auto space-y-4 md:space-y-8 animate-in fade-in duration-500">
       <div>
-        <h1 className="text-2xl font-bold text-foreground">Settings</h1>
-        <p className="text-gray-500 dark:text-gray-400">Manage your account settings and preferences.</p>
+        <h1 className="text-xl md:text-2xl font-bold text-foreground">Settings</h1>
+        <p className="text-xs md:text-base text-gray-500 dark:text-gray-400">Manage your account settings and preferences.</p>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-8">
         {/* Sidebar Navigation */}
         <div className="w-full md:w-64 flex-shrink-0 sticky top-20 z-10 bg-background/95 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none pb-2 md:pb-0">
           <nav className="flex md:flex-col gap-2 overflow-x-auto md:overflow-visible pb-2 md:pb-0 no-scrollbar snap-x snap-mandatory">
@@ -199,8 +199,8 @@ export default function SettingsPage() {
                       : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 bg-card border-border"
                   )}
                 >
-                  <Icon size={18} />
-                  <span className="font-medium text-sm md:text-base">{tab.label}</span>
+                  <Icon size={18} className="w-4 h-4 md:w-[18px] md:h-[18px]" />
+                  <span className="font-medium text-xs md:text-base">{tab.label}</span>
                 </button>
               );
             })}
@@ -211,43 +211,45 @@ export default function SettingsPage() {
         <div className="flex-1 min-w-0">
           {/* General Settings */}
           {activeTab === "general" && (
-            <div className="bg-card rounded-2xl p-4 md:p-6 shadow-soft space-y-6">
+            <div className="bg-card rounded-2xl p-4 md:p-6 shadow-soft space-y-4 md:space-y-6">
               <div>
-                <h2 className="text-lg font-bold text-foreground">Personal Information</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Update your personal details here.</p>
+                <h2 className="text-base md:text-lg font-bold text-foreground">Personal Information</h2>
+                <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Update your personal details here.</p>
               </div>
 
-              <form onSubmit={handleProfileUpdate} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <form onSubmit={handleProfileUpdate} className="space-y-3 md:space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   <Input 
                     label="Full Name"
                     value={profileData.name} 
                     onChange={(e) => setProfileData({...profileData, name: e.target.value})}
+                    className="text-xs md:text-sm"
                   />
                   <Input 
                     label="Contact Number"
                     value={profileData.contact} 
                     onChange={(e) => setProfileData({...profileData, contact: e.target.value})}
+                    className="text-xs md:text-sm"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio</label>
+                  <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Bio</label>
                   <textarea 
-                    className="w-full px-4 py-2 rounded-xl border border-border bg-gray-50 dark:bg-gray-800/50 text-foreground focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none h-24 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                    className="w-full px-4 py-2 rounded-xl border border-border bg-gray-50 dark:bg-gray-800/50 text-foreground focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none h-20 md:h-24 text-xs md:text-sm placeholder:text-gray-400 dark:placeholder:text-gray-500"
                     placeholder="Tell us a little about yourself..."
                     value={profileData.bio}
                     onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Country</label>
+                    <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Country</label>
                     <select
                       value={profileData.country}
                       onChange={(e) => setProfileData({...profileData, country: e.target.value})}
-                      className="w-full px-4 py-2 rounded-xl border border-border bg-gray-50 dark:bg-gray-800/50 text-foreground focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                      className="w-full px-4 py-2 rounded-xl border border-border bg-gray-50 dark:bg-gray-800/50 text-foreground focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-xs md:text-sm"
                     >
                       <option value="">Select a country</option>
                       {countries.map((c) => (
@@ -257,7 +259,7 @@ export default function SettingsPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Gender</label>
+                    <label className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Gender</label>
                     <div className="flex items-center gap-4 h-[42px]">
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
@@ -266,9 +268,9 @@ export default function SettingsPage() {
                           value="male"
                           checked={profileData.gender === "male"}
                           onChange={(e) => setProfileData({...profileData, gender: e.target.value})}
-                          className="w-4 h-4 text-brand-blue focus:ring-brand-blue"
+                          className="w-3 h-3 md:w-4 md:h-4 text-brand-blue focus:ring-brand-blue"
                         />
-                        <span className="text-gray-700 dark:text-gray-300">Male</span>
+                        <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300">Male</span>
                       </label>
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
@@ -277,17 +279,17 @@ export default function SettingsPage() {
                           value="female"
                           checked={profileData.gender === "female"}
                           onChange={(e) => setProfileData({...profileData, gender: e.target.value})}
-                          className="w-4 h-4 text-brand-blue focus:ring-brand-blue"
+                          className="w-3 h-3 md:w-4 md:h-4 text-brand-blue focus:ring-brand-blue"
                         />
-                        <span className="text-gray-700 dark:text-gray-300">Female</span>
+                        <span className="text-xs md:text-sm text-gray-700 dark:text-gray-300">Female</span>
                       </label>
                     </div>
                   </div>
                 </div>
 
                 <div className="pt-4 flex items-center justify-end">
-                  <Button type="submit" disabled={loading}>
-                    {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                  <Button type="submit" disabled={loading} className="text-xs md:text-sm">
+                    {loading ? <Loader2 className="w-3 h-3 md:w-4 md:h-4 animate-spin mr-2" /> : null}
                     Save Changes
                   </Button>
                 </div>
@@ -297,19 +299,20 @@ export default function SettingsPage() {
 
           {/* Security Settings */}
           {activeTab === "security" && (
-            <div className="bg-card rounded-2xl p-6 shadow-soft space-y-6">
+            <div className="bg-card rounded-2xl p-4 md:p-6 shadow-soft space-y-4 md:space-y-6">
               <div>
-                <h2 className="text-lg font-bold text-foreground">Security</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Manage your password and account security.</p>
+                <h2 className="text-base md:text-lg font-bold text-foreground">Security</h2>
+                <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Manage your password and account security.</p>
               </div>
 
-              <form onSubmit={handlePasswordUpdate} className="space-y-4 max-w-md">
+              <form onSubmit={handlePasswordUpdate} className="space-y-3 md:space-y-4 max-w-md">
                 <Input 
                   label="Current Password"
                   type="password"
                   value={securityData.currentPassword}
                   onChange={(e) => setSecurityData({...securityData, currentPassword: e.target.value})}
                   required
+                  className="text-xs md:text-sm"
                 />
                 <Input 
                   label="New Password"
@@ -317,6 +320,7 @@ export default function SettingsPage() {
                   value={securityData.newPassword}
                   onChange={(e) => setSecurityData({...securityData, newPassword: e.target.value})}
                   required
+                  className="text-xs md:text-sm"
                 />
                 <Input 
                   label="Confirm New Password"
@@ -324,11 +328,12 @@ export default function SettingsPage() {
                   value={securityData.confirmPassword}
                   onChange={(e) => setSecurityData({...securityData, confirmPassword: e.target.value})}
                   required
+                  className="text-xs md:text-sm"
                 />
 
                 <div className="pt-4">
-                  <Button type="submit" disabled={loading} variant="outline" className="w-full">
-                    {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Lock className="w-4 h-4 mr-2" />}
+                  <Button type="submit" disabled={loading} variant="outline" className="w-full text-xs md:text-sm">
+                    {loading ? <Loader2 className="w-3 h-3 md:w-4 md:h-4 animate-spin mr-2" /> : <Lock className="w-3 h-3 md:w-4 md:h-4 mr-2" />}
                     Update Password
                   </Button>
                 </div>
@@ -338,36 +343,36 @@ export default function SettingsPage() {
 
           {/* Notifications Settings */}
           {activeTab === "notifications" && (
-            <div className="bg-card rounded-2xl p-6 shadow-soft space-y-6">
+            <div className="bg-card rounded-2xl p-4 md:p-6 shadow-soft space-y-4 md:space-y-6">
               <div>
-                <h2 className="text-lg font-bold text-foreground">Notifications</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Choose what you want to be notified about.</p>
+                <h2 className="text-base md:text-lg font-bold text-foreground">Notifications</h2>
+                <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Choose what you want to be notified about.</p>
               </div>
 
-              <div className="space-y-6">
-                <div className="flex items-center justify-between pb-4 border-b border-border">
+              <div className="space-y-4 md:space-y-6">
+                <div className="flex items-center justify-between pb-3 md:pb-4 border-b border-border">
                   <div>
-                    <h3 className="font-medium text-foreground">Email Notifications</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Receive updates and alerts via email.</p>
+                    <h3 className="font-medium text-xs md:text-base text-foreground">Email Notifications</h3>
+                    <p className="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">Receive updates and alerts via email.</p>
                   </div>
                   <button 
                     onClick={() => handlePreferenceUpdate('emailNotifications', !preferences.emailNotifications)}
                     className={clsx(
-                      "w-12 h-6 rounded-full transition-colors relative",
+                      "w-10 h-5 md:w-12 md:h-6 rounded-full transition-colors relative",
                       preferences.emailNotifications ? "bg-brand-blue" : "bg-gray-200 dark:bg-gray-700"
                     )}
                   >
                     <div className={clsx(
-                      "w-4 h-4 rounded-full bg-white absolute top-1 transition-transform",
-                      preferences.emailNotifications ? "left-7" : "left-1"
+                      "w-3 h-3 md:w-4 md:h-4 rounded-full bg-white absolute top-1 transition-transform",
+                      preferences.emailNotifications ? "left-6 md:left-7" : "left-1"
                     )} />
                   </button>
                 </div>
 
                 <div className="flex items-center justify-between pb-4 border-b border-border">
                   <div>
-                    <h3 className="font-medium text-foreground">Push Notifications</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Receive push notifications on your device.</p>
+                    <h3 className="font-medium text-xs md:text-base text-foreground">Push Notifications</h3>
+                    <p className="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">Receive push notifications on your device.</p>
                   </div>
                   <button 
                     onClick={async () => {
@@ -383,32 +388,32 @@ export default function SettingsPage() {
                       handlePreferenceUpdate('pushNotifications', newValue);
                     }}
                     className={clsx(
-                      "w-12 h-6 rounded-full transition-colors relative",
+                      "w-10 h-5 md:w-12 md:h-6 rounded-full transition-colors relative",
                       preferences.pushNotifications ? "bg-brand-blue" : "bg-gray-200 dark:bg-gray-700"
                     )}
                   >
                     <div className={clsx(
-                      "w-4 h-4 rounded-full bg-white absolute top-1 transition-transform",
-                      preferences.pushNotifications ? "left-7" : "left-1"
+                      "w-3 h-3 md:w-4 md:h-4 rounded-full bg-white absolute top-1 transition-transform",
+                      preferences.pushNotifications ? "left-6 md:left-7" : "left-1"
                     )} />
                   </button>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-foreground">Marketing Emails</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Receive news about new features and updates.</p>
+                    <h3 className="font-medium text-xs md:text-base text-foreground">Marketing Emails</h3>
+                    <p className="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">Receive news about new features and updates.</p>
                   </div>
                   <button 
                     onClick={() => handlePreferenceUpdate('marketingEmails', !preferences.marketingEmails)}
                     className={clsx(
-                      "w-12 h-6 rounded-full transition-colors relative",
+                      "w-10 h-5 md:w-12 md:h-6 rounded-full transition-colors relative",
                       preferences.marketingEmails ? "bg-brand-blue" : "bg-gray-200 dark:bg-gray-700"
                     )}
                   >
                     <div className={clsx(
-                      "w-4 h-4 rounded-full bg-white absolute top-1 transition-transform",
-                      preferences.marketingEmails ? "left-7" : "left-1"
+                      "w-3 h-3 md:w-4 md:h-4 rounded-full bg-white absolute top-1 transition-transform",
+                      preferences.marketingEmails ? "left-6 md:left-7" : "left-1"
                     )} />
                   </button>
                 </div>
@@ -420,66 +425,66 @@ export default function SettingsPage() {
           {activeTab === "appearance" && (
             <div className="bg-card rounded-2xl p-4 md:p-6 shadow-soft space-y-6">
               <div>
-                <h2 className="text-lg font-bold text-foreground">Appearance</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Customize how the application looks.</p>
+                <h2 className="text-base md:text-lg font-bold text-foreground">Appearance</h2>
+                <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Customize how the application looks.</p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 <button 
                   onClick={() => handlePreferenceUpdate('darkMode', false)}
                   className={clsx(
-                    "p-4 rounded-xl border-2 flex items-center gap-4 transition-all",
+                    "p-3 md:p-4 rounded-xl border-2 flex items-center gap-3 md:gap-4 transition-all",
                     !preferences.darkMode 
                       ? "border-brand-blue bg-blue-50/50 dark:bg-blue-900/20" 
                       : "border-border hover:border-gray-300 dark:hover:border-gray-600"
                   )}
                 >
-                  <div className="w-10 h-10 rounded-full bg-white dark:bg-gray-700 shadow-sm flex items-center justify-center text-orange-500">
-                    <Sun size={20} />
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white dark:bg-gray-700 shadow-sm flex items-center justify-center text-orange-500">
+                    <Sun size={16} className="md:w-5 md:h-5" />
                   </div>
                   <div className="text-left">
-                    <h3 className="font-medium text-foreground">Light Mode</h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Default bright appearance</p>
+                    <h3 className="font-medium text-xs md:text-base text-foreground">Light Mode</h3>
+                    <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">Default bright appearance</p>
                   </div>
-                  {!preferences.darkMode && <Check className="ml-auto text-brand-blue" size={20} />}
+                  {!preferences.darkMode && <Check className="ml-auto text-brand-blue md:w-5 md:h-5" size={16} />}
                 </button>
 
                 <button 
                   onClick={() => handlePreferenceUpdate('darkMode', true)}
                   className={clsx(
-                    "p-4 rounded-xl border-2 flex items-center gap-4 transition-all",
+                    "p-3 md:p-4 rounded-xl border-2 flex items-center gap-3 md:gap-4 transition-all",
                     preferences.darkMode 
                       ? "border-brand-blue bg-blue-50/50 dark:bg-blue-900/20" 
                       : "border-border hover:border-gray-300 dark:hover:border-gray-600"
                   )}
                 >
-                  <div className="w-10 h-10 rounded-full bg-gray-900 shadow-sm flex items-center justify-center text-blue-400">
-                    <Moon size={20} />
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-900 shadow-sm flex items-center justify-center text-blue-400">
+                    <Moon size={16} className="md:w-5 md:h-5" />
                   </div>
                   <div className="text-left">
-                    <h3 className="font-medium text-foreground">Dark Mode</h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Easy on the eyes</p>
+                    <h3 className="font-medium text-xs md:text-base text-foreground">Dark Mode</h3>
+                    <p className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400">Easy on the eyes</p>
                   </div>
-                  {preferences.darkMode && <Check className="ml-auto text-brand-blue" size={20} />}
+                  {preferences.darkMode && <Check className="ml-auto text-brand-blue md:w-5 md:h-5" size={16} />}
                 </button>
               </div>
 
               <div className="pt-6 border-t border-border">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-foreground">Compact Mode</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Reduce whitespace for higher information density.</p>
+                    <h3 className="font-medium text-xs md:text-base text-foreground">Compact Mode</h3>
+                    <p className="text-[10px] md:text-sm text-gray-500 dark:text-gray-400">Reduce whitespace for higher information density.</p>
                   </div>
                   <button 
                     onClick={() => handlePreferenceUpdate('compactMode', !preferences.compactMode)}
                     className={clsx(
-                      "w-12 h-6 rounded-full transition-colors relative",
+                      "w-10 h-5 md:w-12 md:h-6 rounded-full transition-colors relative",
                       preferences.compactMode ? "bg-brand-blue" : "bg-gray-200 dark:bg-gray-700"
                     )}
                   >
                     <div className={clsx(
-                      "w-4 h-4 rounded-full bg-white absolute top-1 transition-transform",
-                      preferences.compactMode ? "left-7" : "left-1"
+                      "w-3 h-3 md:w-4 md:h-4 rounded-full bg-white absolute top-1 transition-transform",
+                      preferences.compactMode ? "left-6 md:left-7" : "left-1"
                     )} />
                   </button>
                 </div>
@@ -490,11 +495,11 @@ export default function SettingsPage() {
           {/* Feedback Messages */}
           {message.text && (
             <div className={clsx(
-              "mt-4 p-4 rounded-xl flex items-center gap-3 animate-in slide-in-from-bottom-2",
+              "mt-4 p-3 md:p-4 rounded-xl flex items-center gap-3 animate-in slide-in-from-bottom-2",
               message.type === "success" ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300" : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300"
             )}>
-              {message.type === "success" ? <Check size={20} /> : <AlertCircle size={20} />}
-              <p className="text-sm font-medium">{message.text}</p>
+              {message.type === "success" ? <Check size={16} className="md:w-5 md:h-5" /> : <AlertCircle size={16} className="md:w-5 md:h-5" />}
+              <p className="text-xs md:text-sm font-medium">{message.text}</p>
             </div>
           )}
         </div>
