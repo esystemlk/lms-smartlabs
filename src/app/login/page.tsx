@@ -53,18 +53,11 @@ export default function LoginPage() {
     if (authLoading) return;
 
     if (authUser) {
-      if (userData) {
-        // User is already logged in and has a profile -> Redirect to Dashboard
-        router.push("/dashboard");
-      } else if (mode !== 'complete-profile') {
-        // User is logged in (likely via Google) but has no profile -> Show Complete Profile form
-        setGoogleUser(authUser);
-        setName(authUser.displayName || "");
-        setEmail(authUser.email || "");
-        setMode("complete-profile");
-      }
+      // Always redirect to dashboard if authenticated
+      // The dashboard will handle missing profile data notifications
+      router.push("/dashboard");
     }
-  }, [authUser, userData, authLoading, mode, router]);
+  }, [authUser, authLoading, router]);
 
   // Process user after successful authentication
   const processAuthUser = async (user: User) => {
@@ -82,31 +75,28 @@ export default function LoginPage() {
       }
 
       if (userDoc.exists()) {
-        const userData = userDoc.data();
-        const requiredFields = ["name", "email", "contact", "gender", "country", "role"];
-        const missingFields = requiredFields.filter(field => !userData?.[field]);
-
-        if (missingFields.length > 0) {
-          // User exists but has missing data -> Show Complete Profile form
-          setGoogleUser(user);
-          setName(userData.name || user.displayName || "");
-          setEmail(userData.email || user.email || "");
-          // Pre-fill other available data if any
-          if (userData.contact) setContact(userData.contact);
-          if (userData.country) setCountry(userData.country);
-          if (userData.gender) setGender(userData.gender);
-          
-          setMode("complete-profile");
-        } else {
-          // User exists and has all data -> Redirect to Dashboard
-          router.push("/dashboard");
-        }
+        // User exists -> Redirect to Dashboard directly
+        router.push("/dashboard");
       } else {
-        // New user (no document), pre-fill data and show complete profile form
-        setGoogleUser(user);
-        setName(user.displayName || "");
-        setEmail(user.email || "");
-        setMode("complete-profile");
+        // New user (no document) -> Create basic profile and redirect
+        const developerEmails = [
+          "tikfese@gmail.com",
+          "thimira.vishwa2003@gmail.com"
+        ];
+        
+        const role = developerEmails.includes(user.email || "") ? "developer" : "student";
+        
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          name: user.displayName || "",
+          email: user.email || "",
+          role,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          authProvider: "google"
+        });
+
+        router.push("/dashboard");
       }
     } catch (err) {
       console.error("Error processing user:", err);

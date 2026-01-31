@@ -2,6 +2,7 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/Button";
 import { 
   BookOpen, 
   Globe, 
@@ -13,7 +14,8 @@ import {
   Settings,
   ArrowRight,
   ExternalLink,
-  GraduationCap
+  GraduationCap,
+  AlertTriangle
 } from "lucide-react";
 import { clsx } from "clsx";
 import { GreetingWidget } from "@/components/features/GreetingWidget";
@@ -102,9 +104,40 @@ export default function DashboardPage() {
     userData?.role && item.roles.includes(userData.role)
   );
 
+  // Check for missing profile details
+  const requiredFields = ["name", "email", "contact", "country", "gender"];
+  const missingFields = userData 
+    ? requiredFields.filter(field => !userData[field as keyof typeof userData])
+    : [];
+  
+  const showProfileWarning = !userData || missingFields.length > 0;
+
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       <GreetingWidget />
+
+      {showProfileWarning && (
+        <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-in slide-in-from-top-2">
+          <div className="flex gap-3">
+            <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <h3 className="text-sm font-bold text-amber-800">Complete Your Profile</h3>
+              <p className="text-sm text-amber-700 mt-1">
+                Your profile is missing some details ({missingFields.join(", ") || "details"}). 
+                Please complete it to access all features.
+              </p>
+            </div>
+          </div>
+          <Button 
+            size="sm" 
+            variant="outline" 
+            className="bg-white border-amber-200 text-amber-700 hover:bg-amber-50 hover:border-amber-300 shrink-0"
+            onClick={() => router.push("/profile")}
+          >
+            Update Profile
+          </Button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredItems.map((item) => (

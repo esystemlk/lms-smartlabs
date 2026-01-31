@@ -1,22 +1,43 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { auth } from "@/lib/firebase";
 import { signOut, updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Camera, Loader2, LogOut, Smile } from "lucide-react";
+import { Camera, Loader2, LogOut, Smile, Save } from "lucide-react";
 import { userService } from "@/services/userService";
 import { MemojiSelector } from "@/components/features/MemojiSelector";
+import { countries } from "@/data/countries";
 
 export default function ProfilePage() {
   const { userData } = useAuth();
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [isMemojiModalOpen, setIsMemojiModalOpen] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    contact: "",
+    country: "",
+    gender: "male"
+  });
+
+  useEffect(() => {
+    if (userData) {
+      setFormData({
+        name: userData.name || "",
+        contact: userData.contact || "",
+        country: userData.country || "",
+        gender: userData.gender || "male"
+      });
+    }
+  }, [userData]);
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -53,6 +74,27 @@ export default function ProfilePage() {
       alert("Failed to update avatar");
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userData) return;
+
+    setSaving(true);
+    try {
+      await userService.updateProfile(userData.uid, formData);
+      
+      if (auth.currentUser && formData.name !== auth.currentUser.displayName) {
+        await updateProfile(auth.currentUser, { displayName: formData.name });
+      }
+      
+      // Optional: Show success toast/message
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -116,33 +158,98 @@ export default function ProfilePage() {
           </span>
         </div>
         
-        {/* Account Details */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-gray-100 dark:border-border">
-          <div>
-            <label className="block text-sm font-medium text-gray-500 dark:text-gray-400">Contact Number</label>
-            <p className="mt-1 text-gray-900 dark:text-white">{userData?.contact || "Not set"}</p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-500 dark:text-gray-400">Country</label>
-            <p className="mt-1 text-gray-900 dark:text-white">{userData?.country || "Not set"}</p>
-          </div>
-          <div>
-             <label className="block text-sm font-medium text-gray-500 dark:text-gray-400">Gender</label>
-             <p className="mt-1 text-gray-900 dark:text-white capitalize">{userData?.gender || "Not set"}</p>
-          </div>
-        </div>
+        {/* Account Details Form */}
+        <form onSubmit={handleSave} className="space-y-6 pt-6 border-t border-gray-100 dark:border-border">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="md:col-span-2">
+              <Input
+                label="Full Name"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="John Doe"
+              />
+            </div>
 
-        {/* Actions */}
-        <div className="pt-6 border-t border-gray-100 dark:border-border flex justify-end">
-          <Button 
-            variant="outline" 
-            onClick={handleLogout} 
-            className="text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200"
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            Sign Out
-          </Button>
-        </div>
+            <div>
+              <Input
+                label="Contact Number"
+                value={formData.contact}
+                onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                placeholder="+94 77 123 4567"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Country</label>
+              <select
+                value={formData.country}
+                onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-white"
+              >
+                <option value="" disabled>Select your country</option>
+                {countries.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Gender</label>
+              <div className="flex gap-4 mt-1">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    checked={formData.gender === "male"}
+                    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                    className="text-brand-blue focus:ring-brand-blue"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Male</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    checked={formData.gender === "female"}
+                    onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                    className="text-brand-blue focus:ring-brand-blue"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Female</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-between pt-4">
+             <Button 
+              type="button"
+              variant="outline" 
+              onClick={handleLogout} 
+              className="text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Sign Out
+            </Button>
+
+            <Button type="submit" disabled={saving}>
+              {saving ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Changes
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
       </div>
 
       <MemojiSelector 
