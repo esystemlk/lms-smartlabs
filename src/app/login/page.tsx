@@ -14,7 +14,7 @@ import {
   User,
   AuthError
 } from "firebase/auth";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, getDocFromServer, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -49,8 +49,16 @@ export default function LoginPage() {
   // Process user after successful authentication
   const processAuthUser = async (user: User) => {
     try {
-      // Check if user profile exists in Firestore
-      const userDoc = await getDoc(doc(db, "users", user.uid));
+      // Check if user profile exists in Firestore (force server fetch to avoid stale cache)
+      // This prevents "No document to update" errors if account was deleted on server but exists in cache
+      let userDoc;
+      try {
+        userDoc = await getDocFromServer(doc(db, "users", user.uid));
+      } catch (e) {
+        // Fallback to cache if server fetch fails (e.g. offline)
+        console.warn("Failed to fetch user from server, falling back to cache", e);
+        userDoc = await getDoc(doc(db, "users", user.uid));
+      }
 
       if (userDoc.exists()) {
         // User exists, redirect to dashboard
