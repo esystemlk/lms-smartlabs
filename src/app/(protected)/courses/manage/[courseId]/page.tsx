@@ -306,6 +306,7 @@ export default function EditCoursePage() {
       endDate: batch.endDate || "",
       maxStudents: batch.maxStudents?.toString() || "",
       schedule: batch.schedule || "",
+      status: batch.status,
       imageFile: null,
       imagePreview: batch.image || ""
     });
@@ -321,6 +322,7 @@ export default function EditCoursePage() {
       endDate: "",
       maxStudents: "",
       schedule: "",
+      status: 'open',
       imageFile: null,
       imagePreview: ""
     });
