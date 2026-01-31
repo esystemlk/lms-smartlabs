@@ -338,6 +338,16 @@ export default function EditCoursePage() {
     }
   };
 
+  const toggleBatchStatus = async (batch: Batch) => {
+    const newStatus = batch.status === 'open' ? 'closed' : 'open';
+    try {
+      await courseService.updateBatch(courseId, batch.id, { status: newStatus });
+      setBatches(batches.map(b => b.id === batch.id ? { ...b, status: newStatus } : b));
+    } catch (error) {
+      console.error("Error updating batch status:", error);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
