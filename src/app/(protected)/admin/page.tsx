@@ -83,6 +83,7 @@ export default function AdminPage() {
     { id: "users", label: "Users", icon: Users },
     { id: "courses", label: "Courses", icon: BookOpen },
     { id: "analytics", label: "Analytics", icon: BarChart2 },
+    { id: "support", label: "Support Chat", icon: MessageSquare },
     { id: "settings", label: "Settings", icon: Settings },
   ];
 

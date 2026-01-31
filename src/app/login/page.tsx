@@ -68,6 +68,7 @@ export default function LoginPage() {
 
   // Process user after successful authentication
   const processAuthUser = async (user: User) => {
+    setLoading(true);
     try {
       // Check if user profile exists in Firestore (force server fetch to avoid stale cache)
       // This prevents "No document to update" errors if account was deleted on server but exists in cache
@@ -81,10 +82,27 @@ export default function LoginPage() {
       }
 
       if (userDoc.exists()) {
-        // User exists, redirect to dashboard
-        router.push("/dashboard");
+        const userData = userDoc.data();
+        const requiredFields = ["name", "email", "contact", "gender", "country", "role"];
+        const missingFields = requiredFields.filter(field => !userData?.[field]);
+
+        if (missingFields.length > 0) {
+          // User exists but has missing data -> Show Complete Profile form
+          setGoogleUser(user);
+          setName(userData.name || user.displayName || "");
+          setEmail(userData.email || user.email || "");
+          // Pre-fill other available data if any
+          if (userData.contact) setContact(userData.contact);
+          if (userData.country) setCountry(userData.country);
+          if (userData.gender) setGender(userData.gender);
+          
+          setMode("complete-profile");
+        } else {
+          // User exists and has all data -> Redirect to Dashboard
+          router.push("/dashboard");
+        }
       } else {
-        // New user, pre-fill data and show complete profile form
+        // New user (no document), pre-fill data and show complete profile form
         setGoogleUser(user);
         setName(user.displayName || "");
         setEmail(user.email || "");
@@ -93,6 +111,8 @@ export default function LoginPage() {
     } catch (err) {
       console.error("Error processing user:", err);
       setError("Failed to process login details.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -111,7 +131,7 @@ export default function LoginPage() {
     };
 
     handleRedirect();
-  }, []);
+  }, [auth]);
 
   const resetForm = () => {
     setError("");
@@ -169,9 +189,15 @@ export default function LoginPage() {
         "thimira.vishwa2003@gmail.com"
       ];
 
-      const role = developerEmails.includes(googleUser.email || "") ? "developer" : "student";
+      // Fetch existing user data to preserve fields
+      const userDocRef = doc(db, "users", googleUser.uid);
+      const userDoc = await getDoc(userDocRef);
+      const existingData = userDoc.exists() ? userDoc.data() : {};
 
-      await setDoc(doc(db, "users", googleUser.uid), {
+      // Determine role: Use existing role if available, otherwise check developer list or default to student
+      const role = existingData.role || (developerEmails.includes(googleUser.email || "") ? "developer" : "student");
+
+      const userData = {
         uid: googleUser.uid,
         name,
         email: googleUser.email,
@@ -179,10 +205,13 @@ export default function LoginPage() {
         country,
         gender,
         role,
-        createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
-        authProvider: "google"
-      });
+        authProvider: "google",
+        // Only set createdAt if it doesn't exist
+        ...(existingData.createdAt ? {} : { createdAt: serverTimestamp() })
+      };
+
+      await setDoc(userDocRef, userData, { merge: true });
 
       router.push("/dashboard");
     } catch (err: any) {
