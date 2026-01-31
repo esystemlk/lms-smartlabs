@@ -329,7 +329,7 @@ export function AccessibilityMenu() {
             </div>
           </div>
           {/* Click outside to close */}
-          <div className="absolute inset-0 -z-10" onClick={() => setIsOpen(false)} />
+          <div className="absolute inset-0 -z-10" onClick={() => toggleMenu()} />
         </div>
       )}
     </>

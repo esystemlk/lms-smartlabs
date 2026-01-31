@@ -21,7 +21,8 @@ import {
   ChevronLeft,
   Home,
   LayoutDashboard,
-  Download
+  Download,
+  Accessibility
 } from "lucide-react";
 import { clsx } from "clsx";
 
@@ -31,6 +32,7 @@ interface HeaderProps {
 
 export function Header({ onMenuClick }: HeaderProps) {
   const { userData } = useAuth();
+  const { toggleMenu } = useAccessibility();
   const router = useRouter();
   const pathname = usePathname();
   const isDashboard = pathname === "/dashboard";

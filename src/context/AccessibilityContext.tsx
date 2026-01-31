@@ -58,6 +58,7 @@ const AccessibilityContext = createContext<AccessibilityContextType | undefined>
 
 export function AccessibilityProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AccessibilityState>(defaultState);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Load from localStorage on mount
   useEffect(() => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { 
   signInWithEmailAndPassword, 
@@ -8,6 +8,8 @@ import {
   sendPasswordResetEmail,
   updateProfile,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   GoogleAuthProvider,
   User,
   AuthError
@@ -44,6 +46,45 @@ export default function LoginPage() {
   const [gender, setGender] = useState("male");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  // Process user after successful authentication
+  const processAuthUser = async (user: User) => {
+    try {
+      // Check if user profile exists in Firestore
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+
+      if (userDoc.exists()) {
+        // User exists, redirect to dashboard
+        router.push("/dashboard");
+      } else {
+        // New user, pre-fill data and show complete profile form
+        setGoogleUser(user);
+        setName(user.displayName || "");
+        setEmail(user.email || "");
+        setMode("complete-profile");
+      }
+    } catch (err) {
+      console.error("Error processing user:", err);
+      setError("Failed to process login details.");
+    }
+  };
+
+  // Handle Redirect Result (for Google Login)
+  useEffect(() => {
+    const handleRedirect = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          await processAuthUser(result.user);
+        }
+      } catch (err) {
+        console.error("Redirect login error:", err);
+        setError("Failed to sign in with Google. Please try again.");
+      }
+    };
+
+    handleRedirect();
+  }, []);
+
   const resetForm = () => {
     setError("");
     setSuccessMessage("");
@@ -68,26 +109,11 @@ export default function LoginPage() {
 
     try {
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      // Check if user profile exists in Firestore
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-
-      if (userDoc.exists()) {
-        // User exists, redirect to dashboard
-        router.push("/dashboard");
-      } else {
-        // New user, pre-fill data and show complete profile form
-        setGoogleUser(user);
-        setName(user.displayName || "");
-        setEmail(user.email || "");
-        setMode("complete-profile");
-      }
+      // Use signInWithRedirect for better PWA/Mobile support
+      await signInWithRedirect(auth, provider);
     } catch (err: any) {
       console.error(err);
       setError("Failed to sign in with Google. Please try again.");
-    } finally {
       setLoading(false);
     }
   };
