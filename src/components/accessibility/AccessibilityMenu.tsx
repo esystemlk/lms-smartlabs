@@ -261,15 +261,6 @@ export function AccessibilityMenu() {
 
   return (
     <>
-      {/* Floating Button */}
-      <button
-        onClick={toggleMenu}
-        className="hidden md:block fixed bottom-24 left-6 md:bottom-8 md:left-8 z-[90] p-4 bg-brand-blue text-white rounded-full shadow-lg hover:bg-blue-700 hover:scale-105 transition-all focus:outline-none focus:ring-4 focus:ring-blue-300"
-        aria-label="Accessibility Options"
-      >
-        <Accessibility size={28} />
-      </button>
-
       {/* Popup Panel */}
       {isMenuOpen && (
         <div 

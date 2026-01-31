@@ -3,6 +3,7 @@
 import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { useAuth } from "@/context/AuthContext";
+import { useAccessibility } from "@/context/AccessibilityContext";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useRouter, usePathname } from "next/navigation";
@@ -201,7 +202,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                   <button
                     className={clsx(
                       active ? 'bg-gray-50 text-brand-blue' : 'text-gray-700',
-                      'group flex w-full items-center rounded-lg px-2 py-2 text-sm md:hidden'
+                      'group flex w-full items-center rounded-lg px-2 py-2 text-sm'
                     )}
                     onClick={() => toggleMenu()}
                   >

@@ -161,7 +161,7 @@ export function FloatingChatWidget() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
-          "fixed bottom-[4.5rem] md:bottom-6 right-4 md:right-6 z-50 p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-105",
+          "fixed bottom-16 md:bottom-6 right-4 md:right-6 z-50 p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-105",
           isOpen ? "bg-red-500 text-white rotate-90" : "bg-brand-blue text-white"
         )}
       >
@@ -170,7 +170,7 @@ export function FloatingChatWidget() {
 
       {/* Chat Window */}
       <div className={clsx(
-        "fixed bottom-[calc(4.5rem+4rem)] md:bottom-24 right-4 md:right-6 w-[calc(100vw-2rem)] md:w-96 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl z-40 flex flex-col transition-all duration-300 origin-bottom-right overflow-hidden border border-gray-100 dark:border-gray-700",
+        "fixed bottom-32 md:bottom-24 right-4 md:right-6 w-[calc(100vw-2rem)] md:w-96 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl z-40 flex flex-col transition-all duration-300 origin-bottom-right overflow-hidden border border-gray-100 dark:border-gray-700",
         isOpen ? "scale-100 opacity-100 h-[calc(100vh-12rem)] md:h-[600px] max-h-[80vh]" : "scale-0 opacity-0 h-0"
       )}>
         {/* Header */}

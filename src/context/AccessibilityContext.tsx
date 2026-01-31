@@ -28,6 +28,8 @@ interface AccessibilityContextType {
   state: AccessibilityState;
   updateState: (key: keyof AccessibilityState, value: any) => void;
   reset: () => void;
+  isMenuOpen: boolean;
+  toggleMenu: () => void;
 }
 
 const defaultState: AccessibilityState = {
