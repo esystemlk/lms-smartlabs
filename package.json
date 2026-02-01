@@ -1,6 +1,6 @@
 {
   "name": "smartlabs",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "electron/main.js",
   "description": "Learning Management System for English Institute",
   "author": "SMART LABS",
