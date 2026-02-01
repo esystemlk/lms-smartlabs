@@ -150,10 +150,10 @@ export default function CoursesPage() {
   }
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+    <div className="w-full max-w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
 
       {/* Hero Section */}
-      <section className="relative rounded-2xl md:rounded-3xl overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 md:p-12 shadow-xl">
+      <section className="relative w-full max-w-full rounded-2xl md:rounded-3xl overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 md:p-12 shadow-xl">
         <div className="relative z-10 max-w-2xl">
           <h1 className="text-xl md:text-5xl font-bold mb-2 md:mb-4 leading-tight">
             Master Your Future with <span className="text-yellow-300">Smart Labs</span>
@@ -266,7 +266,7 @@ export default function CoursesPage() {
       </div>
 
       {courses.length === 0 && (
-        <div className="text-center py-20 bg-gray-50 dark:bg-gray-800/50 rounded-3xl border border-dashed border-gray-200 dark:border-gray-700">
+        <div className="w-full max-w-full mx-auto text-center py-20 bg-gray-50 dark:bg-gray-800/50 rounded-3xl border border-dashed border-gray-200 dark:border-gray-700 overflow-hidden">
           <Award className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">No courses available yet</h3>
           <p className="text-gray-500 dark:text-gray-400">Check back soon for new learning opportunities.</p>
@@ -433,8 +433,8 @@ export default function CoursesPage() {
                             <button
                               onClick={() => setPaymentMethod('card')}
                               className={`flex-1 py-2 text-sm font-medium rounded-lg flex items-center justify-center gap-2 transition-all ${paymentMethod === 'card'
-                                  ? 'bg-white text-brand-blue shadow-sm'
-                                  : 'text-gray-500 hover:text-gray-700'
+                                ? 'bg-white text-brand-blue shadow-sm'
+                                : 'text-gray-500 hover:text-gray-700'
                                 }`}
                             >
                               <CreditCard size={16} />
@@ -443,8 +443,8 @@ export default function CoursesPage() {
                             <button
                               onClick={() => setPaymentMethod('transfer')}
                               className={`flex-1 py-2 text-sm font-medium rounded-lg flex items-center justify-center gap-2 transition-all ${paymentMethod === 'transfer'
-                                  ? 'bg-white text-brand-blue shadow-sm'
-                                  : 'text-gray-500 hover:text-gray-700'
+                                ? 'bg-white text-brand-blue shadow-sm'
+                                : 'text-gray-500 hover:text-gray-700'
                                 }`}
                             >
                               <Landmark size={16} />

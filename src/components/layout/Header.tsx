@@ -102,9 +102,7 @@ export function Header({ onMenuClick }: HeaderProps) {
         )}
 
         {/* Brand Name (Only visible on Dashboard or if buttons are hidden) */}
-        {isDashboard && (
-          <span className="font-bold text-base md:text-lg text-foreground md:hidden truncate max-w-[120px]">SMART LABS</span>
-        )}
+
       </div>
 
       <div className="flex-1 hidden md:flex">
@@ -128,7 +126,8 @@ export function Header({ onMenuClick }: HeaderProps) {
         <VoiceNavigator />
 
         {/* Notifications */}
-        <button className="relative p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-full hover:bg-gray-50">
+        {/* Notifications */}
+        <button className="hidden md:block relative p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-full hover:bg-gray-50">
           <Bell size={20} />
           <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
         </button>
@@ -171,6 +170,22 @@ export function Header({ onMenuClick }: HeaderProps) {
           >
             <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 z-50">
               <div className="p-1">
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={clsx(
+                        active ? 'bg-gray-50 text-brand-blue' : 'text-gray-700',
+                        'md:hidden group flex w-full items-center justify-between rounded-lg px-2 py-2 text-sm'
+                      )}
+                    >
+                      <div className="flex items-center">
+                        <Bell className="mr-2 h-4 w-4" />
+                        Notifications
+                      </div>
+                      <span className="h-2 w-2 bg-red-500 rounded-full"></span>
+                    </button>
+                  )}
+                </Menu.Item>
                 <Menu.Item>
                   {({ active }) => (
                     <button
