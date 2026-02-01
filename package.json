@@ -1,6 +1,6 @@
 {
   "name": "smartlabs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "electron/main.js",
   "description": "Learning Management System for English Institute",
   "author": "SMART LABS",
@@ -12,7 +12,8 @@
     "lint": "eslint",
     "electron": "electron .",
     "electron:dev": "concurrently -k \"cross-env BROWSER=none npm run dev\" \"wait-on tcp:3000 && electron .\"",
-    "electron:build": "next build && electron-builder"
+    "electron:build": "npm run build && electron-builder",
+    "electron:build:mac": "npm run build && electron-builder --mac"
   },
   "build": {
     "appId": "com.smartlabs.lms",
@@ -21,8 +22,35 @@
       "output": "dist"
     },
     "mac": {
-      "target": "dmg",
-      "icon": "build/icon.icns"
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "build/icon.icns",
+      "category": "public.app-category.education",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "darkModeSupport": true
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 380
+      }
     },
     "win": {
       "target": "nsis",
