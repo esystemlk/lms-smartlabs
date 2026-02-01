@@ -3,12 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { 
-  LayoutDashboard, 
-  Monitor, 
-  GraduationCap, 
-  Users, 
-  Settings, 
+import {
+  LayoutDashboard,
+  Monitor,
+  GraduationCap,
+  Users,
+  Settings,
   Activity,
   Globe,
   BookOpen
@@ -46,7 +46,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
     if (isNewStudent) {
       // New users only see: Courses, Activities, Websites, System Details
-      return allNavItems.filter(item => 
+      return allNavItems.filter(item =>
         ["/courses", "/activities", "/websites", "/system"].includes(item.href)
       );
     }
@@ -68,7 +68,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-40 md:hidden"
           onClick={onClose}
         />
@@ -85,20 +85,20 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         leaveFrom="translate-x-0"
         leaveTo="-translate-x-full"
       >
-        <aside className="fixed top-0 left-0 bottom-0 w-72 bg-card z-50 shadow-2xl flex flex-col md:hidden transition-colors duration-300">
+        <aside className="fixed top-0 left-0 bottom-0 w-72 bg-white/90 dark:bg-gray-900/95 backdrop-blur-xl z-50 shadow-2xl flex flex-col md:hidden transition-colors duration-300">
           <div className="p-6 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 relative">
-                <Image 
-                  src="/logo.png" 
-                  alt="Logo" 
-                  fill 
+                <Image
+                  src="/logo.png"
+                  alt="Logo"
+                  fill
                   className="object-contain"
                 />
               </div>
               <span className="font-bold text-lg text-foreground tracking-tight">SMART LABS</span>
             </div>
-            <button 
+            <button
               onClick={onClose}
               className="p-2 -mr-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg"
             >
@@ -115,7 +115,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname.startsWith(item.href);
-              
+
               return (
                 <Link
                   key={item.href}
@@ -123,8 +123,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   onClick={onClose}
                   className={clsx(
                     "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group",
-                    isActive 
-                      ? "bg-brand-blue text-white shadow-md shadow-blue-200 dark:shadow-blue-900/20" 
+                    isActive
+                      ? "bg-brand-blue text-white shadow-md shadow-blue-200 dark:shadow-blue-900/20"
                       : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-brand-blue dark:hover:text-brand-blue"
                   )}
                 >

@@ -20,7 +20,7 @@ export default function SettingsMenuPage() {
       description: "Personal details, contact info, bio",
       icon: User,
       href: "/settings/general",
-      color: "bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300"
+      color: "bg-blue-500 text-white"
     },
     {
       id: "security",
@@ -28,7 +28,7 @@ export default function SettingsMenuPage() {
       description: "Password, account protection",
       icon: Shield,
       href: "/settings/security",
-      color: "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-300"
+      color: "bg-emerald-500 text-white"
     },
     {
       id: "notifications",
@@ -36,7 +36,7 @@ export default function SettingsMenuPage() {
       description: "Email alerts, push notifications",
       icon: Bell,
       href: "/settings/notifications",
-      color: "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-300"
+      color: "bg-orange-500 text-white"
     },
     {
       id: "appearance",
@@ -44,7 +44,7 @@ export default function SettingsMenuPage() {
       description: "Theme, dark mode, layout",
       icon: Palette,
       href: "/settings/appearance",
-      color: "bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-300"
+      color: "bg-purple-500 text-white"
     },
   ];
 

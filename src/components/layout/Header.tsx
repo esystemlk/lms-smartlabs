@@ -67,7 +67,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   };
 
   return (
-    <header className="bg-card border-b border-border h-16 px-4 md:px-8 flex items-center justify-between sticky top-0 z-20 transition-colors duration-300">
+    <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-border h-16 px-4 md:px-8 flex items-center justify-between sticky top-0 z-20 transition-colors duration-300 supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-gray-900/60">
       {/* Left Section: Navigation & Mobile Menu */}
       <div className="flex items-center gap-2 md:gap-4">
         {/* Mobile Menu Trigger */}

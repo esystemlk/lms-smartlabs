@@ -20,6 +20,13 @@ export interface UserData {
     marketingEmails?: boolean;
     darkMode?: boolean;
     compactMode?: boolean;
+    customTheme?: {
+      primary: string;
+      background: string;
+      foreground: string;
+      card: string;
+      sidebar: string;
+    };
   };
   [key: string]: any;
 }
@@ -36,17 +43,17 @@ export interface Course {
   price?: number;
   published: boolean;
   lessonsCount: number;
-  
+
   // Advanced Options
   level?: "Beginner" | "Intermediate" | "Advanced";
   category?: string;
   tags?: string[];
   prerequisites?: string[];
   includesCertificate?: boolean;
-  
+
   // New: Resource Access
   resourceAvailabilityMonths?: number; // Duration in months (e.g., 3)
-  
+
   createdAt: any; // Firestore Timestamp
   updatedAt: any; // Firestore Timestamp
 }
@@ -86,10 +93,10 @@ export interface Batch {
   status: 'open' | 'closed' | 'ongoing' | 'completed';
   schedule?: string; // e.g. "Mon/Wed 10:00 AM"
   image?: string; // URL to batch specific image
-  
+
   // New: Batch specific content
   recordedClasses?: RecordedClass[];
-  
+
   createdAt: any;
   updatedAt: any;
 }
@@ -103,12 +110,12 @@ export interface Enrollment {
   courseTitle: string;
   batchId: string;
   batchName: string;
-  
+
   status: 'pending' | 'active' | 'rejected' | 'expired';
   paymentMethod: 'card' | 'transfer';
   paymentProofUrl?: string; // For bank transfers
   amount: number;
-  
+
   validUntil: any; // Firestore Timestamp
   enrolledAt: any; // Firestore Timestamp
   updatedAt: any; // Firestore Timestamp

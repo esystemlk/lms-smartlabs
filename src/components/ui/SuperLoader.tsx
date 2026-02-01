@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { clsx } from "clsx";
-import { Rocket, Brain, Sparkles, Zap, BookOpen } from "lucide-react";
+import Image from "next/image";
 
 interface SuperLoaderProps {
   fullScreen?: boolean;
@@ -21,16 +21,12 @@ const TIPS = [
   "Did you know? You can earn badges for completing courses and streaks.",
 ];
 
-const ICONS = [Rocket, Brain, Sparkles, Zap, BookOpen];
-
 export function SuperLoader({ fullScreen = true, text = "Loading...", className }: SuperLoaderProps) {
   const [tipIndex, setTipIndex] = useState(0);
-  const [Icon, setIcon] = useState(() => ICONS[0]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setTipIndex((prev) => (prev + 1) % TIPS.length);
-      setIcon(() => ICONS[Math.floor(Math.random() * ICONS.length)]);
     }, 3000);
     return () => clearInterval(interval);
   }, []);
@@ -69,8 +65,8 @@ export function SuperLoader({ fullScreen = true, text = "Loading...", className 
 
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center gap-8 max-w-md px-4 text-center">
-        
-        {/* Animated Icon */}
+
+        {/* Animated Logo */}
         <div className="relative">
           <motion.div
             className="absolute inset-0 bg-brand-blue/30 blur-xl rounded-full"
@@ -78,14 +74,20 @@ export function SuperLoader({ fullScreen = true, text = "Loading...", className 
             transition={{ duration: 2, repeat: Infinity }}
           />
           <motion.div
-            key={Icon.name} // Remount to trigger animation on icon change
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            exit={{ scale: 0, rotate: 180 }}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
             transition={{ type: "spring", damping: 12, stiffness: 200 }}
             className="relative bg-card p-6 rounded-2xl shadow-xl border border-border"
           >
-            <Icon size={48} className="text-brand-blue" />
+            <div className="relative w-16 h-16">
+              <Image
+                src="/logo.png"
+                alt="Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
           </motion.div>
         </div>
 
@@ -94,7 +96,7 @@ export function SuperLoader({ fullScreen = true, text = "Loading...", className 
           <motion.h2
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 1.5, repeat: Infinity }}
-            className="text-2xl font-bold bg-gradient-to-r from-brand-blue to-purple-600 bg-clip-text text-transparent"
+            className="text-xl md:text-2xl font-bold bg-gradient-to-r from-brand-blue to-purple-600 bg-clip-text text-transparent"
           >
             {text}
           </motion.h2>

@@ -1,40 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { Button } from "@/components/ui/Button";
-import { 
-  LayoutDashboard, 
-  Users, 
-  BarChart2, 
+import {
+  LayoutDashboard,
+  Users,
+  BarChart2,
   BookOpen,
-  Settings, 
+  Settings,
   Loader2,
-  ShieldAlert,
   CreditCard,
-  MessageSquare
+  MessageSquare,
+  ChevronRight
 } from "lucide-react";
-import { userService } from "@/services/userService";
-import { courseService } from "@/services/courseService";
-import { UserData, Course } from "@/lib/types";
-import { OverviewTab } from "@/components/admin/OverviewTab";
-import { UsersTab } from "@/components/admin/UsersTab";
-import { AnalyticsTab } from "@/components/admin/AnalyticsTab";
-import { CoursesTab } from "@/components/admin/CoursesTab";
-import { EnrollmentsTab } from "@/components/admin/EnrollmentsTab";
-import { SettingsTab } from "@/components/admin/SettingsTab";
-import { SupportTab } from "@/components/admin/SupportTab";
-import Link from "next/link";
+import { clsx } from "clsx";
 
 export default function AdminPage() {
   const { userData, loading: authLoading } = useAuth();
   const router = useRouter();
-  
-  const [activeTab, setActiveTab] = useState("overview");
-  const [users, setUsers] = useState<UserData[]>([]);
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!authLoading && userData) {
@@ -45,29 +29,7 @@ export default function AdminPage() {
     }
   }, [userData, authLoading, router]);
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const [usersData, coursesData] = await Promise.all([
-        userService.getAllUsers(),
-        courseService.getAllCourses()
-      ]);
-      setUsers(usersData);
-      setCourses(coursesData);
-    } catch (error) {
-      console.error("Failed to fetch admin data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (userData) {
-      fetchData();
-    }
-  }, [userData]);
-
-  if (authLoading || (loading && !users.length)) {
+  if (authLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
@@ -77,82 +39,98 @@ export default function AdminPage() {
 
   if (!userData) return null;
 
-  const tabs = [
-    { id: "overview", label: "Overview", icon: LayoutDashboard },
-    { id: "enrollments", label: "Enrollments", icon: CreditCard },
-    { id: "users", label: "Users", icon: Users },
-    { id: "courses", label: "Courses", icon: BookOpen },
-    { id: "analytics", label: "Analytics", icon: BarChart2 },
-    { id: "support", label: "Support Chat", icon: MessageSquare },
-    { id: "settings", label: "Settings", icon: Settings },
+  const menuItems = [
+    {
+      id: "overview",
+      label: "Overview",
+      description: "System overview and quick stats",
+      icon: LayoutDashboard,
+      href: "/admin/overview",
+      color: "bg-blue-500 text-white"
+    },
+    {
+      id: "enrollments",
+      label: "Enrollments",
+      description: "Manage student enrollments and payments",
+      icon: CreditCard,
+      href: "/admin/enrollments",
+      color: "bg-emerald-500 text-white"
+    },
+    {
+      id: "users",
+      label: "User Management",
+      description: "Manage students, lecturers, and admins",
+      icon: Users,
+      href: "/admin/users",
+      color: "bg-purple-500 text-white"
+    },
+    {
+      id: "courses",
+      label: "Courses",
+      description: "Create and edit courses and lessons",
+      icon: BookOpen,
+      href: "/admin/courses",
+      color: "bg-orange-500 text-white"
+    },
+    {
+      id: "analytics",
+      label: "Analytics",
+      description: "Detailed system reports and trends",
+      icon: BarChart2,
+      href: "/admin/analytics",
+      color: "bg-pink-500 text-white"
+    },
+    {
+      id: "support",
+      label: "Support Chat",
+      description: "Live chat and support tickets",
+      icon: MessageSquare,
+      href: "/admin/support",
+      color: "bg-teal-500 text-white"
+    },
+    {
+      id: "settings",
+      label: "System Settings",
+      description: "Global configurations and preferences",
+      icon: Settings,
+      href: "/admin/settings",
+      color: "bg-gray-600 text-white"
+    },
   ];
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-500">Manage your school, enrollments, and content.</p>
-        </div>
-        <div className="flex gap-2">
-          <Link href="/courses/manage/new">
-            <Button>
-              <BookOpen className="w-4 h-4 mr-2" />
-              Create New Course
-            </Button>
-          </Link>
-        </div>
+    <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in duration-500 pb-20 pt-4 px-4 md:px-0">
+      <div>
+        <h1 className="text-2xl font-bold text-foreground">LMS Administrator</h1>
+        <p className="text-gray-500 dark:text-gray-400">Manage all aspects of the learning management system.</p>
       </div>
 
-      {/* Tabs */}
-      <div className="border-b border-gray-200">
-        <div className="flex gap-4 md:gap-6 overflow-x-auto no-scrollbar pb-1 px-1 min-w-full sm:min-w-0">
-          {tabs.map((tab) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          return (
             <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`pb-2 md:pb-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap flex items-center gap-2 ${
-                activeTab === tab.id
-                  ? "border-brand-blue text-brand-blue"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
-              }`}
+              key={item.id}
+              onClick={() => router.push(item.href)}
+              className="flex items-center gap-4 p-4 md:p-6 bg-card rounded-2xl shadow-sm border border-border hover:border-brand-blue/30 hover:shadow-md transition-all group text-left"
             >
-              <tab.icon className="w-4 h-4" />
-              {tab.label}
+              <div className={clsx("w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110", item.color)}>
+                <Icon size={24} />
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <h3 className="font-bold text-base md:text-lg text-foreground mb-1 group-hover:text-brand-blue transition-colors">
+                  {item.label}
+                </h3>
+                <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 truncate">
+                  {item.description}
+                </p>
+              </div>
+
+              <ChevronRight size={20} className="text-gray-400 group-hover:text-brand-blue group-hover:translate-x-1 transition-all" />
             </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Tab Content */}
-      <div className="min-h-[400px]">
-        {activeTab === "overview" && (
-          <OverviewTab users={users} courses={courses} loading={loading} />
-        )}
-        
-        {activeTab === "enrollments" && (
-          <EnrollmentsTab />
-        )}
-
-        {activeTab === "users" && (
-          <UsersTab users={users} onUserUpdated={fetchData} />
-        )}
-
-        {activeTab === "courses" && (
-          <CoursesTab courses={courses} onCourseUpdated={fetchData} />
-        )}
-        
-        {activeTab === "analytics" && (
-          <AnalyticsTab users={users} courses={courses} />
-        )}
-
-        {activeTab === "support" && (
-          <SupportTab />
-        )}
-
-        {activeTab === "settings" && (
-          <SettingsTab />
-        )}
+          );
+        })}
       </div>
     </div>
   );
