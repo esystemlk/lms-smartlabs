@@ -97,203 +97,87 @@ html {
   background: #94a3b8;
 }
 
-/* --- Accessibility Overrides --- */
+/* --- ACCESSIBILITY ENGINE STYLES (V6.5) --- */
 
-/* Font Size */
-html.a11y-font-large {
-  font-size: 110%;
-}
-html.a11y-font-xl {
-  font-size: 125%;
-}
-
-/* Line Height */
-html.a11y-lh-large body {
-  line-height: 1.8 !important;
-}
-html.a11y-lh-xl body {
-  line-height: 2.2 !important;
-}
-
-/* Letter Spacing */
-html.a11y-spacing-wide body {
-  letter-spacing: 0.05em !important;
-}
-html.a11y-spacing-xl body {
-  letter-spacing: 0.1em !important;
-}
-
-/* Word Spacing */
-html.a11y-word-spacing-wide body {
-  word-spacing: 0.1em !important;
-}
-html.a11y-word-spacing-xl body {
-  word-spacing: 0.2em !important;
-}
-
-/* Fonts */
-@font-face {
-  font-family: 'OpenDyslexic';
-  src: url('https://cdn.jsdelivr.net/npm/opendyslexic@2.1.0-beta/open-dyslexic-regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-html.a11y-readable body {
-  font-family: Arial, Helvetica, sans-serif !important;
-}
-
-html.a11y-dyslexia body {
-  font-family: 'OpenDyslexic', 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;
-}
-
-/* Contrast Modes */
-html.a11y-contrast-high-dark {
-  filter: contrast(150%);
-  background: #000 !important;
-}
-html.a11y-contrast-high-dark body {
-  color: #fff !important;
-  background: #000 !important;
-}
-html.a11y-contrast-high-dark * {
-  border-color: #fff !important;
-}
-
-html.a11y-contrast-high-light {
-  filter: contrast(150%);
-  background: #fff !important;
-  color: #000 !important;
-}
-html.a11y-contrast-high-light body {
-  color: #000 !important;
-  background: #fff !important;
-}
-html.a11y-contrast-high-light * {
-  border-color: #000 !important;
-}
-
-html.a11y-invert {
-  filter: invert(100%);
-}
-html.a11y-invert img, 
-html.a11y-invert video {
-  filter: invert(100%); /* Revert images so they look normal */
-}
-
-html.a11y-grayscale {
-  filter: grayscale(100%);
-}
-
-html.a11y-sepia {
-  filter: sepia(100%);
-}
-
-html.a11y-yellow-on-black {
-  background: #000 !important;
-  color: #ff0 !important;
-}
-html.a11y-yellow-on-black body {
-  background: #000 !important;
-  color: #ff0 !important;
-}
-html.a11y-yellow-on-black * {
-  background-color: #000 !important;
-  color: #ff0 !important;
-  border-color: #ff0 !important;
-}
-html.a11y-yellow-on-black a {
-  color: #0ff !important;
-}
-
-/* Cursor */
-html.a11y-cursor-big-black,
-html.a11y-cursor-big-black * {
-  cursor: url('data:image/svg+xml;utf8,<svg width="48" height="48" viewBox="0 0 24 24" fill="black" stroke="white" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 3.21l12.63 12.63-4.83 1.29 3.58 3.58-2.14 2.14-3.58-3.58-1.29 4.83L5.5 3.21z"/></svg>'), auto !important;
-}
-
-html.a11y-cursor-big-white,
-html.a11y-cursor-big-white * {
-  cursor: url('data:image/svg+xml;utf8,<svg width="48" height="48" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 3.21l12.63 12.63-4.83 1.29 3.58 3.58-2.14 2.14-3.58-3.58-1.29 4.83L5.5 3.21z"/></svg>'), auto !important;
-}
-
-html.a11y-cursor-big-yellow,
-html.a11y-cursor-big-yellow * {
-  cursor: url('data:image/svg+xml;utf8,<svg width="48" height="48" viewBox="0 0 24 24" fill="%23FFD700" stroke="black" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 3.21l12.63 12.63-4.83 1.29 3.58 3.58-2.14 2.14-3.58-3.58-1.29 4.83L5.5 3.21z"/></svg>'), auto !important;
-}
-
-/* Alignment */
-html.a11y-align-left * {
-  text-align: left !important;
-}
-html.a11y-align-center * {
-  text-align: center !important;
-}
-html.a11y-align-right * {
-  text-align: right !important;
-}
-html.a11y-align-justify * {
-  text-align: justify !important;
-}
-
-/* Highlights */
-html.a11y-highlight-links a {
+/* Highlight Links */
+.access-highlight-links a {
   text-decoration: underline !important;
-  background-color: #ffeb3b !important;
-  color: #000 !important;
-}
-.dark html.a11y-highlight-links a {
-  background-color: #facc15 !important;
-}
-
-html.a11y-highlight-hover *:hover {
-  outline: 2px solid #f97316 !important; /* Orange-500 */
-  outline-offset: 2px;
+  background-color: #fca311 !important;
+  color: #000000 !important;
+  font-weight: 800 !important;
+  padding: 2px 4px !important;
+  border-radius: 4px !important;
 }
 
-html.a11y-highlight-focus *:focus-visible {
-  outline: 3px solid #3b82f6 !important; /* Blue-500 */
-  outline-offset: 2px;
+/* Highlight Headings */
+.access-highlight-headings h1, .access-highlight-headings h2, .access-highlight-headings h3,
+.access-highlight-headings h4, .access-highlight-headings h5, .access-highlight-headings h6 {
+  background-color: #00f3ff !important;
+  color: #000000 !important;
+  border-left: 6px solid #0000ff !important;
+  padding-left: 12px !important;
+  width: fit-content !important;
 }
 
-html.a11y-show-borders * {
-  outline: 1px solid #ef4444 !important; /* Red-500 */
+/* Master Themes */
+.theme-solarized { background-color: #fdf6e3 !important; color: #657b83 !important; }
+.theme-solarized * { color: #586e75 !important; }
+
+.theme-matrix { background-color: #000b00 !important; color: #00ff41 !important; }
+.theme-matrix * { color: #00ff41 !important; text-shadow: 0 0 5px rgba(0, 255, 65, 0.5) !important; }
+
+/* Dynamic Cursors */
+.access-cursor-big-black, .access-cursor-big-black * {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='black' stroke='white' stroke-width='2'><path d='M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z'/></svg>") 0 0, auto !important;
+}
+.access-cursor-neon-red, .access-cursor-neon-red * {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='red' stroke='white' stroke-width='2'><circle cx='12' cy='12' r='6'/></svg>") 16 16, auto !important;
 }
 
-html.a11y-highlight-titles h1,
-html.a11y-highlight-titles h2,
-html.a11y-highlight-titles h3,
-html.a11y-highlight-titles h4,
-html.a11y-highlight-titles h5,
-html.a11y-highlight-titles h6 {
-  background-color: #d1fae5 !important;
-  color: #065f46 !important;
-  width: fit-content;
-  padding: 0 4px;
+/* Layout Hacks */
+.access-readable-width p, .access-readable-width li { max-width: 60ch !important; margin-inline: auto !important; }
+.access-focus-mode header, .access-focus-mode footer, .access-focus-mode nav { display: none !important; }
+.access-epilepsy-safe * { animation: none !important; transition: none !important; background-image: none !important; }
+
+/* Text Glow */
+.access-text-glow * {
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5) !important;
 }
-.dark html.a11y-highlight-titles h1,
-.dark html.a11y-highlight-titles h2,
-.dark html.a11y-highlight-titles h3,
-.dark html.a11y-highlight-titles h4,
-.dark html.a11y-highlight-titles h5,
-.dark html.a11y-highlight-titles h6 {
-  background-color: #064e3b !important;
-  color: #d1fae5 !important;
+
+/* Big Click Targets */
+.access-big-click-targets a, .access-big-click-targets button, .access-big-click-targets input, .access-big-click-targets select {
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 12px !important;
 }
 
 /* Hide Images */
-html.a11y-hide-images img,
-html.a11y-hide-images video,
-html.a11y-hide-images [role="img"] {
-  opacity: 0 !important;
-  visibility: hidden !important;
+.access-hide-images img, .access-hide-images svg, .access-hide-images video {
+  display: none !important;
 }
 
-/* Stop Animations */
-html.a11y-stop-animations *,
-html.a11y-stop-animations *::before,
-html.a11y-stop-animations *::after {
-  animation: none !important;
-  transition: none !important;
+/* Screen Shader (Overlays) */
+body.access-screen-shader-green::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 255, 0, 0.15);
+  pointer-events: none;
+  z-index: 99999;
+}
+body.access-screen-shader-rose::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 0, 127, 0.15);
+  pointer-events: none;
+  z-index: 99999;
+}
+body.access-screen-shader-yellow::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 0, 0.15);
+  pointer-events: none;
+  z-index: 99999;
 }

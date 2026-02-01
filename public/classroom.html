@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom</title>
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/3.1.6/css/bootstrap.css" />
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/3.1.6/css/react-select.css" />
+    <style>
+        body { margin: 0; padding: 0; background-color: black; overflow: hidden; }
+        #zmmtg-root { display: none; }
+        #loading {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: white; font-family: sans-serif; text-align: center;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #fff;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div class="spinner"></div>
+        <p>Connecting to Classroom...</p>
+    </div>
+
+    <!-- Zoom Web SDK Dependencies -->
+    <script src="https://source.zoom.us/3.1.6/lib/vendor/react.min.js"></script>
+    <script src="https://source.zoom.us/3.1.6/lib/vendor/react-dom.min.js"></script>
+    <script src="https://source.zoom.us/3.1.6/lib/vendor/redux.min.js"></script>
+    <script src="https://source.zoom.us/3.1.6/lib/vendor/redux-thunk.min.js"></script>
+    <script src="https://source.zoom.us/3.1.6/lib/vendor/lodash.min.js"></script>
+    <script src="https://source.zoom.us/3.1.6/zoom-meeting-3.1.6.min.js"></script>
+
+    <script>
+        (function() {
+            console.log("Initializing Zoom Web SDK...");
+            
+            // 1. Parse Query Params
+            const params = new URLSearchParams(window.location.search);
+            const signature = params.get('signature');
+            const meetingNumber = params.get('mn');
+            const password = params.get('pwd');
+            const userName = params.get('name') || 'Student';
+            const userEmail = params.get('email') || '';
+            const sdkKey = params.get('sdkKey');
+            const leaveUrl = params.get('leaveUrl') || window.location.origin;
+
+            if (!signature || !meetingNumber || !sdkKey) {
+                document.getElementById('loading').innerHTML = '<p style="color:red">Missing meeting parameters.</p>';
+                return;
+            }
+
+            // 2. Setup Zoom
+            ZoomMtg.setZoomJSLib('https://source.zoom.us/3.1.6/lib', '/av');
+            ZoomMtg.preLoadWasm();
+            ZoomMtg.prepareWebSDK();
+            ZoomMtg.i18n.load('en-US');
+            ZoomMtg.i18n.reload('en-US');
+
+            // 3. Init and Join
+            document.getElementById('zmmtg-root').style.display = 'block';
+            
+            // Ensure meetingNumber is integer if possible, though string usually works. 
+            // Zoom docs suggest string for join, but integer for signature.
+            // Let's keep it as is from params (string), but if signature fails, we might need to cast.
+            
+            ZoomMtg.init({
+                leaveUrl: leaveUrl,
+                success: function(success) {
+                    console.log("Zoom init success", success);
+                    ZoomMtg.join({
+                        signature: signature,
+                        meetingNumber: meetingNumber,
+                        userName: userName,
+                        sdkKey: sdkKey,
+                        userEmail: userEmail,
+                        passWord: password,
+                        success: function(res) {
+                            console.log("Join success", res);
+                            document.getElementById('loading').style.display = 'none';
+                        },
+                        error: function(res) {
+                            console.error("Join error", res);
+                            // If signature invalid, try debug info
+                            document.getElementById('loading').innerHTML = '<p style="color:red">Failed to join: ' + res.result + '<br>Msg: ' + res.errorMessage + '</p>';
+                        }
+                    });
+                },
+                error: function(res) {
+                    console.error("Init error", res);
+                    document.getElementById('loading').innerHTML = '<p style="color:red">Failed to initialize: ' + res.result + '</p>';
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

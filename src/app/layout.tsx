@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { AccessibilityProvider } from "@/context/AccessibilityContext";
 import { TitleBar } from "@/components/layout/TitleBar";
 import { AccessibilityMenu } from "@/components/accessibility/AccessibilityMenu";
+import { AccessibilityWidget } from "@/components/accessibility-widget";
+import { ToastProvider } from "@/components/ui/Toast";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -53,9 +55,11 @@ export default function RootLayout({
         <AuthProvider>
           <ThemeProvider>
             <AccessibilityProvider>
-              <TitleBar />
-              {children}
-              <AccessibilityMenu />
+              <ToastProvider>
+                <TitleBar />
+                {children}
+                <AccessibilityWidget />
+              </ToastProvider>
             </AccessibilityProvider>
           </ThemeProvider>
         </AuthProvider>

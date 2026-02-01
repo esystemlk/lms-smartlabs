@@ -28,7 +28,8 @@ import {
   BookOpen,
   PlayCircle,
   HelpCircle,
-  User
+  User,
+  Clock
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -96,7 +97,10 @@ export default function EditCoursePage() {
   const [showLessonModal, setShowLessonModal] = useState(false);
   const [newLessonData, setNewLessonData] = useState({
     title: "",
-    type: "video" as "video" | "quiz" | "speaking" | "writing" | "reading" | "listening"
+    type: "video" as "video" | "quiz" | "speaking" | "writing" | "reading" | "listening" | "live_class",
+    startTime: "",
+    duration: "60",
+    batchIds: [] as string[] // Selected batch IDs for live classes
   });
   const [lessonSaving, setLessonSaving] = useState(false);
 
@@ -184,21 +188,57 @@ export default function EditCoursePage() {
 
     setLessonSaving(true);
     try {
-      const newLesson = {
-        title: newLessonData.title,
-        type: newLessonData.type,
-        order: lessons.length + 1,
-        published: false
-      };
-      await courseService.addLesson(courseId, newLesson);
-      
-      // Reset and refresh
-      setNewLessonData({ title: "", type: "video" });
-      setShowLessonModal(false);
-      fetchData(); 
-    } catch (error) {
+      let zoomDetails = {};
+
+      if (newLessonData.type === 'live_class') {
+        // Create Zoom Meeting
+        const response = await fetch('/api/zoom/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            topic: newLessonData.title,
+            startTime: newLessonData.startTime,
+            duration: parseInt(newLessonData.duration) || 60
+          })
+        });
+        
+        const data = await response.json();
+        if (data.error) throw new Error(data.error);
+        
+        zoomDetails = {
+            zoomMeetingId: data.id,
+            zoomStartUrl: data.start_url,
+            zoomJoinUrl: data.join_url,
+            zoomPassword: data.password,
+            startTime: newLessonData.startTime,
+            duration: parseInt(newLessonData.duration) || 60,
+            batchIds: newLessonData.batchIds
+          };
+        }
+
+        const newLesson = {
+          title: newLessonData.title,
+          type: newLessonData.type,
+          order: lessons.length + 1,
+          published: false,
+          ...zoomDetails
+        };
+
+        await courseService.addLesson(courseId, newLesson);
+        
+        // Reset and refresh
+        setNewLessonData({ 
+          title: "", 
+          type: "video", 
+          startTime: "", 
+          duration: "60",
+          batchIds: []
+        });
+        setShowLessonModal(false);
+        fetchData(); 
+      } catch (error) {
       console.error("Error adding lesson:", error);
-      alert("Failed to add lesson");
+      alert("Failed to add lesson: " + (error as any).message);
     } finally {
       setLessonSaving(false);
     }
@@ -963,6 +1003,7 @@ export default function EditCoursePage() {
                 <div className="grid grid-cols-2 gap-2">
                   {[
                     { id: 'video', label: 'Video Lesson', icon: PlayCircle },
+                    { id: 'live_class', label: 'Live Class (Zoom)', icon: Video },
                     { id: 'speaking', label: 'Speaking', icon: Mic },
                     { id: 'writing', label: 'Writing', icon: PenTool },
                     { id: 'reading', label: 'Reading', icon: BookOpen },
@@ -985,6 +1026,62 @@ export default function EditCoursePage() {
                   ))}
                 </div>
               </div>
+
+              {newLessonData.type === 'live_class' && (
+                <div className="grid grid-cols-2 gap-4 bg-blue-50 p-4 rounded-xl border border-blue-100">
+                  <div className="col-span-2">
+                    <p className="text-xs text-blue-600 mb-2 font-medium flex items-center gap-2">
+                      <Video size={14} />
+                      Zoom Meeting Details
+                    </p>
+                  </div>
+                  <Input
+                    label="Start Time"
+                    type="datetime-local"
+                    value={newLessonData.startTime}
+                    onChange={(e) => setNewLessonData({ ...newLessonData, startTime: e.target.value })}
+                    required
+                  />
+                  <Input
+                    label="Duration (minutes)"
+                    type="number"
+                    value={newLessonData.duration}
+                    onChange={(e) => setNewLessonData({ ...newLessonData, duration: e.target.value })}
+                    required
+                  />
+                  
+                  <div className="col-span-2 space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">Select Batches (Optional)</label>
+                    <p className="text-xs text-gray-500 mb-2">If selected, only students in these batches will see this class.</p>
+                    {batches.length > 0 ? (
+                      <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto p-2 border border-gray-200 rounded-lg bg-white">
+                        {batches.map(batch => (
+                          <label key={batch.id} className="flex items-center gap-2 text-sm p-1 hover:bg-gray-50 rounded cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={newLessonData.batchIds.includes(batch.id)}
+                              onChange={(e) => {
+                                const isChecked = e.target.checked;
+                                setNewLessonData(prev => ({
+                                  ...prev,
+                                  batchIds: isChecked
+                                    ? [...prev.batchIds, batch.id]
+                                    : prev.batchIds.filter(id => id !== batch.id)
+                                }));
+                              }}
+                              className="w-4 h-4 text-brand-blue rounded border-gray-300 focus:ring-brand-blue"
+                            />
+                            <span className="text-gray-900 font-medium">{batch.name}</span>
+                            <span className="text-xs text-gray-500">({batch.startDate})</span>
+                          </label>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-500 italic">No batches created yet.</p>
+                    )}
+                  </div>
+                </div>
+              )}
 
               <div className="pt-4 flex justify-end gap-3">
                 <Button 

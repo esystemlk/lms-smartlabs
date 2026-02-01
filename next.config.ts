@@ -15,6 +15,24 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone", // Helpful for Electron later if we want to bundle everything
+  // Enable headers for Zoom SharedArrayBuffer support
+  async headers() {
+    return [
+      {
+        source: "/classroom.html",
+        headers: [
+          {
+            key: "Cross-Origin-Embedder-Policy",
+            value: "require-corp",
+          },
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin",
+          },
+        ],
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

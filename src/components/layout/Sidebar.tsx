@@ -11,7 +11,11 @@ import {
   Settings,
   Activity,
   Globe,
-  BookOpen
+  BookOpen,
+  Video,
+  Play,
+  MessageSquare,
+  Calendar
 } from "lucide-react";
 import { clsx } from "clsx";
 import { Transition } from "@headlessui/react";
@@ -24,9 +28,17 @@ const allNavItems = [
   { href: "/courses", label: "Courses", icon: BookOpen },
   { href: "/websites", label: "Our Websites", icon: Globe },
   { href: "/lms", label: "LMS Admin", icon: Monitor },
+  { href: "/live-classes", label: "Live Manager", icon: Video },
+  { href: "/lms/live", label: "Live Schedule", icon: Calendar },
+  { href: "/lms/recordings", label: "Recordings", icon: Play },
+  { href: "/messages", label: "Messages", icon: MessageSquare },
   { href: "/lecturers", label: "Lecturers", icon: GraduationCap },
   { href: "/activities", label: "Activities", icon: Activity },
-  { href: "/system", label: "System Details", icon: Settings },
+  { href: "/admin/settings", label: "System Settings", icon: Settings },
+  { href: "/admin/users", label: "Users", icon: Users },
+  { href: "/admin/courses", label: "Manage Courses", icon: BookOpen },
+  { href: "/admin/enrollments", label: "Enrollments", icon: GraduationCap },
+  { href: "/admin/analytics", label: "Analytics", icon: Activity },
 ];
 
 interface SidebarProps {
@@ -51,8 +63,23 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       );
     }
 
-    // Existing users see everything (or role based filtering can be added here)
-    return allNavItems;
+    // Filter based on role
+    return allNavItems.filter(item => {
+      // Developer only
+      if (item.href === "/developer") {
+        return userData.role === "developer";
+      }
+
+      // Admin/Lecturer only items
+      if (["/lms", "/live-classes", "/lecturers", "/admin/settings", "/admin/users", "/admin/enrollments", "/admin/analytics", "/admin/courses"].includes(item.href)) {
+        return ["lecturer", "admin", "superadmin", "developer"].includes(userData.role);
+      }
+      
+      // Student only items (hide from admins to declutter, or keep if you want admins to see student views)
+      // For now, let's allow everyone to see student views except specific admin tools
+      
+      return true;
+    });
   }, [userData]);
 
   return (

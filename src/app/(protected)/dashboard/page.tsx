@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
+import { GreetingWidget } from "@/components/features/GreetingWidget";
+import { notificationService, Notification } from "@/services/notificationService";
 import { Button } from "@/components/ui/Button";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   BookOpen, 
   Globe, 
@@ -11,158 +14,304 @@ import {
   Edit, 
   Activity, 
   BarChart2, 
-  Settings,
-  ArrowRight,
-  ExternalLink,
+  Video,
   GraduationCap,
-  AlertTriangle
+  Bell,
+  ChevronRight,
+  ExternalLink,
+  Zap,
+  ArrowRight,
+  Search,
+  LayoutGrid,
+  Layers
 } from "lucide-react";
+import Link from "next/link";
 import { clsx } from "clsx";
-import { GreetingWidget } from "@/components/features/GreetingWidget";
 
 export default function DashboardPage() {
   const { userData } = useAuth();
-  const router = useRouter();
+  const [latestNotification, setLatestNotification] = useState<Notification | null>(null);
+
+  useEffect(() => {
+    const fetchNotifs = async () => {
+      try {
+        const notifs = await notificationService.getRecentNotifications(1);
+        if (notifs.length > 0) {
+          setLatestNotification(notifs[0]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch notifications", error);
+      }
+    };
+    fetchNotifs();
+  }, []);
 
   const menuItems = [
     {
-      title: "LMS",
-      description: "Central hub for classes, assignments, and resources.",
+      title: "LMS Portal",
+      description: "Access classes, assignments & recordings",
       icon: GraduationCap,
       href: "/lms",
-      color: "bg-teal-500",
-      roles: ["student", "lecturer", "admin", "superadmin", "developer"]
+      gradient: "from-blue-500 to-blue-600",
+      roles: ["student", "lecturer", "admin", "superadmin", "developer"],
+      category: "Learning Hub"
     },
     {
-      title: "COURSES",
-      description: "Access your enrolled courses and learning materials.",
+      title: "Live Classes",
+      description: "Join or manage Zoom sessions",
+      icon: Video,
+      href: "/live-classes",
+      gradient: "from-violet-500 to-purple-600",
+      roles: ["lecturer", "admin", "superadmin", "developer"],
+      category: "Learning Hub"
+    },
+    {
+      title: "My Courses",
+      description: "Your learning materials & progress",
       icon: BookOpen,
       href: "/courses",
-      color: "bg-blue-500",
-      roles: ["student", "lecturer", "admin", "superadmin", "developer"]
+      gradient: "from-emerald-500 to-teal-600",
+      roles: ["student", "lecturer", "admin", "superadmin", "developer"],
+      category: "Learning Hub"
     },
     {
-      title: "OUR WEBSITES",
-      description: "Explore our network of educational websites.",
-      icon: Globe,
-      href: "/websites", // Placeholder
-      color: "bg-indigo-500",
-      roles: ["student", "lecturer", "admin", "superadmin", "developer"]
+      title: "Activities",
+      description: "Quizzes & interactive tasks",
+      icon: Activity,
+      href: "/activities",
+      gradient: "from-pink-500 to-rose-500",
+      roles: ["student", "lecturer", "admin", "superadmin", "developer"],
+      category: "Learning Hub"
     },
     {
-      title: "LMS ADMINISTRATOR",
-      description: "Manage users, roles, and system configurations.",
+      title: "Admin Console",
+      description: "System management & user controls",
       icon: ShieldCheck,
       href: "/admin",
-      color: "bg-red-500",
-      roles: ["admin", "superadmin", "developer"]
+      gradient: "from-red-500 to-rose-600",
+      roles: ["admin", "superadmin", "developer"],
+      category: "Management"
     },
     {
-      title: "LECTURERS",
-      description: "View lecturer profiles and schedules.",
-      icon: Users,
-      href: "/lecturers", // Placeholder
-      color: "bg-emerald-500",
-      roles: ["student", "lecturer", "admin", "superadmin", "developer"]
-    },
-    {
-      title: "COURSE MANAGEMENT",
-      description: "Create and edit course content.",
+      title: "Course Manager",
+      description: "Create and edit course content",
       icon: Edit,
-      href: "/courses/manage", // Placeholder
-      color: "bg-orange-500",
-      roles: ["lecturer", "admin", "superadmin", "developer"]
+      href: "/courses/manage",
+      gradient: "from-cyan-500 to-blue-600",
+      roles: ["lecturer", "admin", "superadmin", "developer"],
+      category: "Management"
     },
     {
-      title: "ACTIVITIES",
-      description: "Quizzes, assignments, and interactive tasks.",
-      icon: Activity,
-      href: "/activities", // Placeholder
-      color: "bg-pink-500",
-      roles: ["student", "lecturer", "admin", "superadmin", "developer"]
+      title: "Our Websites",
+      description: "Explore our educational network",
+      icon: Globe,
+      href: "/websites",
+      gradient: "from-indigo-500 to-blue-600",
+      roles: ["student", "lecturer", "admin", "superadmin", "developer"],
+      category: "Resources"
     },
     {
-      title: "SYSTEM DETAILS",
-      description: "Monitor website status and visitor analytics.",
+      title: "Lecturers",
+      description: "View profiles and schedules",
+      icon: Users,
+      href: "/lecturers",
+      gradient: "from-amber-500 to-orange-600",
+      roles: ["student", "lecturer", "admin", "superadmin", "developer"],
+      category: "Resources"
+    },
+    {
+      title: "System Status",
+      description: "Analytics & performance monitoring",
       icon: BarChart2,
-      href: "/system-status", // Placeholder
-      color: "bg-cyan-500",
-      roles: ["admin", "superadmin", "developer"]
-    },
-    {
-      title: "SETTINGS",
-      description: "Profile, theme, notifications, and password.",
-      icon: Settings,
-      href: "/settings",
-      color: "bg-gray-500",
-      roles: ["student", "lecturer", "admin", "superadmin", "developer"]
+      href: "/system-status",
+      gradient: "from-slate-700 to-slate-800",
+      roles: ["admin", "superadmin", "developer"],
+      category: "System"
     }
   ];
 
-  // Filter items based on user role
-  const filteredItems = menuItems.filter(item => 
-    userData?.role && item.roles.includes(userData.role)
-  );
+  const filteredItems = menuItems.filter(item => {
+    // Role check
+    if (userData?.role && !item.roles.includes(userData.role)) {
+      return false;
+    }
+    return true;
+  });
 
-  // Check for missing profile details
-  const requiredFields = ["name", "email", "contact", "country", "gender"];
-  const missingFields = userData 
-    ? requiredFields.filter(field => !userData[field as keyof typeof userData])
-    : [];
+  // Group items by category
+  const groupedItems = filteredItems.reduce((acc, item) => {
+    if (!acc[item.category]) acc[item.category] = [];
+    acc[item.category].push(item);
+    return acc;
+  }, {} as Record<string, typeof menuItems>);
   
-  const showProfileWarning = !userData || missingFields.length > 0;
+  // Sort categories order
+  const categoryOrder = ["Learning Hub", "Management", "Resources", "System"];
+  const sortedCategories = Object.keys(groupedItems).sort((a, b) => {
+    return categoryOrder.indexOf(a) - categoryOrder.indexOf(b);
+  });
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 }
+    }
+  };
+
+  const item = {
+    hidden: { y: 20, opacity: 0 },
+    show: { y: 0, opacity: 1 }
+  };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      <GreetingWidget />
+    <div className="max-w-7xl mx-auto space-y-8 p-4 md:p-6 pb-24">
+      {/* Top Section: Greeting & Notification */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          <GreetingWidget />
+          
+          {latestNotification && (
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white/80 backdrop-blur-sm border-l-4 border-brand-blue rounded-r-2xl shadow-sm p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 hover:shadow-md transition-all duration-300"
+            >
+              <div className="flex items-start gap-3 w-full sm:w-auto flex-1 min-w-0">
+                <div className="p-2 md:p-2.5 bg-blue-50 rounded-full text-brand-blue flex-shrink-0 mt-1 sm:mt-0">
+                  <Bell size={20} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <span className="text-[10px] font-extrabold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full uppercase tracking-wider whitespace-nowrap">
+                      New Update
+                    </span>
+                    <span className="text-xs text-gray-500 whitespace-nowrap">
+                      {latestNotification.createdAt?.seconds ? new Date(latestNotification.createdAt.seconds * 1000).toLocaleDateString() : 'Just now'}
+                    </span>
+                  </div>
+                  <h3 className="font-semibold text-gray-900 text-sm md:text-base truncate">{latestNotification.title}</h3>
+                  <p className="text-sm text-gray-600 line-clamp-1 mt-0.5 break-words">{latestNotification.message}</p>
+                </div>
+              </div>
+              
+              <Link href="/lms" className="self-end sm:self-center w-full sm:w-auto">
+                <Button variant="ghost" size="sm" className="text-brand-blue hover:bg-blue-50 rounded-xl w-full sm:w-auto justify-center sm:justify-start">
+                  View <ChevronRight size={16} className="ml-1" />
+                </Button>
+              </Link>
+            </motion.div>
+          )}
+        </div>
 
-      {showProfileWarning && (
-        <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-in slide-in-from-top-2">
-          <div className="flex gap-3">
-            <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
-            <div>
-              <h3 className="text-sm font-bold text-amber-800">Complete Your Profile</h3>
-              <p className="text-sm text-amber-700 mt-1">
-                Your profile is missing some details ({missingFields.join(", ") || "details"}). 
-                Please complete it to access all features.
-              </p>
+        {/* Quick Stats Widget */}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-sm border border-gray-100/50 flex flex-col justify-between hover:shadow-lg transition-all duration-500"
+        >
+          <div>
+            <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <div className="p-2 bg-purple-50 rounded-xl">
+                <Activity className="text-purple-500" size={20} />
+              </div>
+              Your Overview
+            </h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 bg-white rounded-2xl border border-gray-50 shadow-sm">
+                <span className="text-gray-500 text-sm font-medium">Role</span>
+                <span className="font-bold text-gray-900 capitalize px-3 py-1 bg-gray-50 rounded-lg text-xs">{userData?.role || 'Guest'}</span>
+              </div>
+              <div className="flex items-center justify-between p-3 bg-white rounded-2xl border border-gray-50 shadow-sm">
+                <span className="text-gray-500 text-sm font-medium">Status</span>
+                <span className="font-bold text-green-600 flex items-center gap-1.5 text-xs bg-green-50 px-3 py-1 rounded-lg">
+                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Active
+                </span>
+              </div>
             </div>
           </div>
-          <Button 
-            size="sm" 
-            variant="outline" 
-            className="bg-white border-amber-200 text-amber-700 hover:bg-amber-50 hover:border-amber-300 shrink-0"
-            onClick={() => router.push("/profile")}
-          >
-            Update Profile
-          </Button>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-        {filteredItems.map((item) => (
-          <button
-            key={item.title}
-            onClick={() => router.push(item.href)}
-            className="group flex flex-col items-start p-3 md:p-6 bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-transparent hover:border-brand-blue/10 text-left h-full"
-          >
-            <div className={clsx("p-2 md:p-3 rounded-lg md:rounded-xl text-white mb-2 md:mb-4 transition-transform group-hover:scale-110", item.color)}>
-              <item.icon className="w-4 h-4 md:w-6 md:h-6" />
-            </div>
-            <h3 className="text-xs md:text-lg font-bold text-gray-900 mb-1 md:mb-2 group-hover:text-brand-blue transition-colors line-clamp-1">
-              {item.title}
-            </h3>
-            <p className="text-[10px] md:text-sm text-gray-500 mb-2 md:mb-4 line-clamp-2 leading-tight">
-              {item.description}
-            </p>
-            <div className="mt-auto flex items-center text-[10px] md:text-sm font-medium text-brand-blue opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity transform translate-x-0 md:translate-x-[-10px] md:group-hover:translate-x-0 transition-transform">
-              Open <ArrowRight size={12} className="ml-1 md:w-4 md:h-4" />
-            </div>
-          </button>
-        ))}
+          <div className="mt-6 pt-6 border-t border-gray-100">
+             <Link href="/profile">
+               <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl py-6 shadow-lg shadow-gray-200">
+                 View Profile
+               </Button>
+             </Link>
+          </div>
+        </motion.div>
       </div>
 
+      {/* Main Content Area */}
+      <div className="space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Pages</h2>
+        </div>
 
+        {/* Content Grid */}
+        <div className="min-h-[400px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className="space-y-10"
+            >
+              {sortedCategories.map((category) => (
+                <div key={category} className="space-y-4">
+                  <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider pl-1 flex items-center gap-2">
+                    <Layers size={14} />
+                    {category}
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                    {groupedItems[category].map((menu, idx) => (
+                      <motion.div key={idx} variants={item}>
+                        <Link href={menu.href} className="block h-full">
+                          <div className="group h-full bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                            {/* Hover Gradient Overlay */}
+                            <div className={clsx(
+                              "absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-gradient-to-br",
+                              menu.gradient
+                            )} />
+                            
+                            <div className="flex flex-col h-full justify-between relative z-10">
+                              <div className="space-y-4">
+                                <div className={clsx(
+                                  "w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-lg transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 bg-gradient-to-br",
+                                  menu.gradient
+                                )}>
+                                  <menu.icon size={26} strokeWidth={2} />
+                                </div>
+                                
+                                <div>
+                                  <h3 className="font-bold text-gray-900 text-lg mb-1 group-hover:text-blue-600 transition-colors">
+                                    {menu.title}
+                                  </h3>
+                                  <p className="text-sm text-gray-500 font-medium leading-relaxed">
+                                    {menu.description}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div className="mt-6 flex items-center justify-between">
+                                <span className="text-xs font-bold text-gray-300 group-hover:text-blue-500 transition-colors uppercase tracking-wider">
+                                  Enter App
+                                </span>
+                                <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+                                  <ArrowRight size={14} className="-ml-0.5" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 }

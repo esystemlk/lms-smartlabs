@@ -48,9 +48,8 @@ export default function ProtectedLayout({
   const isLessonPage = pathname?.includes("/lessons/");
 
   return (
-    <ToastProvider>
-      <div className="min-h-screen bg-background flex transition-colors duration-300 w-full relative overflow-x-hidden">
-        <ScrollProgressBar />
+    <div className="min-h-screen bg-background flex transition-colors duration-300 w-full relative overflow-x-hidden">
+      <ScrollProgressBar />
         {/* Mobile Sidebar (Drawer) */}
         <Sidebar
           isOpen={isMobileMenuOpen}
@@ -77,7 +76,6 @@ export default function ProtectedLayout({
         <FloatingChatWidget />
         <NotificationListener />
         <CommandPalette />
-      </div>
-    </ToastProvider>
+    </div>
   );
 }

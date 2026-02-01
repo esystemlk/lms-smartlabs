@@ -234,6 +234,7 @@ export default function CourseDetailsPage() {
                     <div className="flex items-center gap-3 mt-1 flex-wrap">
                       <span className="text-[10px] md:text-xs text-gray-500 flex items-center gap-1 bg-gray-100 px-2 py-0.5 rounded-full">
                         {lesson.type === 'video' && <><PlayCircle size={10} className="md:w-3 md:h-3" /> Video</>}
+                        {lesson.type === 'live_class' && <><Video size={10} className="md:w-3 md:h-3 text-blue-600" /> <span className="text-blue-600 font-medium">Live Class</span></>}
                         {lesson.type === 'speaking' && <><Mic size={10} className="md:w-3 md:h-3" /> Speaking</>}
                         {lesson.type === 'listening' && <><Headphones size={10} className="md:w-3 md:h-3" /> Listening</>}
                         {lesson.type === 'reading' && <><BookOpen size={10} className="md:w-3 md:h-3" /> Reading</>}

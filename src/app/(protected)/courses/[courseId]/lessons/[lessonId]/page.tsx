@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
+import { useAuth } from "@/context/AuthContext";
 import { 
   ChevronLeft, 
   Download, 
@@ -17,13 +18,15 @@ import {
   Minimize2,
   PictureInPicture2,
   Lightbulb,
-  LightbulbOff
+  LightbulbOff,
+  Video
 } from "lucide-react";
 import { clsx } from "clsx";
 import { courseService } from "@/services/courseService";
 import { Lesson } from "@/lib/types";
 
 export default function LessonPage() {
+  const { userData } = useAuth();
   const params = useParams();
   const router = useRouter();
   const courseId = params.courseId as string;
@@ -112,7 +115,63 @@ export default function LessonPage() {
             "aspect-video w-full bg-black relative flex items-center justify-center group shrink-0",
             isFocusMode && "max-h-screen"
           )}>
-            {currentLesson.videoUrl ? (
+            {currentLesson.type === 'live_class' ? (
+              <div className="flex flex-col items-center justify-center w-full h-full bg-slate-900 text-white p-4 md:p-8 text-center relative overflow-hidden">
+                {/* Background Pattern */}
+                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500 via-slate-900 to-slate-900"></div>
+                
+                <div className="relative z-10 flex flex-col items-center">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-blue-600 rounded-full flex items-center justify-center mb-4 md:mb-6 animate-pulse shadow-[0_0_30px_rgba(37,99,235,0.5)]">
+                    <Video size={32} className="md:w-10 md:h-10" />
+                  </div>
+                  <h2 className="text-xl md:text-3xl font-bold mb-2">{currentLesson.title}</h2>
+                  <p className="text-sm md:text-base text-gray-400 mb-6 md:mb-8 max-w-md">
+                    This is a scheduled live class. Please join at the scheduled time.
+                  </p>
+                  
+                  <div className="grid grid-cols-2 gap-4 md:gap-8 mb-6 md:mb-8 text-left bg-white/5 p-4 md:p-6 rounded-2xl border border-white/10 w-full max-w-md backdrop-blur-sm">
+                    <div>
+                      <p className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider mb-1">Start Time</p>
+                      <p className="font-medium text-sm md:text-lg">
+                        {currentLesson.startTime ? new Date(currentLesson.startTime).toLocaleString() : 'TBA'}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider mb-1">Duration</p>
+                      <p className="font-medium text-sm md:text-lg">{currentLesson.duration} mins</p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-3 w-full max-w-sm">
+                    {currentLesson.zoomJoinUrl && (
+                      <a 
+                        href={currentLesson.zoomJoinUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="w-full"
+                      >
+                        <Button className="w-full h-10 md:h-12 text-base md:text-lg bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20">
+                          Join Live Class
+                        </Button>
+                      </a>
+                    )}
+                    
+                    {userData && ['admin', 'lecturer', 'superadmin', 'developer'].includes(userData.role) && currentLesson.zoomStartUrl && (
+                      <a 
+                        href={currentLesson.zoomStartUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="w-full"
+                      >
+                        <Button variant="outline" className="w-full h-10 md:h-12 border-white/20 text-white hover:bg-white/10 hover:text-white">
+                          Start Meeting (Host)
+                        </Button>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : currentLesson.videoUrl ? (
               // In a real app, use a proper video player component here
               <video 
                 ref={videoRef}
@@ -130,7 +189,8 @@ export default function LessonPage() {
               </div>
             )}
             
-            {/* Video Overlay Controls */}
+            {/* Video Overlay Controls (only for video type) */}
+            {currentLesson.type !== 'live_class' && (
             <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
               <button 
                 onClick={togglePiP}
@@ -147,6 +207,7 @@ export default function LessonPage() {
                 {isFocusMode ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
               </button>
             </div>
+            )}
           </div>
           
           <div className={clsx(

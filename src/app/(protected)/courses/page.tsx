@@ -184,7 +184,7 @@ export default function CoursesPage() {
                   src={course.image}
                   alt={course.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="object-contain"
                 />
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-300 dark:text-gray-600">

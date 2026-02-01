@@ -71,7 +71,17 @@ export interface Lesson {
   published: boolean;
   createdAt: any;
   updatedAt: any;
-  type?: 'video' | 'quiz' | 'speaking' | 'writing' | 'reading' | 'listening';
+  type?: 'video' | 'quiz' | 'speaking' | 'writing' | 'reading' | 'listening' | 'live_class';
+
+  // Zoom / Live Class fields
+  zoomMeetingId?: string;
+  zoomStartUrl?: string;
+  zoomJoinUrl?: string;
+  zoomPassword?: string;
+  startTime?: string; // ISO string
+  duration?: number; // minutes
+  batchIds?: string[]; // IDs of batches this live class is scheduled for
+  status?: 'scheduled' | 'completed' | 'cancelled';
 }
 
 export interface RecordedClass {

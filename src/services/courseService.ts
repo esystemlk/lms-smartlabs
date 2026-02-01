@@ -11,7 +11,8 @@ import {
   orderBy, 
   serverTimestamp,
   arrayUnion,
-  arrayRemove
+  arrayRemove,
+  collectionGroup
 } from "firebase/firestore";
 import { db, storage } from "@/lib/firebase";
 import { Course, Lesson, Batch } from "@/lib/types";
@@ -89,6 +90,15 @@ export const courseService = {
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Lesson));
   },
 
+  async getLesson(courseId: string, lessonId: string) {
+    const docRef = doc(db, COURSES_COLLECTION, courseId, LESSONS_COLLECTION, lessonId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() } as Lesson;
+    }
+    return null;
+  },
+
   async addLesson(courseId: string, lessonData: Partial<Lesson>) {
     const docRef = await addDoc(collection(db, COURSES_COLLECTION, courseId, LESSONS_COLLECTION), {
       ...lessonData,
@@ -101,8 +111,25 @@ export const courseService = {
     const courseRef = doc(db, COURSES_COLLECTION, courseId);
     const courseSnap = await getDoc(courseRef);
     if (courseSnap.exists()) {
-      const currentCount = courseSnap.data().lessonsCount || 0;
+      const courseData = courseSnap.data();
+      const currentCount = courseData.lessonsCount || 0;
       await updateDoc(courseRef, { lessonsCount: currentCount + 1 });
+      
+      // Automatic Notification: New Course Material
+      // Only notify if it's published and not a live class (live classes have their own schedule)
+      if (lessonData.published && lessonData.type !== 'live_class') {
+        try {
+          await notificationService.createNotification({
+            title: `New Material: ${lessonData.title}`,
+            message: `New content has been added to ${courseData.title || 'your course'}. Check it out now!`,
+            type: 'course_material',
+            link: `/courses/${courseId}`,
+            targetRoles: ['student']
+          });
+        } catch (error) {
+          console.error("Failed to send auto-notification:", error);
+        }
+      }
     }
     
     return docRef.id;
@@ -126,6 +153,67 @@ export const courseService = {
     if (courseSnap.exists()) {
       const currentCount = courseSnap.data().lessonsCount || 0;
       await updateDoc(courseRef, { lessonsCount: Math.max(0, currentCount - 1) });
+    }
+  },
+
+  async getUpcomingLiveClasses() {
+    // Collection Group Query to find all live classes across all courses
+    const q = query(
+      collectionGroup(db, LESSONS_COLLECTION),
+      where("type", "==", "live_class"),
+      orderBy("startTime", "asc") // Sort by upcoming
+    );
+
+    try {
+      const snapshot = await getDocs(q);
+      const now = new Date();
+      now.setHours(now.getHours() - 2); // Keep classes from last 2 hours visible
+
+      return snapshot.docs
+        .map(doc => {
+          const data = doc.data();
+          // Ensure courseId is available (fallback to parent doc ID if missing in data)
+          const courseId = data.courseId || doc.ref.parent.parent?.id;
+          return { id: doc.id, ...data, courseId } as Lesson;
+        })
+        .filter(lesson => {
+          if (lesson.status === 'completed') return false;
+          if (!lesson.startTime) return false;
+          return new Date(lesson.startTime) > now;
+        });
+    } catch (error) {
+      console.error("Error fetching live classes (Index might be missing):", error);
+      return [];
+    }
+  },
+
+  async getPastLiveClasses() {
+    // Collection Group Query to find all live classes
+    const q = query(
+      collectionGroup(db, LESSONS_COLLECTION),
+      where("type", "==", "live_class"),
+      orderBy("startTime", "desc") // Sort by newest past classes
+    );
+
+    try {
+      const snapshot = await getDocs(q);
+      const now = new Date();
+      now.setHours(now.getHours() - 2); // Classes older than 2 hours ago
+
+      return snapshot.docs
+        .map(doc => {
+          const data = doc.data();
+          const courseId = data.courseId || doc.ref.parent.parent?.id;
+          return { id: doc.id, ...data, courseId } as Lesson;
+        })
+        .filter(lesson => {
+          if (lesson.status === 'completed') return true;
+          if (!lesson.startTime) return false;
+          return new Date(lesson.startTime) <= now;
+        });
+    } catch (error) {
+      console.error("Error fetching past live classes:", error);
+      return [];
     }
   },
 

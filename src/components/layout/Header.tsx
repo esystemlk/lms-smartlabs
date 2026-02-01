@@ -22,7 +22,8 @@ import {
   Home,
   LayoutDashboard,
   Download,
-  Accessibility
+  Accessibility,
+  ShieldAlert
 } from "lucide-react";
 import { clsx } from "clsx";
 
@@ -200,6 +201,23 @@ export function Header({ onMenuClick }: HeaderProps) {
                     </button>
                   )}
                 </Menu.Item>
+
+                {userData?.role === 'developer' && (
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={clsx(
+                          active ? 'bg-gray-50 text-brand-blue' : 'text-gray-700',
+                          'group flex w-full items-center rounded-lg px-2 py-2 text-sm'
+                        )}
+                        onClick={() => router.push('/developer')}
+                      >
+                        <ShieldAlert className="mr-2 h-4 w-4 text-red-500" />
+                        Developer Console
+                      </button>
+                    )}
+                  </Menu.Item>
+                )}
                 <Menu.Item>
                   {({ active }) => (
                     <button

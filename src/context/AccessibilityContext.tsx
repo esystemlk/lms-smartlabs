@@ -30,6 +30,7 @@ interface AccessibilityContextType {
   reset: () => void;
   isMenuOpen: boolean;
   toggleMenu: () => void;
+  setMenuOpen: (isOpen: boolean) => void;
 }
 
 const defaultState: AccessibilityState = {
@@ -90,8 +91,12 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
     setIsMenuOpen(prev => !prev);
   };
 
+  const setMenuOpen = (isOpen: boolean) => {
+    setIsMenuOpen(isOpen);
+  };
+
   return (
-    <AccessibilityContext.Provider value={{ state, updateState, reset, isMenuOpen, toggleMenu }}>
+    <AccessibilityContext.Provider value={{ state, updateState, reset, isMenuOpen, toggleMenu, setMenuOpen }}>
       {children}
       {state.readingGuide && <ReadingGuide />}
       {state.readingMask && <ReadingMask />}
