@@ -11,10 +11,10 @@ import Image from "next/image";
 import { VoiceNavigator } from "@/components/features/VoiceNavigator";
 import { usePWAInstall } from "@/hooks/usePWAInstall";
 import { InstallPrompt } from "@/components/features/InstallPrompt";
-import { 
-  User, 
-  Settings, 
-  LogOut, 
+import {
+  User,
+  Settings,
+  LogOut,
   ChevronDown,
   Bell,
   Menu as MenuIcon,
@@ -36,7 +36,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const isDashboard = pathname === "/dashboard";
-  
+
   const { isInstallable, promptInstall } = usePWAInstall();
   const [showIOSPrompt, setShowIOSPrompt] = useState(false);
 
@@ -69,9 +69,9 @@ export function Header({ onMenuClick }: HeaderProps) {
   return (
     <header className="bg-card border-b border-border h-16 px-4 md:px-8 flex items-center justify-between sticky top-0 z-20 transition-colors duration-300">
       {/* Left Section: Navigation & Mobile Menu */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 md:gap-4">
         {/* Mobile Menu Trigger */}
-        <button 
+        <button
           onClick={onMenuClick}
           className="md:hidden p-2 -ml-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
         >
@@ -81,7 +81,7 @@ export function Header({ onMenuClick }: HeaderProps) {
         {/* Back & Home Buttons (Visible on all screens except Dashboard) */}
         {!isDashboard && (
           <div className="flex items-center gap-2">
-            <button 
+            <button
               onClick={() => router.back()}
               className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors flex items-center gap-1"
               title="Go Back"
@@ -90,7 +90,7 @@ export function Header({ onMenuClick }: HeaderProps) {
               <span className="hidden sm:inline text-sm font-medium">Back</span>
             </button>
             <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 hidden sm:block"></div>
-            <button 
+            <button
               onClick={() => router.push('/dashboard')}
               className="p-2 text-gray-500 dark:text-gray-400 hover:text-brand-blue dark:hover:text-brand-blue hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors flex items-center gap-1"
               title="Main Menu"
@@ -103,7 +103,7 @@ export function Header({ onMenuClick }: HeaderProps) {
 
         {/* Brand Name (Only visible on Dashboard or if buttons are hidden) */}
         {isDashboard && (
-          <span className="font-bold text-lg text-foreground md:hidden">SMART LABS</span>
+          <span className="font-bold text-base md:text-lg text-foreground md:hidden truncate max-w-[120px]">SMART LABS</span>
         )}
       </div>
 
@@ -111,10 +111,10 @@ export function Header({ onMenuClick }: HeaderProps) {
         {/* Search bar or breadcrumbs could go here */}
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-1.5 md:gap-4">
         {/* Install App Button */}
         {isInstallable && (
-          <button 
+          <button
             onClick={handleInstallClick}
             className="flex items-center gap-2 p-2 md:px-3 md:py-1.5 text-brand-blue hover:bg-brand-blue/10 rounded-lg transition-colors animate-in fade-in"
             title="Install App"
@@ -150,13 +150,13 @@ export function Header({ onMenuClick }: HeaderProps) {
               </span>
             </div>
             <div className="w-10 h-10 rounded-full bg-gray-200 border-2 border-white shadow-sm relative overflow-hidden">
-               {userData?.photoURL ? (
-                 <Image src={userData.photoURL} alt={userData.name} fill className="object-cover" />
-               ) : (
-                 <div className="absolute inset-0 flex items-center justify-center text-gray-500 font-bold text-lg">
-                   {userData?.name?.charAt(0).toUpperCase() || "U"}
-                 </div>
-               )}
+              {userData?.photoURL ? (
+                <Image src={userData.photoURL} alt={userData.name} fill className="object-cover" />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center text-gray-500 font-bold text-lg">
+                  {userData?.name?.charAt(0).toUpperCase() || "U"}
+                </div>
+              )}
             </div>
             <ChevronDown size={16} className="text-gray-400" />
           </Menu.Button>
@@ -193,27 +193,27 @@ export function Header({ onMenuClick }: HeaderProps) {
                         'group flex w-full items-center rounded-lg px-2 py-2 text-sm'
                       )}
                       onClick={() => router.push('/settings')}
-                  >
-                    <Settings className="mr-2 h-4 w-4" />
-                    Settings
-                  </button>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <button
-                    className={clsx(
-                      active ? 'bg-gray-50 text-brand-blue' : 'text-gray-700',
-                      'group flex w-full items-center rounded-lg px-2 py-2 text-sm'
-                    )}
-                    onClick={() => toggleMenu()}
-                  >
-                    <Accessibility className="mr-2 h-4 w-4" />
-                    Accessibility
-                  </button>
-                )}
-              </Menu.Item>
-            </div>
+                    >
+                      <Settings className="mr-2 h-4 w-4" />
+                      Settings
+                    </button>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={clsx(
+                        active ? 'bg-gray-50 text-brand-blue' : 'text-gray-700',
+                        'group flex w-full items-center rounded-lg px-2 py-2 text-sm'
+                      )}
+                      onClick={() => toggleMenu()}
+                    >
+                      <Accessibility className="mr-2 h-4 w-4" />
+                      Accessibility
+                    </button>
+                  )}
+                </Menu.Item>
+              </div>
               <div className="p-1">
                 {userData?.role === "admin" && (
                   <Menu.Item>
@@ -251,10 +251,10 @@ export function Header({ onMenuClick }: HeaderProps) {
         </Menu>
       </div>
 
-      <InstallPrompt 
-        isOpen={showIOSPrompt} 
-        onClose={() => setShowIOSPrompt(false)} 
-        platform="ios" 
+      <InstallPrompt
+        isOpen={showIOSPrompt}
+        onClose={() => setShowIOSPrompt(false)}
+        platform="ios"
       />
     </header>
   );

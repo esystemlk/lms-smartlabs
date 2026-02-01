@@ -45,9 +45,9 @@ export default function ProtectedLayout({
   return (
     <div className="min-h-screen bg-background flex transition-colors duration-300 w-full relative overflow-x-hidden">
       {/* Mobile Sidebar (Drawer) */}
-      <Sidebar 
-        isOpen={isMobileMenuOpen} 
-        onClose={() => setIsMobileMenuOpen(false)} 
+      <Sidebar
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
       />
 
       <div className="flex-1 flex flex-col min-h-screen">
@@ -56,7 +56,7 @@ export default function ProtectedLayout({
         <main className={clsx(
           "flex-1 max-w-7xl mx-auto w-full transition-all duration-300",
           // Base bottom padding for mobile nav
-          "pb-24 md:pb-0",
+          "pb-28 md:pb-0",
           // Conditional padding: Remove padding for lesson pages to allow full-width video/content
           !isLessonPage && (isCompact ? "p-2 md:p-4" : "p-4 md:p-8")
         )}>

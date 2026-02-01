@@ -5,11 +5,11 @@ import { useEffect, useState, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
-import { 
-  Loader2, 
-  CheckCircle2, 
-  Calendar, 
-  Users, 
+import {
+  Loader2,
+  CheckCircle2,
+  Calendar,
+  Users,
   X,
   BookOpen,
   Award,
@@ -30,13 +30,13 @@ export default function CoursesPage() {
   const { userData } = useAuth();
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Enrollment Modal State
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [batches, setBatches] = useState<Batch[]>([]);
   const [loadingBatches, setLoadingBatches] = useState(false);
   const [selectedBatchId, setSelectedBatchId] = useState<string | null>(null);
-  
+
   // Enrollment Flow State
   const [step, setStep] = useState<1 | 2>(1); // 1: Batch, 2: Payment
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'transfer'>('card');
@@ -69,7 +69,7 @@ export default function CoursesPage() {
     setPaymentMethod('card');
     setReceiptFile(null);
     setLoadingBatches(true);
-    
+
     try {
       // Fetch open batches for this course
       const allBatches = await courseService.getBatches(course.id);
@@ -84,7 +84,7 @@ export default function CoursesPage() {
 
   const handleEnroll = async () => {
     if (!selectedCourse || !selectedBatchId || !userData) return;
-    
+
     // Validation for Transfer
     if (paymentMethod === 'transfer' && !receiptFile) {
       alert("Please upload your payment receipt.");
@@ -151,7 +151,7 @@ export default function CoursesPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
-      
+
       {/* Hero Section */}
       <section className="relative rounded-2xl md:rounded-3xl overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 md:p-12 shadow-xl">
         <div className="relative z-10 max-w-2xl">
@@ -167,7 +167,7 @@ export default function CoursesPage() {
             </Button>
           </div>
         </div>
-        
+
         {/* Decorative Circles */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-40 h-40 md:w-96 md:h-96 bg-white/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-32 h-32 md:w-72 md:h-72 bg-blue-500/30 rounded-full blur-3xl"></div>
@@ -199,7 +199,7 @@ export default function CoursesPage() {
             {/* Content */}
             <div className="p-3 md:p-6 flex flex-col flex-1">
               <div className="mb-2 md:mb-4">
-                <div className="flex items-center gap-1.5 md:gap-2 mb-1.5 md:mb-2">
+                <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mb-1.5 md:mb-2">
                   {course.level && (
                     <span className="px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-300">
                       {course.level}
@@ -252,7 +252,7 @@ export default function CoursesPage() {
                     {course.price && course.price > 0 ? `LKR ${course.price.toLocaleString()}` : "Free"}
                   </span>
                 </div>
-                <Button 
+                <Button
                   onClick={() => handleOpenEnrollModal(course)}
                   variant="secondary"
                   className="shadow-lg shadow-blue-500/20 text-xs md:text-sm h-8 md:h-10"
@@ -300,7 +300,7 @@ export default function CoursesPage() {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-card p-6 text-left align-middle shadow-xl transition-all">
-                  
+
                   {/* Success State (Active) */}
                   {enrollSuccess && (
                     <div className="text-center py-8">
@@ -326,7 +326,7 @@ export default function CoursesPage() {
                       <Dialog.Title as="h3" className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                         Verification Pending
                       </Dialog.Title>
-                      
+
                       <div className="bg-red-50 border border-red-100 rounded-xl p-4 mb-6 text-left">
                         <div className="flex items-start gap-3">
                           <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
@@ -369,13 +369,13 @@ export default function CoursesPage() {
                           ) : batches.length > 0 ? (
                             <div className="space-y-3">
                               {batches.map((batch) => (
-                                <div 
+                                <div
                                   key={batch.id}
                                   onClick={() => setSelectedBatchId(batch.id)}
                                   className={`
                                     cursor-pointer p-3 rounded-xl border-2 transition-all flex items-center justify-between gap-3
-                                    ${selectedBatchId === batch.id 
-                                      ? "border-brand-blue bg-blue-50 dark:bg-blue-900/20" 
+                                    ${selectedBatchId === batch.id
+                                      ? "border-brand-blue bg-blue-50 dark:bg-blue-900/20"
                                       : "border-gray-100 dark:border-gray-700 hover:border-gray-200 dark:hover:border-gray-600"
                                     }
                                   `}
@@ -390,7 +390,7 @@ export default function CoursesPage() {
                                         </div>
                                       )}
                                     </div>
-                                    
+
                                     <div>
                                       <h4 className="font-semibold text-gray-900 dark:text-white text-sm">{batch.name}</h4>
                                       <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
@@ -414,8 +414,8 @@ export default function CoursesPage() {
 
                           <div className="flex gap-3 pt-2">
                             <Button variant="ghost" fullWidth onClick={closeModal}>Cancel</Button>
-                            <Button 
-                              fullWidth 
+                            <Button
+                              fullWidth
                               disabled={!selectedBatchId}
                               onClick={() => setStep(2)}
                             >
@@ -432,22 +432,20 @@ export default function CoursesPage() {
                           <div className="flex p-1 bg-gray-100 rounded-xl">
                             <button
                               onClick={() => setPaymentMethod('card')}
-                              className={`flex-1 py-2 text-sm font-medium rounded-lg flex items-center justify-center gap-2 transition-all ${
-                                paymentMethod === 'card' 
-                                  ? 'bg-white text-brand-blue shadow-sm' 
+                              className={`flex-1 py-2 text-sm font-medium rounded-lg flex items-center justify-center gap-2 transition-all ${paymentMethod === 'card'
+                                  ? 'bg-white text-brand-blue shadow-sm'
                                   : 'text-gray-500 hover:text-gray-700'
-                              }`}
+                                }`}
                             >
                               <CreditCard size={16} />
                               Card
                             </button>
                             <button
                               onClick={() => setPaymentMethod('transfer')}
-                              className={`flex-1 py-2 text-sm font-medium rounded-lg flex items-center justify-center gap-2 transition-all ${
-                                paymentMethod === 'transfer' 
-                                  ? 'bg-white text-brand-blue shadow-sm' 
+                              className={`flex-1 py-2 text-sm font-medium rounded-lg flex items-center justify-center gap-2 transition-all ${paymentMethod === 'transfer'
+                                  ? 'bg-white text-brand-blue shadow-sm'
                                   : 'text-gray-500 hover:text-gray-700'
-                              }`}
+                                }`}
                             >
                               <Landmark size={16} />
                               Bank Transfer
@@ -479,8 +477,8 @@ export default function CoursesPage() {
                               <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Upload Receipt</label>
                                 <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:bg-gray-50 transition-colors cursor-pointer relative">
-                                  <input 
-                                    type="file" 
+                                  <input
+                                    type="file"
                                     accept="image/*,.pdf"
                                     onChange={handleFileChange}
                                     className="absolute inset-0 opacity-0 cursor-pointer"
@@ -500,8 +498,8 @@ export default function CoursesPage() {
 
                           <div className="flex gap-3 pt-2">
                             <Button variant="ghost" fullWidth onClick={() => setStep(1)}>Back</Button>
-                            <Button 
-                              fullWidth 
+                            <Button
+                              fullWidth
                               disabled={enrolling || (paymentMethod === 'transfer' && !receiptFile)}
                               onClick={handleEnroll}
                             >
