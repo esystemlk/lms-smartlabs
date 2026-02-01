@@ -267,7 +267,7 @@ export default function LiveClassManagementPage() {
                             <div className="flex flex-col items-center gap-2">
                             <Video size={32} className="text-gray-300" />
                             <p>No upcoming classes found.</p>
-                            <Button variant="link" onClick={() => setScheduleModalOpen(true)} className="text-blue-600 hover:underline">
+                            <Button variant="ghost" onClick={() => setScheduleModalOpen(true)} className="text-blue-600 hover:underline">
                                 Schedule one now
                             </Button>
                             </div>

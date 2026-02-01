@@ -82,6 +82,11 @@ export interface Lesson {
   duration?: number; // minutes
   batchIds?: string[]; // IDs of batches this live class is scheduled for
   status?: 'scheduled' | 'completed' | 'cancelled';
+  
+  // Bunny.net / Recording fields
+  bunnyVideoId?: string;
+  recordingStatus?: 'processing' | 'processed' | 'failed';
+  recordingUrl?: string;
 }
 
 export interface RecordedClass {

@@ -17,6 +17,7 @@ import {
 import { db, storage } from "@/lib/firebase";
 import { Course, Lesson, Batch } from "@/lib/types";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { notificationService } from "@/services/notificationService";
 
 const COURSES_COLLECTION = "courses";
 const LESSONS_COLLECTION = "lessons";

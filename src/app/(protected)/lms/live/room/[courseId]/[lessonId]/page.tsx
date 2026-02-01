@@ -54,12 +54,12 @@ export default function ClassroomPage({ params }: { params: Promise<{ courseId: 
 
       // Construct Iframe URL
       const params = new URLSearchParams({
-        signature: signature,
-        mn: lessonData.zoomMeetingId,
+        signature: String(signature),
+        mn: lessonData.zoomMeetingId || "",
         pwd: lessonData.zoomPassword || "",
         name: userData.name || "Student",
         email: userData.email,
-        sdkKey: sdkKey,
+        sdkKey: String(sdkKey),
         leaveUrl: `${window.location.origin}/lms/live`
       });
 

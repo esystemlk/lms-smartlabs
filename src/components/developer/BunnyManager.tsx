@@ -6,12 +6,9 @@ import { db } from "@/lib/firebase";
 import { doc, setDoc, getDoc, addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { Loader2, Save, Trash2, Video, RefreshCw, Upload, Play, Key } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"; // Assuming standard shadcn/ui or similar structure available, or I'll use standard HTML/Headless if not.
-// Since I don't want to guess path of UI components, I'll use standard HTML/Tailwind for modals to be safe or check imports.
-// Checking previous file imports... I see standard imports. I will use a simple state-based modal or Headless UI if I saw it used.
-// The user context mentions @headlessui/react. I'll use standard HTML for now to be robust.
 
 export function BunnyManager() {
+  const { toast } = useToast();
   const [settings, setSettings] = useState({ bunnyApiKey: "", bunnyLibraryId: "" });
   const [loadingSettings, setLoadingSettings] = useState(false);
   const [videos, setVideos] = useState<any[]>([]);
@@ -42,11 +39,11 @@ export function BunnyManager() {
         ...settings,
         updatedAt: serverTimestamp()
       }, { merge: true });
-      toast.success("Bunny.net credentials saved");
+      toast("Bunny.net credentials saved", "success");
       fetchVideos(); // Refresh videos with new creds
     } catch (error) {
       console.error(error);
-      toast.error("Failed to save settings");
+      toast("Failed to save settings", "error");
     }
   };
 
@@ -58,7 +55,7 @@ export function BunnyManager() {
       setVideos(res.items || []);
     } catch (error) {
       console.error(error);
-      toast.error("Failed to fetch videos. Check credentials.");
+      toast("Failed to fetch videos. Check credentials.", "error");
     } finally {
       setLoadingVideos(false);
     }
