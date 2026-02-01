@@ -4,12 +4,12 @@ import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { chatService } from "@/services/chatService";
 import { ChatMessage, SupportChat } from "@/lib/types";
-import { 
-  MessageCircle, 
-  X, 
-  Send, 
-  Mic, 
-  Paperclip, 
+import {
+  MessageCircle,
+  X,
+  Send,
+  Mic,
+  Paperclip,
   Minimize2,
   Image as ImageIcon,
   StopCircle,
@@ -90,7 +90,9 @@ export function FloatingChatWidget() {
         userData.uid,
         userData.name,
         newMessage,
-        "text"
+        "text",
+        undefined,
+        false // Not staff
       );
       setNewMessage("");
     } catch (error) {
@@ -124,7 +126,7 @@ export function FloatingChatWidget() {
       recorder.start();
       setMediaRecorder(recorder);
       setIsRecording(true);
-      
+
       // Timer
       setRecordingTime(0);
       recordingTimerRef.current = setInterval(() => {
@@ -210,14 +212,14 @@ export function FloatingChatWidget() {
                   <div key={msg.id} className={clsx("flex", isMe ? "justify-end" : "justify-start")}>
                     <div className={clsx(
                       "max-w-[80%] p-3 rounded-2xl text-sm",
-                      isMe 
-                        ? "bg-brand-blue text-white rounded-tr-none" 
+                      isMe
+                        ? "bg-brand-blue text-white rounded-tr-none"
                         : "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-tl-none"
                     )}>
                       {msg.type === "text" && <p>{msg.text}</p>}
                       {msg.type === "voice" && (
                         <div className="flex items-center gap-2">
-                           <audio controls src={msg.mediaUrl} className="h-8 w-48" />
+                          <audio controls src={msg.mediaUrl} className="h-8 w-48" />
                         </div>
                       )}
                       <div className={clsx("text-[10px] mt-1 opacity-70", isMe ? "text-blue-100" : "text-gray-400")}>
@@ -241,7 +243,7 @@ export function FloatingChatWidget() {
                   <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                   <span className="font-medium">{formatTime(recordingTime)}</span>
                 </div>
-                <button 
+                <button
                   onClick={stopRecording}
                   className="p-2 bg-red-100 dark:bg-red-900/40 rounded-full hover:bg-red-200 transition-colors"
                 >
@@ -262,14 +264,14 @@ export function FloatingChatWidget() {
                   className="flex-1 bg-gray-100 dark:bg-gray-900 border-none rounded-xl px-4 py-2 focus:ring-2 focus:ring-brand-blue/20 outline-none text-sm"
                 />
                 {newMessage.trim() ? (
-                  <button 
+                  <button
                     onClick={handleSendMessage}
                     className="p-2 bg-brand-blue text-white rounded-full hover:bg-blue-700 transition-colors"
                   >
                     <Send size={18} />
                   </button>
                 ) : (
-                  <button 
+                  <button
                     onClick={startRecording}
                     className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
                   >

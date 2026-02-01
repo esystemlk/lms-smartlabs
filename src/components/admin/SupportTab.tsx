@@ -4,13 +4,13 @@ import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { chatService } from "@/services/chatService";
 import { SupportChat, ChatMessage } from "@/lib/types";
-import { 
-  Search, 
-  MessageSquare, 
-  MoreVertical, 
-  Send, 
-  Paperclip, 
-  Mic, 
+import {
+  Search,
+  MessageSquare,
+  MoreVertical,
+  Send,
+  Paperclip,
+  Mic,
   CheckCircle,
   ArrowLeft,
   StopCircle,
@@ -21,19 +21,19 @@ import { formatDistanceToNow } from "date-fns";
 
 export function SupportTab() {
   const { userData } = useAuth();
-  
+
   const [chats, setChats] = useState<SupportChat[]>([]);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [filter, setFilter] = useState<"all" | "active" | "pending" | "closed">("all");
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   // Messaging state
   const [newMessage, setNewMessage] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recordingTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -52,7 +52,7 @@ export function SupportTab() {
     const unsubscribe = chatService.subscribeToMessages(selectedChatId, (msgs) => {
       setMessages(msgs);
       scrollToBottom();
-      
+
       // Mark as read when opening
       if (userData) {
         chatService.markAsRead(selectedChatId, userData.uid, userData.role);
@@ -73,10 +73,10 @@ export function SupportTab() {
       return true;
     })
     .sort((a, b) => {
-        // Sort by unread first, then date
-        if (a.unreadByAdmin > b.unreadByAdmin) return -1;
-        if (a.unreadByAdmin < b.unreadByAdmin) return 1;
-        return (b.updatedAt?.seconds || 0) - (a.updatedAt?.seconds || 0);
+      // Sort by unread first, then date
+      if (a.unreadByAdmin > b.unreadByAdmin) return -1;
+      if (a.unreadByAdmin < b.unreadByAdmin) return 1;
+      return (b.updatedAt?.seconds || 0) - (a.updatedAt?.seconds || 0);
     });
 
   const selectedChat = chats.find(c => c.id === selectedChatId);
@@ -90,7 +90,9 @@ export function SupportTab() {
         userData.uid,
         userData.name,
         newMessage,
-        "text"
+        "text",
+        undefined,
+        true // Admin/Staff
       );
       setNewMessage("");
     } catch (error) {
@@ -123,7 +125,7 @@ export function SupportTab() {
       recorder.start();
       setMediaRecorder(recorder);
       setIsRecording(true);
-      
+
       setRecordingTime(0);
       recordingTimerRef.current = setInterval(() => {
         setRecordingTime(prev => prev + 1);
@@ -163,18 +165,18 @@ export function SupportTab() {
           <div className="flex items-center justify-between mb-3 md:mb-4">
             <h1 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">Messages</h1>
             <div className="flex gap-2">
-               {/* Role Badge */}
-               <span className="px-2 py-1 bg-brand-blue/10 text-brand-blue text-[10px] md:text-xs rounded-lg font-medium uppercase">
-                 {userData?.role}
-               </span>
+              {/* Role Badge */}
+              <span className="px-2 py-1 bg-brand-blue/10 text-brand-blue text-[10px] md:text-xs rounded-lg font-medium uppercase">
+                {userData?.role}
+              </span>
             </div>
           </div>
-          
+
           <div className="relative mb-3">
             <Search className="absolute left-3 top-2.5 text-gray-400" size={16} />
-            <input 
-              type="text" 
-              placeholder="Search users..." 
+            <input
+              type="text"
+              placeholder="Search users..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-9 pr-4 py-2 bg-gray-50 dark:bg-gray-900 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-blue/20"
@@ -188,8 +190,8 @@ export function SupportTab() {
                 onClick={() => setFilter(f as any)}
                 className={clsx(
                   "px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors",
-                  filter === f 
-                    ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900" 
+                  filter === f
+                    ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900"
                     : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300"
                 )}
               >
@@ -226,8 +228,8 @@ export function SupportTab() {
                     {chat.userName}
                   </h3>
                   <span className="text-[10px] md:text-xs text-gray-400 whitespace-nowrap">
-                    {chat.lastMessageAt?.seconds 
-                      ? formatDistanceToNow(new Date(chat.lastMessageAt.seconds * 1000), { addSuffix: false }) 
+                    {chat.lastMessageAt?.seconds
+                      ? formatDistanceToNow(new Date(chat.lastMessageAt.seconds * 1000), { addSuffix: false })
                       : ''}
                   </span>
                 </div>
@@ -238,15 +240,15 @@ export function SupportTab() {
                   {chat.lastMessage}
                 </p>
                 <div className="flex items-center gap-2 mt-1.5">
-                   <span className={clsx(
-                     "text-[10px] px-1.5 py-0.5 rounded border uppercase tracking-wider",
-                     chat.status === 'active' ? "bg-green-50 text-green-600 border-green-100" :
-                     chat.status === 'pending' ? "bg-yellow-50 text-yellow-600 border-yellow-100" :
-                     "bg-gray-50 text-gray-500 border-gray-100"
-                   )}>
-                     {chat.status}
-                   </span>
-                   <span className="text-[10px] text-gray-400">{chat.userRole}</span>
+                  <span className={clsx(
+                    "text-[10px] px-1.5 py-0.5 rounded border uppercase tracking-wider",
+                    chat.status === 'active' ? "bg-green-50 text-green-600 border-green-100" :
+                      chat.status === 'pending' ? "bg-yellow-50 text-yellow-600 border-yellow-100" :
+                        "bg-gray-50 text-gray-500 border-gray-100"
+                  )}>
+                    {chat.status}
+                  </span>
+                  <span className="text-[10px] text-gray-400">{chat.userRole}</span>
                 </div>
               </div>
             </button>
@@ -278,7 +280,7 @@ export function SupportTab() {
             {/* Chat Header */}
             <div className="h-14 md:h-16 px-4 md:px-6 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
               <div className="flex items-center gap-3 md:gap-4">
-                <button 
+                <button
                   onClick={() => setSelectedChatId(null)}
                   className="md:hidden p-2 -ml-2 text-gray-500 hover:bg-gray-100 rounded-full"
                 >
@@ -296,9 +298,9 @@ export function SupportTab() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-2">
-                <button 
+                <button
                   className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-full transition-colors"
                   title="Mark Resolved"
                   onClick={() => chatService.closeChat(selectedChatId)}
@@ -335,22 +337,22 @@ export function SupportTab() {
                       </div>
                       <div className={clsx(
                         "p-4 rounded-2xl text-sm leading-relaxed shadow-sm",
-                        isMe 
-                          ? "bg-brand-blue text-white rounded-tr-none" 
+                        isMe
+                          ? "bg-brand-blue text-white rounded-tr-none"
                           : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-100 dark:border-gray-700 rounded-tl-none"
                       )}>
                         {msg.type === "text" && <p>{msg.text}</p>}
                         {msg.type === "voice" && (
-                           <div className="flex items-center gap-3 min-w-[200px]">
-                             <div className="p-2 bg-white/20 rounded-full">
-                               <Play size={16} className="fill-current" />
-                             </div>
-                             <div className="flex-1 h-1 bg-white/30 rounded-full overflow-hidden">
-                               <div className="w-1/3 h-full bg-white"></div>
-                             </div>
-                             <span className="text-xs opacity-80">Voice</span>
-                             <audio src={msg.mediaUrl} className="hidden" />
-                           </div>
+                          <div className="flex items-center gap-3 min-w-[200px]">
+                            <div className="p-2 bg-white/20 rounded-full">
+                              <Play size={16} className="fill-current" />
+                            </div>
+                            <div className="flex-1 h-1 bg-white/30 rounded-full overflow-hidden">
+                              <div className="w-1/3 h-full bg-white"></div>
+                            </div>
+                            <span className="text-xs opacity-80">Voice</span>
+                            <audio src={msg.mediaUrl} className="hidden" />
+                          </div>
                         )}
                       </div>
                     </div>
@@ -373,7 +375,7 @@ export function SupportTab() {
                       <span className="font-medium font-mono">{formatTime(recordingTime)}</span>
                       <span className="text-sm opacity-70">Recording voice message...</span>
                     </div>
-                    <button 
+                    <button
                       onClick={stopRecording}
                       className="flex items-center gap-2 px-4 py-1.5 bg-white dark:bg-gray-800 rounded-full shadow-sm text-sm font-medium hover:bg-gray-50 transition-colors"
                     >
@@ -402,14 +404,14 @@ export function SupportTab() {
                       />
                     </div>
                     {newMessage.trim() ? (
-                      <button 
+                      <button
                         onClick={handleSendMessage}
                         className="p-3 bg-brand-blue text-white rounded-xl shadow-lg shadow-blue-500/20 hover:bg-blue-700 transition-all hover:scale-105 active:scale-95"
                       >
                         <Send size={20} />
                       </button>
                     ) : (
-                      <button 
+                      <button
                         onClick={startRecording}
                         className="p-3 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors"
                       >
@@ -420,9 +422,9 @@ export function SupportTab() {
                 )}
               </div>
               <div className="max-w-4xl mx-auto mt-2 text-center">
-                 <p className="text-[10px] text-gray-400">
-                   Press Enter to send, Shift + Enter for new line
-                 </p>
+                <p className="text-[10px] text-gray-400">
+                  Press Enter to send, Shift + Enter for new line
+                </p>
               </div>
             </div>
           </>

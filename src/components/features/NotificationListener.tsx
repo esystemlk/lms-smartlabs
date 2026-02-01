@@ -24,6 +24,16 @@ export function NotificationListener() {
         setShowPermissionBanner(true);
       } else if (Notification.permission === "granted") {
         registerFcmToken();
+        // Register service worker for background handling
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then((registration) => {
+              console.log('Registration successful, scope is:', registration.scope);
+            })
+            .catch((err) => {
+              console.log('Service worker registration failed, error:', err);
+            });
+        }
       }
     }
   }, [userData]);
@@ -45,7 +55,7 @@ export function NotificationListener() {
 
   const requestPermission = async () => {
     if (!("Notification" in window)) return;
-    
+
     try {
       const result = await Notification.requestPermission();
       setPermission(result);
@@ -86,10 +96,10 @@ export function NotificationListener() {
 
         if (unreadCount > prevUnread) {
           // New message detected!
-          
+
           // Check user preferences (default to true if not set)
           const allowPush = userData.preferences?.pushNotifications !== false;
-          
+
           if (!allowPush) {
             // Update ref and return early if notifications disabled
             prevChatsRef.current[chat.id] = unreadCount;
@@ -102,7 +112,7 @@ export function NotificationListener() {
           // 1. Browser Notification (System Tray)
           if (permission === "granted") {
             try {
-               const n = new Notification("Smart Labs Support", {
+              const n = new Notification("Smart Labs Support", {
                 body: msg,
                 icon: "/icons/icon-192x192.png",
                 tag: `chat-${chat.id}`, // Replaces old notification for same chat
@@ -112,10 +122,10 @@ export function NotificationListener() {
                 window.focus();
                 // Redirect to support page if admin, otherwise just focus
                 if (isAdmin) {
-                    router.push('/support');
+                  router.push('/support');
                 } else {
-                    // For students, maybe go to dashboard or stay put
-                    // router.push('/dashboard'); 
+                  // For students, maybe go to dashboard or stay put
+                  // router.push('/dashboard'); 
                 }
               };
             } catch (e) {
@@ -157,13 +167,13 @@ export function NotificationListener() {
         <p className="text-xs text-gray-500">Get alerted when support replies to you.</p>
       </div>
       <div className="flex gap-2">
-        <button 
+        <button
           onClick={() => setShowPermissionBanner(false)}
           className="p-2 text-gray-400 hover:bg-gray-100 rounded-lg"
         >
           <X size={18} />
         </button>
-        <button 
+        <button
           onClick={requestPermission}
           className="px-3 py-1.5 bg-brand-blue text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition-colors"
         >
