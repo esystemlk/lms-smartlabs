@@ -7,14 +7,17 @@ import {
   collection,
   query,
   orderBy,
-  getDocs
+  getDocs,
+  arrayUnion,
+  arrayRemove,
+  where
 } from "firebase/firestore";
 import { 
   ref, 
   uploadBytes, 
   getDownloadURL 
 } from "firebase/storage";
-import { updateProfile, User } from "firebase/auth";
+import { updateProfile } from "firebase/auth";
 import { initializeApp, deleteApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { db, storage, auth, app } from "@/lib/firebase";
@@ -93,6 +96,16 @@ export const userService = {
     return snapshot.docs.map(doc => ({ uid: doc.id, ...doc.data() } as UserData));
   },
 
+  async getUserByEmail(email: string) {
+    const q = query(collection(db, "users"), where("email", "==", email));
+    const snapshot = await getDocs(q);
+    if (!snapshot.empty) {
+      const doc = snapshot.docs[0];
+      return { uid: doc.id, ...doc.data() } as UserData;
+    }
+    return null;
+  },
+
   async getLecturers() {
     // Fetch users with role 'lecturer' or 'instructor'
     const q = query(collection(db, "users"), orderBy("name", "asc"));
@@ -107,5 +120,20 @@ export const userService = {
       role,
       updatedAt: serverTimestamp()
     });
+  },
+
+  async toggleFavorite(userId: string, courseId: string, isFavorite: boolean) {
+    const userRef = doc(db, "users", userId);
+    if (isFavorite) {
+      // Remove
+      await updateDoc(userRef, {
+        favorites: arrayRemove(courseId)
+      });
+    } else {
+      // Add
+      await updateDoc(userRef, {
+        favorites: arrayUnion(courseId)
+      });
+    }
   }
 };

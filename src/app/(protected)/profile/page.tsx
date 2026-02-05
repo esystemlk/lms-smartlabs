@@ -9,7 +9,7 @@ import { auth } from "@/lib/firebase";
 import { signOut, updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Camera, Loader2, LogOut, Smile, Save } from "lucide-react";
+import { Camera, Loader2, LogOut, Smile, Save, Award, Download } from "lucide-react";
 import { userService } from "@/services/userService";
 import { MemojiSelector } from "@/components/features/MemojiSelector";
 import { countries } from "@/data/countries";
@@ -20,6 +20,11 @@ export default function ProfilePage() {
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [isMemojiModalOpen, setIsMemojiModalOpen] = useState(false);
+
+  // Mock Certificates (In real app, fetch from collection)
+  const certificates: { id: number; title: string; date: string; url: string }[] = [
+    // { id: 1, title: "Advanced Web Development", date: "2024-12-15", url: "#" }
+  ];
 
   const [formData, setFormData] = useState<{
     name: string;
@@ -257,6 +262,46 @@ export default function ProfilePage() {
             </Button>
           </div>
         </form>
+      </div>
+
+      {/* Certificates Section */}
+      <div className="bg-white dark:bg-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-border">
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+          <Award className="text-brand-blue" />
+          My Certificates
+        </h2>
+        
+        {certificates.length > 0 ? (
+          <div className="space-y-4">
+            {certificates.map((cert) => (
+              <div key={cert.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-100 text-brand-blue rounded-lg">
+                    <Award size={20} />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 dark:text-white text-sm">{cert.title}</h3>
+                    <p className="text-xs text-gray-500">Issued on {cert.date}</p>
+                  </div>
+                </div>
+                <Button variant="ghost" size="sm" className="text-brand-blue hover:bg-blue-50">
+                  <Download size={16} className="mr-2" />
+                  Download
+                </Button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-200 dark:border-gray-700">
+            <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto text-gray-400 mb-3">
+              <Award size={24} />
+            </div>
+            <p className="text-sm font-medium text-gray-900 dark:text-white">No certificates yet</p>
+            <p className="text-xs text-gray-500 max-w-xs mx-auto mt-1">
+              Complete courses and pass the final assessments to earn your certificates.
+            </p>
+          </div>
+        )}
       </div>
 
       <MemojiSelector

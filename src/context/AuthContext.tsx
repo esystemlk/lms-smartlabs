@@ -10,12 +10,20 @@ interface AuthContextType {
   user: User | null;
   userData: UserData | null;
   loading: boolean;
+  impersonateRole: (role: UserRole) => void;
+  stopImpersonating: () => void;
+  isImpersonating: boolean;
+  originalRole: UserRole | null;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   userData: null,
   loading: true,
+  impersonateRole: () => {},
+  stopImpersonating: () => {},
+  isImpersonating: false,
+  originalRole: null,
 });
 
 const DEVELOPER_EMAILS = [
@@ -27,6 +35,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  // Impersonation State
+  const [impersonatedRole, setImpersonatedRole] = useState<UserRole | null>(null);
+
+  const impersonateRole = (role: UserRole) => {
+    setImpersonatedRole(role);
+  };
+
+  const stopImpersonating = () => {
+    setImpersonatedRole(null);
+  };
+
+  // Derived user data with impersonation
+  const activeUserData = userData ? {
+    ...userData,
+    role: impersonatedRole || userData.role
+  } : null;
 
   useEffect(() => {
     let unsubscribeSnapshot: (() => void) | null = null;
@@ -77,7 +102,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, userData, loading }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      userData: activeUserData, 
+      loading,
+      impersonateRole,
+      stopImpersonating,
+      isImpersonating: !!impersonatedRole,
+      originalRole: userData?.role || null
+    }}>
       {!loading && children}
     </AuthContext.Provider>
   );

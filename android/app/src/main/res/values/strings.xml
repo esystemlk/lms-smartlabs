@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SMART LABS</string>
+    <string name="title_activity_main">SMART LABS</string>
+    <string name="package_name">com.smartlabs.lms</string>
+    <string name="custom_url_scheme">com.smartlabs.lms</string>
+</resources>

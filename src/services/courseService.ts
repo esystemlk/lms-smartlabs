@@ -11,11 +11,10 @@ import {
   orderBy, 
   serverTimestamp,
   arrayUnion,
-  arrayRemove,
   collectionGroup
 } from "firebase/firestore";
 import { db, storage } from "@/lib/firebase";
-import { Course, Lesson, Batch } from "@/lib/types";
+import { Course, Lesson, Batch, RecordedClass } from "@/lib/types";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { notificationService } from "@/services/notificationService";
 
@@ -261,7 +260,7 @@ export const courseService = {
     await deleteDoc(docRef);
   },
 
-  async addRecording(courseId: string, batchId: string, recording: any) {
+  async addRecording(courseId: string, batchId: string, recording: RecordedClass) {
     const batchRef = doc(db, COURSES_COLLECTION, courseId, BATCHES_COLLECTION, batchId);
     await updateDoc(batchRef, {
       recordedClasses: arrayUnion(recording),
@@ -269,7 +268,7 @@ export const courseService = {
     });
   },
 
-  async removeRecordedClassFromBatch(courseId: string, batchId: string, recording: any) {
+  async removeRecordedClassFromBatch(courseId: string, batchId: string, recordingId: string) {
     // Note: arrayRemove requires the exact object. 
     // If that's tricky, we might need to fetch, filter, and update.
     // For now, let's try arrayRemove but it might be safer to read-modify-write if objects aren't identical references.
@@ -278,7 +277,7 @@ export const courseService = {
     const batchSnap = await getDoc(batchRef);
     if (batchSnap.exists()) {
       const data = batchSnap.data();
-      const updatedClasses = (data.recordedClasses || []).filter((r: any) => r.id !== recording.id);
+      const updatedClasses = (data.recordedClasses || []).filter((r: RecordedClass) => r.id !== recordingId);
       await updateDoc(batchRef, {
         recordedClasses: updatedClasses,
         updatedAt: serverTimestamp()

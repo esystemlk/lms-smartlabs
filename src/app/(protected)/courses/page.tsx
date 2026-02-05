@@ -22,12 +22,14 @@ import {
 import { courseService } from "@/services/courseService";
 import { enrollmentService } from "@/services/enrollmentService";
 import { useAuth } from "@/context/AuthContext";
+import { useCurrency } from "@/context/CurrencyContext";
 import { Course, Batch } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 
 export default function CoursesPage() {
   const router = useRouter();
   const { userData } = useAuth();
+  const { currency, formatPrice } = useCurrency();
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -94,7 +96,10 @@ export default function CoursesPage() {
     setEnrolling(true);
     try {
       const selectedBatch = batches.find(b => b.id === selectedBatchId)!;
-      const price = selectedCourse.price || 0;
+      // Determine price based on current currency
+      const priceLKR = selectedCourse.priceLKR || selectedCourse.price || 0;
+      const priceUSD = selectedCourse.priceUSD || 0;
+      const finalAmount = currency === 'USD' && priceUSD > 0 ? priceUSD : priceLKR;
 
       await enrollmentService.createEnrollment(
         userData.uid,
@@ -103,7 +108,7 @@ export default function CoursesPage() {
         selectedCourse,
         selectedBatch,
         paymentMethod,
-        price,
+        finalAmount,
         receiptFile || undefined
       );
 
@@ -249,7 +254,7 @@ export default function CoursesPage() {
                 <div className="flex flex-col">
                   <span className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider">Price</span>
                   <span className="text-base md:text-xl font-bold text-brand-blue">
-                    {course.price && course.price > 0 ? `LKR ${course.price.toLocaleString()}` : "Free"}
+                    {formatPrice(course.priceLKR || course.price, course.priceUSD)}
                   </span>
                 </div>
                 <Button
@@ -461,7 +466,7 @@ export default function CoursesPage() {
                               <div className="flex justify-between items-center text-sm font-medium">
                                 <span>Total Amount:</span>
                                 <span className="text-lg font-bold text-gray-900">
-                                  LKR {selectedCourse?.price?.toLocaleString() || "0"}
+                                  {formatPrice(selectedCourse?.priceLKR || selectedCourse?.price, selectedCourse?.priceUSD)}
                                 </span>
                               </div>
                             </div>

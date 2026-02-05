@@ -15,6 +15,7 @@ import {
   Video,
   Play,
   MessageSquare,
+  MessageCircle,
   Calendar
 } from "lucide-react";
 import { clsx } from "clsx";
@@ -25,6 +26,7 @@ import { useAuth } from "@/context/AuthContext";
 // Updated items to match the Dashboard Main Menu
 const allNavItems = [
   { href: "/dashboard", label: "Main Menu", icon: LayoutDashboard },
+  { href: "/community", label: "Community", icon: MessageCircle },
   { href: "/courses", label: "Courses", icon: BookOpen },
   { href: "/websites", label: "Our Websites", icon: Globe },
   { href: "/lms", label: "LMS Admin", icon: Monitor },
@@ -59,7 +61,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     if (isNewStudent) {
       // New users only see: Courses, Activities, Websites, System Details
       return allNavItems.filter(item =>
-        ["/courses", "/activities", "/websites", "/system"].includes(item.href)
+        ["/courses", "/activities", "/websites", "/system", "/community"].includes(item.href)
       );
     }
 

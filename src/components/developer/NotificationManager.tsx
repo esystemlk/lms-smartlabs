@@ -153,9 +153,9 @@ export function NotificationManager() {
         ) : (
           <div className="grid gap-3">
             {notifications.map((notification) => (
-              <div key={notification.id} className="bg-white p-4 rounded-xl border border-gray-100 flex items-start justify-between group hover:shadow-md transition-all">
+              <div key={notification.id} className="bg-white p-4 rounded-xl border border-gray-100 flex flex-col sm:flex-row items-start justify-between group hover:shadow-md transition-all gap-4">
                 <div className="flex gap-3">
-                  <div className="mt-1 p-2 bg-gray-50 rounded-lg">
+                  <div className="mt-1 p-2 bg-gray-50 rounded-lg flex-shrink-0">
                     {getTypeIcon(notification.type)}
                   </div>
                   <div>
@@ -168,12 +168,15 @@ export function NotificationManager() {
                   </div>
                 </div>
                 
-                <button 
-                  onClick={() => handleDelete(notification.id)}
-                  className="text-gray-400 hover:text-red-500 p-2 opacity-0 group-hover:opacity-100 transition-all"
-                >
-                  <Trash2 size={18} />
-                </button>
+                <div className="flex justify-end w-full sm:w-auto">
+                  <button 
+                    onClick={() => handleDelete(notification.id)}
+                    className="text-red-400 hover:text-red-500 p-2 sm:opacity-0 sm:group-hover:opacity-100 transition-all"
+                    title="Delete Notification"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
               </div>
             ))}
           </div>

@@ -1,17 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Course } from "@/lib/types";
-import { Search, Filter, MoreVertical, Eye, Trash2, BookOpen, Edit, CheckCircle, XCircle } from "lucide-react";
+import { Course, Enrollment } from "@/lib/types";
+import { Search, Filter, MoreVertical, Eye, Trash2, BookOpen, Edit, CheckCircle, XCircle, Users } from "lucide-react";
 import { courseService } from "@/services/courseService";
 import { useRouter } from "next/navigation";
 
 interface CoursesTabProps {
   courses: Course[];
+  enrollments?: Enrollment[];
   onCourseUpdated: () => void;
 }
 
-export function CoursesTab({ courses, onCourseUpdated }: CoursesTabProps) {
+export function CoursesTab({ courses, enrollments = [], onCourseUpdated }: CoursesTabProps) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
@@ -96,7 +97,12 @@ export function CoursesTab({ courses, onCourseUpdated }: CoursesTabProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {filteredCourses.map((course) => (
+            {filteredCourses.map((course) => {
+              const studentCount = enrollments.filter(e => e.courseId === course.id).length;
+              const courseRevenue = enrollments
+                .filter(e => e.courseId === course.id)
+                .reduce((sum, e) => sum + (e.amount || 0), 0);
+              return (
               <tr key={course.id} className="hover:bg-gray-50/50 transition-colors">
                 <td className="px-4 py-3 md:px-6 md:py-4">
                   <div className="flex items-center gap-3">
@@ -117,7 +123,18 @@ export function CoursesTab({ courses, onCourseUpdated }: CoursesTabProps) {
                   <div className="text-xs md:text-sm text-gray-900">{course.instructorName}</div>
                 </td>
                 <td className="px-4 py-3 md:px-6 md:py-4">
-                  <span className="text-xs md:text-sm text-gray-500">{course.lessonsCount} Lessons</span>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-xs md:text-sm text-gray-500">{course.lessonsCount} Lessons</span>
+                    <div className="flex items-center gap-2 text-[11px] md:text-xs text-gray-600">
+                      <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 rounded-full">
+                        <Users size={12} className="text-gray-400" />
+                        <span>{studentCount}</span>
+                      </div>
+                      <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
+                        <span>LKR {courseRevenue.toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
                 </td>
                 <td className="px-4 py-3 md:px-6 md:py-4">
                   <button 
@@ -163,7 +180,8 @@ export function CoursesTab({ courses, onCourseUpdated }: CoursesTabProps) {
                   </div>
                 </td>
               </tr>
-            ))}
+            );
+            })}
           </tbody>
         </table>
       </div>

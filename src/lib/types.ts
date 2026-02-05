@@ -14,6 +14,8 @@ export interface UserData {
   bio?: string;
   photoURL?: string;
   enrolledBatches?: string[]; // List of batch IDs the user is enrolled in
+  enrolledCourses?: string[]; // List of course IDs
+  favorites?: string[]; // List of favorite course IDs
   preferences?: {
     emailNotifications?: boolean;
     pushNotifications?: boolean;
@@ -31,6 +33,16 @@ export interface UserData {
   [key: string]: any;
 }
 
+export interface Note {
+  id?: string;
+  userId: string;
+  lessonId: string;
+  courseId: string;
+  content: string;
+  createdAt: any;
+  updatedAt: any;
+}
+
 export interface Course {
   id: string;
   title: string;
@@ -40,7 +52,9 @@ export interface Course {
   lecturerId?: string;
   lecturerName?: string;
   image?: string;
-  price?: number;
+  price?: number; // Deprecated: Use priceLKR instead
+  priceLKR?: number;
+  priceUSD?: number;
   published: boolean;
   lessonsCount: number;
 
@@ -49,6 +63,7 @@ export interface Course {
   category?: string;
   tags?: string[];
   prerequisites?: string[];
+  learningOutcomes?: string[];
   includesCertificate?: boolean;
 
   // New: Resource Access
@@ -56,6 +71,42 @@ export interface Course {
 
   createdAt: any; // Firestore Timestamp
   updatedAt: any; // Firestore Timestamp
+}
+
+export interface Assignment {
+  id: string;
+  courseId: string;
+  batchId?: string; // Optional: assign to specific batch
+  title: string;
+  description: string;
+  dueDate: any; // Firestore Timestamp
+  points: number;
+  attachments?: { name: string; url: string }[];
+  createdAt: any;
+  updatedAt: any;
+}
+
+export interface AssignmentSubmission {
+  id: string;
+  assignmentId: string;
+  studentId: string;
+  studentName: string;
+  content?: string; // Text submission
+  attachments?: { name: string; url: string }[]; // File submission
+  submittedAt: any;
+  grade?: number;
+  feedback?: string;
+  status: 'submitted' | 'graded' | 'late';
+}
+
+export interface Resource {
+  id: string;
+  courseId: string;
+  title: string;
+  description?: string;
+  type: 'pdf' | 'video' | 'link' | 'archive' | 'other';
+  url: string;
+  createdAt: any;
 }
 
 export interface Lesson {
@@ -97,6 +148,28 @@ export interface RecordedClass {
   durationMinutes?: number;
 }
 
+export interface CommunityMessage {
+  id: string;
+  content: string;
+  senderId: string;
+  senderName: string;
+  senderRole: UserRole;
+  senderPhotoURL?: string;
+  type: 'text' | 'voice' | 'image' | 'link';
+  mediaUrl?: string; // For voice/image
+  metadata?: {
+    title?: string;
+    description?: string;
+    thumbnail?: string;
+  };
+  createdAt: any; // Firestore Timestamp
+  replyTo?: string; // ID of message being replied to
+  replyToId?: string; // Explicit ID of the message being replied to
+  replyToName?: string; // Name of the user being replied to
+  replyToContent?: string; // Snippet of the content being replied to
+  isEdited?: boolean;
+}
+
 export interface Batch {
   id: string;
   courseId: string;
@@ -126,14 +199,19 @@ export interface Enrollment {
   batchId: string;
   batchName: string;
 
-  status: 'pending' | 'active' | 'rejected' | 'expired';
-  paymentMethod: 'card' | 'transfer';
+  status: 'pending' | 'active' | 'rejected' | 'expired' | 'completed';
+  paymentMethod: 'card' | 'transfer' | 'admin';
   paymentProofUrl?: string; // For bank transfers
   amount: number;
 
   validUntil: any; // Firestore Timestamp
   enrolledAt: any; // Firestore Timestamp
   updatedAt: any; // Firestore Timestamp
+  
+  // Progress Tracking
+  progress?: number; // 0-100 percentage
+  completedLessonIds?: string[]; // IDs of completed lessons
+  lastAccessed?: any; // Firestore Timestamp
 }
 
 export interface Question {
@@ -194,4 +272,33 @@ export interface ChatMessage {
   mediaUrl?: string;
   createdAt: any;
   readBy?: string[];
+}
+
+export interface ActivityLog {
+  id: string;
+  action: string; // e.g., "created_course", "deleted_user"
+  details: string; // Human readable details
+  entityId?: string; // ID of the object affected
+  entityType?: "course" | "user" | "enrollment" | "system" | "batch";
+  performedBy: string; // User ID
+  performedByName: string; // User Name
+  performedByRole: UserRole;
+  createdAt: any; // Timestamp
+  metadata?: any; // JSON object for extra data
+}
+
+export interface SystemSettings {
+  id: string; // usually 'global'
+  siteName: string;
+  maintenanceMode: boolean;
+  announcement?: string;
+  supportEmail?: string;
+  features?: {
+    enableDebugMode?: boolean;
+    enableBetaFeatures?: boolean;
+    enableNewDashboard?: boolean;
+    [key: string]: boolean | undefined;
+  };
+  updatedAt: any;
+  updatedBy?: string;
 }

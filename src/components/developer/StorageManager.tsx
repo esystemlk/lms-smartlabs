@@ -101,20 +101,22 @@ export function StorageManager() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between bg-white p-4 rounded-xl border shadow-sm">
-        <div className="flex items-center gap-2 overflow-hidden">
+      <div className="flex items-center justify-between bg-white p-4 rounded-xl border shadow-sm gap-2">
+        <div className="flex items-center gap-2 overflow-hidden flex-1">
            <button 
              onClick={navigateUp} 
              disabled={currentPath === "/"}
-             className="p-2 hover:bg-gray-100 rounded-lg disabled:opacity-50"
+             className="p-2 hover:bg-gray-100 rounded-lg disabled:opacity-50 flex-shrink-0"
            >
              <ChevronRight className="w-5 h-5 rotate-180" />
            </button>
-           <h2 className="font-mono text-sm truncate">root{currentPath === "/" ? "" : "/" + currentPath.split("/").filter(Boolean).join("/")}</h2>
+           <h2 className="font-mono text-sm truncate" title={`root${currentPath === "/" ? "" : "/" + currentPath.split("/").filter(Boolean).join("/")}`}>
+             root{currentPath === "/" ? "" : "/" + currentPath.split("/").filter(Boolean).join("/")}
+           </h2>
         </div>
         <button 
           onClick={() => fetchItems(currentPath)} 
-          className="p-2 hover:bg-gray-100 rounded-lg"
+          className="p-2 hover:bg-gray-100 rounded-lg flex-shrink-0"
           disabled={loading}
         >
           <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />

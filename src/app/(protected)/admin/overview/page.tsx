@@ -6,7 +6,8 @@ import { useAuth } from "@/context/AuthContext";
 import { OverviewTab } from "@/components/admin/OverviewTab";
 import { userService } from "@/services/userService";
 import { courseService } from "@/services/courseService";
-import { UserData, Course } from "@/lib/types";
+import { enrollmentService } from "@/services/enrollmentService";
+import { UserData, Course, Enrollment } from "@/lib/types";
 import { Loader2, ChevronLeft, LayoutDashboard } from "lucide-react";
 
 export default function AdminOverviewPage() {
@@ -15,6 +16,7 @@ export default function AdminOverviewPage() {
 
     const [users, setUsers] = useState<UserData[]>([]);
     const [courses, setCourses] = useState<Course[]>([]);
+    const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -31,12 +33,14 @@ export default function AdminOverviewPage() {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const [usersData, coursesData] = await Promise.all([
+            const [usersData, coursesData, enrollmentsData] = await Promise.all([
                 userService.getAllUsers(),
-                courseService.getAllCourses()
+                courseService.getAllCourses(),
+                enrollmentService.getAllEnrollments()
             ]);
             setUsers(usersData);
             setCourses(coursesData);
+            setEnrollments(enrollmentsData);
         } catch (error) {
             console.error("Failed to fetch admin data:", error);
         } finally {
@@ -72,7 +76,7 @@ export default function AdminOverviewPage() {
                 </div>
             </div>
 
-            <OverviewTab users={users} courses={courses} loading={loading} />
+            <OverviewTab users={users} courses={courses} enrollments={enrollments} loading={loading} />
         </div>
     );
 }

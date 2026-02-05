@@ -1,24 +1,66 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Save, AlertTriangle, Globe, Lock, Bell } from "lucide-react";
+import { Save, AlertTriangle, Globe, Lock, Bell, Loader2 } from "lucide-react";
+import { settingsService } from "@/services/settingsService";
+import { useToast } from "@/components/ui/Toast";
 
 export function SettingsTab() {
+  const { toast } = useToast();
   const [siteName, setSiteName] = useState("SMART LABS");
   const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [announcement, setAnnouncement] = useState("");
+  const [supportEmail, setSupportEmail] = useState("support@smartlabs.com");
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const handleSave = () => {
-    setSaving(true);
-    // Simulate API call
-    setTimeout(() => {
-      setSaving(false);
-      alert("Settings saved successfully!");
-    }, 1000);
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      setLoading(true);
+      const settings = await settingsService.getSettings();
+      setSiteName(settings.siteName || "SMART LABS");
+      setMaintenanceMode(settings.maintenanceMode || false);
+      setAnnouncement(settings.announcement || "");
+      setSupportEmail(settings.supportEmail || "support@smartlabs.com");
+    } catch (error) {
+      console.error("Failed to fetch settings:", error);
+      toast("Failed to load settings", "error");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+      await settingsService.updateSettings({
+        siteName,
+        maintenanceMode,
+        announcement,
+        supportEmail,
+      });
+      toast("Settings saved successfully!", "success");
+    } catch (error) {
+      console.error("Failed to save settings:", error);
+      toast("Failed to save settings", "error");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -42,7 +84,8 @@ export function SettingsTab() {
             <input 
               type="email" 
               className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
-              defaultValue="support@smartlabs.com"
+              value={supportEmail}
+              onChange={(e) => setSupportEmail(e.target.value)}
             />
           </div>
         </div>

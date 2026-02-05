@@ -43,6 +43,22 @@ export const enrollmentService = {
       receiptUrl = await getDownloadURL(snapshot.ref);
     }
 
+    // Check Prerequisites
+    if (course.prerequisites && course.prerequisites.length > 0) {
+      const userEnrollments = await enrollmentService.getUserEnrollments(userId);
+      const completedCourseIds = userEnrollments
+        .filter(e => e.status === 'completed' || (e.progress === 100))
+        .map(e => e.courseId);
+
+      const hasAllPrerequisites = course.prerequisites.every(prereqId => 
+        completedCourseIds.includes(prereqId)
+      );
+
+      if (!hasAllPrerequisites) {
+        throw new Error("You have not completed the prerequisite courses for this course.");
+      }
+    }
+
     const status = paymentMethod === 'card' ? 'active' : 'pending';
     
     // Calculate validity if active immediately
@@ -93,11 +109,84 @@ export const enrollmentService = {
     return docRef.id;
   },
 
+  // Admin Manual/Bulk Enrollment
+  async adminEnrollUser(
+    userId: string,
+    userEmail: string,
+    userName: string,
+    course: Course, 
+    batch: Batch
+  ) {
+    // Check if already enrolled in this batch to prevent duplicates
+    const q = query(
+      collection(db, ENROLLMENTS_COLLECTION),
+      where("userId", "==", userId),
+      where("batchId", "==", batch.id),
+      where("status", "==", "active")
+    );
+    const snapshot = await getDocs(q);
+    if (!snapshot.empty) {
+      return { success: false, message: "User already enrolled in this batch" };
+    }
+
+    // Calculate validity based on Course settings
+    let validUntil = null;
+    if (course.resourceAvailabilityMonths) {
+      validUntil = Timestamp.fromDate(addMonths(new Date(), course.resourceAvailabilityMonths));
+    }
+
+    const enrollmentData: Omit<Enrollment, "id"> = {
+      userId,
+      userEmail,
+      userName,
+      courseId: course.id,
+      courseTitle: course.title,
+      batchId: batch.id,
+      batchName: batch.name,
+      status: 'active',
+      paymentMethod: 'admin',
+      amount: 0,
+      validUntil,
+      enrolledAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    };
+
+    const docRef = await addDoc(collection(db, ENROLLMENTS_COLLECTION), enrollmentData);
+
+    const batchOp = writeBatch(db);
+    
+    // Update User
+    const userRef = doc(db, USERS_COLLECTION, userId);
+    batchOp.update(userRef, {
+      enrolledBatches: arrayUnion(batch.id),
+      enrolledCourses: arrayUnion(course.id)
+    });
+
+    // Update Batch Count
+    const batchRef = doc(db, COURSES_COLLECTION, course.id, BATCHES_COLLECTION, batch.id);
+    batchOp.update(batchRef, {
+      enrolledCount: increment(1)
+    });
+
+    await batchOp.commit();
+    return { success: true, enrollmentId: docRef.id };
+  },
+
   // Get user's enrollments
   async getUserEnrollments(userId: string) {
     const q = query(
       collection(db, ENROLLMENTS_COLLECTION),
       where("userId", "==", userId),
+      orderBy("enrolledAt", "desc")
+    );
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Enrollment));
+  },
+
+  // Get all enrollments (Admin - for Analytics)
+  async getAllEnrollments() {
+    const q = query(
+      collection(db, ENROLLMENTS_COLLECTION),
       orderBy("enrolledAt", "desc")
     );
     const snapshot = await getDocs(q);
@@ -199,5 +288,40 @@ export const enrollmentService = {
     }
 
     return true;
+  },
+
+  // Mark Lesson as Complete
+  async markLessonComplete(enrollmentId: string, lessonId: string, totalLessons: number) {
+    const enrollmentRef = doc(db, ENROLLMENTS_COLLECTION, enrollmentId);
+    
+    const enrollmentSnap = await getDoc(enrollmentRef);
+    if (!enrollmentSnap.exists()) throw new Error("Enrollment not found");
+    const data = enrollmentSnap.data() as Enrollment;
+    
+    const completed = data.completedLessonIds || [];
+    
+    // If already completed, do nothing but return success
+    if (completed.includes(lessonId)) {
+        return { success: true, progress: data.progress || 0 };
+    }
+
+    const newCompleted = [...completed, lessonId];
+    // Calculate progress (capped at 100)
+    const progress = Math.min(100, Math.round((newCompleted.length / totalLessons) * 100));
+    
+    const updates: Record<string, unknown> = {
+        completedLessonIds: arrayUnion(lessonId),
+        progress: progress,
+        lastAccessed: serverTimestamp(),
+        updatedAt: serverTimestamp()
+    };
+
+    if (progress === 100) {
+        updates.status = 'completed';
+    }
+    
+    await updateDoc(enrollmentRef, updates);
+    
+    return { success: true, progress };
   }
 };

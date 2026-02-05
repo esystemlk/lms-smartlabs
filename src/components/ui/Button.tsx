@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { motion, HTMLMotionProps } from "framer-motion";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "ghost";
+  variant?: "primary" | "secondary" | "outline" | "ghost" | "destructive";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
 }
@@ -21,6 +21,7 @@ const Button = forwardRef<HTMLButtonElement, MotionButtonProps>(
       secondary: "bg-primary text-white hover:bg-blue-700 shadow-md shadow-blue-200 focus:ring-primary",
       outline: "border-2 border-gray-200 bg-transparent hover:bg-gray-50 text-gray-700",
       ghost: "bg-transparent hover:bg-gray-100 text-gray-700",
+      destructive: "bg-red-600 text-white hover:bg-red-700 shadow-md shadow-red-200 focus:ring-red-500",
     };
 
     const sizes = {

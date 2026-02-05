@@ -6,6 +6,7 @@ import { Search, Filter, Shield, MoreVertical, Check, X, UserPlus } from "lucide
 import { userService } from "@/services/userService";
 import { Button } from "@/components/ui/Button";
 import { AddUserModal } from "./AddUserModal";
+import { BulkEnrollmentModal } from "./BulkEnrollmentModal";
 
 interface UsersTabProps {
   users: UserData[];
@@ -19,6 +20,7 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
   const [selectedRole, setSelectedRole] = useState<UserRole>("student");
   const [updating, setUpdating] = useState(false);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
+  const [showBulkEnrollModal, setShowBulkEnrollModal] = useState(false);
 
   const filteredUsers = users.filter(user => {
     const matchesSearch =
@@ -98,6 +100,15 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
             </div>
           </div>
 
+          <Button
+            onClick={() => setShowBulkEnrollModal(true)}
+            variant="outline"
+            className="w-full md:w-auto text-sm whitespace-nowrap"
+          >
+            <UserPlus className="w-4 h-4 mr-2" />
+            Bulk Enroll
+          </Button>
+          
           <Button
             onClick={() => setShowAddUserModal(true)}
             variant="secondary"
@@ -218,6 +229,17 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
             alert("User created successfully!");
           }}
           defaultRole="lecturer" // Default to lecturer as per request
+        />
+      )}
+
+      {showBulkEnrollModal && (
+        <BulkEnrollmentModal
+          onClose={() => setShowBulkEnrollModal(false)}
+          onSuccess={() => {
+            setShowBulkEnrollModal(false);
+            // No need to refresh user list, but maybe show a success toast?
+            // The modal handles its own results display.
+          }}
         />
       )}
     </div>

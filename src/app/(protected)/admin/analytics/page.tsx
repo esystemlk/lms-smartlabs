@@ -6,7 +6,8 @@ import { useAuth } from "@/context/AuthContext";
 import { AnalyticsTab } from "@/components/admin/AnalyticsTab";
 import { userService } from "@/services/userService";
 import { courseService } from "@/services/courseService";
-import { UserData, Course } from "@/lib/types";
+import { enrollmentService } from "@/services/enrollmentService";
+import { UserData, Course, Enrollment } from "@/lib/types";
 import { Loader2, ChevronLeft, BarChart2 } from "lucide-react";
 
 export default function AdminAnalyticsPage() {
@@ -15,6 +16,7 @@ export default function AdminAnalyticsPage() {
 
     const [users, setUsers] = useState<UserData[]>([]);
     const [courses, setCourses] = useState<Course[]>([]);
+    const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -31,12 +33,14 @@ export default function AdminAnalyticsPage() {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const [usersData, coursesData] = await Promise.all([
+            const [usersData, coursesData, enrollmentsData] = await Promise.all([
                 userService.getAllUsers(),
-                courseService.getAllCourses()
+                courseService.getAllCourses(),
+                enrollmentService.getAllEnrollments()
             ]);
             setUsers(usersData);
             setCourses(coursesData);
+            setEnrollments(enrollmentsData);
         } catch (error) {
             console.error("Failed to fetch analytics data:", error);
         } finally {
@@ -77,7 +81,7 @@ export default function AdminAnalyticsPage() {
                     <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
                 </div>
             ) : (
-                <AnalyticsTab users={users} courses={courses} />
+                <AnalyticsTab users={users} courses={courses} enrollments={enrollments} />
             )}
         </div>
     );

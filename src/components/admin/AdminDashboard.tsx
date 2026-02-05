@@ -11,7 +11,8 @@ import {
 } from "lucide-react";
 import { userService } from "@/services/userService";
 import { courseService } from "@/services/courseService";
-import { UserData, Course } from "@/lib/types";
+import { enrollmentService } from "@/services/enrollmentService";
+import { UserData, Course, Enrollment } from "@/lib/types";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/context/AuthContext";
@@ -21,6 +22,7 @@ export function AdminDashboard() {
   const { userData } = useAuth();
   const [users, setUsers] = useState<UserData[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,12 +32,14 @@ export function AdminDashboard() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [usersData, coursesData] = await Promise.all([
+      const [usersData, coursesData, enrollmentsData] = await Promise.all([
         userService.getAllUsers(),
-        courseService.getAllCourses()
+        courseService.getAllCourses(),
+        enrollmentService.getAllEnrollments()
       ]);
       setUsers(usersData);
       setCourses(coursesData);
+      setEnrollments(enrollmentsData);
     } catch (error) {
       console.error("Failed to fetch admin data:", error);
     } finally {
@@ -47,6 +51,9 @@ export function AdminDashboard() {
   const totalStudents = users.filter(u => u.role === 'student').length;
   const totalLecturers = users.filter(u => u.role === 'lecturer').length;
   const activeCourses = courses.filter(c => c.published).length;
+  const totalRevenue = enrollments.reduce((sum, e) => sum + (e.amount || 0), 0);
+  const activeEnrollments = enrollments.filter(e => e.status === 'active').length;
+  
   const recentUsers = users.slice(0, 5);
   const recentCourses = courses.slice(0, 4);
 
@@ -125,11 +132,11 @@ export function AdminDashboard() {
           loading={loading}
         />
         <StatCard 
-          title="System Status" 
-          value="98%" 
-          label="Uptime"
-          icon={Activity} 
-          trend="Good" 
+          title="Total Revenue" 
+          value={`$${totalRevenue.toLocaleString()}`}
+          label=""
+          icon={DollarSign} 
+          trend="Lifetime" 
           trendUp={true}
           color="orange"
           loading={loading}
@@ -253,44 +260,52 @@ export function AdminDashboard() {
             </div>
           </motion.div>
 
-          {/* System Health / Developer */}
+          {/* Business Overview */}
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
-            className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-6 text-white shadow-lg"
+            className="bg-gradient-to-br from-brand-blue to-blue-700 rounded-3xl p-6 text-white shadow-lg"
           >
             <div className="flex items-center gap-3 mb-4">
               <div className="p-2 bg-white/10 rounded-xl">
-                <Shield className="w-5 h-5 text-emerald-400" />
+                <Activity className="w-5 h-5 text-blue-200" />
               </div>
               <div>
-                <h3 className="font-bold">System Status</h3>
-                <p className="text-xs text-gray-400">All systems operational</p>
+                <h3 className="font-bold">Platform Overview</h3>
+                <p className="text-xs text-blue-200">Real-time business metrics</p>
               </div>
             </div>
             
             <div className="space-y-3 mt-6">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-400">Server Load</span>
-                <span className="font-mono text-emerald-400">12%</span>
+                <span className="text-blue-100">Active Enrollments</span>
+                <span className="font-mono text-white">{activeEnrollments}</span>
               </div>
               <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-emerald-500 h-full w-[12%]" />
+                <div 
+                  className="bg-white h-full transition-all duration-1000" 
+                  style={{ width: `${totalStudents > 0 ? (activeEnrollments / totalStudents) * 100 : 0}%` }} 
+                />
               </div>
               
               <div className="flex items-center justify-between text-sm mt-4">
-                <span className="text-gray-400">Memory Usage</span>
-                <span className="font-mono text-blue-400">45%</span>
+                <span className="text-blue-100">Conversion Rate</span>
+                <span className="font-mono text-white">
+                  {totalStudents > 0 ? ((activeEnrollments / totalStudents) * 100).toFixed(1) : 0}%
+                </span>
               </div>
               <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-blue-500 h-full w-[45%]" />
+                <div 
+                  className="bg-emerald-400 h-full transition-all duration-1000" 
+                  style={{ width: `${totalStudents > 0 ? (activeEnrollments / totalStudents) * 100 : 0}%` }} 
+                />
               </div>
             </div>
 
             <div className="mt-6 pt-4 border-t border-white/10">
-               <Link href="/developer" className="flex items-center justify-center gap-2 w-full py-2 bg-white/5 hover:bg-white/10 rounded-xl text-sm font-medium transition-colors">
-                 Open Developer Console
+               <Link href="/admin/analytics" className="flex items-center justify-center gap-2 w-full py-2 bg-white/10 hover:bg-white/20 rounded-xl text-sm font-medium transition-colors">
+                 View Detailed Analytics
                </Link>
             </div>
           </motion.div>

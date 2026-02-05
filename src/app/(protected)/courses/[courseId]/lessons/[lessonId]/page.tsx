@@ -19,10 +19,14 @@ import {
   PictureInPicture2,
   Lightbulb,
   LightbulbOff,
-  Video
+  Video,
+  StickyNote,
+  Save
 } from "lucide-react";
 import { clsx } from "clsx";
 import { courseService } from "@/services/courseService";
+import { enrollmentService } from "@/services/enrollmentService";
+import { noteService } from "@/services/noteService";
 import { Lesson } from "@/lib/types";
 
 export default function LessonPage() {
@@ -48,6 +52,76 @@ export default function LessonPage() {
 
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Progress Tracking
+  const [enrollmentId, setEnrollmentId] = useState<string | null>(null);
+  const [completedLessonIds, setCompletedLessonIds] = useState<string[]>([]);
+  const isCompleted = completedLessonIds.includes(lessonId);
+  const [markingComplete, setMarkingComplete] = useState(false);
+
+  // Personal Notes
+  const [myNote, setMyNote] = useState("");
+  const [isSavingNote, setIsSavingNote] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+
+  useEffect(() => {
+    const loadNote = async () => {
+      if (!userData) return;
+      const note = await noteService.getNote(userData.uid, lessonId);
+      if (note) {
+        setMyNote(note.content);
+        if (note.updatedAt) {
+          setLastSaved(note.updatedAt.toDate ? note.updatedAt.toDate() : new Date(note.updatedAt));
+        }
+      }
+    };
+    loadNote();
+  }, [userData, lessonId]);
+
+  const handleSaveNote = async () => {
+    if (!userData) return;
+    setIsSavingNote(true);
+    try {
+      await noteService.saveNote(userData.uid, courseId, lessonId, myNote);
+      setLastSaved(new Date());
+    } catch (error) {
+      console.error("Failed to save note:", error);
+    } finally {
+      setIsSavingNote(false);
+    }
+  };
+
+  useEffect(() => {
+    const checkCompletion = async () => {
+        if (!userData) return;
+        try {
+            const enrollments = await enrollmentService.getUserEnrollments(userData.uid);
+            const active = enrollments.find(e => e.courseId === courseId && e.status === 'active');
+            if (active) {
+                setEnrollmentId(active.id);
+                setCompletedLessonIds(active.completedLessonIds || []);
+            }
+        } catch (error) {
+            console.error("Error checking completion:", error);
+        }
+    };
+    if (!loading) {
+        checkCompletion();
+    }
+  }, [userData, courseId, loading]);
+
+  const handleMarkComplete = async () => {
+    if (!enrollmentId || isCompleted) return;
+    setMarkingComplete(true);
+    try {
+        await enrollmentService.markLessonComplete(enrollmentId, lessonId, lessons.length);
+        setCompletedLessonIds(prev => [...prev, lessonId]);
+    } catch (error) {
+        console.error("Error marking complete:", error);
+    } finally {
+        setMarkingComplete(false);
+    }
+  };
 
   useEffect(() => {
     const fetchLessons = async () => {
@@ -231,19 +305,83 @@ export default function LessonPage() {
             {/* Module/Section info could go here if added to data model */}
             
             <div className="flex flex-wrap gap-3 md:gap-4 mb-6 md:mb-8">
-              {/* Placeholder actions */}
-              <Button variant="secondary" className="gap-2 h-9 text-sm">
-                <CheckCircle size={16} />
-                Mark as Complete
+              <Button 
+                variant={isCompleted ? "outline" : "secondary"} 
+                className={clsx("gap-2 h-9 text-sm transition-all", isCompleted && "text-green-600 border-green-200 bg-green-50 hover:bg-green-100")}
+                onClick={handleMarkComplete}
+                disabled={markingComplete || isCompleted || !enrollmentId}
+              >
+                {markingComplete ? <Loader2 size={16} className="animate-spin" /> : <CheckCircle size={16} />}
+                {isCompleted ? "Completed" : "Mark as Complete"}
               </Button>
             </div>
 
-            <div className="prose max-w-none text-sm md:text-base">
+            <div className="prose max-w-none text-sm md:text-base mb-8">
               <h3 className="font-bold text-base md:text-lg">Lesson Notes</h3>
               <div className="text-gray-600 whitespace-pre-wrap mt-2">
                 {currentLesson.content || "No notes available for this lesson."}
               </div>
             </div>
+
+            {/* Personal Notes Section */}
+            <div className="bg-yellow-50/50 border border-yellow-100 rounded-2xl p-4 md:p-6 mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2 text-yellow-800">
+                  <StickyNote size={20} />
+                  <h3 className="font-bold text-base md:text-lg">My Private Notes</h3>
+                </div>
+                {lastSaved && (
+                  <span className="text-xs text-yellow-600/70">
+                    Saved {lastSaved.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                )}
+              </div>
+              <textarea
+                value={myNote}
+                onChange={(e) => setMyNote(e.target.value)}
+                placeholder="Type your personal notes here... only you can see this."
+                className="w-full min-h-[150px] p-4 rounded-xl border-yellow-200 bg-white/80 focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all resize-y text-sm md:text-base"
+              />
+              <div className="flex justify-end mt-3">
+                <Button 
+                  onClick={handleSaveNote} 
+                  disabled={isSavingNote}
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white gap-2"
+                  size="sm"
+                >
+                  {isSavingNote ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
+                  Save Notes
+                </Button>
+              </div>
+            </div>
+
+            {currentLesson.attachments && currentLesson.attachments.length > 0 && (
+              <div className="mt-8 border-t border-gray-100 pt-6">
+                <h3 className="font-bold text-base md:text-lg mb-4">Resources</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {currentLesson.attachments.map((attachment, idx) => (
+                    <a 
+                      key={idx}
+                      href={attachment.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 p-3 rounded-lg border border-gray-200 hover:border-brand-blue hover:bg-blue-50 transition-all group"
+                    >
+                      <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-white text-gray-500 group-hover:text-brand-blue transition-colors">
+                        <FileText size={20} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 truncate group-hover:text-brand-blue">
+                          {attachment.name}
+                        </p>
+                        <p className="text-xs text-gray-500">Download Resource</p>
+                      </div>
+                      <Download size={16} className="text-gray-400 group-hover:text-brand-blue" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -261,6 +399,8 @@ export default function LessonPage() {
           <div className="divide-y divide-gray-100 pb-20 md:pb-0">
             {lessons.map((lesson, index) => {
               const isActive = lesson.id === lessonId;
+              const isLessonCompleted = completedLessonIds.includes(lesson.id);
+              
               return (
                 <Link
                   key={lesson.id}
@@ -271,13 +411,14 @@ export default function LessonPage() {
                   )}
                   onClick={() => setShowSidebar(false)}
                 >
-                  <div className="mt-0.5 text-gray-400">
-                    <Circle size={14} className="md:w-4 md:h-4" />
+                  <div className={clsx("mt-0.5", isLessonCompleted ? "text-green-500" : "text-gray-400")}>
+                    {isLessonCompleted ? <CheckCircle size={14} className="md:w-4 md:h-4" /> : <Circle size={14} className="md:w-4 md:h-4" />}
                   </div>
                   <div>
                     <p className={clsx(
                       "text-sm font-medium line-clamp-2",
-                      isActive ? "text-brand-blue" : "text-gray-700"
+                      isActive ? "text-brand-blue" : "text-gray-700",
+                      isLessonCompleted && !isActive && "text-gray-500"
                     )}>
                       {index + 1}. {lesson.title}
                     </p>

@@ -4,12 +4,14 @@ import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { useAuth } from "@/context/AuthContext";
 import { useAccessibility } from "@/context/AccessibilityContext";
+import { useTheme } from "@/context/ThemeContext";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { VoiceNavigator } from "@/components/features/VoiceNavigator";
 import { usePWAInstall } from "@/hooks/usePWAInstall";
+import { useCurrency } from "@/context/CurrencyContext";
 import { InstallPrompt } from "@/components/features/InstallPrompt";
 import {
   User,
@@ -23,7 +25,11 @@ import {
   LayoutDashboard,
   Download,
   Accessibility,
-  ShieldAlert
+  ShieldAlert,
+  Sun,
+  Moon,
+  Monitor,
+  DollarSign
 } from "lucide-react";
 import { clsx } from "clsx";
 
@@ -34,6 +40,8 @@ interface HeaderProps {
 export function Header({ onMenuClick }: HeaderProps) {
   const { userData } = useAuth();
   const { toggleMenu } = useAccessibility();
+  const { theme, setTheme } = useTheme();
+  const { currency, setCurrency } = useCurrency();
   const router = useRouter();
   const pathname = usePathname();
   const isDashboard = pathname === "/dashboard";
@@ -232,23 +240,84 @@ export function Header({ onMenuClick }: HeaderProps) {
                     </button>
                   )}
                 </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      className={clsx(
-                        active ? 'bg-gray-50 text-brand-blue' : 'text-gray-700',
-                        'group flex w-full items-center rounded-lg px-2 py-2 text-sm'
-                      )}
-                      onClick={() => toggleMenu()}
-                    >
-                      <Accessibility className="mr-2 h-4 w-4" />
-                      Accessibility
-                    </button>
-                  )}
-                </Menu.Item>
               </div>
+
+              {/* Theme Toggles */}
+              <div className="p-1 border-t border-gray-100">
+                <div className="px-2 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Theme</div>
+                <div className="flex items-center gap-1 px-2 pb-2">
+                  <button
+                    onClick={() => setTheme('light')}
+                    className={clsx(
+                      "flex-1 flex items-center justify-center p-2 rounded-lg transition-all",
+                      theme === 'light' 
+                        ? "bg-blue-50 text-brand-blue ring-1 ring-blue-200 shadow-sm" 
+                        : "text-gray-500 hover:bg-gray-100"
+                    )}
+                    title="Light Mode"
+                  >
+                    <Sun size={16} />
+                  </button>
+                  <button
+                    onClick={() => setTheme('dark')}
+                    className={clsx(
+                      "flex-1 flex items-center justify-center p-2 rounded-lg transition-all",
+                      theme === 'dark' 
+                        ? "bg-gray-800 text-white shadow-sm" 
+                        : "text-gray-500 hover:bg-gray-100"
+                    )}
+                    title="Dark Mode"
+                  >
+                    <Moon size={16} />
+                  </button>
+                  <button
+                    onClick={() => setTheme('system')}
+                    className={clsx(
+                      "flex-1 flex items-center justify-center p-2 rounded-lg transition-all",
+                      theme === 'system' 
+                        ? "bg-gray-100 text-gray-900 ring-1 ring-gray-200 shadow-sm" 
+                        : "text-gray-500 hover:bg-gray-100"
+                    )}
+                    title="System Default"
+                  >
+                    <Monitor size={16} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Currency Toggles */}
+              <div className="p-1 border-t border-gray-100">
+                <div className="px-2 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Currency</div>
+                <div className="flex items-center gap-1 px-2 pb-2">
+                  <button
+                    onClick={() => setCurrency('LKR')}
+                    className={clsx(
+                      "flex-1 flex items-center justify-center p-2 rounded-lg transition-all text-xs font-bold",
+                      currency === 'LKR' 
+                        ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 shadow-sm" 
+                        : "text-gray-500 hover:bg-gray-100"
+                    )}
+                    title="Sri Lankan Rupee"
+                  >
+                    LKR
+                  </button>
+                  <button
+                    onClick={() => setCurrency('USD')}
+                    className={clsx(
+                      "flex-1 flex items-center justify-center p-2 rounded-lg transition-all text-xs font-bold",
+                      currency === 'USD' 
+                        ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 shadow-sm" 
+                        : "text-gray-500 hover:bg-gray-100"
+                    )}
+                    title="US Dollar"
+                  >
+                    USD
+                  </button>
+                </div>
+              </div>
+
               <div className="p-1">
-                {userData?.role === "admin" && (
+                {userData?.role === 'admin' && (
                   <Menu.Item>
                     {({ active }) => (
                       <button

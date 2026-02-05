@@ -168,7 +168,9 @@ export default function LMSPage() {
               </div>
               <div>
                 <p className="text-sm text-gray-500 font-medium">Assignments</p>
-                <h4 className="text-2xl font-bold text-gray-900">0 Pending</h4>
+                <Link href="/lms/assignments" className="text-2xl font-bold text-gray-900 hover:text-brand-blue transition-colors">
+                  Check Status
+                </Link>
               </div>
             </div>
           </div>
@@ -217,7 +219,7 @@ export default function LMSPage() {
             </div>
           </Link>
 
-          <Link href="#" className="group">
+          <Link href="/lms/assignments" className="group">
             <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all h-full">
               <div className="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-600 mb-4 group-hover:scale-110 transition-transform">
                 <FileText size={28} />
@@ -227,7 +229,7 @@ export default function LMSPage() {
             </div>
           </Link>
 
-          <Link href="#" className="group">
+          <Link href="/lms/resources" className="group">
             <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all h-full">
               <div className="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 mb-4 group-hover:scale-110 transition-transform">
                 <Download size={28} />
@@ -237,7 +239,7 @@ export default function LMSPage() {
             </div>
           </Link>
            
-           <Link href="#" className="group">
+           <Link href="/lms/exams" className="group">
             <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all h-full">
               <div className="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center text-red-600 mb-4 group-hover:scale-110 transition-transform">
                 <BookOpen size={28} />
@@ -247,7 +249,7 @@ export default function LMSPage() {
             </div>
           </Link>
 
-          <Link href="#" className="group">
+          <Link href="/lms/timetable" className="group">
             <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all h-full">
               <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center text-green-600 mb-4 group-hover:scale-110 transition-transform">
                 <Calendar size={28} />

@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { CoursesTab } from "@/components/admin/CoursesTab";
 import { courseService } from "@/services/courseService";
-import { Course } from "@/lib/types";
+import { enrollmentService } from "@/services/enrollmentService";
+import { Course, Enrollment } from "@/lib/types";
 import { Loader2, ChevronLeft, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
@@ -15,6 +16,7 @@ export default function AdminCoursesPage() {
     const router = useRouter();
 
     const [courses, setCourses] = useState<Course[]>([]);
+    const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -31,10 +33,14 @@ export default function AdminCoursesPage() {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const coursesData = await courseService.getAllCourses();
+            const [coursesData, enrollmentsData] = await Promise.all([
+                courseService.getAllCourses(),
+                enrollmentService.getAllEnrollments()
+            ]);
             setCourses(coursesData);
+            setEnrollments(enrollmentsData);
         } catch (error) {
-            console.error("Failed to fetch courses:", error);
+            console.error("Failed to fetch data:", error);
         } finally {
             setLoading(false);
         }
@@ -81,7 +87,7 @@ export default function AdminCoursesPage() {
                     <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
                 </div>
             ) : (
-                <CoursesTab courses={courses} onCourseUpdated={fetchData} />
+                <CoursesTab courses={courses} enrollments={enrollments} onCourseUpdated={fetchData} />
             )}
         </div>
     );

@@ -135,14 +135,19 @@ export default function SupportPage() {
       recorder.onstop = async () => {
         const blob = new Blob(chunks, { type: "audio/webm" });
         if (selectedChatId && userData) {
-          await chatService.sendMessage(
-            selectedChatId,
-            userData.uid,
-            userData.name,
-            "Voice Message",
-            "voice",
-            blob
-          );
+          try {
+            const url = await chatService.uploadMedia(blob, `voice-messages/${selectedChatId}/${Date.now()}.webm`);
+            await chatService.sendMessage(
+              selectedChatId,
+              userData.uid,
+              userData.name,
+              "Voice Message",
+              "voice",
+              url
+            );
+          } catch (error) {
+            console.error("Failed to send voice message:", error);
+          }
         }
         stream.getTracks().forEach(track => track.stop());
       };

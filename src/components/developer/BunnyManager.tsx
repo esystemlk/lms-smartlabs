@@ -161,12 +161,12 @@ export function BunnyManager() {
       </div>
 
       {/* Upload Section */}
-      <div className="bg-white p-6 rounded-xl border shadow-sm space-y-4">
+      <div className="bg-white p-4 md:p-6 rounded-xl border shadow-sm space-y-4">
         <h3 className="text-lg font-semibold flex items-center gap-2">
           <Upload className="w-5 h-5 text-green-500" />
           Upload Recording
         </h3>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
            <input 
              type="file" 
              accept="video/*"
@@ -181,7 +181,7 @@ export function BunnyManager() {
            <button 
              onClick={handleUpload}
              disabled={!uploadFile || uploading}
-             className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+             className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap w-full sm:w-auto"
            >
              {uploading ? `Uploading ${Math.round(uploadProgress)}%` : "Upload & Save"}
            </button>
@@ -207,17 +207,17 @@ export function BunnyManager() {
         
         <div className="divide-y max-h-[500px] overflow-y-auto">
           {videos.map((video) => (
-            <div key={video.guid} className="p-4 flex items-center justify-between hover:bg-gray-50">
+            <div key={video.guid} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between hover:bg-gray-50 gap-4">
               <div className="flex items-center gap-3">
-                 <div className="w-16 h-10 bg-gray-200 rounded flex items-center justify-center">
+                 <div className="w-16 h-10 bg-gray-200 rounded flex items-center justify-center flex-shrink-0">
                    <Play className="w-5 h-5 text-gray-400" />
                  </div>
-                 <div>
-                   <p className="font-medium text-sm text-gray-900">{video.title}</p>
+                 <div className="min-w-0">
+                   <p className="font-medium text-sm text-gray-900 truncate">{video.title}</p>
                    <p className="text-xs text-gray-500">{video.guid} • {Math.round(video.length / 60)} mins</p>
                  </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
                 <span className={`text-xs px-2 py-1 rounded-full ${video.status === 1 ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
                    {video.status === 1 ? 'Processing' : 'Ready'}
                 </span>

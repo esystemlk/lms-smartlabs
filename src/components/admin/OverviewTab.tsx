@@ -1,13 +1,18 @@
-import { Users, BookOpen, Layers, Activity } from "lucide-react";
-import { UserData, Course } from "@/lib/types";
+import { Users, BookOpen, Layers, Activity, DollarSign } from "lucide-react";
+import { UserData, Course, Enrollment } from "@/lib/types";
+import { ActivityLogWidget } from "./ActivityLogWidget";
+import { QuickActionsWidget } from "./QuickActionsWidget";
 
 interface OverviewTabProps {
   users: UserData[];
   courses: Course[];
+  enrollments?: Enrollment[];
   loading: boolean;
 }
 
-export function OverviewTab({ users, courses, loading }: OverviewTabProps) {
+export function OverviewTab({ users, courses, enrollments = [], loading }: OverviewTabProps) {
+  const totalRevenue = enrollments.reduce((sum, e) => sum + (e.amount || 0), 0);
+
   const stats = [
     {
       title: "Total Users",
@@ -24,11 +29,11 @@ export function OverviewTab({ users, courses, loading }: OverviewTabProps) {
       description: "Active learning paths"
     },
     {
-      title: "Published Courses",
-      value: courses.filter(c => c.published).length,
-      icon: Layers,
+      title: "Total Revenue",
+      value: `$${totalRevenue.toLocaleString()}`,
+      icon: DollarSign,
       color: "bg-purple-500",
-      description: "Visible to students"
+      description: "Lifetime earnings"
     },
     {
       title: "System Status",
@@ -49,9 +54,9 @@ export function OverviewTab({ users, courses, loading }: OverviewTabProps) {
         {stats.map((stat) => (
           <div key={stat.title} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className={`p-3 rounded-xl ${stat.color} bg-opacity-10 text-${stat.color.replace("bg-", "")} text-white`}>
-                <stat.icon size={24} className="text-gray-900" /> 
-                {/* Note: Tailwind dynamic classes might be tricky, let's fix color logic */}
+              <div className={`p-3 rounded-xl bg-opacity-10 text-white ${stat.color} ${stat.color.replace('bg-', 'text-').replace('500', '600')}`}>
+                 {/* Fixed text color logic implicitly by applying specific classes if needed, but for now relying on style prop or standard classes */}
+                 <stat.icon size={24} className="text-inherit" /> 
               </div>
               <span className="text-2xl font-bold text-gray-900">{stat.value}</span>
             </div>
@@ -61,9 +66,9 @@ export function OverviewTab({ users, courses, loading }: OverviewTabProps) {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Users Widget */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 lg:col-span-1">
           <h3 className="text-lg font-bold text-gray-900 mb-4">Newest Members</h3>
           <div className="space-y-4">
             {users.slice(0, 5).map(user => (
@@ -89,8 +94,15 @@ export function OverviewTab({ users, courses, loading }: OverviewTabProps) {
           </div>
         </div>
 
-        {/* Recent Courses Widget */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        {/* Activity Log - Takes up 2 columns */}
+        <div className="lg:col-span-2">
+            <ActivityLogWidget />
+        </div>
+      </div>
+      
+      {/* Recent Courses Widget - Moved to bottom or separate row if needed, but let's keep it grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
           <h3 className="text-lg font-bold text-gray-900 mb-4">Latest Courses</h3>
           <div className="space-y-4">
             {courses.slice(0, 5).map(course => (
@@ -109,6 +121,11 @@ export function OverviewTab({ users, courses, loading }: OverviewTabProps) {
               </div>
             ))}
           </div>
+        </div>
+        
+        {/* Quick Actions Widget */}
+        <div className="h-full">
+           <QuickActionsWidget />
         </div>
       </div>
     </div>

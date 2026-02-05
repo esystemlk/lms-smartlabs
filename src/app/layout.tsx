@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Playfair_Display, Text_Me_One } from "next/font/goog
 import { AuthProvider } from "@/context/AuthContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { AccessibilityProvider } from "@/context/AccessibilityContext";
+import { CurrencyProvider } from "@/context/CurrencyContext";
 import { TitleBar } from "@/components/layout/TitleBar";
 import { AccessibilityMenu } from "@/components/accessibility/AccessibilityMenu";
 import { AccessibilityWidget } from "@/components/accessibility-widget";
@@ -54,13 +55,15 @@ export default function RootLayout({
       >
         <AuthProvider>
           <ThemeProvider>
-            <AccessibilityProvider>
-              <ToastProvider>
-                <TitleBar />
-                {children}
-                <AccessibilityWidget />
-              </ToastProvider>
-            </AccessibilityProvider>
+            <CurrencyProvider>
+              <AccessibilityProvider>
+                <ToastProvider>
+                  <TitleBar />
+                  {children}
+                  <AccessibilityWidget />
+                </ToastProvider>
+              </AccessibilityProvider>
+            </CurrencyProvider>
           </ThemeProvider>
         </AuthProvider>
       </body>

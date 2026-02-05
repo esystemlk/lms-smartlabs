@@ -1,114 +1,134 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
-interface CustomTheme {
-  primary: string;
-  background: string;
-  foreground: string;
-  card: string;
-  sidebar: string;
+type Theme = "dark" | "light" | "system";
+
+interface ThemeProviderProps {
+  children: React.ReactNode;
+  defaultTheme?: Theme;
+  storageKey?: string;
 }
 
-const DEFAULT_THEME: CustomTheme = {
-  primary: "#0056D2",
-  background: "#ffffff",
-  foreground: "#1a1a1a",
-  card: "#ffffff",
-  sidebar: "#ffffff",
-};
-
-const DEFAULT_DARK_THEME: CustomTheme = {
-  primary: "#3b82f6",
-  background: "#0f172a",
-  foreground: "#f8fafc",
-  card: "#1e293b",
-  sidebar: "#1e293b",
-};
+import { UserData } from "@/lib/types";
+import { deleteField } from "firebase/firestore";
 
 interface ThemeContextType {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
   isCompact: boolean;
+  customTheme?: UserData['preferences']['customTheme'];
+  updateTheme: (theme: NonNullable<UserData['preferences']['customTheme']>) => Promise<void>;
+  resetTheme: () => Promise<void>;
   isDark: boolean;
-  customTheme: CustomTheme;
-  updateTheme: (newTheme: Partial<CustomTheme>) => void;
-  resetTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType>({
-  isCompact: false,
-  isDark: false,
-  customTheme: DEFAULT_THEME,
-  updateTheme: () => { },
-  resetTheme: () => { },
-});
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
+export function ThemeProvider({
+  children,
+  defaultTheme = "system",
+  storageKey = "ui-theme",
+}: ThemeProviderProps) {
+  const [theme, setThemeState] = useState<Theme>(defaultTheme);
   const { userData } = useAuth();
 
-  // Default to false if preferences are missing
-  const isDark = userData?.preferences?.darkMode ?? false;
-  const isCompact = userData?.preferences?.compactMode ?? false;
-
-  // Load custom theme from user preferences or fallback to defaults
-  const [customTheme, setCustomTheme] = useState<CustomTheme>(DEFAULT_THEME);
-
+  // Load from local storage on mount
   useEffect(() => {
-    if (userData?.preferences?.customTheme) {
-      setCustomTheme({ ...DEFAULT_THEME, ...userData.preferences.customTheme });
-    } else {
-      setCustomTheme(isDark ? DEFAULT_DARK_THEME : DEFAULT_THEME);
+    const savedTheme = localStorage.getItem(storageKey) as Theme;
+    if (savedTheme) {
+      setThemeState(savedTheme);
     }
-  }, [userData, isDark]);
+  }, [storageKey]);
 
+  // Sync with user preferences if logged in
   useEffect(() => {
-    // Apply custom CSS variables
-    const root = document.documentElement;
-    root.style.setProperty("--brand-blue", customTheme.primary);
-    root.style.setProperty("--background", customTheme.background);
-    root.style.setProperty("--foreground", customTheme.foreground);
-    root.style.setProperty("--card-bg", customTheme.card);
-    // Add more variables as needed
-  }, [customTheme]);
-
-  useEffect(() => {
-    // Handle Dark Mode class
-    const root = document.documentElement;
-    if (isDark) {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
+    if (userData?.preferences?.darkMode !== undefined) {
+      const userTheme = userData.preferences.darkMode ? "dark" : "light";
+      if (userTheme !== theme) {
+        setThemeState(userTheme);
+      }
     }
-  }, [isDark]);
+  }, [userData]);
 
   useEffect(() => {
-    // Handle Compact Mode class
-    if (isCompact) {
-      document.body.classList.add("compact");
-    } else {
-      document.body.classList.remove("compact");
-    }
-  }, [isCompact]);
+    const root = window.document.documentElement;
 
-  const updateTheme = (newTheme: Partial<CustomTheme>) => {
-    setCustomTheme(prev => {
-      const updated = { ...prev, ...newTheme };
-      // Here you would typically also save to Firebase
-      return updated;
-    });
+    root.classList.remove("light", "dark");
+
+    if (theme === "system") {
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+        .matches
+        ? "dark"
+        : "light";
+
+      root.classList.add(systemTheme);
+      return;
+    }
+
+    root.classList.add(theme);
+  }, [theme]);
+
+  const setTheme = async (newTheme: Theme) => {
+    localStorage.setItem(storageKey, newTheme);
+    setThemeState(newTheme);
+
+    // Persist to Firestore if user is logged in
+    if (userData) {
+      try {
+        const userRef = doc(db, "users", userData.uid);
+        await updateDoc(userRef, {
+          "preferences.darkMode": newTheme === "dark"
+        });
+      } catch (error) {
+        console.error("Failed to save theme preference:", error);
+      }
+    }
   };
 
-  const resetTheme = () => {
-    const defaultTheme = isDark ? DEFAULT_DARK_THEME : DEFAULT_THEME;
-    setCustomTheme(defaultTheme);
-    // Also reset in Firebase if needed
+  const isCompact = userData?.preferences?.compactMode ?? false;
+  const customTheme = userData?.preferences?.customTheme;
+  const isDark = theme === "dark" || (theme === "system" && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  const updateTheme = async (newTheme: NonNullable<UserData['preferences']['customTheme']>) => {
+    if (!userData) return;
+    try {
+      const userRef = doc(db, "users", userData.uid);
+      await updateDoc(userRef, {
+        "preferences.customTheme": newTheme
+      });
+    } catch (error) {
+      console.error("Failed to update custom theme:", error);
+    }
+  };
+
+  const resetTheme = async () => {
+    if (!userData) return;
+    try {
+      const userRef = doc(db, "users", userData.uid);
+      await updateDoc(userRef, {
+        "preferences.customTheme": deleteField()
+      });
+    } catch (error) {
+      console.error("Failed to reset theme:", error);
+    }
   };
 
   return (
-    <ThemeContext.Provider value={{ isCompact, isDark, customTheme, updateTheme, resetTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, isCompact, customTheme, updateTheme, resetTheme, isDark }}>
       {children}
     </ThemeContext.Provider>
   );
 }
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+
+  if (context === undefined)
+    throw new Error("useTheme must be used within a ThemeProvider");
+
+  return context;
+};

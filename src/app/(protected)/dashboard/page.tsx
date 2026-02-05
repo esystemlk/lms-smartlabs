@@ -3,9 +3,13 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { GreetingWidget } from "@/components/features/GreetingWidget";
+import { LearningStats } from "@/components/features/LearningStats";
+import { UpcomingSchedule } from "@/components/features/UpcomingSchedule";
 import { notificationService, Notification } from "@/services/notificationService";
 import { Button } from "@/components/ui/Button";
 import { motion, AnimatePresence } from "framer-motion";
+import { enrollmentService } from "@/services/enrollmentService";
+import { Enrollment } from "@/lib/types";
 import { 
   BookOpen, 
   Globe, 
@@ -23,7 +27,9 @@ import {
   ArrowRight,
   Search,
   LayoutGrid,
-  Layers
+  Layers,
+  PlayCircle,
+  Clock
 } from "lucide-react";
 import Link from "next/link";
 import { clsx } from "clsx";
@@ -31,6 +37,8 @@ import { clsx } from "clsx";
 export default function DashboardPage() {
   const { userData } = useAuth();
   const [latestNotification, setLatestNotification] = useState<Notification | null>(null);
+  const [lastEnrolled, setLastEnrolled] = useState<Enrollment | null>(null);
+  const [loadingEnrollment, setLoadingEnrollment] = useState(true);
 
   useEffect(() => {
     const fetchNotifs = async () => {
@@ -46,6 +54,30 @@ export default function DashboardPage() {
     fetchNotifs();
   }, []);
 
+  useEffect(() => {
+    const fetchLastEnrollment = async () => {
+      if (!userData) return;
+      try {
+        const enrollments = await enrollmentService.getUserEnrollments(userData.uid);
+        const active = enrollments.filter(e => e.status === 'active');
+        if (active.length > 0) {
+          // Sort by lastAccessed or enrolledAt
+          active.sort((a, b) => {
+             const timeA = a.lastAccessed?.seconds || a.enrolledAt?.seconds || 0;
+             const timeB = b.lastAccessed?.seconds || b.enrolledAt?.seconds || 0;
+             return timeB - timeA;
+          });
+          setLastEnrolled(active[0]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch enrollments", error);
+      } finally {
+        setLoadingEnrollment(false);
+      }
+    };
+    fetchLastEnrollment();
+  }, [userData]);
+
   const menuItems = [
     {
       title: "LMS Portal",
@@ -53,6 +85,15 @@ export default function DashboardPage() {
       icon: GraduationCap,
       href: "/lms",
       gradient: "from-blue-500 to-blue-600",
+      roles: ["student", "lecturer", "admin", "superadmin", "developer"],
+      category: "Learning Hub"
+    },
+    {
+      title: "Community",
+      description: "Chat with students & instructors",
+      icon: Users,
+      href: "/community",
+      gradient: "from-pink-500 to-rose-600",
       roles: ["student", "lecturer", "admin", "superadmin", "developer"],
       category: "Learning Hub"
     },
@@ -123,7 +164,7 @@ export default function DashboardPage() {
       title: "System Status",
       description: "Analytics & performance monitoring",
       icon: BarChart2,
-      href: "/system-status",
+      href: "/admin/analytics",
       gradient: "from-slate-700 to-slate-800",
       roles: ["admin", "superadmin", "developer"],
       category: "System"
@@ -202,41 +243,70 @@ export default function DashboardPage() {
               </Link>
             </motion.div>
           )}
+
+          {/* Continue Learning Widget */}
+          {lastEnrolled && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-3xl p-6 shadow-lg text-white relative overflow-hidden group"
+            >
+              {/* Decorative Elements */}
+              <div className="absolute top-0 right-0 p-8 opacity-10 transform translate-x-10 -translate-y-10 group-hover:scale-110 transition-transform duration-700">
+                <GraduationCap size={180} />
+              </div>
+
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-medium mb-4">
+                  <Clock size={16} />
+                  <span>Continue Learning</span>
+                </div>
+
+                <h3 className="text-2xl font-bold mb-2 pr-10">{lastEnrolled.courseTitle}</h3>
+                <p className="text-gray-400 mb-6">{lastEnrolled.batchName}</p>
+
+                {/* Progress Bar (Mocked/Real) */}
+                <div className="space-y-2 mb-6 max-w-md">
+                  <div className="flex justify-between text-xs font-medium text-gray-400">
+                    <span>Progress</span>
+                    <span>{lastEnrolled.progress || 15}%</span>
+                  </div>
+                  <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-brand-blue rounded-full transition-all duration-1000 ease-out"
+                      style={{ width: `${lastEnrolled.progress || 15}%` }}
+                    />
+                  </div>
+                </div>
+
+                <Link href={`/courses/${lastEnrolled.courseId}`}>
+                  <Button className="bg-white text-gray-900 hover:bg-gray-100 border-0 rounded-xl px-6 py-2 h-auto font-bold shadow-lg shadow-gray-900/20">
+                    <PlayCircle size={18} className="mr-2 text-brand-blue" />
+                    Resume Course
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Upcoming Schedule (New) */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+             <UpcomingSchedule userData={userData} />
+          </motion.div>
         </div>
 
-        {/* Quick Stats Widget */}
+        {/* Learning Stats Widget (Replaces Quick Stats) */}
         <motion.div 
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-sm border border-gray-100/50 flex flex-col justify-between hover:shadow-lg transition-all duration-500"
+          className="h-full"
         >
-          <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <div className="p-2 bg-purple-50 rounded-xl">
-                <Activity className="text-purple-500" size={20} />
-              </div>
-              Your Overview
-            </h3>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-white rounded-2xl border border-gray-50 shadow-sm">
-                <span className="text-gray-500 text-sm font-medium">Role</span>
-                <span className="font-bold text-gray-900 capitalize px-3 py-1 bg-gray-50 rounded-lg text-xs">{userData?.role || 'Guest'}</span>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-white rounded-2xl border border-gray-50 shadow-sm">
-                <span className="text-gray-500 text-sm font-medium">Status</span>
-                <span className="font-bold text-green-600 flex items-center gap-1.5 text-xs bg-green-50 px-3 py-1 rounded-lg">
-                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Active
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="mt-6 pt-6 border-t border-gray-100">
-             <Link href="/profile">
-               <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl py-6 shadow-lg shadow-gray-200">
-                 View Profile
-               </Button>
-             </Link>
-          </div>
+          <LearningStats userData={userData} />
         </motion.div>
       </div>
 

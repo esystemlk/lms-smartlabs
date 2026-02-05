@@ -1,149 +1,173 @@
-import {
-  collection,
-  addDoc,
-  updateDoc,
-  doc,
-  query,
-  where,
-  orderBy,
-  onSnapshot,
+import { 
+  collection, 
+  addDoc, 
+  query, 
+  orderBy, 
+  limit, 
+  onSnapshot, 
   serverTimestamp,
+  doc,
+  deleteDoc,
+  updateDoc,
+  where,
   getDocs,
-  limit,
-  increment,
-  getDoc
+  increment
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "@/lib/firebase";
-import { SupportChat, ChatMessage, UserRole } from "@/lib/types";
+import { CommunityMessage, ChatMessage, SupportChat } from "@/lib/types";
+
+const COMMUNITY_COLLECTION = "community_messages";
+const SUPPORT_CHATS_COLLECTION = "chats";
 
 export const chatService = {
-  // --- Chat Management ---
+  // ==========================================
+  // COMMUNITY CHAT (Global)
+  // ==========================================
 
-  // Get or Create a chat for a specific user
-  async getUserChat(userId: string): Promise<string> {
-    // Check for existing active/pending chat
+  // Subscribe to community messages
+  subscribeToCommunityMessages: (callback: (messages: CommunityMessage[]) => void, messageLimit = 50) => {
     const q = query(
-      collection(db, "support_chats"),
-      where("userId", "==", userId),
-      where("status", "in", ["active", "pending"]),
-      limit(1)
+      collection(db, COMMUNITY_COLLECTION),
+      orderBy("createdAt", "desc"),
+      limit(messageLimit)
     );
 
-    const snapshot = await getDocs(q);
-
-    if (!snapshot.empty) {
-      return snapshot.docs[0].id;
-    }
-
-    return "";
+    return onSnapshot(q, (snapshot) => {
+      const messages = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as CommunityMessage[];
+      callback(messages.reverse()); // Show oldest first in chat UI
+    });
   },
 
-  async createChat(userId: string, userName: string, userEmail: string, userRole: UserRole): Promise<string> {
-    const existingId = await this.getUserChat(userId);
+  // Send a community message
+  sendCommunityMessage: async (message: Omit<CommunityMessage, "id" | "createdAt">) => {
+    try {
+      await addDoc(collection(db, COMMUNITY_COLLECTION), {
+        ...message,
+        createdAt: serverTimestamp()
+      });
+    } catch (error) {
+      console.error("Error sending community message:", error);
+      throw error;
+    }
+  },
+
+  // Update a community message
+  updateCommunityMessage: async (messageId: string, content: string) => {
+    try {
+      const msgRef = doc(db, COMMUNITY_COLLECTION, messageId);
+      await updateDoc(msgRef, {
+        content,
+        isEdited: true
+      });
+    } catch (error) {
+      console.error("Error updating community message:", error);
+      throw error;
+    }
+  },
+
+  // Delete a community message
+  deleteCommunityMessage: async (messageId: string) => {
+    try {
+      await deleteDoc(doc(db, COMMUNITY_COLLECTION, messageId));
+    } catch (error) {
+      console.error("Error deleting community message:", error);
+      throw error;
+    }
+  },
+
+  // Upload voice/media (Shared)
+  uploadMedia: async (file: Blob, path: string) => {
+    try {
+      const storageRef = ref(storage, path);
+      const snapshot = await uploadBytes(storageRef, file);
+      return await getDownloadURL(snapshot.ref);
+    } catch (error) {
+      console.error("Error uploading media:", error);
+      throw error;
+    }
+  },
+
+  // ==========================================
+  // SUPPORT CHAT (Private 1-on-1)
+  // ==========================================
+
+  // Get existing chat for a user
+  getUserChat: async (userId: string): Promise<string | null> => {
+    const q = query(
+      collection(db, SUPPORT_CHATS_COLLECTION),
+      where("userId", "==", userId),
+      limit(1)
+    );
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) return null;
+    return snapshot.docs[0].id;
+  },
+
+  // Create a new support chat
+  createChat: async (userId: string, userName: string, userEmail: string, userRole: string): Promise<string> => {
+    // Check if exists first
+    const existingId = await chatService.getUserChat(userId);
     if (existingId) return existingId;
 
-    const chatRef = await addDoc(collection(db, "support_chats"), {
+    const chatData: Omit<SupportChat, "id"> = {
       userId,
       userName,
       userEmail,
       userRole,
-      status: "pending",
+      status: "active",
+      unreadByAdmin: 0,
+      unreadByUser: 0,
       lastMessage: "Chat started",
       lastMessageAt: serverTimestamp(),
-      unreadByUser: 0,
-      unreadByAdmin: 0,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
-    });
+    };
 
-    return chatRef.id;
+    const docRef = await addDoc(collection(db, SUPPORT_CHATS_COLLECTION), chatData);
+    return docRef.id;
   },
 
-  // --- Messaging ---
-
-  async sendMessage(
-    chatId: string,
-    senderId: string,
-    senderName: string,
-    text: string,
-    type: "text" | "voice" | "image" | "link" = "text",
-    file?: File | Blob,
-    isStaff: boolean = false
-  ) {
-    let mediaUrl = "";
-
-    if (file) {
-      const storageRef = ref(storage, `chat-media/${chatId}/${Date.now()}_${type}`);
-      await uploadBytes(storageRef, file);
-      mediaUrl = await getDownloadURL(storageRef);
-    }
-
-    // Add message
-    await addDoc(collection(db, "support_messages"), {
-      chatId,
-      senderId,
-      senderName,
-      text,
-      type,
-      mediaUrl,
-      createdAt: serverTimestamp(),
-      readBy: [senderId]
-    });
-
-    // Update chat metadata and unread counts
-    const chatRef = doc(db, "support_chats", chatId);
-
-    await updateDoc(chatRef, {
-      lastMessage: type === "text" ? text : `Sent a ${type}`,
-      lastMessageAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-      // If staff sends it, increment user count. If user sends it, increment admin count.
-      unreadByAdmin: isStaff ? 0 : increment(1),
-      unreadByUser: isStaff ? increment(1) : 0,
-      status: "active" // Ensure it's active once messages flow
-    });
-  },
-
-  async updateUnreadCount(chatId: string, recipientType: "user" | "admin") {
-    // This needs proper transaction or atomic increment
-    // For this MVP, we will skip complex atomic counters and rely on client-side calculation or "mark as read"
-  },
-
-  async markAsRead(chatId: string, userId: string, userRole: UserRole) {
-    // In a real app, we would update the "readBy" array of messages
-    // Or just reset the counter on the chat object
-    const chatRef = doc(db, "support_chats", chatId);
-    const isStaff = ["admin", "superadmin", "developer", "service"].includes(userRole);
-
-    if (isStaff) {
-      await updateDoc(chatRef, { unreadByAdmin: 0 });
-    } else {
-      await updateDoc(chatRef, { unreadByUser: 0 });
-    }
-  },
-
-  async closeChat(chatId: string) {
-    await updateDoc(doc(db, "support_chats", chatId), {
-      status: "closed",
-      updatedAt: serverTimestamp()
-    });
-  },
-
-  // --- Subscriptions ---
-
-  subscribeToChat(chatId: string, callback: (chat: SupportChat) => void) {
-    return onSnapshot(doc(db, "support_chats", chatId), (doc) => {
-      if (doc.exists()) {
-        callback({ id: doc.id, ...doc.data() } as SupportChat);
-      }
-    });
-  },
-
-  subscribeToMessages(chatId: string, callback: (messages: ChatMessage[]) => void) {
+  // Subscribe to ALL chats (Admin view)
+  subscribeToAllChats: (callback: (chats: SupportChat[]) => void) => {
     const q = query(
-      collection(db, "support_messages"),
-      where("chatId", "==", chatId),
+      collection(db, SUPPORT_CHATS_COLLECTION),
+      orderBy("lastMessageAt", "desc")
+    );
+
+    return onSnapshot(q, (snapshot) => {
+      const chats = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as SupportChat[];
+      callback(chats);
+    });
+  },
+
+  // Subscribe to USER'S chats (Student view)
+  subscribeToUserChats: (userId: string, callback: (chats: SupportChat[]) => void) => {
+    const q = query(
+      collection(db, SUPPORT_CHATS_COLLECTION),
+      where("userId", "==", userId),
+      orderBy("lastMessageAt", "desc")
+    );
+
+    return onSnapshot(q, (snapshot) => {
+      const chats = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })) as SupportChat[];
+      callback(chats);
+    });
+  },
+
+  // Subscribe to messages in a specific chat
+  subscribeToMessages: (chatId: string, callback: (messages: ChatMessage[]) => void) => {
+    const q = query(
+      collection(db, SUPPORT_CHATS_COLLECTION, chatId, "messages"),
       orderBy("createdAt", "asc")
     );
 
@@ -151,40 +175,69 @@ export const chatService = {
       const messages = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
-      } as ChatMessage));
+      })) as ChatMessage[];
       callback(messages);
     });
   },
 
-  subscribeToAllChats(callback: (chats: SupportChat[]) => void) {
-    const q = query(
-      collection(db, "support_chats"),
-      orderBy("updatedAt", "desc")
-    );
+  // Send a message in a specific chat
+  sendMessage: async (
+    chatId: string, 
+    senderId: string, 
+    senderName: string, 
+    text: string, 
+    type: "text" | "voice" | "image" | "file" | "link" = "text",
+    mediaUrl?: string,
+    isStaff: boolean = false
+  ) => {
+    try {
+      // 1. Add message to subcollection
+      const messageData: Omit<ChatMessage, "id"> = {
+        chatId,
+        senderId,
+        senderName,
+        text,
+        type,
+        mediaUrl,
+        createdAt: serverTimestamp(),
+        readBy: [senderId]
+      };
 
-    return onSnapshot(q, (snapshot) => {
-      const chats = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as SupportChat));
-      callback(chats);
-    });
+      await addDoc(collection(db, SUPPORT_CHATS_COLLECTION, chatId, "messages"), messageData);
+
+      // 2. Update chat metadata (last message, unread counts)
+      const updateData: any = {
+        lastMessage: type === 'text' ? text : `Sent a ${type}`,
+        lastMessageAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      };
+
+      if (isStaff) {
+        updateData.unreadByUser = increment(1);
+      } else {
+        updateData.unreadByAdmin = increment(1);
+      }
+
+      await updateDoc(doc(db, SUPPORT_CHATS_COLLECTION, chatId), updateData);
+
+    } catch (error) {
+      console.error("Error sending support message:", error);
+      throw error;
+    }
   },
 
-  // For regular users to see their own chats
-  subscribeToUserChats(userId: string, callback: (chats: SupportChat[]) => void) {
-    const q = query(
-      collection(db, "support_chats"),
-      where("userId", "==", userId),
-      orderBy("updatedAt", "desc")
-    );
+  // Mark chat as read
+  markAsRead: async (chatId: string, userId: string, role: string) => {
+    const isAdmin = ["admin", "superadmin", "developer", "service"].includes(role);
+    const updateData = isAdmin ? { unreadByAdmin: 0 } : { unreadByUser: 0 };
+    await updateDoc(doc(db, SUPPORT_CHATS_COLLECTION, chatId), updateData);
+  },
 
-    return onSnapshot(q, (snapshot) => {
-      const chats = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as SupportChat));
-      callback(chats);
+  // Close chat
+  closeChat: async (chatId: string) => {
+    await updateDoc(doc(db, SUPPORT_CHATS_COLLECTION, chatId), {
+      status: "closed",
+      updatedAt: serverTimestamp()
     });
   }
 };
