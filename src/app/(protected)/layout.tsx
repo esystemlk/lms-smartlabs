@@ -17,6 +17,7 @@ import { CommandPalette } from "@/components/features/CommandPalette";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
 import { ProfileCompletionModal } from "@/components/features/ProfileCompletionModal";
+import { settingsService } from "@/services/settingsService";
 
 export default function ProtectedLayout({
   children,

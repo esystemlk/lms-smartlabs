@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { userService } from "@/services/userService";
 import { Loader2, Save, UserCheck, AlertCircle } from "lucide-react";
 import { countries } from "@/data/countries";
-import { toast } from "sonner";
+import { useToast } from "@/components/ui/Toast";
 import { useAuth } from "@/context/AuthContext";
 
 interface ProfileCompletionModalProps {
@@ -18,6 +18,7 @@ export function ProfileCompletionModal({ user }: ProfileCompletionModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const { userData } = useAuth(); // Get latest data
+  const { toast } = useToast();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -57,18 +58,18 @@ export function ProfileCompletionModal({ user }: ProfileCompletionModalProps) {
     
     // Validate
     if (!formData.name || !formData.contact || !formData.country) {
-      toast.error("Please fill in all required fields");
+      toast("Please fill in all required fields", "error");
       return;
     }
 
     setLoading(true);
     try {
       await userService.updateProfile(user.uid, formData);
-      toast.success("Profile updated successfully!");
+      toast("Profile updated successfully!", "success");
       setIsOpen(false);
     } catch (error) {
       console.error("Error updating profile:", error);
-      toast.error("Failed to update profile");
+      toast("Failed to update profile", "error");
     } finally {
       setLoading(false);
     }
