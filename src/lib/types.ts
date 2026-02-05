@@ -56,6 +56,7 @@ export interface Course {
   priceLKR?: number;
   priceUSD?: number;
   published: boolean;
+  enrollmentStatus?: 'open' | 'closed'; // New: Control enrollment availability
   lessonsCount: number;
 
   // Advanced Options

@@ -21,7 +21,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             className={twMerge(
-              "block w-full rounded-xl border border-border bg-gray-50 dark:bg-gray-800/50 px-4 py-3 text-gray-900 dark:text-gray-100 outline-none transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary focus:bg-card focus:ring-4 focus:ring-blue-500/10 dark:focus:ring-blue-500/20",
+              "block w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/50 px-4 py-3 text-gray-900 dark:text-gray-100 outline-none transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-brand-blue focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-brand-blue/10 dark:focus:ring-brand-blue/20",
               error && "border-red-500 focus:border-red-500 focus:ring-red-500/10",
               icon && "pr-10",
               className

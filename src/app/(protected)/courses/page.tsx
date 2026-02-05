@@ -64,12 +64,18 @@ export default function CoursesPage() {
   const fetchCourses = async () => {
     try {
       const data = await courseService.getPublishedCourses();
-      setCourses(data);
+      // Filter out closed courses
+      const availableCourses = data.filter(c => c.enrollmentStatus !== 'closed');
+      setCourses(availableCourses);
     } catch (error) {
       console.error("Error fetching courses:", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const isEnrolled = (courseId: string) => {
+    return userData?.enrolledCourses?.includes(courseId);
   };
 
   const handleOpenEnrollModal = async (course: Course) => {
@@ -284,13 +290,23 @@ export default function CoursesPage() {
                     {formatPrice(course.priceLKR || course.price, course.priceUSD)}
                   </span>
                 </div>
-                <Button
-                  onClick={() => handleOpenEnrollModal(course)}
-                  variant="secondary"
-                  className="shadow-lg shadow-blue-500/20 text-xs md:text-sm h-8 md:h-10"
-                >
-                  Enroll Now
-                </Button>
+                {isEnrolled(course.id) ? (
+                  <Button
+                    onClick={() => router.push('/dashboard')}
+                    variant="outline"
+                    className="border-brand-blue text-brand-blue hover:bg-blue-50 text-xs md:text-sm h-8 md:h-10"
+                  >
+                    Continue Learning
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => handleOpenEnrollModal(course)}
+                    variant="secondary"
+                    className="shadow-lg shadow-blue-500/20 text-xs md:text-sm h-8 md:h-10"
+                  >
+                    Enroll Now
+                  </Button>
+                )}
               </div>
             </div>
           </div>

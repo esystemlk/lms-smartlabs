@@ -92,7 +92,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           <div className="flex items-center gap-2">
             <button
               onClick={() => router.back()}
-              className="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors flex items-center gap-1"
+              className="p-2 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors flex items-center gap-1"
               title="Go Back"
             >
               <ChevronLeft size={20} />
@@ -101,7 +101,7 @@ export function Header({ onMenuClick }: HeaderProps) {
             <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 hidden sm:block"></div>
             <button
               onClick={() => router.push('/dashboard')}
-              className="p-2 text-gray-500 dark:text-gray-400 hover:text-brand-blue dark:hover:text-brand-blue hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors flex items-center gap-1"
+              className="p-2 text-gray-700 dark:text-gray-300 hover:text-brand-blue dark:hover:text-brand-blue hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors flex items-center gap-1"
               title="Main Menu"
             >
               <Home size={20} />

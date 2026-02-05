@@ -16,14 +16,14 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { CommandPalette } from "@/components/features/CommandPalette";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
-import { settingsService } from "@/services/settingsService";
+import { ProfileCompletionModal } from "@/components/features/ProfileCompletionModal";
 
 export default function ProtectedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { user, loading, isImpersonating, stopImpersonating, originalRole } = useAuth();
+  const { user, userData, loading, isImpersonating, stopImpersonating, originalRole } = useAuth();
   const { isCompact } = useTheme();
   const router = useRouter();
   const pathname = usePathname();
@@ -93,6 +93,7 @@ export default function ProtectedLayout({
 
   return (
     <div className="min-h-screen bg-background flex transition-colors duration-300 w-full relative overflow-x-hidden">
+      {userData && <ProfileCompletionModal user={userData} />}
       <ScrollProgressBar />
         {/* Mobile Sidebar (Drawer) */}
         <Sidebar

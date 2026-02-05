@@ -37,6 +37,20 @@ export function CoursesTab({ courses, enrollments = [], onCourseUpdated }: Cours
     }
   };
 
+  const handleToggleEnrollment = async (course: Course) => {
+    try {
+      setProcessingId(course.id);
+      // Default to 'open' if undefined. If currently 'closed', switch to 'open', else 'closed'.
+      const newStatus = course.enrollmentStatus === 'closed' ? 'open' : 'closed';
+      await courseService.updateCourse(course.id, { enrollmentStatus: newStatus });
+      onCourseUpdated();
+    } catch (error) {
+      console.error("Failed to update course enrollment status:", error);
+    } finally {
+      setProcessingId(null);
+    }
+  };
+
   const handleDelete = async (courseId: string) => {
     if (!window.confirm("Are you sure you want to delete this course? This action cannot be undone.")) return;
     
@@ -137,21 +151,39 @@ export function CoursesTab({ courses, enrollments = [], onCourseUpdated }: Cours
                   </div>
                 </td>
                 <td className="px-4 py-3 md:px-6 md:py-4">
-                  <button 
-                    onClick={() => handleTogglePublish(course)}
-                    disabled={processingId === course.id}
-                    className={`inline-flex items-center gap-1 md:gap-1.5 px-2 py-0.5 md:px-2.5 md:py-0.5 rounded-full text-[10px] md:text-xs font-medium transition-colors ${
-                      course.published 
-                        ? "bg-green-100 text-green-700 hover:bg-green-200" 
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {course.published ? (
-                      <><CheckCircle size={10} className="md:w-3 md:h-3" /> Published</>
-                    ) : (
-                      <><XCircle size={10} className="md:w-3 md:h-3" /> Draft</>
-                    )}
-                  </button>
+                  <div className="flex flex-col gap-2 items-start">
+                    <button 
+                        onClick={() => handleTogglePublish(course)}
+                        disabled={processingId === course.id}
+                        className={`inline-flex items-center gap-1 md:gap-1.5 px-2 py-0.5 md:px-2.5 md:py-0.5 rounded-full text-[10px] md:text-xs font-medium transition-colors ${
+                        course.published 
+                            ? "bg-green-100 text-green-700 hover:bg-green-200" 
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        }`}
+                    >
+                        {course.published ? (
+                        <><CheckCircle size={10} className="md:w-3 md:h-3" /> Published</>
+                        ) : (
+                        <><XCircle size={10} className="md:w-3 md:h-3" /> Draft</>
+                        )}
+                    </button>
+
+                    <button 
+                        onClick={() => handleToggleEnrollment(course)}
+                        disabled={processingId === course.id}
+                        className={`inline-flex items-center gap-1 md:gap-1.5 px-2 py-0.5 md:px-2.5 md:py-0.5 rounded-full text-[10px] md:text-xs font-medium transition-colors ${
+                        course.enrollmentStatus === 'closed'
+                            ? "bg-red-100 text-red-700 hover:bg-red-200"
+                            : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                        }`}
+                    >
+                        {course.enrollmentStatus === 'closed' ? (
+                        <><XCircle size={10} className="md:w-3 md:h-3" /> Enr. Closed</>
+                        ) : (
+                        <><CheckCircle size={10} className="md:w-3 md:h-3" /> Enr. Open</>
+                        )}
+                    </button>
+                  </div>
                 </td>
                 <td className="px-4 py-3 md:px-6 md:py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
