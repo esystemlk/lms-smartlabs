@@ -32,7 +32,7 @@ export const enrollmentService = {
     userName: string,
     course: Course, 
     batch: Batch,
-    paymentMethod: 'card' | 'transfer',
+    paymentMethod: 'card' | 'transfer' | 'payhere',
     amount: number,
     receiptFile?: File
   ) {
@@ -59,7 +59,7 @@ export const enrollmentService = {
       }
     }
 
-    const status = paymentMethod === 'card' ? 'active' : 'pending';
+    const status = paymentMethod === 'card' ? 'active' : (paymentMethod === 'payhere' ? 'pending_payment' : 'pending');
     
     // Calculate validity if active immediately
     let validUntil = null;

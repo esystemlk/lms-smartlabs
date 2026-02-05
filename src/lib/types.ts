@@ -199,8 +199,8 @@ export interface Enrollment {
   batchId: string;
   batchName: string;
 
-  status: 'pending' | 'active' | 'rejected' | 'expired' | 'completed';
-  paymentMethod: 'card' | 'transfer' | 'admin';
+  status: 'pending' | 'active' | 'rejected' | 'expired' | 'completed' | 'pending_payment';
+  paymentMethod: 'card' | 'transfer' | 'admin' | 'payhere';
   paymentProofUrl?: string; // For bank transfers
   amount: number;
 

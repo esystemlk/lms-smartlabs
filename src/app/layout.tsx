@@ -8,6 +8,7 @@ import { TitleBar } from "@/components/layout/TitleBar";
 import { AccessibilityMenu } from "@/components/accessibility/AccessibilityMenu";
 import { AccessibilityWidget } from "@/components/accessibility-widget";
 import { ToastProvider } from "@/components/ui/Toast";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -67,6 +68,7 @@ export default function RootLayout({
           </ThemeProvider>
         </AuthProvider>
       </body>
+      <Script src="https://www.payhere.lk/lib/payhere.js" strategy="lazyOnload" />
     </html>
   );
 }

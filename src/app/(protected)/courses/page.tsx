@@ -25,6 +25,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { Course, Batch } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
+import { PayHereCheckout } from "@/components/payment/PayHereCheckout";
 
 export default function CoursesPage() {
   const router = useRouter();
@@ -46,6 +47,15 @@ export default function CoursesPage() {
   const [enrolling, setEnrolling] = useState(false);
   const [enrollSuccess, setEnrollSuccess] = useState(false); // For Card (Active)
   const [pendingApproval, setPendingApproval] = useState(false); // For Transfer (Pending)
+
+  // PayHere State
+  const [showPayHere, setShowPayHere] = useState(false);
+  const [payHereConfig, setPayHereConfig] = useState<{
+    orderId: string;
+    items: string;
+    amount: number;
+    currency: string;
+  } | null>(null);
 
   useEffect(() => {
     fetchCourses();
@@ -100,6 +110,30 @@ export default function CoursesPage() {
       const priceLKR = selectedCourse.priceLKR || selectedCourse.price || 0;
       const priceUSD = selectedCourse.priceUSD || 0;
       const finalAmount = currency === 'USD' && priceUSD > 0 ? priceUSD : priceLKR;
+      const finalCurrency = currency === 'USD' && priceUSD > 0 ? 'USD' : 'LKR';
+
+      if (paymentMethod === 'card') {
+        const enrollmentId = await enrollmentService.createEnrollment(
+            userData.uid,
+            userData.email,
+            userData.name,
+            selectedCourse,
+            selectedBatch,
+            'payhere',
+            finalAmount,
+            undefined
+        );
+
+        setPayHereConfig({
+            orderId: enrollmentId,
+            items: `${selectedCourse.title} - ${selectedBatch.name}`,
+            amount: finalAmount,
+            currency: finalCurrency
+        });
+        setShowPayHere(true);
+        setEnrolling(false);
+        return;
+      }
 
       await enrollmentService.createEnrollment(
         userData.uid,
@@ -112,15 +146,8 @@ export default function CoursesPage() {
         receiptFile || undefined
       );
 
-      if (paymentMethod === 'card') {
-        setEnrollSuccess(true);
-        setTimeout(() => {
-          router.push("/dashboard");
-        }, 2000);
-      } else {
+      if (paymentMethod === 'transfer') {
         setPendingApproval(true);
-        // Pending approval doesn't redirect immediately or redirects to dashboard with pending status
-        // User asked for "RED NOTIFICATION"
       }
     } catch (error) {
       console.error("Enrollment failed:", error);
@@ -460,8 +487,8 @@ export default function CoursesPage() {
                           {paymentMethod === 'card' ? (
                             <div className="space-y-4">
                               <div className="p-4 border border-blue-100 bg-blue-50 rounded-xl text-center">
-                                <p className="text-sm text-blue-800 font-medium">Mock Payment Gateway</p>
-                                <p className="text-xs text-blue-600 mt-1">Click "Pay Now" to simulate a successful transaction.</p>
+                                <p className="text-sm text-blue-800 font-medium">Secure Online Payment</p>
+                                <p className="text-xs text-blue-600 mt-1">Pay securely via PayHere (Cards, Genie, EzCash, etc.)</p>
                               </div>
                               <div className="flex justify-between items-center text-sm font-medium">
                                 <span>Total Amount:</span>
@@ -530,6 +557,25 @@ export default function CoursesPage() {
           </div>
         </Dialog>
       </Transition>
+
+      {showPayHere && payHereConfig && userData && (
+        <PayHereCheckout
+            orderId={payHereConfig.orderId}
+            items={payHereConfig.items}
+            amount={payHereConfig.amount}
+            currency={payHereConfig.currency}
+            userData={userData}
+            sandbox={true}
+            onDismiss={() => {
+                setShowPayHere(false);
+                setPayHereConfig(null);
+            }}
+            onError={(err) => {
+                setShowPayHere(false);
+                alert("Payment Error: " + err);
+            }}
+        />
+      )}
     </div>
   );
 }
