@@ -20,6 +20,14 @@ const PALETTES = [
     { name: "Black", primary: "#000000" },
 ];
 
+const DEFAULT_THEME = {
+    primary: "#0056D2",
+    background: "#ffffff",
+    foreground: "#0f172a",
+    card: "#ffffff",
+    sidebar: "#f8fafc"
+};
+
 export default function AppearanceSettingsPage() {
     const { userData, user } = useAuth();
     const { customTheme, updateTheme, resetTheme, isDark } = useTheme();
@@ -32,7 +40,7 @@ export default function AppearanceSettingsPage() {
     });
 
     // Local state for color pickers to allow immediate feedback before saving
-    const [localTheme, setLocalTheme] = useState(customTheme);
+    const [localTheme, setLocalTheme] = useState(customTheme || DEFAULT_THEME);
 
     useEffect(() => {
         if (userData?.preferences) {
@@ -41,7 +49,7 @@ export default function AppearanceSettingsPage() {
     }, [userData]);
 
     useEffect(() => {
-        setLocalTheme(customTheme);
+        setLocalTheme(customTheme || DEFAULT_THEME);
     }, [customTheme]);
 
     const handlePreferenceUpdate = async (key: string, value: boolean) => {
@@ -60,8 +68,9 @@ export default function AppearanceSettingsPage() {
         }
     };
 
-    const handleColorChange = (key: keyof typeof customTheme, value: string) => {
-        const newTheme = { ...localTheme, [key]: value };
+    const handleColorChange = (key: keyof typeof DEFAULT_THEME, value: string) => {
+        const baseTheme = localTheme || DEFAULT_THEME;
+        const newTheme = { ...baseTheme, [key]: value };
         setLocalTheme(newTheme);
         updateTheme(newTheme); // Apply immediately to context for live preview
     };

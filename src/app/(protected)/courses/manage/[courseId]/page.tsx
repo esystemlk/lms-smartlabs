@@ -422,6 +422,7 @@ export default function EditCoursePage() {
     try {
       // Create a recording object
       const recordingData = {
+        id: Date.now().toString(),
         title: newRecording.title,
         videoUrl: newRecording.videoUrl,
         date: newRecording.date,

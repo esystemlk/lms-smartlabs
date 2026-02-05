@@ -7,7 +7,6 @@ import {
   query, 
   orderBy, 
   serverTimestamp,
-  where,
   limit 
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -19,7 +18,8 @@ export interface Notification {
   title: string;
   message: string;
   type: NotificationType;
-  createdAt: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  createdAt: any; // Using any to support both Timestamp and serialized dates
   createdBy?: string; // Admin/Dev ID
   targetRoles?: string[]; // e.g. ['student', 'lecturer']
   link?: string; // Optional link to resource

@@ -13,7 +13,8 @@ import { useToast } from "@/components/ui/Toast";
 
 export default function QuizPage({ params }: { params: { id: string } }) {
   const { id } = params;
-  const { toast } = useToast();useAuth();
+  const { toast } = useToast();
+  const { userData } = useAuth();
   const router = useRouter();
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [loading, setLoading] = useState(true);

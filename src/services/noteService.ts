@@ -16,6 +16,7 @@ export const noteService = {
     const noteSnap = await getDoc(noteRef);
     const exists = noteSnap.exists();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any = {
       userId,
       courseId,

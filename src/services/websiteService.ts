@@ -17,7 +17,8 @@ export interface Website {
   url: string;
   description: string;
   category?: string;
-  createdAt: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  createdAt: any; // Using any to support both Timestamp and serialized dates
 }
 
 const COLLECTION_NAME = "websites";

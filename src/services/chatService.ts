@@ -206,6 +206,7 @@ export const chatService = {
       await addDoc(collection(db, SUPPORT_CHATS_COLLECTION, chatId, "messages"), messageData);
 
       // 2. Update chat metadata (last message, unread counts)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const updateData: any = {
         lastMessage: type === 'text' ? text : `Sent a ${type}`,
         lastMessageAt: serverTimestamp(),

@@ -114,7 +114,7 @@ export const bunnyService = {
     return true;
   },
 
-  getVideoUrl(videoId: string, cdnHostname?: string) {
+  getVideoUrl(videoId: string, _cdnHostname?: string) {
     // If cdnHostname is provided (e.g. video.smartlabs.com), use it.
     // Otherwise construct default? Bunny usually gives a pull zone URL.
     // For Stream, it's usually: https://{env}.b-cdn.net/{videoId}/playlist.m3u8

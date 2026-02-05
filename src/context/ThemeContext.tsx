@@ -20,8 +20,8 @@ interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   isCompact: boolean;
-  customTheme?: UserData['preferences']['customTheme'];
-  updateTheme: (theme: NonNullable<UserData['preferences']['customTheme']>) => Promise<void>;
+  customTheme?: NonNullable<UserData['preferences']>['customTheme'];
+  updateTheme: (theme: NonNullable<NonNullable<UserData['preferences']>['customTheme']>) => Promise<void>;
   resetTheme: () => Promise<void>;
   isDark: boolean;
 }
@@ -93,7 +93,7 @@ export function ThemeProvider({
   const customTheme = userData?.preferences?.customTheme;
   const isDark = theme === "dark" || (theme === "system" && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
-  const updateTheme = async (newTheme: NonNullable<UserData['preferences']['customTheme']>) => {
+  const updateTheme = async (newTheme: NonNullable<NonNullable<UserData['preferences']>['customTheme']>) => {
     if (!userData) return;
     try {
       const userRef = doc(db, "users", userData.uid);
