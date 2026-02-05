@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { quizService } from "@/services/quizService";
 import { Quiz, Question } from "@/lib/types";
@@ -11,8 +11,9 @@ import { useToast } from "@/components/ui/Toast";
 
 // ...
 
-export default function QuizPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function QuizPage() {
+  const params = useParams();
+  const id = params.id as string;
   const { toast } = useToast();
   const { userData } = useAuth();
   const router = useRouter();
@@ -28,9 +29,9 @@ export default function QuizPage({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     const fetchQuiz = async () => {
-      if (params.id) {
+      if (id) {
         try {
-          const data = await quizService.getQuiz(params.id);
+          const data = await quizService.getQuiz(id);
           if (data) {
             setQuiz(data);
             if (data.durationMinutes > 0) {
@@ -46,7 +47,7 @@ export default function QuizPage({ params }: { params: { id: string } }) {
     };
 
     fetchQuiz();
-  }, [params.id]);
+  }, [id]);
 
   useEffect(() => {
     if (timeLeft === null || submitted) return;
