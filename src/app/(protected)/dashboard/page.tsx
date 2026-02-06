@@ -29,7 +29,8 @@ import {
   LayoutGrid,
   Layers,
   PlayCircle,
-  Clock
+  Clock,
+  FolderOpen
 } from "lucide-react";
 import Link from "next/link";
 import { clsx } from "clsx";
@@ -143,6 +144,15 @@ export default function DashboardPage() {
       category: "Management"
     },
     {
+      title: "Resource Manager",
+      description: "Manage course study materials",
+      icon: FolderOpen,
+      href: "/admin/resources",
+      gradient: "from-orange-500 to-amber-600",
+      roles: ["lecturer", "admin", "superadmin", "developer"],
+      category: "Management"
+    },
+    {
       title: "Our Websites",
       description: "Explore our educational network",
       icon: Globe,
@@ -216,23 +226,23 @@ export default function DashboardPage() {
             <motion.div 
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white/80 backdrop-blur-sm border-l-4 border-brand-blue rounded-r-2xl shadow-sm p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 hover:shadow-md transition-all duration-300"
+              className="glass-card border-l-4 border-brand-blue rounded-r-2xl p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 hover:shadow-lg transition-all duration-300"
             >
               <div className="flex items-start gap-3 w-full sm:w-auto flex-1 min-w-0">
-                <div className="p-2 md:p-2.5 bg-blue-50 rounded-full text-brand-blue flex-shrink-0 mt-1 sm:mt-0">
+                <div className="p-2 md:p-2.5 bg-blue-50 dark:bg-blue-900/30 rounded-full text-brand-blue flex-shrink-0 mt-1 sm:mt-0">
                   <Bell size={20} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap items-center gap-2 mb-1">
-                    <span className="text-[10px] font-extrabold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full uppercase tracking-wider whitespace-nowrap">
+                    <span className="text-[10px] font-extrabold bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 px-2 py-0.5 rounded-full uppercase tracking-wider whitespace-nowrap">
                       New Update
                     </span>
-                    <span className="text-xs text-gray-500 whitespace-nowrap">
+                    <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
                       {latestNotification.createdAt?.seconds ? new Date(latestNotification.createdAt.seconds * 1000).toLocaleDateString() : 'Just now'}
                     </span>
                   </div>
-                  <h3 className="font-semibold text-gray-900 text-sm md:text-base truncate">{latestNotification.title}</h3>
-                  <p className="text-sm text-gray-600 line-clamp-1 mt-0.5 break-words">{latestNotification.message}</p>
+                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm md:text-base truncate">{latestNotification.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1 mt-0.5 break-words">{latestNotification.message}</p>
                 </div>
               </div>
               
@@ -310,10 +320,13 @@ export default function DashboardPage() {
         </motion.div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="space-y-6">
+          {/* Main Content Area */}
+      <div className="space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <h2 className="text-3xl font-bold text-gray-900 tracking-tight">Pages</h2>
+          <h2 className="text-2xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
+            <LayoutGrid size={24} className="text-brand-blue" />
+            Quick Access
+          </h2>
         </div>
 
         {/* Content Grid */}
@@ -323,51 +336,57 @@ export default function DashboardPage() {
               variants={container}
               initial="hidden"
               animate="show"
-              className="space-y-10"
+              className="grid grid-cols-1 gap-12"
             >
               {sortedCategories.map((category) => (
-                <div key={category} className="space-y-4">
-                  <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider pl-1 flex items-center gap-2">
-                    <Layers size={14} />
-                    {category}
-                  </h3>
+                <div key={category} className="space-y-5">
+                  <div className="flex items-center gap-4">
+                     <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                      <span className="w-1 h-6 bg-brand-blue rounded-full"></span>
+                      {category}
+                    </h3>
+                    <div className="h-px bg-gray-100 flex-1"></div>
+                  </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {groupedItems[category].map((menu, idx) => (
                       <motion.div key={idx} variants={item}>
-                        <Link href={menu.href} className="block h-full">
-                          <div className="group h-full bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+                        <Link href={menu.href} className="block h-full group">
+                          <div className="h-full glass-card rounded-[2rem] p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 relative overflow-hidden border-0 group-hover:ring-1 group-hover:ring-white/20">
                             {/* Hover Gradient Overlay */}
                             <div className={clsx(
                               "absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-gradient-to-br",
                               menu.gradient
                             )} />
                             
+                            {/* Top Pattern Circle */}
+                            <div className={clsx(
+                              "absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-5 group-hover:opacity-20 transition-all duration-500 bg-gradient-to-br transform group-hover:scale-150",
+                              menu.gradient
+                            )} />
+                            
                             <div className="flex flex-col h-full justify-between relative z-10">
-                              <div className="space-y-4">
-                                <div className={clsx(
-                                  "w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-lg transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 bg-gradient-to-br",
-                                  menu.gradient
-                                )}>
-                                  <menu.icon size={26} strokeWidth={2} />
+                              <div className="space-y-5">
+                                <div className="flex justify-between items-start">
+                                  <div className={clsx(
+                                    "w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 bg-gradient-to-br",
+                                    menu.gradient
+                                  )}>
+                                    <menu.icon size={28} strokeWidth={1.5} />
+                                  </div>
+                                  
+                                  <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center text-gray-400 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 transform group-hover:rotate-[-45deg]">
+                                    <ArrowRight size={14} />
+                                  </div>
                                 </div>
                                 
                                 <div>
-                                  <h3 className="font-bold text-gray-900 text-lg mb-1 group-hover:text-blue-600 transition-colors">
+                                  <h3 className="font-bold text-slate-800 dark:text-white text-xl mb-2 group-hover:text-brand-blue dark:group-hover:text-blue-300 transition-colors">
                                     {menu.title}
                                   </h3>
-                                  <p className="text-sm text-gray-500 font-medium leading-relaxed">
+                                  <p className="text-sm text-slate-500 dark:text-slate-300 font-medium leading-relaxed line-clamp-2">
                                     {menu.description}
                                   </p>
-                                </div>
-                              </div>
-
-                              <div className="mt-6 flex items-center justify-between">
-                                <span className="text-xs font-bold text-gray-300 group-hover:text-blue-500 transition-colors uppercase tracking-wider">
-                                  Enter App
-                                </span>
-                                <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
-                                  <ArrowRight size={14} className="-ml-0.5" />
                                 </div>
                               </div>
                             </div>

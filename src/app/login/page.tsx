@@ -8,18 +8,15 @@ import {
   sendPasswordResetEmail,
   updateProfile,
   signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
   GoogleAuthProvider,
-  User,
-  AuthError
+  User
 } from "firebase/auth";
 import { doc, getDoc, getDocFromServer, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Eye, EyeOff, Loader2, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, Loader2, ArrowLeft, Mail, Lock, User as UserIcon, Phone, Globe, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { countries } from "@/data/countries";
@@ -28,33 +25,25 @@ type AuthMode = "login" | "register" | "forgot-password";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { user: authUser, userData, loading: authLoading } = useAuth();
+  const { user: authUser, loading: authLoading } = useAuth();
   const [mode, setMode] = useState<AuthMode>("login");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [googleUser, setGoogleUser] = useState<User | null>(null);
-
+  
   // Form States
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
-  // Register/Profile specific states
+  // Register specific states
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
-  const [country, setCountry] = useState("");
-  const [gender, setGender] = useState("male");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  // Handle existing session and automatic redirection
+  const [country, setCountry] = useState("Sri Lanka");
+  
+  // Handle existing session
   useEffect(() => {
-    if (authLoading) return;
-
-    if (authUser) {
-      // Always redirect to dashboard if authenticated
-      // The dashboard will handle missing profile data notifications
+    if (!authLoading && authUser) {
       router.push("/dashboard");
     }
   }, [authUser, authLoading, router]);
@@ -63,34 +52,26 @@ export default function LoginPage() {
   const processAuthUser = async (user: User) => {
     setLoading(true);
     try {
-      // Check if user profile exists in Firestore (force server fetch to avoid stale cache)
-      // This prevents "No document to update" errors if account was deleted on server but exists in cache
       let userDoc;
       try {
         userDoc = await getDocFromServer(doc(db, "users", user.uid));
       } catch (e) {
-        // Fallback to cache if server fetch fails (e.g. offline)
-        console.warn("Failed to fetch user from server, falling back to cache", e);
         userDoc = await getDoc(doc(db, "users", user.uid));
       }
 
       if (userDoc.exists()) {
-        // User exists -> Redirect to Dashboard directly
         router.push("/dashboard");
       } else {
-        // New user (no document) -> Create basic profile and redirect
-        const developerEmails = [
-          "tikfese@gmail.com",
-          "thimira.vishwa2003@gmail.com"
-        ];
-        
+        const developerEmails = ["tikfese@gmail.com", "thimira.vishwa2003@gmail.com"];
         const role = developerEmails.includes(user.email || "") ? "developer" : "student";
         
         await setDoc(doc(db, "users", user.uid), {
           uid: user.uid,
-          name: user.displayName || "",
+          name: user.displayName || name || "New User",
           email: user.email || "",
           role,
+          contact: contact || "",
+          country: country || "",
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
           authProvider: "google"
@@ -106,58 +87,25 @@ export default function LoginPage() {
     }
   };
 
-
-
-  const resetForm = () => {
-    setError("");
-    setSuccessMessage("");
-    setEmail("");
-    setPassword("");
-    setName("");
-    setContact("");
-    setCountry("");
-    setGender("male");
-    setConfirmPassword("");
-    setGoogleUser(null);
-  };
-
-  const handleModeChange = (newMode: AuthMode) => {
-    setMode(newMode);
-    resetForm();
-  };
-
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    setError("");
-
-    try {
-      const provider = new GoogleAuthProvider();
-      // Use signInWithPopup for better reliability
-      const result = await signInWithPopup(auth, provider);
-      await processAuthUser(result.user);
-    } catch (err: any) {
-      console.error(err);
-      setError("Failed to sign in with Google. Please try again.");
-      setLoading(false);
-    }
-  };
-
-
-
-
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard");
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await processAuthUser(userCredential.user);
     } catch (err: any) {
       console.error(err);
-      setError("Invalid email or password. Please try again.");
-    } finally {
+      if (err.code === 'auth/invalid-credential') {
+        setError("Invalid email or password.");
+      } else if (err.code === 'auth/user-not-found') {
+        setError("No account found with this email.");
+      } else if (err.code === 'auth/wrong-password') {
+        setError("Incorrect password.");
+      } else {
+        setError("Failed to login. Please try again.");
+      }
       setLoading(false);
     }
   };
@@ -167,52 +115,50 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      setLoading(false);
-      return;
-    }
-
-    if (!country) {
-      setError("Please select a country");
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
       setLoading(false);
       return;
     }
 
     try {
-      // 1. Create Authentication User
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      // 2. Update Profile Display Name
-      await updateProfile(user, {
-        displayName: name
-      });
-
-      // 3. Save User Details to Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
+      await updateProfile(userCredential.user, { displayName: name });
+      
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        uid: userCredential.user.uid,
         name,
         email,
         contact,
         country,
-        gender,
         role: "student",
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
         authProvider: "email"
       });
 
-      // 4. Redirect
       router.push("/dashboard");
     } catch (err: any) {
       console.error(err);
       if (err.code === 'auth/email-already-in-use') {
-        setError("Email is already registered. Please login instead.");
+        setError("Email is already registered.");
       } else {
-        setError(err.message || "Failed to register. Please try again.");
+        setError("Failed to create account. Please try again.");
       }
-    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      await processAuthUser(result.user);
+    } catch (err: any) {
+      console.error(err);
+      setError("Failed to sign in with Google.");
       setLoading(false);
     }
   };
@@ -227,410 +173,325 @@ export default function LoginPage() {
       await sendPasswordResetEmail(auth, email);
       setSuccessMessage("Password reset link sent to your email!");
     } catch (err: any) {
-      console.error(err);
-      if (err.code === 'auth/user-not-found') {
-        setError("No account found with this email.");
-      } else {
-        setError("Failed to send reset email. Please try again.");
-      }
+      setError("Failed to send reset email. Please check the address.");
     } finally {
       setLoading(false);
     }
   };
 
   const GoogleButton = () => (
-    <Button
+    <button
       type="button"
       onClick={handleGoogleLogin}
       disabled={loading}
-      variant="outline"
-      fullWidth
-      className="mb-6 flex items-center justify-center gap-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+      className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-xl border border-gray-200 transition-all duration-200 hover:shadow-md hover:border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed group"
     >
-      <svg className="h-5 w-5" viewBox="0 0 24 24">
-        <path
-          d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-          fill="#4285F4"
-        />
-        <path
-          d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-          fill="#34A853"
-        />
-        <path
-          d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.84z"
-          fill="#FBBC05"
-        />
-        <path
-          d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-          fill="#EA4335"
-        />
-      </svg>
-      Sign in with Google
-    </Button>
+      {loading ? (
+        <Loader2 className="animate-spin w-5 h-5 text-gray-400" />
+      ) : (
+        <>
+          <div className="w-5 h-5 relative">
+            <Image 
+              src="https://www.svgrepo.com/show/475656/google-color.svg" 
+              alt="Google" 
+              fill 
+              className="object-contain" 
+            />
+          </div>
+          <span className="group-hover:text-gray-900">Continue with Google</span>
+        </>
+      )}
+    </button>
   );
 
   return (
-    <div className="min-h-screen w-full flex bg-white relative overflow-x-hidden">
-      {/* Left Panel - Desktop Only */}
-      <div className="hidden md:flex w-1/2 lg:w-3/5 relative overflow-hidden flex-col justify-between p-12 bg-white">
-        {/* Education/Tech Image - Full Opacity */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/lg.png"
-            alt="Background"
-            fill
-            className="object-contain p-8"
-            priority
-          />
-        </div>
+    <div className="min-h-screen w-full relative flex items-center justify-center overflow-hidden bg-[#0f172a]">
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-slate-900 to-slate-950 z-10" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-brand-blue/30 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-500/10 rounded-full blur-[120px]" />
+        <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-[80px]" />
         
-        {/* Top Spacer */}
-        <div className="relative z-20"></div>
-
-        {/* Bottom Text Content */}
-        <div className="relative z-20 mt-auto">
-          <div className="text-[12px] text-brand-blue font-bold font-footer uppercase tracking-widest leading-loose">
-            <p className="mb-1">Developed & powered by ESystemLK</p>
-            <p>© SMART LABS PVT LTD. All rights reserved</p>
-          </div>
+        {/* Pattern Overlay */}
+        <div className="absolute inset-0 z-20 opacity-[0.03]" 
+             style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }}>
         </div>
       </div>
 
-      {/* Right Panel - Auth Forms */}
-      <div className="w-full md:w-1/2 lg:w-2/5 flex flex-col justify-center px-6 md:px-16 lg:px-24 py-12 bg-white overflow-y-auto max-h-screen">
-        <div className="max-w-md w-full mx-auto">
-          {/* Logo - Visible on All Screens */}
-          <div className="mb-8 text-center flex justify-center">
-            <div className="relative w-48 h-20 md:w-56 md:h-24">
-              <Image 
-                src="/logo.png" 
-                alt="SMART LABS" 
-                fill 
-                className="object-contain"
-                priority
-              />
-            </div>
+      {/* Main Container */}
+      <div className="relative z-30 w-full max-w-6xl mx-auto p-4 flex flex-col md:flex-row items-center gap-12 lg:gap-24">
+        
+        {/* Left Side: Brand & Welcome */}
+        <div className="hidden md:flex flex-col flex-1 text-white space-y-8 animate-fade-in-up">
+          <div className="w-64 h-20 relative">
+             {/* Brand Logo */}
+             <div className="flex items-center gap-4">
+               <div className="w-16 h-16 relative shadow-lg shadow-blue-500/20 rounded-2xl overflow-hidden bg-white/10 backdrop-blur-sm border border-white/10 p-2">
+                 <Image 
+                   src="/logo.png" 
+                   alt="Smart Labs Logo" 
+                   fill 
+                   className="object-contain"
+                   priority
+                 />
+               </div>
+               <div>
+                 <h1 className="text-3xl font-bold tracking-tight text-white drop-shadow-sm">SMART LABS</h1>
+                 <p className="text-xs text-blue-200 tracking-[0.2em] uppercase font-medium">LMS Portal</p>
+               </div>
+             </div>
           </div>
-
-          <div className="mb-8 text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              {mode === 'login' && "𝒲𝑒𝓁𝒸𝑜𝓂𝑒 𝓉𝑜 𝒮𝑀𝒜𝑅𝒯 𝐿𝒜𝐵𝒮"}
-              {mode === 'register' && "Create Account"}
-              {mode === 'forgot-password' && "Reset Password"}
+          
+          <div className="space-y-4 max-w-lg">
+            <h2 className="text-5xl font-bold leading-tight font-display">
+              Master English <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                The Smart Way
+              </span>
             </h2>
-            <p className="text-gray-500">
-              {mode === 'login' && "Learn English Smarter"}
-              {mode === 'register' && "Join our learning community"}
-              {mode === 'forgot-password' && "Enter your email to reset password"}
+            <p className="text-lg text-slate-300 leading-relaxed">
+              Join thousands of students achieving their goals with our advanced learning platform. Interactive lessons, live classes, and a supportive community await.
             </p>
           </div>
 
-          {/* Login Form */}
-          {mode === 'login' && (
-            <form onSubmit={handleLogin} className="space-y-6">
-              <GoogleButton />
-              
-              <div className="relative flex items-center justify-center text-sm mb-6">
-                <span className="bg-white px-2 text-gray-500">Or continue with email</span>
-                <div className="absolute inset-0 flex items-center -z-10">
-                  <div className="w-full border-t border-gray-200"></div>
+          <div className="flex items-center gap-8 pt-4">
+            <div className="flex -space-x-4">
+              {[1,2,3,4].map(i => (
+                <div key={i} className="w-10 h-10 rounded-full border-2 border-slate-900 bg-slate-800 flex items-center justify-center text-xs font-bold">
+                  {/* Placeholder avatars */}
+                  <div className={`w-full h-full rounded-full bg-gradient-to-br from-blue-${i}00 to-purple-${i}00 opacity-80`} />
                 </div>
+              ))}
+            </div>
+            <div>
+              <p className="font-bold text-white">2,000+ Students</p>
+              <p className="text-xs text-slate-400">Trust Smart Labs</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Auth Card */}
+        <div className="w-full md:w-[420px] animate-scale-in">
+          <div className="glass-card rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden">
+            {/* Decorative Top Line */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-blue via-purple-500 to-brand-blue opacity-50" />
+
+            <div className="mb-8 text-center md:text-left">
+               {/* Mobile Logo */}
+               <div className="md:hidden flex flex-col items-center justify-center mb-8">
+                 <div className="w-16 h-16 relative mb-3 drop-shadow-xl">
+                   <Image 
+                     src="/logo.png" 
+                     alt="Smart Labs Logo" 
+                     fill 
+                     className="object-contain"
+                   />
+                 </div>
+                 <h2 className="text-xl font-bold text-gray-900">SMART LABS</h2>
+               </div>
+
+              <h3 className="text-2xl font-bold text-gray-900">
+                {mode === 'login' && "Welcome Back"}
+                {mode === 'register' && "Create Account"}
+                {mode === 'forgot-password' && "Reset Password"}
+              </h3>
+              <p className="text-sm text-gray-500 mt-2">
+                {mode === 'login' && "Enter your details to access your account"}
+                {mode === 'register' && "Start your learning journey today"}
+                {mode === 'forgot-password' && "We'll send you a link to reset it"}
+              </p>
+            </div>
+
+            {error && (
+              <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 flex items-start gap-3">
+                <div className="text-red-500 mt-0.5"><Lock size={16} /></div>
+                <p className="text-sm text-red-600 font-medium">{error}</p>
               </div>
+            )}
 
-              <Input
-                label="Email Address"
-                type="email"
-                placeholder="student@smartlabs.lk"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              
-              <div className="relative">
-                <Input
-                  label="Password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  icon={
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="focus:outline-none hover:text-brand-blue transition-colors"
-                    >
-                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </button>
-                  }
-                />
+            {successMessage && (
+              <div className="mb-6 p-4 rounded-xl bg-green-50 border border-green-100 flex items-start gap-3">
+                <div className="text-green-500 mt-0.5"><Globe size={16} /></div>
+                <p className="text-sm text-green-600 font-medium">{successMessage}</p>
               </div>
+            )}
 
-              <div className="flex items-center justify-end">
-                <button
-                  type="button"
-                  onClick={() => handleModeChange('forgot-password')}
-                  className="text-sm font-medium text-brand-blue hover:text-blue-700 transition-colors"
-                >
-                  Forgot password?
-                </button>
-              </div>
-
-              {error && (
-                <div className="p-3 rounded-lg bg-red-50 text-red-600 text-sm">
-                  {error}
-                </div>
-              )}
-
-              <Button
-                type="submit"
-                fullWidth
-                disabled={loading}
-                className="mt-4"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Logging in...
-                  </>
-                ) : (
-                  "Login"
-                )}
-              </Button>
-
-              <div className="mt-6 text-center text-sm text-gray-600">
-                Don't have an account?{" "}
-                <button
-                  type="button"
-                  onClick={() => handleModeChange('register')}
-                  className="font-medium text-brand-blue hover:text-blue-700 transition-colors"
-                >
-                  Sign up
-                </button>
-              </div>
-            </form>
-          )}
-
-          {/* Register Form */}
-          {mode === 'register' && (
-            <form onSubmit={handleRegister} className="space-y-4">
-              <GoogleButton />
-
-              <div className="relative flex items-center justify-center text-sm mb-6">
-                <span className="bg-white px-2 text-gray-500">Or sign up with email</span>
-                <div className="absolute inset-0 flex items-center -z-10">
-                  <div className="w-full border-t border-gray-200"></div>
-                </div>
-              </div>
-
-              <Input
-                label="Full Name"
-                type="text"
-                placeholder="John Doe"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-
-              <Input
-                label="Email Address"
-                type="email"
-                placeholder="student@smartlabs.lk"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-
-              <Input
-                label="Contact No / WhatsApp"
-                type="tel"
-                placeholder="+94 77 123 4567"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
-                required
-              />
-
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-gray-700">Country</label>
-                <select
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                  required
-                  className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <option value="" disabled>Select your country</option>
-                  {countries.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-gray-700">Gender</label>
-                <div className="flex gap-4 mt-1">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="male"
-                      checked={gender === "male"}
-                      onChange={(e) => setGender(e.target.value)}
-                      className="text-brand-blue focus:ring-brand-blue"
+            {/* Forms */}
+            {mode === 'login' && (
+              <form onSubmit={handleLogin} className="space-y-5">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                    <input 
+                      type="email" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all text-sm font-medium"
+                      placeholder="student@smartlabs.lk"
+                      required
                     />
-                    <span className="text-sm text-gray-700">Male</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="gender"
-                      value="female"
-                      checked={gender === "female"}
-                      onChange={(e) => setGender(e.target.value)}
-                      className="text-brand-blue focus:ring-brand-blue"
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">Password</label>
+                    <button 
+                      type="button" 
+                      onClick={() => setMode('forgot-password')}
+                      className="text-xs text-brand-blue hover:text-blue-700 font-medium transition-colors"
+                    >
+                      Forgot?
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                    <input 
+                      type={showPassword ? "text" : "password"} 
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full pl-10 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all text-sm font-medium"
+                      placeholder="••••••••"
+                      required
                     />
-                    <span className="text-sm text-gray-700">Female</span>
-                  </label>
-                </div>
-              </div>
-
-              <div className="relative">
-                <Input
-                  label="Password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  icon={
-                    <button
-                      type="button"
+                    <button 
+                      type="button" 
                       onClick={() => setShowPassword(!showPassword)}
-                      className="focus:outline-none hover:text-brand-blue transition-colors"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
-                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
-                  }
-                />
-              </div>
-
-              <div className="relative">
-                <Input
-                  label="Confirm Password"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  icon={
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="focus:outline-none hover:text-brand-blue transition-colors"
-                    >
-                      {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                    </button>
-                  }
-                />
-              </div>
-
-              {error && (
-                <div className="p-3 rounded-lg bg-red-50 text-red-600 text-sm">
-                  {error}
+                  </div>
                 </div>
-              )}
 
-              <Button
-                type="submit"
-                fullWidth
-                disabled={loading}
-                className="mt-4"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating Account...
-                  </>
-                ) : (
-                  "Sign Up"
-                )}
-              </Button>
+                <Button type="submit" fullWidth className="h-12 text-base rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all">
+                  {loading ? <Loader2 className="animate-spin" /> : "Sign In"}
+                </Button>
 
-              <div className="mt-6 text-center text-sm text-gray-600">
-                Already have an account?{" "}
-                <button
-                  type="button"
-                  onClick={() => handleModeChange('login')}
-                  className="font-medium text-brand-blue hover:text-blue-700 transition-colors"
-                >
-                  Login
-                </button>
-              </div>
-            </form>
-          )}
-
-
-
-          {/* Forgot Password Form */}
-          {mode === 'forgot-password' && (
-            <form onSubmit={handleForgotPassword} className="space-y-6">
-              <Input
-                label="Email Address"
-                type="email"
-                placeholder="student@smartlabs.lk"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-
-              {error && (
-                <div className="p-3 rounded-lg bg-red-50 text-red-600 text-sm">
-                  {error}
+                <div className="relative flex items-center justify-center my-6">
+                  <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
+                  <span className="relative bg-white px-3 text-xs text-gray-500 uppercase font-medium">Or continue with</span>
                 </div>
-              )}
 
-              {successMessage && (
-                <div className="p-3 rounded-lg bg-green-50 text-green-600 text-sm">
-                  {successMessage}
+                <GoogleButton />
+                
+                <p className="text-center text-sm text-gray-600 mt-6">
+                  Don't have an account?{" "}
+                  <button type="button" onClick={() => setMode('register')} className="text-brand-blue font-bold hover:underline">
+                    Sign Up
+                  </button>
+                </p>
+              </form>
+            )}
+
+            {mode === 'register' && (
+              <form onSubmit={handleRegister} className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-gray-700 uppercase">Name</label>
+                    <input 
+                      type="text" 
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
+                      placeholder="John Doe"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                     <label className="text-xs font-semibold text-gray-700 uppercase">Mobile</label>
+                     <input 
+                      type="tel" 
+                      value={contact}
+                      onChange={(e) => setContact(e.target.value)}
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
+                      placeholder="077..."
+                      required
+                    />
+                  </div>
                 </div>
-              )}
 
-              <Button
-                type="submit"
-                fullWidth
-                disabled={loading}
-                className="mt-4"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Sending Link...
-                  </>
-                ) : (
-                  "Send Reset Link"
-                )}
-              </Button>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-700 uppercase">Email</label>
+                  <input 
+                    type="email" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
+                    placeholder="student@example.com"
+                    required
+                  />
+                </div>
 
-              <div className="mt-6 text-center text-sm">
-                <button
-                  type="button"
-                  onClick={() => handleModeChange('login')}
-                  className="flex items-center justify-center gap-2 mx-auto font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-700 uppercase">Password</label>
+                  <input 
+                    type="password" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
+                    placeholder="Min 6 chars"
+                    required
+                  />
+                </div>
+
+                <Button type="submit" fullWidth className="h-12 mt-2 rounded-xl bg-gradient-to-r from-brand-blue to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg shadow-blue-500/20">
+                  {loading ? <Loader2 className="animate-spin" /> : "Create Account"}
+                </Button>
+
+                <p className="text-center text-sm text-gray-600 mt-4">
+                  Already registered?{" "}
+                  <button type="button" onClick={() => setMode('login')} className="text-brand-blue font-bold hover:underline">
+                    Sign In
+                  </button>
+                </p>
+              </form>
+            )}
+
+            {mode === 'forgot-password' && (
+              <form onSubmit={handleForgotPassword} className="space-y-5">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-700 uppercase">Email Address</label>
+                  <input 
+                    type="email" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
+                    placeholder="Enter your registered email"
+                    required
+                  />
+                </div>
+
+                <Button type="submit" fullWidth className="h-12 rounded-xl">
+                  {loading ? <Loader2 className="animate-spin" /> : "Send Reset Link"}
+                </Button>
+
+                <button 
+                  type="button" 
+                  onClick={() => setMode('login')}
+                  className="w-full flex items-center justify-center gap-2 text-sm text-gray-600 hover:text-gray-900 font-medium py-2"
                 >
                   <ArrowLeft size={16} />
                   Back to Login
                 </button>
-              </div>
-            </form>
-          )}
+              </form>
+            )}
 
-          <div className="mt-8 text-center md:hidden">
-            <p className="text-xs text-gray-400">
-              © SMART LABS PVT LTD. All rights reserved
-            </p>
           </div>
+          
+          <p className="text-center text-xs text-slate-500 mt-8 font-medium">
+            © 2024 SMART LABS PVT LTD. All rights reserved.
+          </p>
         </div>
+      </div>
+
+      {/* Footer Credit */}
+      <div className="absolute bottom-4 left-0 right-0 text-center z-30 pointer-events-none">
+        <p className="text-[10px] md:text-xs text-slate-500/60 font-medium">
+          Developed & Powered by <span className="text-slate-400/80 font-bold hover:text-brand-blue transition-colors cursor-pointer pointer-events-auto">ESystemLK</span>
+        </p>
       </div>
     </div>
   );

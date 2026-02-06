@@ -17,7 +17,7 @@ import {
 import { db, storage } from "@/lib/firebase";
 import { Enrollment, Course, Batch } from "@/lib/types";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { addMonths } from "date-fns";
+import { addMonths, parseISO, isBefore } from "date-fns";
 
 const ENROLLMENTS_COLLECTION = "enrollments";
 const USERS_COLLECTION = "users";
@@ -63,8 +63,26 @@ export const enrollmentService = {
     
     // Calculate validity if active immediately
     let validUntil = null;
-    if (status === 'active' && course.resourceAvailabilityMonths) {
-      validUntil = Timestamp.fromDate(addMonths(new Date(), course.resourceAvailabilityMonths));
+    if (status === 'active') {
+      let expiryDate: Date | null = null;
+
+      // 1. Calculate based on duration (if set)
+      if (course.resourceAvailabilityMonths) {
+        expiryDate = addMonths(new Date(), course.resourceAvailabilityMonths);
+      }
+
+      // 2. Check fixed end date (if set)
+      if (course.endDate) {
+        const courseEndDate = parseISO(course.endDate);
+        // If no duration set OR course end date is earlier than duration expiry
+        if (!expiryDate || isBefore(courseEndDate, expiryDate)) {
+          expiryDate = courseEndDate;
+        }
+      }
+
+      if (expiryDate) {
+        validUntil = Timestamp.fromDate(expiryDate);
+      }
     }
 
     const enrollmentData: Omit<Enrollment, "id"> = {
@@ -131,8 +149,21 @@ export const enrollmentService = {
 
     // Calculate validity based on Course settings
     let validUntil = null;
+    let expiryDate: Date | null = null;
+
     if (course.resourceAvailabilityMonths) {
-      validUntil = Timestamp.fromDate(addMonths(new Date(), course.resourceAvailabilityMonths));
+      expiryDate = addMonths(new Date(), course.resourceAvailabilityMonths);
+    }
+
+    if (course.endDate) {
+      const courseEndDate = parseISO(course.endDate);
+      if (!expiryDate || isBefore(courseEndDate, expiryDate)) {
+        expiryDate = courseEndDate;
+      }
+    }
+
+    if (expiryDate) {
+      validUntil = Timestamp.fromDate(expiryDate);
     }
 
     const enrollmentData: Omit<Enrollment, "id"> = {
@@ -180,6 +211,82 @@ export const enrollmentService = {
       orderBy("enrolledAt", "desc")
     );
     const snapshot = await getDocs(q);
+    const enrollments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Enrollment));
+
+    // Lazy check for Course End Date expiry
+    const activeEnrollments = enrollments.filter(e => e.status === 'active');
+    
+    if (activeEnrollments.length > 0) {
+      const updates = [];
+      const batchOp = writeBatch(db);
+      let hasUpdates = false;
+
+      // Fetch course details for active enrollments
+      // Optimization: Group by courseId to avoid duplicate fetches
+      const courseIds = [...new Set(activeEnrollments.map(e => e.courseId))];
+      
+      try {
+        const courseDocs = await Promise.all(
+          courseIds.map(id => getDoc(doc(db, COURSES_COLLECTION, id)))
+        );
+        
+        const coursesMap = new Map();
+        courseDocs.forEach(doc => {
+          if (doc.exists()) {
+            coursesMap.set(doc.id, doc.data() as Course);
+          }
+        });
+
+        const now = new Date();
+
+        for (const enrollment of activeEnrollments) {
+          const course = coursesMap.get(enrollment.courseId);
+          if (course?.endDate) {
+            const courseEndDate = parseISO(course.endDate);
+            
+            // Check if course has ended
+            if (isBefore(courseEndDate, now)) {
+              // Mark as completed/expired
+              const enrollmentRef = doc(db, ENROLLMENTS_COLLECTION, enrollment.id);
+              batchOp.update(enrollmentRef, {
+                status: 'completed',
+                validUntil: Timestamp.fromDate(courseEndDate), // Ensure validity matches end date
+                updatedAt: serverTimestamp()
+              });
+              
+              // Update local object
+              enrollment.status = 'completed';
+              enrollment.validUntil = Timestamp.fromDate(courseEndDate);
+              hasUpdates = true;
+            }
+          }
+        }
+
+        if (hasUpdates) {
+          await batchOp.commit();
+        }
+      } catch (error) {
+        console.error("Error checking course expiry:", error);
+        // Don't fail the whole request if expiry check fails
+      }
+    }
+
+    return enrollments;
+  },
+
+  // Get enrollments for a specific course (Admin/Attendance)
+  async getCourseEnrollments(courseId: string) {
+    const q = query(
+      collection(db, ENROLLMENTS_COLLECTION),
+      where("courseId", "==", courseId),
+      // where("status", "==", "active"), // Should we include all or just active? 
+      // User might want to mark attendance for inactive students if they showed up? 
+      // Safest to filter by active/completed in UI or just fetch all.
+      // Let's fetch all non-rejected.
+      where("status", "in", ["active", "completed", "expired", "pending"]),
+      orderBy("enrolledAt", "desc")
+    );
+    const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Enrollment));
   },
 
@@ -221,8 +328,21 @@ export const enrollmentService = {
     const course = courseSnap.data() as Course;
 
     let validUntil = null;
+    let expiryDate: Date | null = null;
+
     if (course.resourceAvailabilityMonths) {
-      validUntil = Timestamp.fromDate(addMonths(new Date(), course.resourceAvailabilityMonths));
+      expiryDate = addMonths(new Date(), course.resourceAvailabilityMonths);
+    }
+
+    if (course.endDate) {
+      const courseEndDate = parseISO(course.endDate);
+      if (!expiryDate || isBefore(courseEndDate, expiryDate)) {
+        expiryDate = courseEndDate;
+      }
+    }
+
+    if (expiryDate) {
+      validUntil = Timestamp.fromDate(expiryDate);
     }
 
     const batchOp = writeBatch(db);

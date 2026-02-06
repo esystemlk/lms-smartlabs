@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { UserData, UserRole } from "@/lib/types";
-import { Search, Filter, Shield, MoreVertical, Check, X, UserPlus } from "lucide-react";
+import { Search, Filter, Shield, MoreVertical, Check, X, UserPlus, Eye } from "lucide-react";
 import { userService } from "@/services/userService";
 import { Button } from "@/components/ui/Button";
 import { AddUserModal } from "./AddUserModal";
 import { BulkEnrollmentModal } from "./BulkEnrollmentModal";
+import { UserDetailsModal } from "./UserDetailsModal";
 
 interface UsersTabProps {
   users: UserData[];
@@ -17,6 +18,7 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [viewingUser, setViewingUser] = useState<UserData | null>(null);
   const [selectedRole, setSelectedRole] = useState<UserRole>("student");
   const [updating, setUpdating] = useState(false);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
@@ -198,13 +200,22 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
                         </button>
                       </div>
                     ) : (
-                      <button
-                        onClick={() => handleEditClick(user)}
-                        className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                        title="Edit Role"
-                      >
-                        <Shield size={16} />
-                      </button>
+                      <div className="flex justify-end gap-2">
+                        <button
+                          onClick={() => setViewingUser(user)}
+                          className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          title="View Details & Attendance"
+                        >
+                          <Eye size={16} />
+                        </button>
+                        <button
+                          onClick={() => handleEditClick(user)}
+                          className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                          title="Edit Role"
+                        >
+                          <Shield size={16} />
+                        </button>
+                      </div>
                     )}
                   </td>
                 </tr>
@@ -240,6 +251,13 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
             // No need to refresh user list, but maybe show a success toast?
             // The modal handles its own results display.
           }}
+        />
+      )}
+
+      {viewingUser && (
+        <UserDetailsModal
+          user={viewingUser}
+          onClose={() => setViewingUser(null)}
         />
       )}
     </div>

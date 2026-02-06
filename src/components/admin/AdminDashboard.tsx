@@ -7,7 +7,7 @@ import {
   ArrowUpRight, ArrowDownRight, MoreHorizontal,
   Plus, Search, Bell, Calendar, GraduationCap,
   Settings, MessageSquare, Shield, Clock,
-  ChevronRight, PlayCircle
+  ChevronRight, PlayCircle, FolderOpen, CreditCard
 } from "lucide-react";
 import { userService } from "@/services/userService";
 import { courseService } from "@/services/courseService";
@@ -53,6 +53,7 @@ export function AdminDashboard() {
   const activeCourses = courses.filter(c => c.published).length;
   const totalRevenue = enrollments.reduce((sum, e) => sum + (e.amount || 0), 0);
   const activeEnrollments = enrollments.filter(e => e.status === 'active').length;
+  const pendingEnrollments = enrollments.filter(e => e.status === 'pending').length;
   
   const recentUsers = users.slice(0, 5);
   const recentCourses = courses.slice(0, 4);
@@ -205,6 +206,15 @@ export function AdminDashboard() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <QuickAction href="/admin/users" icon={Users} label="Add User" color="bg-blue-500" />
               <QuickAction href="/admin/courses" icon={BookOpen} label="New Course" color="bg-emerald-500" />
+              <QuickAction 
+                href="/admin/enrollments" 
+                icon={CreditCard} 
+                label="Enrollments" 
+                color="bg-indigo-500" 
+                badge={pendingEnrollments > 0 ? pendingEnrollments : undefined}
+              />
+              <QuickAction href="/admin/attendance" icon={Calendar} label="Attendance" color="bg-rose-500" />
+              <QuickAction href="/admin/resources" icon={FolderOpen} label="Resources" color="bg-orange-500" />
               <QuickAction href="/admin/support" icon={MessageSquare} label="Support" color="bg-purple-500" />
               <QuickAction href="/admin/settings" icon={Settings} label="Settings" color="bg-gray-600" />
             </div>
@@ -358,9 +368,14 @@ function StatCard({ title, value, label, icon: Icon, trend, trendUp, color, load
   );
 }
 
-function QuickAction({ href, icon: Icon, label, color }: any) {
+function QuickAction({ href, icon: Icon, label, color, badge }: any) {
   return (
-    <Link href={href} className="flex flex-col items-center justify-center gap-3 p-4 rounded-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all group">
+    <Link href={href} className="relative flex flex-col items-center justify-center gap-3 p-4 rounded-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all group">
+      {badge && (
+        <span className="absolute top-2 right-2 flex items-center justify-center min-w-[20px] h-5 px-1.5 text-[10px] font-bold text-white bg-red-500 rounded-full border-2 border-white dark:border-gray-800">
+          {badge}
+        </span>
+      )}
       <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-lg ${color} group-hover:scale-110 transition-transform`}>
         <Icon className="w-6 h-6" />
       </div>

@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { Course, Enrollment } from "@/lib/types";
-import { Search, Filter, MoreVertical, Eye, Trash2, BookOpen, Edit, CheckCircle, XCircle, Users } from "lucide-react";
+import { Search, Filter, MoreVertical, Eye, Trash2, BookOpen, Edit, CheckCircle, XCircle, Users, Download } from "lucide-react";
 import { courseService } from "@/services/courseService";
 import { useRouter } from "next/navigation";
+import * as XLSX from "xlsx";
 
 interface CoursesTabProps {
   courses: Course[];
@@ -24,6 +25,31 @@ export function CoursesTab({ courses, enrollments = [], onCourseUpdated }: Cours
       (statusFilter === "published" ? course.published : !course.published);
     return matchesSearch && matchesStatus;
   });
+
+  const handleExportStudents = (course: Course) => {
+    const courseEnrollments = enrollments.filter(e => e.courseId === course.id);
+    if (courseEnrollments.length === 0) {
+      alert("No students enrolled in this course to export.");
+      return;
+    }
+
+    const data = courseEnrollments.map(e => ({
+      "Student Name": e.userName,
+      "Email": e.userEmail,
+      "Batch": e.batchName || "N/A",
+      "Enrolled Date": e.enrolledAt?.seconds ? new Date(e.enrolledAt.seconds * 1000).toLocaleDateString() : "N/A",
+      "Status": e.status,
+      "Progress (%)": e.progress || 0,
+      "Payment Method": e.paymentMethod,
+      "Amount Paid": e.amount || 0
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Students");
+    const filename = `${course.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_students.xlsx`;
+    XLSX.writeFile(wb, filename);
+  };
 
   const handleTogglePublish = async (course: Course) => {
     try {
@@ -187,6 +213,13 @@ export function CoursesTab({ courses, enrollments = [], onCourseUpdated }: Cours
                 </td>
                 <td className="px-4 py-3 md:px-6 md:py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
+                    <button 
+                      onClick={() => handleExportStudents(course)}
+                      className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                      title="Export Student Data (Excel)"
+                    >
+                      <Download size={16} />
+                    </button>
                     <button 
                       onClick={() => router.push(`/courses/${course.id}`)}
                       className="p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 rounded-lg transition-colors"

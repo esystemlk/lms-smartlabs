@@ -139,11 +139,14 @@ export default function LMSPage() {
                     <span>{format(new Date(upcomingClasses[0].startTime!), "MMM d")}</span>
                   </div>
                 </div>
-                <Link href={`/lms/live/room/${upcomingClasses[0].courseId}/${upcomingClasses[0].id}`}>
-                  <Button className="bg-white text-blue-600 hover:bg-blue-50 border-none font-semibold">
-                    Join Class Now <ArrowRight size={16} className="ml-2" />
-                  </Button>
-                </Link>
+                <Button 
+                  onClick={() => handleJoinClass(upcomingClasses[0])}
+                  disabled={joiningId === upcomingClasses[0].id}
+                  className="bg-white text-blue-600 hover:bg-blue-50 border-none font-semibold disabled:opacity-75"
+                >
+                  {joiningId === upcomingClasses[0].id ? 'Joining...' : 'Join Class Now'} 
+                  {!joiningId && <ArrowRight size={16} className="ml-2" />}
+                </Button>
               </div>
             ) : (
               <div className="flex flex-col justify-center h-full pb-4">

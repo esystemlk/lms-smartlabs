@@ -33,7 +33,8 @@ export default function NewCoursePage() {
     description: "",
     price: "",
     published: false,
-    instructorId: ""
+    instructorId: "",
+    endDate: ""
   });
 
   const [initialBatches, setInitialBatches] = useState<TempBatch[]>([]);
@@ -123,6 +124,7 @@ export default function NewCoursePage() {
         instructorId: formData.instructorId,
         instructorName: instructorName,
         image: imageUrl,
+        endDate: formData.endDate
       });
 
       // Process Initial Batches
@@ -252,18 +254,26 @@ export default function NewCoursePage() {
               placeholder="0 for free"
               min="0"
             />
-            
-            <div className="flex items-center h-full pt-6">
-              <label className="flex items-center gap-2 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={formData.published}
-                  onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-                  className="w-5 h-5 text-brand-blue rounded focus:ring-brand-blue border-gray-300"
-                />
-                <span className="text-sm font-medium text-gray-700">Publish immediately</span>
-              </label>
-            </div>
+
+            <Input
+              label="Course End Date (Optional)"
+              type="date"
+              value={formData.endDate}
+              onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+              placeholder="YYYY-MM-DD"
+            />
+          </div>
+
+          <div className="flex items-center h-full pt-2">
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={formData.published}
+                onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
+                className="w-5 h-5 text-brand-blue rounded focus:ring-brand-blue border-gray-300"
+              />
+              <span className="text-sm font-medium text-gray-700">Publish immediately</span>
+            </label>
           </div>
         </div>
 

@@ -29,11 +29,11 @@ export function LearningStats({ userData }: LearningStatsProps) {
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 h-full">
+    <div className="glass-card rounded-3xl p-6 shadow-sm border-0 h-full">
       <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">My Progress</h3>
       <div className="grid grid-cols-2 gap-4">
         {stats.map((stat) => (
-          <div key={stat.label} className="flex flex-col gap-2 p-3 rounded-xl border border-gray-50 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-700/30">
+          <div key={stat.label} className="flex flex-col gap-2 p-3 rounded-xl border border-white/20 dark:border-white/10 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
             <div className={`w-8 h-8 rounded-lg ${stat.bg} ${stat.color} flex items-center justify-center`}>
               <stat.icon size={16} />
             </div>

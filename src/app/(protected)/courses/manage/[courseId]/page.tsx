@@ -66,6 +66,7 @@ export default function EditCoursePage() {
     tags: "",
     includesCertificate: false,
     resourceAvailabilityMonths: "3",
+    endDate: "",
     instructorId: "",
     prerequisites: [] as string[],
     learningOutcomes: [] as string[]
@@ -145,6 +146,7 @@ export default function EditCoursePage() {
           tags: courseData.tags?.join(", ") || "",
           includesCertificate: courseData.includesCertificate || false,
           resourceAvailabilityMonths: courseData.resourceAvailabilityMonths?.toString() || "3",
+          endDate: courseData.endDate || "",
           instructorId: courseData.instructorId,
           prerequisites: courseData.prerequisites || [],
           learningOutcomes: courseData.learningOutcomes || [] // Assuming this exists in Course type or will act as fallback
@@ -193,6 +195,7 @@ export default function EditCoursePage() {
         tags: formData.tags.split(",").map(t => t.trim()).filter(Boolean),
         includesCertificate: formData.includesCertificate,
         resourceAvailabilityMonths: Number(formData.resourceAvailabilityMonths) || 3,
+        endDate: formData.endDate,
         prerequisites: formData.prerequisites,
         learningOutcomes: formData.learningOutcomes
       });
@@ -765,6 +768,14 @@ export default function EditCoursePage() {
               onChange={(e) => setFormData({ ...formData, resourceAvailabilityMonths: e.target.value })}
               placeholder="e.g. 3"
               min="1"
+            />
+
+            <Input
+              label="Course End Date (Optional)"
+              type="date"
+              value={formData.endDate}
+              onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+              placeholder="YYYY-MM-DD"
             />
           </div>
             

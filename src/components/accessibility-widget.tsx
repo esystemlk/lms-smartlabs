@@ -258,16 +258,16 @@ export function AccessibilityWidget() {
                         </div>
 
                         {/* TABS */}
-                        <div className="flex px-6 gap-2 border-b border-gray-100 dark:border-gray-800 py-3 bg-gray-50/50 dark:bg-gray-900/50 overflow-x-auto no-scrollbar">
+                        <div className="flex px-6 gap-3 border-b border-gray-100 dark:border-gray-800 py-4 bg-transparent overflow-x-auto no-scrollbar items-center">
                             {['all', 'content', 'display', 'tools'].map((tab) => (
                                 <button 
                                     key={tab}
                                     onClick={() => setActiveTab(tab as any)} 
                                     className={cn(
-                                        "px-4 py-2 rounded-full text-xs font-bold transition-all shrink-0 capitalize", 
+                                        "px-5 py-2.5 rounded-full text-xs font-bold transition-all shrink-0 capitalize border", 
                                         activeTab === tab 
-                                            ? "bg-brand-blue text-white shadow-md shadow-blue-500/20 scale-105" 
-                                            : "bg-white dark:bg-gray-800 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            ? "bg-brand-blue border-brand-blue text-white shadow-lg shadow-blue-500/25 translate-y-[-1px]" 
+                                            : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300"
                                     )}
                                 >
                                     {tab}

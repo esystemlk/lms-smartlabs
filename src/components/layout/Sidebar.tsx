@@ -16,7 +16,8 @@ import {
   Play,
   MessageSquare,
   MessageCircle,
-  Calendar
+  Calendar,
+  FolderOpen
 } from "lucide-react";
 import { clsx } from "clsx";
 import { Transition } from "@headlessui/react";
@@ -39,6 +40,7 @@ const allNavItems = [
   { href: "/admin/settings", label: "System Settings", icon: Settings },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/courses", label: "Manage Courses", icon: BookOpen },
+  { href: "/admin/resources", label: "Resources", icon: FolderOpen },
   { href: "/admin/enrollments", label: "Enrollments", icon: GraduationCap },
   { href: "/admin/analytics", label: "Analytics", icon: Activity },
 ];
@@ -72,14 +74,27 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         return userData.role === "developer";
       }
 
+      // Student strict allowlist - Ensure they NEVER see admin pages
+      if (userData.role === 'student') {
+        const studentAllowed = [
+          "/dashboard", 
+          "/community", 
+          "/courses", 
+          "/websites", 
+          "/lms/live", 
+          "/lms/recordings", 
+          "/messages", 
+          "/activities"
+        ];
+        return studentAllowed.includes(item.href);
+      }
+
       // Admin/Lecturer only items
-      if (["/lms", "/live-classes", "/lecturers", "/admin/settings", "/admin/users", "/admin/enrollments", "/admin/analytics", "/admin/courses"].includes(item.href)) {
+      if (["/lms", "/live-classes", "/lecturers", "/admin/settings", "/admin/users", "/admin/enrollments", "/admin/analytics", "/admin/courses", "/admin/resources"].includes(item.href)) {
         return ["lecturer", "admin", "superadmin", "developer"].includes(userData.role);
       }
       
-      // Student only items (hide from admins to declutter, or keep if you want admins to see student views)
-      // For now, let's allow everyone to see student views except specific admin tools
-      
+      // Default for other roles (instructor, service, etc.)
       return true;
     });
   }, [userData]);
@@ -173,6 +188,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <p className="text-sm font-medium text-foreground truncate">Smart Labs LMS</p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">v1.0.0 (Mobile)</p>
               </div>
+            </div>
+            <div className="mt-4 text-center">
+              <p className="text-[10px] text-gray-400 dark:text-gray-600">
+                Developed & Powered by <span className="font-bold text-brand-blue">ESystemLK</span>
+              </p>
             </div>
           </div>
         </aside>

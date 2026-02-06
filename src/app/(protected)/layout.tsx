@@ -93,9 +93,20 @@ export default function ProtectedLayout({
   }
 
   return (
-    <div className="min-h-screen bg-background flex transition-colors duration-300 w-full relative overflow-x-hidden">
-      {userData && <ProfileCompletionModal user={userData} />}
-      <ScrollProgressBar />
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex transition-colors duration-300 w-full relative overflow-x-hidden">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] opacity-50 mix-blend-multiply dark:mix-blend-screen animate-pulse" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] opacity-50 mix-blend-multiply dark:mix-blend-screen" />
+        <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03]" 
+             style={{ backgroundImage: 'radial-gradient(#64748b 1px, transparent 1px)', backgroundSize: '32px 32px' }}>
+        </div>
+      </div>
+
+      <div className="relative z-10 flex w-full">
+        {userData && <ProfileCompletionModal user={userData} />}
+        <ScrollProgressBar />
         {/* Mobile Sidebar (Drawer) */}
         <Sidebar
           isOpen={isMobileMenuOpen}
@@ -179,6 +190,7 @@ export default function ProtectedLayout({
         <FloatingChatWidget />
         <NotificationListener />
         <CommandPalette />
+      </div>
     </div>
   );
 }

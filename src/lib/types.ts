@@ -69,6 +69,7 @@ export interface Course {
 
   // New: Resource Access
   resourceAvailabilityMonths?: number; // Duration in months (e.g., 3)
+  endDate?: string; // ISO Date string (YYYY-MM-DD) for fixed course end date
 
   createdAt: any; // Firestore Timestamp
   updatedAt: any; // Firestore Timestamp
@@ -103,10 +104,19 @@ export interface AssignmentSubmission {
 export interface Resource {
   id: string;
   courseId: string;
+  folderId?: string; // Optional: if null/undefined, it's in root
   title: string;
   description?: string;
-  type: 'pdf' | 'video' | 'link' | 'archive' | 'other';
+  type: 'pdf' | 'video' | 'audio' | 'image' | 'archive' | 'other';
   url: string;
+  createdAt: any;
+}
+
+export interface ResourceFolder {
+  id: string;
+  courseId: string;
+  parentId?: string; // For nested folders
+  name: string;
   createdAt: any;
 }
 
@@ -222,6 +232,21 @@ export interface Question {
   options?: string[]; // For multiple choice
   correctAnswer: string | number;
   points: number;
+}
+
+export interface AttendanceRecord {
+  id?: string;
+  userId: string;
+  userEmail?: string;
+  userName?: string;
+  courseId: string;
+  batchId?: string; // Optional, as some courses might not have batches
+  lessonId?: string; // Optional, linked to a specific live class or lesson
+  date: any; // Firestore Timestamp
+  status: 'present' | 'absent' | 'late' | 'excused';
+  method: 'zoom_auto' | 'manual' | 'qr';
+  recordedBy?: string; // Admin ID if manual
+  recordedAt: any; // Firestore Timestamp
 }
 
 export interface Quiz {
