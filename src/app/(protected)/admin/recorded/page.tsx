@@ -195,7 +195,7 @@ function ClassesTab() {
     if (!e.target.files?.[0] || !editingClass) return;
     const file = e.target.files[0];
     try {
-      toast("Uploading image...", "default");
+      toast("Uploading image...", "info");
       const url = await recordedClassService.uploadResource(file);
       setEditingClass({ ...editingClass, instructorImage: url });
       toast("Image uploaded", "success");
