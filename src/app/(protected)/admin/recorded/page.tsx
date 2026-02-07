@@ -252,7 +252,7 @@ function ClassesTab() {
           <div className="bg-white dark:bg-gray-900 w-full max-w-2xl rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center sticky top-0 bg-white dark:bg-gray-900 z-10">
               <h3 className="font-bold text-xl">Edit Class Details</h3>
-              <Button variant="ghost" size="icon" onClick={() => setEditingClass(null)}><X size={20} /></Button>
+              <Button variant="ghost" size="sm" onClick={() => setEditingClass(null)}><X size={20} /></Button>
             </div>
             
             <form onSubmit={handleUpdate} className="p-6 space-y-6">
