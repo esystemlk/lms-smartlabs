@@ -624,7 +624,7 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
               <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
                   <h2 className="font-bold text-lg text-gray-900 dark:text-white">Course Content</h2>
-                  <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(false)} className="md:hidden">
+                  <Button variant="ghost" size="sm" onClick={() => setSidebarOpen(false)} className="md:hidden">
                     <X className="w-5 h-5" />
                   </Button>
                 </div>
