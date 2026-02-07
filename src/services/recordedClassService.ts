@@ -98,7 +98,7 @@ export const recordedClassService = {
     if (!snap.empty) {
       // Update existing
       const docId = snap.docs[0].id;
-      await updateDoc(doc(db, "recorded_classes", docId), data);
+      await updateDoc(doc(db, "recorded_classes", docId), data as any);
       return docId;
     } else {
       // Create new

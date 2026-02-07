@@ -5,7 +5,7 @@ import { motion, HTMLMotionProps } from "framer-motion";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outline" | "ghost" | "destructive";
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "icon";
   fullWidth?: boolean;
 }
 
@@ -28,6 +28,7 @@ const Button = forwardRef<HTMLButtonElement, MotionButtonProps>(
       sm: "h-9 px-4 text-sm",
       md: "h-11 px-6 text-base",
       lg: "h-14 px-8 text-lg",
+      icon: "h-10 w-10 p-2",
     };
 
     return (

@@ -28,6 +28,7 @@ export default function LMSPage() {
   const [nextClass, setNextClass] = useState<Lesson | null>(null);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
+  const [joiningId, setJoiningId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,6 +64,17 @@ export default function LMSPage() {
       fetchData();
     }
   }, [userData]);
+
+  const handleJoinClass = (lesson: Lesson) => {
+    if (!lesson.zoomJoinUrl) return;
+    setJoiningId(lesson.id);
+    
+    // Open in new tab
+    window.open(lesson.zoomJoinUrl, '_blank');
+    
+    // Reset after delay
+    setTimeout(() => setJoiningId(null), 2000);
+  };
 
   const container = {
     hidden: { opacity: 0 },

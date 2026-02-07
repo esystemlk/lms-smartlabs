@@ -22,8 +22,6 @@ import {
   Loader2,
   ArrowLeft
 } from "lucide-react";
-import { toast } from "sonner"; // Using sonner as seen in other files, or useToast if preferred. 
-// Wait, I just replaced sonner with useToast in ProfileCompletionModal. I should use useToast here too for consistency.
 import { useToast } from "@/components/ui/Toast";
 
 // Helper to get icon by type
