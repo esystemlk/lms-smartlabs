@@ -503,7 +503,7 @@ function PackagesTab() {
     <div className="grid md:grid-cols-3 gap-6">
       {packages.map((pkg) => (
         <div key={pkg.id} className="p-6 rounded-2xl border border-gray-200 dark:border-gray-800 flex flex-col gap-4">
-          {editing?.id === pkg.id ? (
+          {editing?.id === pkg.id && editing ? (
             <div className="space-y-3">
               <Input value={editing.name} onChange={e => setEditing({...editing, name: e.target.value})} placeholder="Name" />
               <div className="flex items-center gap-2">
