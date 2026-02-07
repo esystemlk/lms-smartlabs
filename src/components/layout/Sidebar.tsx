@@ -27,6 +27,7 @@ import { useAuth } from "@/context/AuthContext";
 // Updated items to match the Dashboard Main Menu
 const allNavItems = [
   { href: "/dashboard", label: "Main Menu", icon: LayoutDashboard },
+  { href: "/learn", label: "Learn", icon: Play },
   { href: "/community", label: "Community", icon: MessageCircle },
   { href: "/courses", label: "Courses", icon: BookOpen },
   { href: "/websites", label: "Our Websites", icon: Globe },
@@ -39,6 +40,7 @@ const allNavItems = [
   { href: "/activities", label: "Activities", icon: Activity },
   { href: "/admin/settings", label: "System Settings", icon: Settings },
   { href: "/admin/users", label: "Users", icon: Users },
+  { href: "/admin/recorded", label: "Recorded Classes", icon: Play },
   { href: "/admin/courses", label: "Manage Courses", icon: BookOpen },
   { href: "/admin/resources", label: "Resources", icon: FolderOpen },
   { href: "/admin/enrollments", label: "Enrollments", icon: GraduationCap },
@@ -63,7 +65,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     if (isNewStudent) {
       // New users only see: Courses, Activities, Websites, System Details
       return allNavItems.filter(item =>
-        ["/courses", "/activities", "/websites", "/system", "/community"].includes(item.href)
+        ["/courses", "/activities", "/websites", "/system", "/community", "/learn"].includes(item.href)
       );
     }
 
@@ -78,6 +80,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       if (userData.role === 'student') {
         const studentAllowed = [
           "/dashboard", 
+          "/learn",
           "/community", 
           "/courses", 
           "/websites", 
@@ -90,7 +93,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       }
 
       // Admin/Lecturer only items
-      if (["/lms", "/live-classes", "/lecturers", "/admin/settings", "/admin/users", "/admin/enrollments", "/admin/analytics", "/admin/courses", "/admin/resources"].includes(item.href)) {
+      if (["/lms", "/live-classes", "/lecturers", "/admin/settings", "/admin/users", "/admin/enrollments", "/admin/analytics", "/admin/courses", "/admin/resources", "/admin/recorded"].includes(item.href)) {
         return ["lecturer", "admin", "superadmin", "developer"].includes(userData.role);
       }
       

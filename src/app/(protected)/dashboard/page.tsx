@@ -90,6 +90,15 @@ export default function DashboardPage() {
       category: "Learning Hub"
     },
     {
+      title: "Learn",
+      description: "Recorded lessons & subscriptions",
+      icon: PlayCircle,
+      href: "/learn",
+      gradient: "from-violet-600 to-indigo-600",
+      roles: ["student", "lecturer", "admin", "superadmin", "developer"],
+      category: "Learning Hub"
+    },
+    {
       title: "Community",
       description: "Chat with students & instructors",
       icon: Users,
@@ -348,11 +357,11 @@ export default function DashboardPage() {
                     <div className="h-px bg-gray-100 flex-1"></div>
                   </div>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
                     {groupedItems[category].map((menu, idx) => (
                       <motion.div key={idx} variants={item}>
                         <Link href={menu.href} className="block h-full group">
-                          <div className="h-full glass-card rounded-[2rem] p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 relative overflow-hidden border-0 group-hover:ring-1 group-hover:ring-white/20">
+                          <div className="h-full glass-card rounded-2xl md:rounded-[2rem] p-4 md:p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 relative overflow-hidden border-0 group-hover:ring-1 group-hover:ring-white/20">
                             {/* Hover Gradient Overlay */}
                             <div className={clsx(
                               "absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-gradient-to-br",
@@ -366,25 +375,25 @@ export default function DashboardPage() {
                             )} />
                             
                             <div className="flex flex-col h-full justify-between relative z-10">
-                              <div className="space-y-5">
+                              <div className="space-y-3 md:space-y-5">
                                 <div className="flex justify-between items-start">
                                   <div className={clsx(
-                                    "w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 bg-gradient-to-br",
+                                    "w-10 h-10 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center text-white shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 bg-gradient-to-br",
                                     menu.gradient
                                   )}>
-                                    <menu.icon size={28} strokeWidth={1.5} />
+                                    <menu.icon className="w-5 h-5 md:w-7 md:h-7" strokeWidth={1.5} />
                                   </div>
                                   
-                                  <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center text-gray-400 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 transform group-hover:rotate-[-45deg]">
-                                    <ArrowRight size={14} />
+                                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center text-gray-400 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 transform group-hover:rotate-[-45deg]">
+                                    <ArrowRight className="w-3 h-3 md:w-3.5 md:h-3.5" />
                                   </div>
                                 </div>
                                 
                                 <div>
-                                  <h3 className="font-bold text-slate-800 dark:text-white text-xl mb-2 group-hover:text-brand-blue dark:group-hover:text-blue-300 transition-colors">
+                                  <h3 className="font-bold text-slate-800 dark:text-white text-sm md:text-xl mb-1 md:mb-2 group-hover:text-brand-blue dark:group-hover:text-blue-300 transition-colors">
                                     {menu.title}
                                   </h3>
-                                  <p className="text-sm text-slate-500 dark:text-slate-300 font-medium leading-relaxed line-clamp-2">
+                                  <p className="text-xs md:text-sm text-slate-500 dark:text-slate-300 font-medium leading-relaxed line-clamp-2 hidden sm:block">
                                     {menu.description}
                                   </p>
                                 </div>

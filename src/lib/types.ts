@@ -319,6 +319,13 @@ export interface SystemSettings {
   maintenanceMode: boolean;
   announcement?: string;
   supportEmail?: string;
+  bankDetails?: {
+    bankName: string;
+    accountName: string;
+    accountNumber: string;
+    branch: string;
+  };
+  developerEmails?: string[]; // List of emails authorized as developers
   features?: {
     enableDebugMode?: boolean;
     enableBetaFeatures?: boolean;

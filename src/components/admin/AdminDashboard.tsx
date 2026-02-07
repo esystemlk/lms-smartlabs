@@ -205,6 +205,7 @@ export function AdminDashboard() {
             <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4 px-1">Quick Actions</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <QuickAction href="/admin/users" icon={Users} label="Add User" color="bg-blue-500" />
+              <QuickAction href="/admin/recorded" icon={PlayCircle} label="Rec. Classes" color="bg-violet-500" />
               <QuickAction href="/admin/courses" icon={BookOpen} label="New Course" color="bg-emerald-500" />
               <QuickAction 
                 href="/admin/enrollments" 

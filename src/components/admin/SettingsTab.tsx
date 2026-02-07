@@ -13,6 +13,15 @@ export function SettingsTab() {
   const [maintenanceMode, setMaintenanceMode] = useState(false);
   const [announcement, setAnnouncement] = useState("");
   const [supportEmail, setSupportEmail] = useState("support@smartlabs.com");
+  
+  // Bank Details State
+  const [bankDetails, setBankDetails] = useState({
+    bankName: "Sampath Bank",
+    accountName: "Smart Labs Pvt Ltd",
+    accountNumber: "1234 5678 9000",
+    branch: "Colombo Super"
+  });
+
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -28,6 +37,10 @@ export function SettingsTab() {
       setMaintenanceMode(settings.maintenanceMode || false);
       setAnnouncement(settings.announcement || "");
       setSupportEmail(settings.supportEmail || "support@smartlabs.com");
+      
+      if (settings.bankDetails) {
+        setBankDetails(settings.bankDetails);
+      }
     } catch (error) {
       console.error("Failed to fetch settings:", error);
       toast("Failed to load settings", "error");
@@ -44,6 +57,7 @@ export function SettingsTab() {
         maintenanceMode,
         announcement,
         supportEmail,
+        bankDetails,
       });
       toast("Settings saved successfully!", "success");
     } catch (error) {
@@ -86,6 +100,55 @@ export function SettingsTab() {
               className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
               value={supportEmail}
               onChange={(e) => setSupportEmail(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Bank Details */}
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-green-100 text-green-600 rounded-lg">
+            <Lock size={20} />
+          </div>
+          <h3 className="text-lg font-bold text-gray-900">Bank Transfer Details</h3>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-4 max-w-2xl">
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">Bank Name</label>
+            <input 
+              type="text" 
+              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+              value={bankDetails.bankName}
+              onChange={(e) => setBankDetails(prev => ({...prev, bankName: e.target.value}))}
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">Account Name</label>
+            <input 
+              type="text" 
+              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+              value={bankDetails.accountName}
+              onChange={(e) => setBankDetails(prev => ({...prev, accountName: e.target.value}))}
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">Account Number</label>
+            <input 
+              type="text" 
+              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+              value={bankDetails.accountNumber}
+              onChange={(e) => setBankDetails(prev => ({...prev, accountNumber: e.target.value}))}
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-sm font-medium text-gray-700">Branch</label>
+            <input 
+              type="text" 
+              className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+              value={bankDetails.branch}
+              onChange={(e) => setBankDetails(prev => ({...prev, branch: e.target.value}))}
             />
           </div>
         </div>

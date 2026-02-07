@@ -147,9 +147,6 @@ export function ResourceManager() {
     }
   };
   
-  // NOTE: Since I cannot easily implement full Firebase Storage upload without knowing the config/rules,
-  // I will add a TODO to the user or try to implement a basic one if I can find `storage` export in firebase.ts.
-  
   const handleDeleteFolder = async (folderId: string) => {
     if (!confirm("Are you sure? Contents might be lost.")) return;
     try {

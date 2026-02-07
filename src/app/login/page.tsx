@@ -62,7 +62,17 @@ export default function LoginPage() {
       if (userDoc.exists()) {
         router.push("/dashboard");
       } else {
-        const developerEmails = ["tikfese@gmail.com", "thimira.vishwa2003@gmail.com"];
+        // Fetch global settings to check for authorized developer emails
+        let developerEmails = ["tikfese@gmail.com", "thimira.vishwa2003@gmail.com"];
+        try {
+          const settingsSnap = await getDoc(doc(db, "settings", "global"));
+          if (settingsSnap.exists() && settingsSnap.data().developerEmails) {
+            developerEmails = [...developerEmails, ...settingsSnap.data().developerEmails];
+          }
+        } catch (e) {
+          console.error("Failed to fetch settings during signup check", e);
+        }
+
         const role = developerEmails.includes(user.email || "") ? "developer" : "student";
         
         await setDoc(doc(db, "users", user.uid), {

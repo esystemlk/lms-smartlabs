@@ -7,6 +7,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
 import { TitleBar } from "@/components/layout/TitleBar";
+import { MobileNav } from "@/components/layout/MobileNav";
 import { FloatingChatWidget } from "@/components/features/FloatingChatWidget";
 import { NotificationListener } from "@/components/features/NotificationListener";
 import { SuperLoader } from "@/components/ui/SuperLoader";
@@ -177,7 +178,7 @@ export default function ProtectedLayout({
             </div>
           )}
           <main className={clsx(
-            "flex-1 max-w-7xl mx-auto w-full transition-all duration-300",
+            "flex-1 max-w-7xl mx-auto w-full transition-all duration-300 pb-20 md:pb-0",
             // Conditional padding: Remove padding for lesson pages to allow full-width video/content
             !isLessonPage && (isCompact ? "p-2 md:p-4" : "p-4 md:p-8")
           )}>
@@ -187,6 +188,7 @@ export default function ProtectedLayout({
             </PageTransition>
           </main>
         </div>
+        <MobileNav onMenuClick={() => setIsMobileMenuOpen(true)} />
         <FloatingChatWidget />
         <NotificationListener />
         <CommandPalette />

@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { bunnyService } from "@/services/bunnyService";
+import { recordedClassService, RecordedClass } from "@/services/recordedClassService";
 import { db } from "@/lib/firebase";
 import { doc, setDoc, getDoc, addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { Loader2, Save, Trash2, Video, RefreshCw, Upload, Play, Key } from "lucide-react";
+import { Loader2, Save, Trash2, Video, RefreshCw, Upload, Play, Key, Check, Plus } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 
 export function BunnyManager() {
@@ -12,10 +13,12 @@ export function BunnyManager() {
   const [settings, setSettings] = useState({ bunnyApiKey: "", bunnyLibraryId: "" });
   const [loadingSettings, setLoadingSettings] = useState(false);
   const [videos, setVideos] = useState<any[]>([]);
+  const [syncedClasses, setSyncedClasses] = useState<RecordedClass[]>([]);
   const [loadingVideos, setLoadingVideos] = useState(false);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [syncing, setSyncing] = useState(false);
 
   // Settings
   const fetchSettings = async () => {
@@ -48,9 +51,19 @@ export function BunnyManager() {
   };
 
   // Videos
+  const fetchSyncedClasses = async () => {
+    try {
+      const classes = await recordedClassService.getClasses();
+      setSyncedClasses(classes);
+    } catch (e) {
+      console.error("Failed to fetch classes", e);
+    }
+  };
+
   const fetchVideos = async () => {
     setLoadingVideos(true);
     try {
+      await fetchSyncedClasses();
       const res = await bunnyService.getVideos(1, 20); // First page, 20 items
       setVideos(res.items || []);
     } catch (error) {
@@ -58,6 +71,28 @@ export function BunnyManager() {
       toast("Failed to fetch videos. Check credentials.", "error");
     } finally {
       setLoadingVideos(false);
+    }
+  };
+
+  const handleSync = async (video: any) => {
+    setSyncing(true);
+    try {
+      await recordedClassService.syncClass({
+        bunnyVideoId: video.guid,
+        title: video.title,
+        durationSeconds: video.length,
+        order: Date.now(),
+        active: true,
+        views: 0,
+        thumbnailUrl: `https://${video.thumbnailFileName}`
+      });
+      toast("Class synced successfully", "success");
+      fetchSyncedClasses();
+    } catch (e) {
+      console.error(e);
+      toast("Sync failed", "error");
+    } finally {
+      setSyncing(false);
     }
   };
 
@@ -206,33 +241,51 @@ export function BunnyManager() {
         </div>
         
         <div className="divide-y max-h-[500px] overflow-y-auto">
-          {videos.map((video) => (
-            <div key={video.guid} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between hover:bg-gray-50 gap-4">
-              <div className="flex items-center gap-3">
-                 <div className="w-16 h-10 bg-gray-200 rounded flex items-center justify-center flex-shrink-0">
-                   <Play className="w-5 h-5 text-gray-400" />
-                 </div>
-                 <div className="min-w-0">
-                   <p className="font-medium text-sm text-gray-900 truncate">{video.title}</p>
-                   <p className="text-xs text-gray-500">{video.guid} • {Math.round(video.length / 60)} mins</p>
-                 </div>
+          {videos.map((video) => {
+            const isSynced = syncedClasses.some(c => c.bunnyVideoId === video.guid);
+            return (
+              <div key={video.guid} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between hover:bg-gray-50 gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-16 h-10 bg-gray-200 rounded flex items-center justify-center flex-shrink-0">
+                    <Play className="w-5 h-5 text-gray-400" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-medium text-sm text-gray-900 truncate">{video.title}</p>
+                    <p className="text-xs text-gray-500">{video.guid} • {Math.round(video.length / 60)} mins</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
+                  <span className={`text-xs px-2 py-1 rounded-full ${video.status === 1 ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
+                    {video.status === 1 ? 'Processing' : 'Ready'}
+                  </span>
+                  
+                  {isSynced ? (
+                    <span className="text-xs font-bold text-green-500 flex items-center gap-1 bg-green-50 px-2 py-1 rounded border border-green-200">
+                      <Check size={12} /> Synced
+                    </span>
+                  ) : (
+                    <button 
+                      onClick={() => handleSync(video)}
+                      disabled={syncing}
+                      className="flex items-center gap-1 px-3 py-1 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors disabled:opacity-50"
+                    >
+                      <Plus size={12} /> Sync to App
+                    </button>
+                  )}
+
+                  <button 
+                    onClick={() => handleDeleteVideo(video.guid)}
+                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
+                    title="Delete from Bunny.net"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
-                <span className={`text-xs px-2 py-1 rounded-full ${video.status === 1 ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
-                   {video.status === 1 ? 'Processing' : 'Ready'}
-                </span>
-                <button 
-                  onClick={() => handleDeleteVideo(video.guid)}
-                  className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
-                  title="Delete from Bunny.net"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
           {!loadingVideos && videos.length === 0 && (
-             <div className="p-8 text-center text-gray-500">No videos found.</div>
+            <div className="p-8 text-center text-gray-500">No videos found.</div>
           )}
         </div>
       </div>
