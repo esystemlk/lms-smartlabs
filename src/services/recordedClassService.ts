@@ -14,6 +14,7 @@ export interface RecordedPackage {
   description: string;
   active: boolean;
   features: string[];
+  category?: string;
 }
 
 export interface RecordedResource {

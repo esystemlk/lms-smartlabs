@@ -84,9 +84,7 @@ export default function EditCoursePage() {
     endDate: "",
     maxStudents: "",
     schedule: "",
-    status: "open" as "open" | "closed" | "ongoing" | "completed",
-    imageFile: null as File | null,
-    imagePreview: "" as string
+    status: "open" as "open" | "closed" | "ongoing" | "completed"
   });
   const [batchSaving, setBatchSaving] = useState(false);
 
@@ -283,17 +281,6 @@ export default function EditCoursePage() {
     }
   };
 
-  const handleBatchImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setNewBatchData({
-        ...newBatchData,
-        imageFile: file,
-        imagePreview: URL.createObjectURL(file)
-      });
-    }
-  };
-
   const handleSaveBatch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newBatchData.name || !newBatchData.startDate) return;
@@ -322,23 +309,13 @@ export default function EditCoursePage() {
 
     setBatchSaving(true);
     try {
-      let batchImageUrl = newBatchData.imagePreview; // Default to existing preview (which might be URL)
-
-      if (newBatchData.imageFile) {
-        batchImageUrl = await courseService.uploadImage(
-          newBatchData.imageFile, 
-          `courses/${courseId}/batches/${Date.now()}_${newBatchData.imageFile.name}`
-        );
-      }
-
       const batchPayload = {
         name: newBatchData.name,
         startDate: newBatchData.startDate,
         endDate: newBatchData.endDate,
         maxStudents: newBatchData.maxStudents ? Number(newBatchData.maxStudents) : undefined,
         schedule: newBatchData.schedule,
-        status: newBatchData.status,
-        image: batchImageUrl
+        status: newBatchData.status
       };
 
       if (editingBatchId) {
@@ -375,9 +352,7 @@ export default function EditCoursePage() {
       endDate: batch.endDate || "",
       maxStudents: batch.maxStudents?.toString() || "",
       schedule: batch.schedule || "",
-      status: batch.status,
-      imageFile: null,
-      imagePreview: batch.image || ""
+      status: batch.status
     });
     setShowBatchModal(true);
   };
@@ -391,9 +366,7 @@ export default function EditCoursePage() {
       endDate: "",
       maxStudents: "",
       schedule: "",
-      status: 'open',
-      imageFile: null,
-      imagePreview: ""
+      status: 'open'
     });
   };
 
@@ -1011,29 +984,6 @@ export default function EditCoursePage() {
             </div>
             
             <form onSubmit={handleSaveBatch} className="p-6 space-y-4">
-              {/* Image Upload */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Batch Image (Optional)</label>
-                <div className="flex items-center gap-4">
-                  <div className="relative w-24 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 border border-gray-200">
-                    {newBatchData.imagePreview ? (
-                      <Image src={newBatchData.imagePreview} alt="Preview" fill className="object-cover" />
-                    ) : (
-                      <div className="flex items-center justify-center h-full text-gray-400">
-                        <Upload className="w-6 h-6" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleBatchImageChange}
-                      className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all"
-                    />
-                  </div>
-                </div>
-              </div>
 
               <Input
                 label="Batch Name"

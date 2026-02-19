@@ -62,6 +62,7 @@ function PricingPage({ onPurchaseSuccess }: { onPurchaseSuccess: () => void }) {
   const [selectedPackage, setSelectedPackage] = useState<RecordedPackage | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'payhere' | 'bank' | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
   useEffect(() => {
     loadPackages();
@@ -75,6 +76,9 @@ function PricingPage({ onPurchaseSuccess }: { onPurchaseSuccess: () => void }) {
       setLoading(false);
     }
   };
+
+  const categories = Array.from(new Set(["All", ...packages.map(p => p.category || "Uncategorized")]));
+  const filteredPackages = selectedCategory === "All" ? packages : packages.filter(p => (p.category || "Uncategorized") === selectedCategory);
 
   if (selectedPackage) {
     return (
@@ -97,8 +101,20 @@ function PricingPage({ onPurchaseSuccess }: { onPurchaseSuccess: () => void }) {
       {loading ? (
         <Loader2 className="animate-spin mx-auto" />
       ) : (
-        <div className="grid md:grid-cols-3 gap-8">
-          {packages.map((pkg) => (
+        <>
+          <div className="flex flex-wrap gap-2 justify-center mb-6">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-4 py-2 rounded-full text-sm border ${selectedCategory === cat ? "bg-brand-blue text-white border-brand-blue" : "bg-white border-gray-200 text-gray-700"}`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+          {filteredPackages.map((pkg) => (
             <div key={pkg.id} className="relative bg-white dark:bg-gray-900 rounded-3xl p-8 border border-gray-200 dark:border-gray-800 shadow-xl hover:scale-105 transition-transform duration-300 flex flex-col">
               {pkg.durationMonths === 3 && (
                 <div className="absolute top-0 right-0 bg-brand-blue text-white text-xs font-bold px-4 py-1 rounded-bl-xl rounded-tr-3xl">
@@ -132,7 +148,8 @@ function PricingPage({ onPurchaseSuccess }: { onPurchaseSuccess: () => void }) {
               </Button>
             </div>
           ))}
-        </div>
+          </div>
+        </>
       )}
     </div>
   );

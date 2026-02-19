@@ -17,6 +17,7 @@
    const [payhereConfig, setPayhereConfig] = useState<any>(null);
    const [submitting, setSubmitting] = useState(false);
    const [file, setFile] = useState<File | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
  
    useEffect(() => {
      const load = async () => {
@@ -30,6 +31,9 @@
      load();
    }, []);
  
+  const categories = Array.from(new Set(["All", ...packages.map(p => p.category || "Uncategorized")]));
+  const filteredPackages = selectedCategory === "All" ? packages : packages.filter(p => (p.category || "Uncategorized") === selectedCategory);
+
    const startPayHere = (pkg: RecordedPackage) => {
      const orderId = `REC-${pkg.id}-${Date.now()}`;
      setPayhereConfig({
@@ -73,8 +77,20 @@
            <Loader2 className="animate-spin text-brand-blue" size={32} />
          </div>
        ) : (
-         <div className="grid md:grid-cols-3 gap-8">
-           {packages.map((pkg) => (
+        <>
+          <div className="flex flex-wrap gap-2 mb-6">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-4 py-2 rounded-full text-sm border ${selectedCategory === cat ? "bg-brand-blue text-white border-brand-blue" : "bg-white border-gray-200 text-gray-700"}`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+          {filteredPackages.map((pkg) => (
              <div key={pkg.id} className="bg-white rounded-3xl p-8 border border-gray-200 shadow-xl flex flex-col">
                {pkg.durationMonths === 3 && (
                  <div className="self-end mb-2 text-[10px] px-3 py-1 rounded-full bg-brand-blue text-white font-bold">BEST VALUE</div>
@@ -106,8 +122,9 @@
                  </Button>
                </div>
              </div>
-           ))}
-         </div>
+          ))}
+          </div>
+        </>
        )}
  
        {method === "payhere" && payhereConfig && selected && (
