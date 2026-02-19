@@ -45,13 +45,13 @@ export interface RecordedEnrollment {
   userName: string;
   packageId: string;
   packageName: string;
-  startDate: unknown;
-  expiryDate: unknown;
+  startDate: any; // Firestore Timestamp or Date
+  expiryDate: any; // Firestore Timestamp or Date
   status: 'active' | 'expired';
   paymentMethod: 'payhere' | 'bank_transfer';
   paymentId?: string; // Order ID or Bank Transfer ID
   totalWatchTimeSeconds: number;
-  lastActive: unknown;
+  lastActive: any; // Firestore Timestamp or Date
 }
 
 export interface BankTransferRequest {
