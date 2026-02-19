@@ -45,13 +45,13 @@ export interface RecordedEnrollment {
   userName: string;
   packageId: string;
   packageName: string;
-  startDate: any; // Timestamp
-  expiryDate: any; // Timestamp
+  startDate: unknown;
+  expiryDate: unknown;
   status: 'active' | 'expired';
   paymentMethod: 'payhere' | 'bank_transfer';
   paymentId?: string; // Order ID or Bank Transfer ID
   totalWatchTimeSeconds: number;
-  lastActive: any; // Timestamp
+  lastActive: unknown;
 }
 
 export interface BankTransferRequest {
@@ -68,6 +68,12 @@ export interface BankTransferRequest {
   adminNote?: string;
 }
 
+export interface RecordedPackageCategory {
+  id?: string;
+  name: string;
+  active: boolean;
+}
+
 export const recordedClassService = {
   // --- PACKAGES ---
   async getPackages() {
@@ -82,6 +88,9 @@ export const recordedClassService = {
 
   async createPackage(data: RecordedPackage) {
     await addDoc(collection(db, "recorded_packages"), data);
+  },
+  async deletePackage(id: string) {
+    await deleteDoc(doc(db, "recorded_packages", id));
   },
 
   // --- CLASSES ---
@@ -238,5 +247,22 @@ export const recordedClassService = {
      const q = query(collection(db, "recorded_enrollments"), orderBy("lastActive", "desc"));
      const snap = await getDocs(q);
      return snap.docs.map(d => ({ id: d.id, ...d.data() } as RecordedEnrollment));
+  },
+
+  // --- CATEGORIES ---
+  async getCategories() {
+    const q = query(collection(db, "recorded_package_categories"), orderBy("name", "asc"));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...(d.data() as Omit<RecordedPackageCategory, "id">) }));
+  },
+  async createCategory(name: string) {
+    const ref = await addDoc(collection(db, "recorded_package_categories"), {
+      name,
+      active: true
+    });
+    return ref.id;
+  },
+  async updateCategory(id: string, data: Partial<RecordedPackageCategory>) {
+    await updateDoc(doc(db, "recorded_package_categories", id), data);
   }
 };

@@ -1,11 +1,12 @@
  "use client";
  
- import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
  import { useRouter } from "next/navigation";
+import Link from "next/link";
  import { useAuth } from "@/context/AuthContext";
- import { recordedClassService, RecordedPackage } from "@/services/recordedClassService";
+import { recordedClassService, RecordedPackage, RecordedPackageCategory } from "@/services/recordedClassService";
  import { Button } from "@/components/ui/Button";
- import { Loader2, Plus, Edit, ToggleLeft, ToggleRight } from "lucide-react";
+import { Loader2, Plus, Edit, ToggleLeft, ToggleRight, Trash2, ExternalLink } from "lucide-react";
  
  export default function RecordedPackagesAdminPage() {
    const { userData, loading: authLoading } = useAuth();
@@ -23,6 +24,9 @@
     features: [],
     category: ""
    });
+  const [categories, setCategories] = useState<RecordedPackageCategory[]>([]);
+  const [newCategory, setNewCategory] = useState<string>("");
+  const [catSaving, setCatSaving] = useState(false);
  
    useEffect(() => {
      if (!authLoading && userData) {
@@ -30,7 +34,7 @@
        if (!userData.role || !allowed.includes(userData.role)) {
          router.push("/dashboard");
        } else {
-         load();
+        load();
        }
      }
    }, [userData, authLoading, router]);
@@ -38,8 +42,12 @@
    const load = async () => {
      setLoading(true);
      try {
-       const res = await recordedClassService.getPackages();
-       setPackages(res.sort((a, b) => (a.durationMonths || 0) - (b.durationMonths || 0)));
+      const [pkgs, cats] = await Promise.all([
+        recordedClassService.getPackages(),
+        recordedClassService.getCategories()
+      ]);
+      setPackages(pkgs.sort((a, b) => (a.durationMonths || 0) - (b.durationMonths || 0)));
+      setCategories(cats);
      } finally {
        setLoading(false);
      }
@@ -97,6 +105,13 @@
      await recordedClassService.updatePackage(pkg.id, { active: !pkg.active });
      await load();
    };
+  const deletePkg = async (pkg: RecordedPackage) => {
+    if (!pkg.id) return;
+    const ok = window.confirm(`Delete package "${pkg.name}"?`);
+    if (!ok) return;
+    await recordedClassService.deletePackage(pkg.id);
+    await load();
+  };
  
    if (authLoading) {
      return (
@@ -113,10 +128,16 @@
            <h1 className="text-2xl font-bold">Recorded Packages</h1>
            <p className="text-gray-500">Create and manage access packages (30/60/90 days)</p>
          </div>
-         <Button onClick={openNew}>
-           <Plus className="w-4 h-4 mr-2" />
-           New Package
-         </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => router.push("/learn/packages")}>
+            <ExternalLink className="w-4 h-4 mr-2" />
+            Open Learn Page
+          </Button>
+          <Button onClick={openNew}>
+            <Plus className="w-4 h-4 mr-2" />
+            New Package
+          </Button>
+        </div>
        </div>
  
        {loading ? (
@@ -160,6 +181,9 @@
                        <Button variant="ghost" onClick={() => toggleActive(pkg)}>
                          {pkg.active ? <ToggleRight className="w-5 h-5" /> : <ToggleLeft className="w-5 h-5" />}
                        </Button>
+                      <Button variant="ghost" className="text-red-600" onClick={() => deletePkg(pkg)}>
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
                      </div>
                    </td>
                  </tr>
@@ -185,16 +209,44 @@
                </div>
                <div className="space-y-1">
                  <label className="text-xs font-medium text-gray-600">Main Course</label>
-                 <select
-                   value={form.category || ""}
-                   onChange={(e) => setForm({ ...form, category: e.target.value })}
-                   className="w-full border border-gray-200 rounded-xl px-3 py-2"
-                 >
-                   <option value="">Uncategorized</option>
-                   <option value="PTE">PTE</option>
-                   <option value="IELTS">IELTS</option>
-                   <option value="General English">General English</option>
-                 </select>
+                 <div className="flex gap-2">
+                   <select
+                     value={form.category || ""}
+                     onChange={(e) => setForm({ ...form, category: e.target.value })}
+                     className="w-full border border-gray-200 rounded-xl px-3 py-2"
+                   >
+                     <option value="">Uncategorized</option>
+                     {categories.filter(c => c.active).map(c => (
+                       <option key={c.id} value={c.name}>{c.name}</option>
+                     ))}
+                   </select>
+                 </div>
+                 <div className="flex gap-2 mt-2">
+                   <input
+                     value={newCategory}
+                     onChange={(e) => setNewCategory(e.target.value)}
+                     placeholder="Add new main course"
+                     className="flex-1 border border-gray-200 rounded-xl px-3 py-2"
+                   />
+                   <Button
+                     onClick={async () => {
+                       if (!newCategory.trim()) return;
+                       setCatSaving(true);
+                       try {
+                         await recordedClassService.createCategory(newCategory.trim());
+                         const cats = await recordedClassService.getCategories();
+                         setCategories(cats);
+                         setForm({ ...form, category: newCategory.trim() });
+                         setNewCategory("");
+                       } finally {
+                         setCatSaving(false);
+                       }
+                     }}
+                     disabled={catSaving}
+                   >
+                     {catSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : "Add"}
+                   </Button>
+                 </div>
                </div>
                <div className="space-y-1">
                  <label className="text-xs font-medium text-gray-600">Duration (Months)</label>
