@@ -117,8 +117,8 @@ export default function DashboardPage() {
       category: "Learning Hub"
     },
     {
-      title: "My Courses",
-      description: "Your learning materials & progress",
+      title: "Courses",
+      description: "Browse, subscribe and join your courses",
       icon: BookOpen,
       href: "/courses",
       gradient: "from-emerald-500 to-teal-600",

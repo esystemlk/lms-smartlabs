@@ -8,6 +8,7 @@ import { TitleBar } from "@/components/layout/TitleBar";
 import { AccessibilityMenu } from "@/components/accessibility/AccessibilityMenu";
 import { AccessibilityWidget } from "@/components/accessibility-widget";
 import { ToastProvider } from "@/components/ui/Toast";
+import PreloadGate from "@/components/layout/PreloadGate";
 import Script from "next/script";
 import "./globals.css";
 
@@ -59,6 +60,7 @@ export default function RootLayout({
             <CurrencyProvider>
               <AccessibilityProvider>
                 <ToastProvider>
+                  <PreloadGate />
                   <TitleBar />
                   {children}
                   <AccessibilityWidget />
