@@ -113,19 +113,19 @@ function PricingPage({ onPurchaseSuccess }: { onPurchaseSuccess: () => void }) {
               </button>
             ))}
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {filteredPackages.map((pkg) => (
-            <div key={pkg.id} className="relative bg-white dark:bg-gray-900 rounded-3xl p-8 border border-gray-200 dark:border-gray-800 shadow-xl hover:scale-105 transition-transform duration-300 flex flex-col">
+            <div key={pkg.id} className="relative bg-white dark:bg-gray-900 rounded-3xl p-6 md:p-8 border border-gray-200 dark:border-gray-800 shadow-xl hover:scale-105 transition-transform duration-300 flex flex-col">
               {pkg.durationMonths === 3 && (
                 <div className="absolute top-0 right-0 bg-brand-blue text-white text-xs font-bold px-4 py-1 rounded-bl-xl rounded-tr-3xl">
                   BEST VALUE
                 </div>
               )}
-              <h3 className="text-2xl font-bold mb-2">{pkg.name}</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-2">{pkg.name}</h3>
               <p className="text-gray-500 text-sm mb-6">{pkg.description}</p>
               
               <div className="mb-8">
-                <span className="text-4xl font-bold text-gray-900 dark:text-white">LKR {pkg.price.toLocaleString()}</span>
+                <span className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">LKR {pkg.price.toLocaleString()}</span>
                 <span className="text-gray-500 text-sm"> / total</span>
               </div>
 

@@ -140,40 +140,41 @@ import { Loader2, Plus, Edit, ToggleLeft, ToggleRight, Trash2, ExternalLink } fr
         </div>
        </div>
  
-       {loading ? (
+        {loading ? (
          <div className="flex items-center justify-center py-20">
            <Loader2 className="animate-spin text-brand-blue" />
          </div>
        ) : (
-         <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-           <table className="w-full">
+          <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+            <div className="overflow-x-auto">
+            <table className="min-w-full">
              <thead className="bg-gray-50 text-xs text-gray-500 uppercase">
                <tr>
-                 <th className="text-left px-6 py-3">Name</th>
-                 <th className="text-left px-6 py-3">Category</th>
-                 <th className="text-left px-6 py-3">Duration</th>
-                 <th className="text-left px-6 py-3">Price (LKR)</th>
-                 <th className="text-left px-6 py-3">Status</th>
-                 <th className="text-right px-6 py-3">Actions</th>
+                  <th className="text-left px-3 py-2 md:px-6 md:py-3">Name</th>
+                  <th className="hidden sm:table-cell text-left px-3 py-2 md:px-6 md:py-3">Category</th>
+                  <th className="text-left px-3 py-2 md:px-6 md:py-3">Duration</th>
+                  <th className="text-left px-3 py-2 md:px-6 md:py-3">Price (LKR)</th>
+                  <th className="hidden sm:table-cell text-left px-3 py-2 md:px-6 md:py-3">Status</th>
+                  <th className="text-right px-3 py-2 md:px-6 md:py-3">Actions</th>
                </tr>
              </thead>
              <tbody className="divide-y divide-gray-100">
                {packages.map((pkg) => (
                  <tr key={pkg.id} className="hover:bg-gray-50">
-                   <td className="px-6 py-4">
+                    <td className="px-3 py-3 md:px-6 md:py-4">
                      <div className="font-semibold">{pkg.name}</div>
-                     <div className="text-xs text-gray-500">{pkg.description}</div>
+                      <div className="hidden sm:block text-xs text-gray-500">{pkg.description}</div>
                    </td>
-                   <td className="px-6 py-4">{pkg.category || "Uncategorized"}</td>
-                   <td className="px-6 py-4">{pkg.durationMonths * 30} days</td>
-                   <td className="px-6 py-4">LKR {pkg.price.toLocaleString()}</td>
-                   <td className="px-6 py-4">
+                    <td className="hidden sm:table-cell px-3 py-3 md:px-6 md:py-4">{pkg.category || "Uncategorized"}</td>
+                    <td className="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap">{pkg.durationMonths * 30} days</td>
+                    <td className="px-3 py-3 md:px-6 md:py-4 whitespace-nowrap">LKR {pkg.price.toLocaleString()}</td>
+                    <td className="hidden sm:table-cell px-3 py-3 md:px-6 md:py-4">
                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs ${pkg.active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"}`}>
                        {pkg.active ? "Active" : "Inactive"}
                      </span>
                    </td>
-                   <td className="px-6 py-4">
-                     <div className="flex justify-end gap-2">
+                    <td className="px-3 py-3 md:px-6 md:py-4">
+                      <div className="flex justify-end gap-2 flex-wrap md:flex-nowrap">
                        <Button variant="outline" onClick={() => openEdit(pkg)}>
                          <Edit className="w-4 h-4 mr-2" />
                          Edit
@@ -189,7 +190,8 @@ import { Loader2, Plus, Edit, ToggleLeft, ToggleRight, Trash2, ExternalLink } fr
                  </tr>
                ))}
              </tbody>
-           </table>
+            </table>
+            </div>
          </div>
        )}
  

@@ -62,9 +62,9 @@
  
    return (
      <div className="max-w-7xl mx-auto p-6 space-y-10">
-       <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-3 flex-wrap">
          <div>
-           <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Recorded Class Subscriptions</h1>
+          <h1 className="text-2xl md:text-4xl font-bold text-gray-900">Recorded Class Subscriptions</h1>
            <p className="text-gray-500 mt-1">Choose a time period to access the full library.</p>
          </div>
          <Link href="/learn">
@@ -89,16 +89,16 @@
               </button>
             ))}
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {filteredPackages.map((pkg) => (
-             <div key={pkg.id} className="bg-white rounded-3xl p-8 border border-gray-200 shadow-xl flex flex-col">
+            <div key={pkg.id} className="bg-white rounded-3xl p-6 md:p-8 border border-gray-200 shadow-xl flex flex-col">
                {pkg.durationMonths === 3 && (
                  <div className="self-end mb-2 text-[10px] px-3 py-1 rounded-full bg-brand-blue text-white font-bold">BEST VALUE</div>
                )}
-               <h3 className="text-2xl font-bold mb-2">{pkg.name}</h3>
+              <h3 className="text-xl md:text-2xl font-bold mb-2">{pkg.name}</h3>
                <p className="text-sm text-gray-500 mb-6">{pkg.description}</p>
                <div className="mb-6">
-                 <span className="text-4xl font-bold">LKR {pkg.price.toLocaleString()}</span>
+                <span className="text-3xl md:text-4xl font-bold">LKR {pkg.price.toLocaleString()}</span>
                </div>
                <ul className="space-y-3 mb-8 flex-1">
                  {pkg.features?.map((f, i) => (
@@ -111,7 +111,7 @@
                  ))}
                  <li className="text-xs text-gray-500">Access length: {pkg.durationMonths * 30} days</li>
                </ul>
-               <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                  <Button onClick={() => { setSelected(pkg); startPayHere(pkg); }} className="w-full">
                    <CreditCard className="w-4 h-4 mr-2" />
                    Pay Online

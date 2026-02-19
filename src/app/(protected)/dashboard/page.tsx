@@ -30,7 +30,11 @@ import {
   Layers,
   PlayCircle,
   Clock,
-  FolderOpen
+  FolderOpen,
+  MessageSquare,
+  Settings,
+  Calendar,
+  Play
 } from "lucide-react";
 import Link from "next/link";
 import { clsx } from "clsx";
@@ -117,6 +121,24 @@ export default function DashboardPage() {
       category: "Learning Hub"
     },
     {
+      title: "Live Schedule",
+      description: "Upcoming sessions calendar",
+      icon: Calendar,
+      href: "/lms/live",
+      gradient: "from-purple-500 to-fuchsia-600",
+      roles: ["lecturer", "admin", "superadmin", "developer"],
+      category: "Learning Hub"
+    },
+    {
+      title: "Recordings",
+      description: "Manage or view recordings",
+      icon: Play,
+      href: "/lms/recordings",
+      gradient: "from-indigo-500 to-blue-700",
+      roles: ["lecturer", "admin", "superadmin", "developer"],
+      category: "Learning Hub"
+    },
+    {
       title: "Courses",
       description: "Browse, subscribe and join your courses",
       icon: BookOpen,
@@ -162,11 +184,74 @@ export default function DashboardPage() {
       category: "Management"
     },
     {
+      title: "Users",
+      description: "Manage user accounts",
+      icon: Users,
+      href: "/admin/users",
+      gradient: "from-sky-500 to-cyan-600",
+      roles: ["lecturer", "admin", "superadmin", "developer"],
+      category: "Management"
+    },
+    {
+      title: "Enrollments",
+      description: "Manage student enrollments",
+      icon: GraduationCap,
+      href: "/admin/enrollments",
+      gradient: "from-emerald-600 to-green-700",
+      roles: ["lecturer", "admin", "superadmin", "developer"],
+      category: "Management"
+    },
+    {
+      title: "Manage Courses",
+      description: "Course catalog administration",
+      icon: BookOpen,
+      href: "/admin/courses",
+      gradient: "from-lime-500 to-green-600",
+      roles: ["lecturer", "admin", "superadmin", "developer"],
+      category: "Management"
+    },
+    {
+      title: "Recorded Classes",
+      description: "Manage recorded library",
+      icon: Play,
+      href: "/admin/recorded",
+      gradient: "from-indigo-600 to-violet-600",
+      roles: ["lecturer", "admin", "superadmin", "developer"],
+      category: "Management"
+    },
+    {
+      title: "Recorded Packages",
+      description: "Manage subscription packages",
+      icon: FolderOpen,
+      href: "/admin/recorded-packages",
+      gradient: "from-fuchsia-500 to-pink-600",
+      roles: ["lecturer", "admin", "superadmin", "developer"],
+      category: "Management"
+    },
+    {
+      title: "System Settings",
+      description: "General configuration",
+      icon: Settings,
+      href: "/admin/settings",
+      gradient: "from-slate-600 to-gray-700",
+      roles: ["lecturer", "admin", "superadmin", "developer"],
+      category: "System"
+    },
+    {
       title: "Our Websites",
       description: "Explore our educational network",
       icon: Globe,
       href: "/websites",
       gradient: "from-indigo-500 to-blue-600",
+      roles: ["student", "lecturer", "admin", "superadmin", "developer"],
+      category: "Resources"
+    },
+    {
+      title: "Messages",
+      description: "Inbox and conversations",
+      icon: MessageSquare,
+      href: "/messages",
+      gradient: "from-rose-500 to-pink-600",
       roles: ["student", "lecturer", "admin", "superadmin", "developer"],
       category: "Resources"
     },
@@ -357,7 +442,7 @@ export default function DashboardPage() {
                     <div className="h-px bg-gray-100 flex-1"></div>
                   </div>
                   
-                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
                     {groupedItems[category].map((menu, idx) => (
                       <motion.div key={idx} variants={item}>
                         <Link href={menu.href} className="block h-full group">
