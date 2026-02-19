@@ -41,6 +41,7 @@ const allNavItems = [
   { href: "/admin/settings", label: "System Settings", icon: Settings },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/recorded", label: "Recorded Classes", icon: Play },
+  { href: "/admin/recorded-packages", label: "Recorded Packages", icon: FolderOpen },
   { href: "/admin/courses", label: "Manage Courses", icon: BookOpen },
   { href: "/admin/resources", label: "Resources", icon: FolderOpen },
   { href: "/admin/enrollments", label: "Enrollments", icon: GraduationCap },
@@ -93,7 +94,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       }
 
       // Admin/Lecturer only items
-      if (["/lms", "/live-classes", "/lecturers", "/admin/settings", "/admin/users", "/admin/enrollments", "/admin/analytics", "/admin/courses", "/admin/resources", "/admin/recorded"].includes(item.href)) {
+      if (["/lms", "/live-classes", "/lecturers", "/admin/settings", "/admin/users", "/admin/enrollments", "/admin/analytics", "/admin/courses", "/admin/resources", "/admin/recorded", "/admin/recorded-packages"].includes(item.href)) {
         return ["lecturer", "admin", "superadmin", "developer"].includes(userData.role);
       }
       
