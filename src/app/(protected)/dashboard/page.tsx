@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { GreetingWidget } from "@/components/features/GreetingWidget";
 import { LearningStats } from "@/components/features/LearningStats";
@@ -22,6 +22,7 @@ import {
   GraduationCap,
   Bell,
   ChevronRight,
+  ChevronLeft,
   ExternalLink,
   Zap,
   ArrowRight,
@@ -300,6 +301,9 @@ export default function DashboardPage() {
     return categoryOrder.indexOf(a) - categoryOrder.indexOf(b);
   });
 
+  const [activeCategoryIdx, setActiveCategoryIdx] = useState(0);
+  const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -480,6 +484,59 @@ export default function DashboardPage() {
           </h2>
         </div>
 
+        {/* Role Menu: Cycle through sections */}
+        {sortedCategories.length > 0 && (
+          <div className="sticky top-16 z-10 bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/60 border rounded-2xl p-2 md:p-3">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  const next = (activeCategoryIdx - 1 + sortedCategories.length) % sortedCategories.length;
+                  setActiveCategoryIdx(next);
+                  const key = sortedCategories[next];
+                  sectionRefs.current[key]?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                className="px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                aria-label="Previous section"
+              >
+                <ChevronLeft size={18} />
+              </button>
+              <div className="flex-1 overflow-x-auto no-scrollbar">
+                <div className="flex gap-1 md:gap-2">
+                  {sortedCategories.map((cat, idx) => (
+                    <button
+                      key={cat}
+                      onClick={() => {
+                        setActiveCategoryIdx(idx);
+                        sectionRefs.current[cat]?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }}
+                      className={clsx(
+                        "px-3 py-2 rounded-xl text-xs md:text-sm font-semibold whitespace-nowrap transition-colors",
+                        idx === activeCategoryIdx
+                          ? "bg-brand-blue text-white"
+                          : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                      )}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  const next = (activeCategoryIdx + 1) % sortedCategories.length;
+                  setActiveCategoryIdx(next);
+                  const key = sortedCategories[next];
+                  sectionRefs.current[key]?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                className="px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                aria-label="Next section"
+              >
+                <ChevronRight size={18} />
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Content Grid */}
         <div className="min-h-[400px]">
           <AnimatePresence mode="wait">
@@ -490,7 +547,11 @@ export default function DashboardPage() {
               className="grid grid-cols-1 gap-12"
             >
               {sortedCategories.map((category) => (
-                <div key={category} className="space-y-5">
+                <div
+                  key={category}
+                  ref={(el) => { sectionRefs.current[category] = el; }}
+                  className="space-y-5 scroll-mt-24"
+                >
                   <div className="flex items-center gap-4">
                      <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
                       <span className="w-1 h-6 bg-brand-blue rounded-full"></span>
