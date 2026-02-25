@@ -1,9 +1,22 @@
 import { NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rateLimit';
+import { z } from 'zod';
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { type, config } = body;
+    const rl = rateLimit(req, 'api/admin/test-connection', 5, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ success: false, message: 'Too many requests' }, { status: 429 });
+    }
+    const schema = z.object({
+      type: z.enum(['zoom', 'bunny']),
+      config: z.record(z.any()).optional()
+    });
+    const parsed = schema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json({ success: false, message: 'Invalid payload' }, { status: 400 });
+    }
+    const { type, config } = parsed.data;
 
     if (type === 'zoom') {
       // Test Zoom Connection (Environment Variables)

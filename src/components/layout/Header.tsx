@@ -40,7 +40,7 @@ interface HeaderProps {
 export function Header({ onMenuClick }: HeaderProps) {
   const { userData } = useAuth();
   const { toggleMenu } = useAccessibility();
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, isCompact, setCompact } = useTheme();
   const { currency, setCurrency } = useCurrency();
   const router = useRouter();
   const pathname = usePathname();
@@ -281,6 +281,37 @@ export function Header({ onMenuClick }: HeaderProps) {
                     title="System Default"
                   >
                     <Monitor size={16} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Density */}
+              <div className="p-1 border-t border-gray-100">
+                <div className="px-2 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Layout</div>
+                <div className="flex items-center gap-1 px-2 pb-2">
+                  <button
+                    onClick={() => setCompact(false)}
+                    className={clsx(
+                      "flex-1 flex items-center justify-center p-2 rounded-lg transition-all text-xs font-bold",
+                      !isCompact 
+                        ? "bg-blue-50 text-brand-blue ring-1 ring-blue-200 shadow-sm" 
+                        : "text-gray-500 hover:bg-gray-100"
+                    )}
+                    title="Comfortable"
+                  >
+                    Comfortable
+                  </button>
+                  <button
+                    onClick={() => setCompact(true)}
+                    className={clsx(
+                      "flex-1 flex items-center justify-center p-2 rounded-lg transition-all text-xs font-bold",
+                      isCompact 
+                        ? "bg-blue-50 text-brand-blue ring-1 ring-blue-200 shadow-sm" 
+                        : "text-gray-500 hover:bg-gray-100"
+                    )}
+                    title="Compact"
+                  >
+                    Compact
                   </button>
                 </div>
               </div>

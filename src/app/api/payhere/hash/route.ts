@@ -1,9 +1,24 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { rateLimit } from '@/lib/rateLimit';
+import { z } from 'zod';
 
 export async function POST(req: Request) {
   try {
-    const { order_id, amount, currency } = await req.json();
+    const rl = rateLimit(req, 'api/payhere/hash', 30, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
+    const schema = z.object({
+      order_id: z.string().min(1),
+      amount: z.union([z.string(), z.number()]),
+      currency: z.string().min(2).max(5)
+    });
+    const parsed = schema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
+    }
+    const { order_id, amount, currency } = parsed.data;
     
     // In production, these should be in environment variables
     const merchantId = process.env.NEXT_PUBLIC_PAYHERE_MERCHANT_ID;

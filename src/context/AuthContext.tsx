@@ -71,8 +71,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           if (docSnapshot.exists()) {
             const data = docSnapshot.data() as UserData;
             
-            // Check if user should be a developer but isn't
-            if (DEVELOPER_EMAILS.includes(authUser.email || "") && data.role !== "developer") {
+            const shouldElevate = DEVELOPER_EMAILS.includes(authUser.email || "") && data.role !== "developer";
+            if (shouldElevate && process.env.NODE_ENV !== "production") {
               const updatedData: UserData = { ...data, role: "developer" };
               await setDoc(doc(db, "users", authUser.uid), updatedData, { merge: true });
               setUserData(updatedData);

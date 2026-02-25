@@ -1,11 +1,21 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
 import { collectionGroup, query, where, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { rateLimit } from '@/lib/rateLimit';
 
 export const dynamic = 'force-dynamic'; // Prevent caching
 
 export async function GET(req: Request) {
   try {
+    const rl = rateLimit(req, 'api/cron/process-recordings', 2, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
+    const secret = process.env.CRON_SECRET;
+    const head = req.headers.get("x-cron-secret");
+    if (!secret || head !== secret) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     // 1. Get Settings (Bunny.net credentials)
     const settingsRef = doc(db, "settings", "general");
     const settingsSnap = await getDoc(settingsRef);

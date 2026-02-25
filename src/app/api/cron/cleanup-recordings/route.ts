@@ -1,11 +1,21 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
 import { doc, getDoc, collectionGroup, query, where, getDocs, updateDoc } from "firebase/firestore";
+import { rateLimit } from "@/lib/rateLimit";
 
 // This route should be protected, e.g., by a CRON_SECRET header in production
 // Vercel Cron will send this header
 export async function GET(request: Request) {
   try {
+    const rl = rateLimit(request, "api/cron/cleanup-recordings", 2, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+    }
+    const secret = process.env.CRON_SECRET;
+    const head = request.headers.get("x-cron-secret");
+    if (!secret || head !== secret) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
     // 1. Get Settings
     const settingsRef = doc(db, "settings", "general");
     const settingsSnap = await getDoc(settingsRef);

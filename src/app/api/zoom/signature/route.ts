@@ -1,9 +1,24 @@
 import { NextResponse } from 'next/server';
 import { KJUR } from 'jsrsasign';
+import { rateLimit } from '@/lib/rateLimit';
+import { z } from 'zod';
 
 export async function POST(req: Request) {
   try {
-    const { meetingNumber, role } = await req.json();
+    const rl = rateLimit(req, 'api/zoom/signature', 20, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
+    const schema = z.object({
+      meetingNumber: z.union([z.string(), z.number()]),
+      role: z.number().int().min(0).max(1).optional()
+    });
+    const parsed = schema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
+    }
+    const meetingNumber = String(parsed.data.meetingNumber);
+    const role = parsed.data.role ?? 0;
 
     // Use SDK-specific credentials (Meeting SDK App)
     const ZOOM_SDK_KEY = process.env.ZOOM_SDK_CLIENT_ID;

@@ -1,9 +1,25 @@
 import { NextResponse } from 'next/server';
+import { rateLimit } from '@/lib/rateLimit';
+import { z } from 'zod';
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { topic, startTime, duration, agenda, type } = body;
+    const rl = rateLimit(req, 'api/zoom/create', 10, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
+    const schema = z.object({
+      topic: z.string().min(1).max(200).optional(),
+      startTime: z.string().datetime().optional(),
+      duration: z.number().int().positive().optional(),
+      agenda: z.string().max(1000).optional(),
+      type: z.number().int().optional()
+    });
+    const parsed = schema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
+    }
+    const { topic, startTime, duration, agenda, type } = parsed.data;
 
     const ZOOM_ACCOUNT_ID = process.env.ZOOM_ACCOUNT_ID;
     // Use API-specific credentials (Server-to-Server OAuth)

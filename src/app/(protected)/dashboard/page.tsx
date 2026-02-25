@@ -34,16 +34,19 @@ import {
   MessageSquare,
   Settings,
   Calendar,
-  Play
+  Play, Sparkles
 } from "lucide-react";
 import Link from "next/link";
 import { clsx } from "clsx";
+import { AdminDashboard } from "@/components/admin/AdminDashboard";
+import { LecturerDashboard } from "@/components/lecturer/LecturerDashboard";
 
 export default function DashboardPage() {
   const { userData } = useAuth();
   const [latestNotification, setLatestNotification] = useState<Notification | null>(null);
   const [lastEnrolled, setLastEnrolled] = useState<Enrollment | null>(null);
   const [loadingEnrollment, setLoadingEnrollment] = useState(true);
+  const [recentEnrollments, setRecentEnrollments] = useState<Enrollment[]>([]);
 
   useEffect(() => {
     const fetchNotifs = async () => {
@@ -66,13 +69,13 @@ export default function DashboardPage() {
         const enrollments = await enrollmentService.getUserEnrollments(userData.uid);
         const active = enrollments.filter(e => e.status === 'active');
         if (active.length > 0) {
-          // Sort by lastAccessed or enrolledAt
           active.sort((a, b) => {
              const timeA = a.lastAccessed?.seconds || a.enrolledAt?.seconds || 0;
              const timeB = b.lastAccessed?.seconds || b.enrolledAt?.seconds || 0;
              return timeB - timeA;
           });
           setLastEnrolled(active[0]);
+          setRecentEnrollments(active.slice(0, 4));
         }
       } catch (error) {
         console.error("Failed to fetch enrollments", error);
@@ -309,6 +312,12 @@ export default function DashboardPage() {
     show: { y: 0, opacity: 1 }
   };
 
+  if (userData?.role && ["admin", "superadmin", "developer"].includes(userData.role)) {
+    return <AdminDashboard />;
+  }
+  if (userData?.role === "lecturer") {
+    return <LecturerDashboard />;
+  }
   return (
     <div className="max-w-7xl mx-auto space-y-8 p-4 md:p-6 pb-24">
       {/* Top Section: Greeting & Notification */}
@@ -402,6 +411,53 @@ export default function DashboardPage() {
           >
              <UpcomingSchedule userData={userData} />
           </motion.div>
+
+          {/* Recent Courses */}
+          {recentEnrollments.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+              className="mt-6"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-lg font-bold text-gray-900 dark:text-white">Recent Courses</h2>
+                <Link href="/courses" className="text-sm font-medium text-brand-blue flex items-center gap-1">
+                  Browse <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {recentEnrollments.map((en) => (
+                  <Link key={en.id} href={`/courses/${en.courseId}`} className="group">
+                    <div className="rounded-2xl p-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center">
+                          <BookOpen className="w-5 h-5" />
+                        </div>
+                        <span className={clsx(
+                          "text-[10px] font-bold px-2 py-0.5 rounded-full border",
+                          en.status === 'active' ? "bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-800" : "bg-gray-50 text-gray-600 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"
+                        )}>
+                          {en.status}
+                        </span>
+                      </div>
+                      <div className="mt-3">
+                        <h3 className="text-sm font-semibold line-clamp-2 group-hover:text-brand-blue transition-colors">
+                          {en.courseTitle}
+                        </h3>
+                        {en.batchName && (
+                          <p className="text-xs text-gray-500 mt-1">{en.batchName}</p>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Recommendations */}
+          <Recommendations />
         </div>
 
         {/* Learning Stats Widget (Replaces Quick Stats) */}
@@ -496,5 +552,59 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+function Recommendations() {
+  const { userData } = useAuth();
+  const [items, setItems] = useState<{ id: string; title: string }[]>([]);
+  useEffect(() => {
+    const load = async () => {
+      const all = await courseService.getPublishedCourses();
+      const enrolled = new Set(userData?.enrolledCourses || []);
+      const recs = all.filter(c => !enrolled.has(c.id)).slice(0, 4).map(c => ({ id: c.id, title: c.title }));
+      setItems(recs);
+    };
+    load();
+  }, [userData?.enrolledCourses]);
+  if (items.length === 0) return null;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3 }}
+      className="mt-6"
+    >
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <span className="w-6 h-6 rounded-lg bg-gradient-to-br from-amber-500 to-pink-600 text-white flex items-center justify-center">
+            <Sparkles className="w-3 h-3" />
+          </span>
+          Recommendations
+        </h2>
+        <Link href="/courses" className="text-sm font-medium text-brand-blue flex items-center gap-1">
+          Explore <ChevronRight className="w-4 h-4" />
+        </Link>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {items.map((c) => (
+          <Link key={c.id} href={`/courses/${c.id}`} className="group">
+            <div className="rounded-2xl p-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+              <div className="flex items-start justify-between gap-2">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-pink-600 text-white flex items-center justify-center">
+                  <BookOpen className="w-5 h-5" />
+                </div>
+              </div>
+              <div className="mt-3">
+                <h3 className="text-sm font-semibold line-clamp-2 group-hover:text-brand-blue transition-colors">
+                  {c.title}
+                </h3>
+                <p className="text-xs text-gray-500 mt-1">Suggested for you</p>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </motion.div>
   );
 }

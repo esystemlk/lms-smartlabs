@@ -1,8 +1,13 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { rateLimit } from '@/lib/rateLimit';
 
 export async function POST(req: Request) {
   try {
+    const rl = rateLimit(req, 'api/payhere/notify', 60, 60_000);
+    if (!rl.allowed) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
     const formData = await req.formData();
     const merchant_id = formData.get('merchant_id') as string;
     const order_id = formData.get('order_id') as string;
@@ -10,6 +15,9 @@ export async function POST(req: Request) {
     const payhere_currency = formData.get('payhere_currency') as string;
     const status_code = formData.get('status_code') as string;
     const md5sig = formData.get('md5sig') as string;
+    if (!merchant_id || !order_id || !payhere_amount || !payhere_currency || !status_code || !md5sig) {
+      return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
+    }
 
     const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET;
 

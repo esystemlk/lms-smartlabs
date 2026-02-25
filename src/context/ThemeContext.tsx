@@ -20,6 +20,7 @@ interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   isCompact: boolean;
+  setCompact: (val: boolean) => Promise<void>;
   customTheme?: NonNullable<UserData['preferences']>['customTheme'];
   updateTheme: (theme: NonNullable<NonNullable<UserData['preferences']>['customTheme']>) => Promise<void>;
   resetTheme: () => Promise<void>;
@@ -93,6 +94,18 @@ export function ThemeProvider({
   const customTheme = userData?.preferences?.customTheme;
   const isDark = theme === "dark" || (theme === "system" && typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
+  const setCompact = async (val: boolean) => {
+    if (!userData) return;
+    try {
+      const userRef = doc(db, "users", userData.uid);
+      await updateDoc(userRef, {
+        "preferences.compactMode": val
+      });
+    } catch (error) {
+      console.error("Failed to update compact mode:", error);
+    }
+  };
+
   const updateTheme = async (newTheme: NonNullable<NonNullable<UserData['preferences']>['customTheme']>) => {
     if (!userData) return;
     try {
@@ -118,7 +131,7 @@ export function ThemeProvider({
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, isCompact, customTheme, updateTheme, resetTheme, isDark }}>
+    <ThemeContext.Provider value={{ theme, setTheme, isCompact, setCompact, customTheme, updateTheme, resetTheme, isDark }}>
       {children}
     </ThemeContext.Provider>
   );

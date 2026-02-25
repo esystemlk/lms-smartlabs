@@ -87,5 +87,46 @@ export const assignmentService = {
       return { id: snap.id, ...snap.data() } as AssignmentSubmission;
     }
     return null;
+  },
+
+  async getLecturerPendingSubmissions(lecturerId: string) {
+    const assignmentsQ = query(
+      collection(db, "assignments"),
+      orderBy("dueDate", "desc")
+    );
+    const assignmentsSnap = await getDocs(assignmentsQ);
+    const assignments = assignmentsSnap.docs
+      .map(d => ({ id: d.id, ...d.data() } as Assignment))
+      .filter(a => Boolean(a.courseId));
+    const courseIds = [...new Set(assignments.map(a => a.courseId))];
+    const coursesMap = new Map<string, { title: string; lecturerId?: string; instructorId?: string }>();
+    if (courseIds.length > 0) {
+      const courseDocs = await Promise.all(courseIds.map(id => getDoc(doc(db, "courses", id))));
+      courseDocs.forEach(cd => {
+        if (cd.exists()) {
+          const data: any = cd.data();
+          coursesMap.set(cd.id, { title: data.title, lecturerId: data.lecturerId, instructorId: data.instructorId });
+        }
+      });
+    }
+    const mineAssignments = assignments.filter(a => {
+      const c = coursesMap.get(a.courseId);
+      if (!c) return false;
+      return c.lecturerId === lecturerId || c.instructorId === lecturerId;
+    });
+    const results: Array<{ assignment: Assignment; courseTitle: string; submissions: AssignmentSubmission[] }> = [];
+    for (const a of mineAssignments) {
+      const subsQ = query(
+        collection(db, "assignments", a.id, "submissions"),
+        where("status", "==", "submitted"),
+        orderBy("submittedAt", "desc")
+      );
+      const subsSnap = await getDocs(subsQ);
+      const submissions = subsSnap.docs.map(d => ({ id: d.id, ...d.data() } as AssignmentSubmission));
+      if (submissions.length > 0) {
+        results.push({ assignment: a, courseTitle: coursesMap.get(a.courseId!)?.title || "", submissions });
+      }
+    }
+    return results;
   }
 };
