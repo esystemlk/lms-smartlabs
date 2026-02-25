@@ -38,6 +38,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { clsx } from "clsx";
+import { courseService } from "@/services/courseService";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { LecturerDashboard } from "@/components/lecturer/LecturerDashboard";
 
