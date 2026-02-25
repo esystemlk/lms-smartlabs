@@ -17,36 +17,42 @@ import {
   MessageSquare,
   MessageCircle,
   Calendar,
-  FolderOpen
+  FolderOpen,
+  ShieldAlert
 } from "lucide-react";
 import { clsx } from "clsx";
 import { Transition } from "@headlessui/react";
 import { Fragment, useMemo } from "react";
 import { useAuth } from "@/context/AuthContext";
 
-// Updated items to match the Dashboard Main Menu
-const allNavItems = [
-  { href: "/dashboard", label: "Main Menu", icon: LayoutDashboard },
-  { href: "/learn", label: "Learn", icon: Play },
-  { href: "/community", label: "Community", icon: MessageCircle },
-  { href: "/courses", label: "Courses", icon: BookOpen },
-  { href: "/websites", label: "Our Websites", icon: Globe },
-  { href: "/lms", label: "LMS Admin", icon: Monitor },
-  { href: "/live-classes", label: "Live Manager", icon: Video },
-  { href: "/lms/live", label: "Live Schedule", icon: Calendar },
-  { href: "/lms/recordings", label: "Recordings", icon: Play },
-  { href: "/messages", label: "Messages", icon: MessageSquare },
-  { href: "/lecturers", label: "Lecturers", icon: GraduationCap },
-  { href: "/activities", label: "Activities", icon: Activity },
-  { href: "/admin/settings", label: "System Settings", icon: Settings },
-  { href: "/admin/users", label: "Users", icon: Users },
-  { href: "/admin/recorded", label: "Recorded Classes", icon: Play },
-  { href: "/admin/recorded-packages", label: "Recorded Packages", icon: FolderOpen },
-  { href: "/admin/courses", label: "Manage Courses", icon: BookOpen },
-  { href: "/admin/resources", label: "Resources", icon: FolderOpen },
-  { href: "/admin/enrollments", label: "Enrollments", icon: GraduationCap },
-  { href: "/admin/analytics", label: "Analytics", icon: Activity },
-];
+const navConfig = [
+  { href: "/dashboard", label: "Main Menu", icon: LayoutDashboard, section: "General", roles: ["student","lecturer","admin","superadmin","developer"] as const },
+  { href: "/learn", label: "Learn", icon: Play, section: "Learning", roles: ["student","lecturer","admin","superadmin","developer"] as const },
+  { href: "/community", label: "Community", icon: MessageCircle, section: "Learning", roles: ["student","lecturer","admin","superadmin","developer"] as const },
+  { href: "/courses", label: "Courses", icon: BookOpen, section: "Learning", roles: ["student","lecturer","admin","superadmin","developer"] as const },
+  { href: "/websites", label: "Our Websites", icon: Globe, section: "Resources", roles: ["student","lecturer","admin","superadmin","developer"] as const },
+  { href: "/messages", label: "Messages", icon: MessageSquare, section: "Resources", roles: ["student","lecturer","admin","superadmin","developer"] as const },
+  { href: "/lecturers", label: "Lecturers", icon: GraduationCap, section: "Resources", roles: ["student","lecturer","admin","superadmin","developer"] as const },
+  { href: "/activities", label: "Activities", icon: Activity, section: "Learning", roles: ["student","lecturer","admin","superadmin","developer"] as const },
+
+  { href: "/lms", label: "LMS Portal", icon: Monitor, section: "Management", roles: ["lecturer","admin","superadmin","developer"] as const },
+  { href: "/live-classes", label: "Live Manager", icon: Video, section: "Management", roles: ["lecturer","admin","superadmin","developer"] as const },
+  { href: "/lms/live", label: "Live Schedule", icon: Calendar, section: "Management", roles: ["lecturer","admin","superadmin","developer"] as const },
+  { href: "/lms/recordings", label: "Recordings", icon: Play, section: "Management", roles: ["lecturer","admin","superadmin","developer"] as const },
+  { href: "/courses/manage", label: "Course Manager", icon: BookOpen, section: "Management", roles: ["lecturer","admin","superadmin","developer"] as const },
+
+  { href: "/admin", label: "Admin Dashboard", icon: LayoutDashboard, section: "Admin", roles: ["admin","superadmin","developer"] as const },
+  { href: "/admin/users", label: "Users", icon: Users, section: "Admin", roles: ["admin","superadmin","developer"] as const },
+  { href: "/admin/courses", label: "Manage Courses", icon: BookOpen, section: "Admin", roles: ["admin","superadmin","developer"] as const },
+  { href: "/admin/resources", label: "Resources", icon: FolderOpen, section: "Admin", roles: ["admin","superadmin","developer"] as const },
+  { href: "/admin/enrollments", label: "Enrollments", icon: GraduationCap, section: "Admin", roles: ["admin","superadmin","developer"] as const },
+  { href: "/admin/recorded", label: "Recorded Classes", icon: Play, section: "Admin", roles: ["admin","superadmin","developer"] as const },
+  { href: "/admin/recorded-packages", label: "Recorded Packages", icon: FolderOpen, section: "Admin", roles: ["admin","superadmin","developer"] as const },
+  { href: "/admin/analytics", label: "Analytics", icon: Activity, section: "Admin", roles: ["admin","superadmin","developer"] as const },
+  { href: "/admin/settings", label: "System Settings", icon: Settings, section: "Admin", roles: ["admin","superadmin","developer"] as const },
+
+  { href: "/developer", label: "Developer Console", icon: ShieldAlert, section: "Developer", roles: ["developer"] as const },
+] as const;
 
 interface SidebarProps {
   isOpen: boolean;
@@ -57,50 +63,26 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const { userData } = useAuth();
 
-  const navItems = useMemo(() => {
+  const sections = useMemo(() => {
     if (!userData) return [];
 
-    // Check if user is a student and has NO enrolled batches
     const isNewStudent = userData.role === 'student' && (!userData.enrolledBatches || userData.enrolledBatches.length === 0);
 
     if (isNewStudent) {
-      // New users only see: Courses, Activities, Websites, System Details
-      return allNavItems.filter(item =>
-        ["/courses", "/activities", "/websites", "/system", "/community", "/learn"].includes(item.href)
-      );
+      const items = navConfig.filter(i => ["/courses", "/activities", "/websites", "/community", "/learn"].includes(i.href));
+      return [{ label: "Menu", items }];
     }
 
-    // Filter based on role
-    return allNavItems.filter(item => {
-      // Developer only
-      if (item.href === "/developer") {
-        return userData.role === "developer";
-      }
-
-      // Student strict allowlist - Ensure they NEVER see admin pages
-      if (userData.role === 'student') {
-        const studentAllowed = [
-          "/dashboard", 
-          "/learn",
-          "/community", 
-          "/courses", 
-          "/websites", 
-          "/lms/live", 
-          "/lms/recordings", 
-          "/messages", 
-          "/activities"
-        ];
-        return studentAllowed.includes(item.href);
-      }
-
-      // Admin/Lecturer only items
-      if (["/lms", "/live-classes", "/lecturers", "/admin/settings", "/admin/users", "/admin/enrollments", "/admin/analytics", "/admin/courses", "/admin/resources", "/admin/recorded", "/admin/recorded-packages"].includes(item.href)) {
-        return ["lecturer", "admin", "superadmin", "developer"].includes(userData.role);
-      }
-      
-      // Default for other roles (instructor, service, etc.)
-      return true;
-    });
+    const allowed = navConfig.filter(i => i.roles.includes(userData.role as any));
+    const grouped: Record<string, typeof allowed> = {};
+    for (const item of allowed) {
+      if (!grouped[item.section]) grouped[item.section] = [];
+      grouped[item.section].push(item);
+    }
+    const order = ["General","Learning","Management","Admin","Developer","Resources"];
+    return Object.keys(grouped)
+      .sort((a, b) => order.indexOf(a) - order.indexOf(b))
+      .map(label => ({ label, items: grouped[label] }));
   }, [userData]);
 
   return (
@@ -156,31 +138,34 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             </button>
           </div>
 
-          <nav className="flex-1 p-4 space-y-2 overflow-y-auto no-scrollbar">
-            <p className="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">
-              Menu
-            </p>
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname.startsWith(item.href);
-
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={onClose}
-                  className={clsx(
-                    "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group",
-                    isActive
-                      ? "bg-brand-blue text-white shadow-md shadow-blue-200 dark:shadow-blue-900/20"
-                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-brand-blue dark:hover:text-brand-blue"
-                  )}
-                >
-                  <Icon size={20} className={clsx(isActive ? "text-white" : "text-gray-400 dark:text-gray-500 group-hover:text-brand-blue")} />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              );
-            })}
+          <nav className="flex-1 p-4 space-y-4 overflow-y-auto no-scrollbar">
+            {sections.map((section) => (
+              <div key={section.label} className="space-y-2">
+                <p className="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
+                  {section.label}
+                </p>
+                {section.items.map((item) => {
+                  const Icon = item.icon as any;
+                  const isActive = pathname.startsWith(item.href);
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={onClose}
+                      className={clsx(
+                        "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group",
+                        isActive
+                          ? "bg-brand-blue text-white shadow-md shadow-blue-200 dark:shadow-blue-900/20"
+                          : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-brand-blue dark:hover:text-brand-blue"
+                      )}
+                    >
+                      <Icon size={20} className={clsx(isActive ? "text-white" : "text-gray-400 dark:text-gray-500 group-hover:text-brand-blue")} />
+                      <span className="font-medium">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            ))}
           </nav>
 
           <div className="p-4 border-t border-border">

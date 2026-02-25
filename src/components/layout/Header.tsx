@@ -348,7 +348,7 @@ export function Header({ onMenuClick }: HeaderProps) {
               </div>
 
               <div className="p-1">
-                {userData?.role === 'admin' && (
+                {userData?.role && ['admin','superadmin','developer'].includes(userData.role) && (
                   <Menu.Item>
                     {({ active }) => (
                       <button
