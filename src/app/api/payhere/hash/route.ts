@@ -32,7 +32,8 @@ export async function POST(req: Request) {
     }
 
     // Format amount to 2 decimal places
-    const amountFormatted = parseFloat(amount).toFixed(2);
+    const amountNum = typeof amount === 'number' ? amount : parseFloat(amount);
+    const amountFormatted = amountNum.toFixed(2);
     
     // Hash generation as per PayHere documentation:
     // 1. Hash the merchant secret (md5) -> upperCase

@@ -64,7 +64,8 @@ export async function POST(req: Request) {
     
     else if (type === 'bunny') {
       // Test Bunny.net Connection (Provided Config)
-      const { libraryId, apiKey } = config;
+      const libraryId = typeof (config as any)?.libraryId === 'string' ? (config as any).libraryId : undefined;
+      const apiKey = typeof (config as any)?.apiKey === 'string' ? (config as any).apiKey : undefined;
 
       if (!libraryId || !apiKey) {
         return NextResponse.json({ 
