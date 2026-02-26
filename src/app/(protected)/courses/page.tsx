@@ -120,11 +120,10 @@ export default function CoursesPage() {
         setEnrolling(false);
         return;
       }
-      // Determine price based on current currency
+      // Enforce LKR across the site
       const priceLKR = selectedCourse.priceLKR || selectedCourse.price || 0;
-      const priceUSD = selectedCourse.priceUSD || 0;
-      const finalAmount = currency === 'USD' && priceUSD > 0 ? priceUSD : priceLKR;
-      const finalCurrency = currency === 'USD' && priceUSD > 0 ? 'USD' : 'LKR';
+      const finalAmount = priceLKR;
+      const finalCurrency = 'LKR';
 
       if (paymentMethod === 'card') {
         const enrollmentId = await enrollmentService.createEnrollment(

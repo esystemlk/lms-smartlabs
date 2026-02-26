@@ -316,34 +316,13 @@ export function Header({ onMenuClick }: HeaderProps) {
                 </div>
               </div>
 
-              {/* Currency Toggles */}
+              {/* Currency (fixed to LKR) */}
               <div className="p-1 border-t border-gray-100">
                 <div className="px-2 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">Currency</div>
                 <div className="flex items-center gap-1 px-2 pb-2">
-                  <button
-                    onClick={() => setCurrency('LKR')}
-                    className={clsx(
-                      "flex-1 flex items-center justify-center p-2 rounded-lg transition-all text-xs font-bold",
-                      currency === 'LKR' 
-                        ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 shadow-sm" 
-                        : "text-gray-500 hover:bg-gray-100"
-                    )}
-                    title="Sri Lankan Rupee"
-                  >
+                  <div className="flex-1 flex items-center justify-center p-2 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 shadow-sm">
                     LKR
-                  </button>
-                  <button
-                    onClick={() => setCurrency('USD')}
-                    className={clsx(
-                      "flex-1 flex items-center justify-center p-2 rounded-lg transition-all text-xs font-bold",
-                      currency === 'USD' 
-                        ? "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 shadow-sm" 
-                        : "text-gray-500 hover:bg-gray-100"
-                    )}
-                    title="US Dollar"
-                  >
-                    USD
-                  </button>
+                  </div>
                 </div>
               </div>
 

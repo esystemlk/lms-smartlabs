@@ -123,6 +123,25 @@ export async function POST(req: Request) {
       batch.update(doc(db, 'courses', enrollment.courseId, 'batches', enrollment.batchId), {
         enrolledCount: increment(1)
       });
+      // Update timeslot counts: decrement reserved, increment enrolled
+      if (enrollment.timeSlotId) {
+        const batchRef = doc(db, 'courses', enrollment.courseId, 'batches', enrollment.batchId);
+        const batchSnap = await getDoc(batchRef);
+        if (batchSnap.exists()) {
+          const data = batchSnap.data() as any;
+          const slots = (data.timeSlots || []).map((s: any) => {
+            if (s.id === enrollment.timeSlotId) {
+              return {
+                ...s,
+                reservedCount: Math.max(0, (s.reservedCount || 0) - 1),
+                enrolledCount: (s.enrolledCount || 0) + 1
+              };
+            }
+            return s;
+          });
+          batch.update(batchRef, { timeSlots: slots });
+        }
+      }
       await batch.commit();
       return NextResponse.json({ status: 'activated' });
     }
