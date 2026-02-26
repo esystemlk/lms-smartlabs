@@ -479,7 +479,8 @@ export default function CoursesPage() {
                                 <div className="font-semibold text-sm">Select your time slot</div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                   {b.timeSlots.map(slot => {
-                                    const full = slot.capacity !== undefined && slot.enrolledCount !== undefined && slot.capacity > 0 && slot.enrolledCount >= slot.capacity;
+                                    const used = (slot.enrolledCount || 0) + (slot.reservedCount || 0);
+                                    const full = slot.capacity !== undefined && slot.capacity > 0 && used >= slot.capacity;
                                     return (
                                       <div
                                         key={slot.id}
@@ -487,7 +488,7 @@ export default function CoursesPage() {
                                         className={`cursor-pointer p-3 rounded-lg border flex items-center justify-between ${selectedTimeSlotId === slot.id ? 'border-brand-blue bg-blue-50' : 'border-gray-200 hover:border-gray-300'} ${full ? 'opacity-50 cursor-not-allowed' : ''}`}
                                       >
                                         <div className="text-sm">{slot.label}</div>
-                                        <div className="text-xs text-gray-600">{slot.enrolledCount || 0}/{slot.capacity || '∞'}</div>
+                                        <div className="text-xs text-gray-600">{used}/{slot.capacity || '∞'}</div>
                                       </div>
                                     );
                                   })}

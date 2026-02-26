@@ -105,6 +105,31 @@ export const enrollmentService = {
       updatedAt: serverTimestamp()
     };
 
+    // Enforce slot capacity
+    const batchRef = doc(db, COURSES_COLLECTION, course.id, BATCHES_COLLECTION, batch.id);
+    if (timeSlot?.id) {
+      const batchSnap = await getDoc(batchRef);
+      if (batchSnap.exists()) {
+        const data = batchSnap.data() as Batch;
+        const slot = (data.timeSlots || []).find(s => s.id === timeSlot.id);
+        if (slot && slot.capacity && slot.capacity > 0) {
+          const used = (slot.enrolledCount || 0) + (slot.reservedCount || 0);
+          if (used >= slot.capacity) {
+            throw new Error("Selected time slot is full. Please choose another slot.");
+          }
+        }
+        // Reserve a seat for non-immediate activations
+        if (status !== 'active') {
+          const updatedSlots = (data.timeSlots || []).map(s =>
+            s.id === timeSlot.id
+              ? { ...s, reservedCount: (s.reservedCount || 0) + 1 }
+              : s
+          );
+          await updateDoc(batchRef, { timeSlots: updatedSlots, updatedAt: serverTimestamp() });
+        }
+      }
+    }
+
     const docRef = await addDoc(collection(db, ENROLLMENTS_COLLECTION), enrollmentData);
 
     // If active immediately (Card), update user and batch counts
@@ -129,9 +154,13 @@ export const enrollmentService = {
         const batchSnap = await getDoc(batchRef);
         if (batchSnap.exists()) {
           const data = batchSnap.data() as Batch;
-          const updatedSlots = (data.timeSlots || []).map(s => 
-            s.id === timeSlot.id 
-              ? { ...s, enrolledCount: (s.enrolledCount || 0) + 1 } 
+          const updatedSlots = (data.timeSlots || []).map(s =>
+            s.id === timeSlot.id
+              ? { 
+                  ...s, 
+                  enrolledCount: (s.enrolledCount || 0) + 1,
+                  reservedCount: Math.max(0, (s.reservedCount || 0) - 0) // no reservation for immediate activation
+                }
               : s
           );
           batchOp.update(batchRef, { timeSlots: updatedSlots });

@@ -200,6 +200,7 @@ export interface Batch {
     endTime?: string; // "10:00"
     capacity?: number;
     enrolledCount?: number;
+    reservedCount?: number;
   }>;
 
   // New: Batch specific content
