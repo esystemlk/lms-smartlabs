@@ -9,10 +9,14 @@ import { auth } from "@/lib/firebase";
 import { signOut, updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Camera, Loader2, LogOut, Smile, Save, Award, Download } from "lucide-react";
+import { Camera, Loader2, LogOut, Smile, Save, Award, Download, BookOpen, Clock, CheckCircle } from "lucide-react";
 import { userService } from "@/services/userService";
 import { MemojiSelector } from "@/components/features/MemojiSelector";
 import { countries } from "@/data/countries";
+import Link from "next/link";
+import { courseService } from "@/services/courseService";
+import { enrollmentService } from "@/services/enrollmentService";
+import { Course, Enrollment } from "@/lib/types";
 
 export default function ProfilePage() {
   const { userData } = useAuth();
@@ -20,6 +24,9 @@ export default function ProfilePage() {
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [isMemojiModalOpen, setIsMemojiModalOpen] = useState(false);
+  const [myCourses, setMyCourses] = useState<Course[]>([]);
+  const [myEnrollments, setMyEnrollments] = useState<Record<string, Enrollment | null>>({});
+  const [coursesLoading, setCoursesLoading] = useState(false);
 
   // Mock Certificates (In real app, fetch from collection)
   const certificates: { id: number; title: string; date: string; url: string }[] = [
@@ -48,6 +55,28 @@ export default function ProfilePage() {
       });
     }
   }, [userData]);
+
+  useEffect(() => {
+    const load = async () => {
+      if (!userData?.uid) return;
+      setCoursesLoading(true);
+      try {
+        const ids = userData.enrolledCourses || [];
+        const courses = await Promise.all(ids.map(async (id) => await courseService.getCourse(id)));
+        setMyCourses(courses.filter(Boolean) as Course[]);
+        const enrolls = await enrollmentService.getUserEnrollments(userData.uid);
+        const map: Record<string, Enrollment | null> = {};
+        enrolls.forEach(e => { map[e.courseId] = e; });
+        setMyEnrollments(map);
+      } catch {
+        setMyCourses([]);
+        setMyEnrollments({});
+      } finally {
+        setCoursesLoading(false);
+      }
+    };
+    load();
+  }, [userData?.uid, userData?.enrolledCourses]);
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -310,6 +339,92 @@ export default function ProfilePage() {
         onSelect={handleMemojiSelect}
         currentImage={userData?.photoURL}
       />
+
+      <div className="bg-white dark:bg-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-border">
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+          <BookOpen className="text-brand-blue" />
+          My Courses
+        </h2>
+        {coursesLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-6 h-6 animate-spin text-brand-blue" />
+          </div>
+        ) : myCourses.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {myCourses.map((course) => {
+              const en = myEnrollments[course.id];
+              const progress = en?.progress || 0;
+              const isActive = en?.status === "active";
+              return (
+                <Link key={course.id} href={`/courses/${course.id}`} className="group">
+                  <div className="rounded-2xl p-4 bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 hover:shadow-md transition-all">
+                    <div className="flex items-start gap-3">
+                      <div className="w-14 h-14 rounded-xl bg-gray-100 dark:bg-gray-700 overflow-hidden">
+                        {course.image ? (
+                          <Image src={course.image} alt={course.title} width={128} height={128} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-400">
+                            <BookOpen className="w-6 h-6" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <h3 className="font-semibold text-sm text-gray-900 dark:text-white truncate group-hover:text-brand-blue">
+                            {course.title}
+                          </h3>
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full border ${isActive ? "text-emerald-700 border-emerald-200 bg-emerald-50" : "text-gray-600 border-gray-200 bg-gray-50"}`}>
+                            {isActive ? "Active" : (en?.status || "Pending")}
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mt-1">
+                          {course.description}
+                        </p>
+                        <div className="mt-3">
+                          <div className="flex justify-between text-xs text-gray-500 mb-1">
+                            <span>Progress</span>
+                            <span>{progress}%</span>
+                          </div>
+                          <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div className="h-full bg-brand-blue transition-all duration-500 rounded-full" style={{ width: `${progress}%` }} />
+                          </div>
+                        </div>
+                        <div className="mt-3 flex items-center gap-3 text-xs text-gray-500">
+                          <div className="flex items-center gap-1">
+                            <Clock size={12} />
+                            <span>Flexible</span>
+                          </div>
+                          {course.includesCertificate && (
+                            <div className="flex items-center gap-1 text-emerald-600">
+                              <CheckCircle size={12} />
+                              <span>Certificate</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-center py-8 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-200 dark:border-gray-700">
+            <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto text-gray-400 mb-3">
+              <BookOpen size={24} />
+            </div>
+            <p className="text-sm font-medium text-gray-900 dark:text-white">No enrolled courses</p>
+            <p className="text-xs text-gray-500 max-w-xs mx-auto mt-1">
+              Browse the catalog and enroll to start learning.
+            </p>
+            <div className="mt-4">
+              <Link href="/courses">
+                <Button size="sm">Browse Courses</Button>
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
