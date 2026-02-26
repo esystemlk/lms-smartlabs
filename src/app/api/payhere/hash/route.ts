@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { rateLimit } from '@/lib/rateLimit';
 import { z } from 'zod';
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 export async function POST(req: Request) {
   try {
@@ -20,9 +22,24 @@ export async function POST(req: Request) {
     }
     const { order_id, amount, currency } = parsed.data;
     
-    // In production, these should be in environment variables
-    const merchantId = process.env.NEXT_PUBLIC_PAYHERE_MERCHANT_ID;
-    const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET;
+    // Determine mode from global settings (defaults to sandbox)
+    let mode: 'sandbox' | 'live' = 'sandbox';
+    try {
+      const ref = doc(db, 'settings', 'global');
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        const data = snap.data() as any;
+        if (data?.payhereMode === 'live') mode = 'live';
+      }
+    } catch {}
+
+    // Pick credentials based on mode (with fallback to legacy env names)
+    const merchantId = mode === 'live' 
+      ? (process.env.NEXT_PUBLIC_PAYHERE_MERCHANT_ID_LIVE || process.env.NEXT_PUBLIC_PAYHERE_MERCHANT_ID)
+      : (process.env.NEXT_PUBLIC_PAYHERE_MERCHANT_ID_SANDBOX || process.env.NEXT_PUBLIC_PAYHERE_MERCHANT_ID);
+    const merchantSecret = mode === 'live'
+      ? (process.env.PAYHERE_MERCHANT_SECRET_LIVE || process.env.PAYHERE_MERCHANT_SECRET)
+      : (process.env.PAYHERE_MERCHANT_SECRET_SANDBOX || process.env.PAYHERE_MERCHANT_SECRET);
 
     if (!merchantId || !merchantSecret) {
       return NextResponse.json(

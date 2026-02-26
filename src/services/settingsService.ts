@@ -19,6 +19,7 @@ export const settingsService = {
           id: SETTINGS_DOC_ID,
           siteName: "SMART LABS",
           maintenanceMode: false,
+          payhereMode: "sandbox",
           supportEmail: "support@smartlabs.com",
           updatedAt: serverTimestamp(),
         };

@@ -319,6 +319,7 @@ export interface SystemSettings {
   maintenanceMode: boolean;
   announcement?: string;
   supportEmail?: string;
+  payhereMode?: 'sandbox' | 'live';
   bankDetails?: {
     bankName: string;
     accountName: string;

@@ -43,10 +43,11 @@ export const payhereService = {
     amount: number,
     currency: string,
     userData: any,
-    baseUrl: string
+    baseUrl: string,
+    merchantIdOverride?: string
   ): PayHereParams {
     return {
-      merchant_id: process.env.NEXT_PUBLIC_PAYHERE_MERCHANT_ID || '',
+      merchant_id: merchantIdOverride || process.env.NEXT_PUBLIC_PAYHERE_MERCHANT_ID || '',
       return_url: `${baseUrl}/payment/success?order_id=${orderId}`,
       cancel_url: `${baseUrl}/payment/cancel`,
       notify_url: `${baseUrl}/api/payhere/notify`,

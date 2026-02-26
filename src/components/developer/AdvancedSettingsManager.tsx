@@ -147,6 +147,34 @@ export function AdvancedSettingsManager() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
                   <div>
+                    <span className="font-medium text-gray-900 block">Payment Gateway Mode</span>
+                    <span className="text-xs text-gray-500">Switch PayHere between Sandbox and Live</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setSettings(s => s ? { ...s, payhereMode: "sandbox" } : s)}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${
+                        settings.payhereMode !== "live" 
+                          ? "bg-blue-600 text-white border-blue-600" 
+                          : "bg-white text-gray-700 border-gray-200 hover:border-blue-300"
+                      }`}
+                    >
+                      Sandbox
+                    </button>
+                    <button
+                      onClick={() => setSettings(s => s ? { ...s, payhereMode: "live" } : s)}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${
+                        settings.payhereMode === "live" 
+                          ? "bg-emerald-600 text-white border-emerald-600" 
+                          : "bg-white text-gray-700 border-gray-200 hover:border-emerald-300"
+                      }`}
+                    >
+                      Live
+                    </button>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
+                  <div>
                     <span className="font-medium text-gray-900 block">Maintenance Mode</span>
                     <span className="text-xs text-gray-500">Blocks non-admin access to the platform</span>
                   </div>

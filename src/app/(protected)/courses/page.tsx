@@ -581,7 +581,6 @@ export default function CoursesPage() {
             amount={payHereConfig.amount}
             currency={payHereConfig.currency}
             userData={userData}
-            sandbox={true}
             onDismiss={() => {
                 setShowPayHere(false);
                 setPayHereConfig(null);
