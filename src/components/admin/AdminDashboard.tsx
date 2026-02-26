@@ -17,6 +17,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/context/AuthContext";
 import { format } from "date-fns";
+import { useCurrency } from "@/context/CurrencyContext";
 
 export function AdminDashboard() {
   const { userData } = useAuth();
@@ -134,7 +135,7 @@ export function AdminDashboard() {
         />
         <StatCard 
           title="Total Revenue" 
-          value={`$${totalRevenue.toLocaleString()}`}
+          value={useCurrency().formatPrice(totalRevenue, undefined)}
           label=""
           icon={DollarSign} 
           trend="Lifetime" 

@@ -10,7 +10,10 @@ interface OverviewTabProps {
   loading: boolean;
 }
 
+import { useCurrency } from "@/context/CurrencyContext";
+
 export function OverviewTab({ users, courses, enrollments = [], loading }: OverviewTabProps) {
+  const { formatPrice } = useCurrency();
   const totalRevenue = enrollments.reduce((sum, e) => sum + (e.amount || 0), 0);
 
   const stats = [
@@ -30,7 +33,7 @@ export function OverviewTab({ users, courses, enrollments = [], loading }: Overv
     },
     {
       title: "Total Revenue",
-      value: `$${totalRevenue.toLocaleString()}`,
+      value: formatPrice(totalRevenue, undefined),
       icon: DollarSign,
       color: "bg-purple-500",
       description: "Lifetime earnings"
