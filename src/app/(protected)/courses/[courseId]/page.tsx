@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/context/AuthContext";
 import { 
@@ -177,6 +178,44 @@ export default function CourseDetailsPage() {
             </Link>
           </div>
         )}
+      </div>
+
+      {/* Hero Image and Description */}
+      <div className="bg-white rounded-2xl shadow-soft overflow-hidden border border-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+          <div className="relative aspect-square bg-gray-100">
+            {course.image ? (
+              <Image
+                src={course.image}
+                alt={course.title}
+                width={1024}
+                height={1024}
+                quality={95}
+                className="w-full h-full object-cover"
+                priority={false}
+              />
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-300">
+                <BookOpen className="w-16 h-16" />
+              </div>
+            )}
+          </div>
+          <div className="p-4 md:p-6 flex flex-col justify-center">
+            <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-2">About this course</h2>
+            <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+              {course.description}
+            </p>
+            {course.tags && course.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-4">
+                {course.tags.slice(0, 6).map((tag, i) => (
+                  <span key={i} className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {!accessGranted && !checkingAccess && (

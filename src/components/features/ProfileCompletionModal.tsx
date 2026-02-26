@@ -9,6 +9,7 @@ import { Loader2, Save, UserCheck, AlertCircle } from "lucide-react";
 import { countries } from "@/data/countries";
 import { useToast } from "@/components/ui/Toast";
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 interface ProfileCompletionModalProps {
   user: UserData;
@@ -19,6 +20,7 @@ export function ProfileCompletionModal({ user }: ProfileCompletionModalProps) {
   const [loading, setLoading] = useState(false);
   const { userData } = useAuth(); // Get latest data
   const { toast } = useToast();
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -66,7 +68,12 @@ export function ProfileCompletionModal({ user }: ProfileCompletionModalProps) {
     try {
       await userService.updateProfile(user.uid, formData);
       toast("Profile updated successfully!", "success");
-      setIsOpen(false);
+      // If onboarding not completed yet, guide user through tutorial
+      if (!userData?.onboardingCompleted) {
+        router.push("/onboarding");
+      } else {
+        setIsOpen(false);
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
       toast("Failed to update profile", "error");

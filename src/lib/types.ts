@@ -30,6 +30,7 @@ export interface UserData {
       sidebar: string;
     };
   };
+  onboardingCompleted?: boolean;
   [key: string]: any;
 }
 

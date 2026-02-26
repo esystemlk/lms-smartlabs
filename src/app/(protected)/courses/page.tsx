@@ -4,6 +4,7 @@
 import { useEffect, useState, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   Loader2,
@@ -225,13 +226,16 @@ export default function CoursesPage() {
         {courses.map((course) => (
           <div key={course.id} className="group bg-white dark:bg-card rounded-xl md:rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-border overflow-hidden flex flex-col h-full">
             {/* Image */}
-            <div className="relative h-36 md:h-48 bg-gray-100 dark:bg-gray-800 overflow-hidden">
+            <Link href={`/courses/${course.id}`} className="relative aspect-square bg-gray-100 dark:bg-gray-800 overflow-hidden">
               {course.image ? (
                 <Image
                   src={course.image}
                   alt={course.title}
-                  fill
-                  className="object-contain"
+                  width={1024}
+                  height={1024}
+                  quality={95}
+                  className="w-full h-full object-cover"
+                  priority={false}
                 />
               ) : (
                 <div className="flex items-center justify-center h-full text-gray-300 dark:text-gray-600">
@@ -241,7 +245,7 @@ export default function CoursesPage() {
               <div className="absolute top-3 right-3 md:top-4 md:right-4 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold text-brand-blue shadow-sm">
                 {course.lessonsCount} Lessons
               </div>
-            </div>
+            </Link>
 
             {/* Content */}
             <div className="p-3 md:p-6 flex flex-col flex-1">
@@ -263,9 +267,11 @@ export default function CoursesPage() {
                     </span>
                   )}
                 </div>
-                <h3 className="text-base md:text-xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 line-clamp-1 group-hover:text-brand-blue transition-colors">
-                  {course.title}
-                </h3>
+                <Link href={`/courses/${course.id}`}>
+                  <h3 className="text-base md:text-xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 line-clamp-1 group-hover:text-brand-blue transition-colors">
+                    {course.title}
+                  </h3>
+                </Link>
                 <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
                   {course.description}
                 </p>
