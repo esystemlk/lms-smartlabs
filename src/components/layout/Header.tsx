@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { useAuth } from "@/context/AuthContext";
 import { useAccessibility } from "@/context/AccessibilityContext";
@@ -13,6 +13,7 @@ import { VoiceNavigator } from "@/components/features/VoiceNavigator";
 import { usePWAInstall } from "@/hooks/usePWAInstall";
 import { useCurrency } from "@/context/CurrencyContext";
 import { InstallPrompt } from "@/components/features/InstallPrompt";
+import { courseService } from "@/services/courseService";
 import {
   User,
   Settings,
@@ -29,7 +30,8 @@ import {
   Sun,
   Moon,
   Monitor,
-  DollarSign
+  DollarSign,
+  BookOpen
 } from "lucide-react";
 import { clsx } from "clsx";
 
@@ -48,6 +50,8 @@ export function Header({ onMenuClick }: HeaderProps) {
 
   const { isInstallable, promptInstall } = usePWAInstall();
   const [showIOSPrompt, setShowIOSPrompt] = useState(false);
+  const [enrolledList, setEnrolledList] = useState<Array<{ id: string; title: string }>>([]);
+  const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
 
   const handleInstallClick = async () => {
     const outcome = await promptInstall();
@@ -73,6 +77,37 @@ export function Header({ onMenuClick }: HeaderProps) {
       case "developer": return "bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800";
       default: return "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"; // student/user
     }
+  };
+
+  useEffect(() => {
+    const loadCourses = async () => {
+      const ids = userData?.enrolledCourses || [];
+      if (!ids || ids.length === 0) {
+        setEnrolledList([]);
+        return;
+      }
+      try {
+        const results = await Promise.all(ids.map(async (id) => {
+          const c = await courseService.getCourse(id);
+          return c ? { id: c.id, title: c.title } : { id, title: "Course" };
+        }));
+        setEnrolledList(results);
+        const stored = typeof window !== "undefined" ? localStorage.getItem("activeCourseId") : null;
+        const initial = stored && ids.includes(stored) ? stored : ids[0];
+        setActiveCourseId(initial || null);
+      } catch {
+        // silent
+      }
+    };
+    loadCourses();
+  }, [userData?.enrolledCourses]);
+
+  const handleSwitchCourse = (id: string) => {
+    setActiveCourseId(id);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("activeCourseId", id);
+    }
+    router.push(`/courses/${id}`);
   };
 
   return (
@@ -133,6 +168,65 @@ export function Header({ onMenuClick }: HeaderProps) {
 
         {/* Voice Navigation */}
         <VoiceNavigator />
+
+        {/* Course Switcher */}
+        {enrolledList.length >= 2 && (
+          <Menu as="div" className="relative">
+            <Menu.Button className="flex items-center gap-2 px-2 py-1.5 hover:bg-gray-50 rounded-lg transition-colors outline-none">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 text-brand-blue flex items-center justify-center">
+                  <BookOpen size={16} />
+                </div>
+                <div className="hidden md:flex flex-col items-start">
+                  <span className="text-xs text-gray-500 leading-none">Active Course</span>
+                  <span className="text-sm font-semibold text-gray-900 leading-none">
+                    {enrolledList.find(c => c.id === activeCourseId)?.title || "Select"}
+                  </span>
+                </div>
+              </div>
+              <ChevronDown size={14} className="text-gray-400" />
+            </Menu.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 z-50">
+                <div className="p-1">
+                  {enrolledList.map((c) => (
+                    <Menu.Item key={c.id}>
+                      {({ active }) => (
+                        <button
+                          className={clsx(
+                            active ? 'bg-gray-50 text-brand-blue' : 'text-gray-700',
+                            'group flex w-full items-center justify-between rounded-lg px-2 py-2 text-sm'
+                          )}
+                          onClick={() => handleSwitchCourse(c.id)}
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded-md bg-gray-100 flex items-center justify-center text-gray-500">
+                              <BookOpen size={14} />
+                            </div>
+                            <span className="truncate">{c.title}</span>
+                          </div>
+                          {activeCourseId === c.id && (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border text-brand-blue">
+                              Active
+                            </span>
+                          )}
+                        </button>
+                      )}
+                    </Menu.Item>
+                  ))}
+                </div>
+              </Menu.Items>
+            </Transition>
+          </Menu>
+        )}
 
         {/* Notifications */}
         {/* Notifications */}
