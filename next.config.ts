@@ -27,7 +27,7 @@ const nextConfig: NextConfig = {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://firestore.googleapis.com https://zoom.us https://api.zoom.us https://video.bunnycdn.com",
       "frame-ancestors 'none'",
-      "frame-src 'self' https://*.zoom.us https://www.payhere.lk https://sandbox.payhere.lk",
+      "frame-src 'self' https://*.zoom.us https://www.payhere.lk https://sandbox.payhere.lk https://accounts.google.com https://*.google.com",
       "worker-src 'self' blob:",
       "media-src 'self' blob: https://firebasestorage.googleapis.com"
     ].join("; ");
@@ -41,8 +41,8 @@ const nextConfig: NextConfig = {
           { key: "X-Frame-Options", value: "DENY" },
           { key: "Permissions-Policy", value: "geolocation=(), microphone=(), camera=(), interest-cohort=()" },
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
-          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-          { key: "Cross-Origin-Embedder-Policy", value: "require-corp" }
+          { key: "Cross-Origin-Opener-Policy", value: "" },
+          { key: "Cross-Origin-Embedder-Policy", value: "" }
         ],
       },
       {

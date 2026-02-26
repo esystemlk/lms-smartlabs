@@ -164,8 +164,13 @@ export default function LoginPage() {
     setError("");
     try {
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      await processAuthUser(result.user);
+      try {
+        const result = await signInWithPopup(auth, provider);
+        await processAuthUser(result.user);
+      } catch (popupErr: any) {
+        const fallback = await import("firebase/auth");
+        await fallback.signInWithRedirect(auth, provider as any);
+      }
     } catch (err: any) {
       console.error(err);
       setError("Failed to sign in with Google.");
