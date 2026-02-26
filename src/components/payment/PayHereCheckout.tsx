@@ -65,6 +65,18 @@ export function PayHereCheckout({
 
     const startPayment = async () => {
       try {
+        // Ensure PayHere SDK is loaded
+        if (typeof window.payhere === "undefined") {
+          await new Promise<void>((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = "https://www.payhere.lk/lib/payhere.js";
+            script.async = true;
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error("Failed to load PayHere SDK"));
+            document.head.appendChild(script);
+          });
+        }
+
         const hash = await payhereService.generateHash(orderId, amount, currency);
         const baseUrl = window.location.origin;
         const params = payhereService.getCheckoutParams(

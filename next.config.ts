@@ -23,11 +23,11 @@ const nextConfig: NextConfig = {
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https://lh3.googleusercontent.com https://firebasestorage.googleapis.com",
       "object-src 'none'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://www.payhere.lk",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://firestore.googleapis.com https://zoom.us https://api.zoom.us https://video.bunnycdn.com",
       "frame-ancestors 'none'",
-      "frame-src 'self' https://*.zoom.us",
+      "frame-src 'self' https://*.zoom.us https://www.payhere.lk https://sandbox.payhere.lk",
       "worker-src 'self' blob:",
       "media-src 'self' blob: https://firebasestorage.googleapis.com"
     ].join("; ");

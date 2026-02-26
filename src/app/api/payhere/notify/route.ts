@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { rateLimit } from '@/lib/rateLimit';
+import { db } from '@/lib/firebase';
+import { 
+  doc, getDoc, updateDoc, serverTimestamp, writeBatch, arrayUnion, increment 
+} from 'firebase/firestore';
+import { Course, Enrollment } from '@/lib/types';
 
 export async function POST(req: Request) {
   try {
@@ -11,6 +16,7 @@ export async function POST(req: Request) {
     const formData = await req.formData();
     const merchant_id = formData.get('merchant_id') as string;
     const order_id = formData.get('order_id') as string;
+    const payment_id = formData.get('payment_id') as string | null;
     const payhere_amount = formData.get('payhere_amount') as string;
     const payhere_currency = formData.get('payhere_currency') as string;
     const status_code = formData.get('status_code') as string;
@@ -19,7 +25,24 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
     }
 
-    const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET;
+    // Determine mode and credentials (mirror hash route logic)
+    let mode: 'sandbox' | 'live' = 'sandbox';
+    try {
+      const settingsSnap = await getDoc(doc(db, 'settings', 'global'));
+      if (settingsSnap.exists()) {
+        const data = settingsSnap.data() as any;
+        if (data?.payhereMode === 'live') mode = 'live';
+      }
+    } catch {}
+    const expectedMerchantId = mode === 'live'
+      ? (process.env.NEXT_PUBLIC_PAYHERE_MERCHANT_ID_LIVE || process.env.NEXT_PUBLIC_PAYHERE_MERCHANT_ID || '')
+      : (process.env.NEXT_PUBLIC_PAYHERE_MERCHANT_ID_SANDBOX || process.env.NEXT_PUBLIC_PAYHERE_MERCHANT_ID || '');
+    if (!expectedMerchantId || merchant_id !== expectedMerchantId) {
+      return NextResponse.json({ error: 'Merchant mismatch' }, { status: 400 });
+    }
+    const merchantSecret = mode === 'live'
+      ? (process.env.PAYHERE_MERCHANT_SECRET_LIVE || process.env.PAYHERE_MERCHANT_SECRET)
+      : (process.env.PAYHERE_MERCHANT_SECRET_SANDBOX || process.env.PAYHERE_MERCHANT_SECRET);
 
     if (!merchantSecret) {
       return NextResponse.json({ error: 'Server config error' }, { status: 500 });
@@ -43,13 +66,65 @@ export async function POST(req: Request) {
     }
 
     if (status_code === '2') {
-      // Payment Success
-      // Ideally, update the database status to 'active' here using Firebase Admin SDK.
-      // Since Admin SDK is not currently configured, we rely on the client-side 
-      // return_url flow to trigger the final enrollment activation, 
-      // but we verify the signature here for audit purposes.
-      
-      console.log(`Payment confirmed for Order ID: ${order_id}`);
+      // Payment Success — finalize enrollment atomically
+      const enrollmentRef = doc(db, 'enrollments', order_id);
+      const enrollmentSnap = await getDoc(enrollmentRef);
+      if (!enrollmentSnap.exists()) {
+        return NextResponse.json({ error: 'Enrollment not found' }, { status: 404 });
+      }
+      const enrollment = enrollmentSnap.data() as Enrollment;
+      if (enrollment.status === 'active') {
+        return NextResponse.json({ status: 'already_active' });
+      }
+      // Validate amount matches (2dp)
+      const expected = Number(enrollment.amount || 0).toFixed(2);
+      const received = Number(parseFloat(payhere_amount)).toFixed(2);
+      if (expected !== received) {
+        return NextResponse.json({ error: 'Amount mismatch' }, { status: 400 });
+      }
+      // Compute validity like approveEnrollment
+      const courseRef = doc(db, 'courses', enrollment.courseId);
+      const courseSnap = await getDoc(courseRef);
+      const course = courseSnap.data() as Course;
+      let validUntil: any = null;
+      if (course) {
+        const { addMonths, parseISO, isBefore } = await import('date-fns');
+        let expiryDate: Date | null = null;
+        if (course.resourceAvailabilityMonths) {
+          expiryDate = addMonths(new Date(), course.resourceAvailabilityMonths);
+        }
+        if (course.endDate) {
+          const courseEndDate = parseISO(course.endDate);
+          if (!expiryDate || isBefore(courseEndDate, expiryDate)) {
+            expiryDate = courseEndDate;
+          }
+        }
+        if (expiryDate) {
+          const { Timestamp } = await import('firebase/firestore');
+          // @ts-ignore
+          validUntil = Timestamp.fromDate(expiryDate);
+        }
+      }
+      const batch = writeBatch(db);
+      // Update enrollment
+      batch.update(enrollmentRef, {
+        status: 'active',
+        validUntil,
+        paymentMethod: 'payhere',
+        paymentProofUrl: payment_id || null,
+        updatedAt: serverTimestamp()
+      });
+      // Update user
+      batch.update(doc(db, 'users', enrollment.userId), {
+        enrolledBatches: arrayUnion(enrollment.batchId),
+        enrolledCourses: arrayUnion(enrollment.courseId)
+      });
+      // Update batch count
+      batch.update(doc(db, 'courses', enrollment.courseId, 'batches', enrollment.batchId), {
+        enrolledCount: increment(1)
+      });
+      await batch.commit();
+      return NextResponse.json({ status: 'activated' });
     }
 
     return NextResponse.json({ status: 'success' });
