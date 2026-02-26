@@ -95,13 +95,17 @@ export default function RecordingsPage() {
                 {/* Thumbnail / Placeholder */}
                 <div className="aspect-video bg-gray-900 relative flex items-center justify-center overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-                  <Play className="text-white opacity-80 group-hover:opacity-100 transform group-hover:scale-110 transition-all z-20" size={48} fill="currentColor" />
+                  <Play 
+                    className="text-white opacity-90 drop-shadow group-hover:opacity-100 transform group-hover:scale-110 transition-all z-20"
+                    size={56}
+                    strokeWidth={1.5}
+                  />
                   
                   {/* Dynamic Thumbnail from Bunny (if available) */}
                   <img 
                     src={`https://vz-${libraryId}.b-cdn.net/${rec.bunnyVideoId}/thumbnail.jpg`} 
                     alt={rec.title}
-                    className="absolute inset-0 w-full h-full object-contain"
+                    className="absolute inset-0 w-full h-full object-cover"
                     onError={(e) => (e.currentTarget.style.display = 'none')}
                   />
                   
