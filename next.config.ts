@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
       "base-uri 'self'",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https://lh3.googleusercontent.com https://firebasestorage.googleapis.com https://www.svgrepo.com",
+      "img-src 'self' data: blob: https://lh3.googleusercontent.com https://firebasestorage.googleapis.com https://www.svgrepo.com https://*.b-cdn.net",
       "object-src 'none'",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://www.payhere.lk https://apis.google.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
@@ -65,6 +66,12 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.b-cdn.net',
         port: '',
         pathname: '/**',
       },
