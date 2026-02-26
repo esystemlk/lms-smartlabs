@@ -94,8 +94,12 @@ export const enrollmentService = {
       courseTitle: course.title,
       batchId: batch.id,
       batchName: batch.name,
-      timeSlotId: timeSlot?.id,
-      timeSlotLabel: timeSlot?.label,
+      ...(timeSlot?.id 
+        ? { 
+            timeSlotId: timeSlot.id, 
+            ...(timeSlot.label ? { timeSlotLabel: timeSlot.label } : {}) 
+          } 
+        : {}),
       status,
       paymentMethod,
       paymentProofUrl: receiptUrl,

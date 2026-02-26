@@ -115,9 +115,14 @@ export default function CoursesPage() {
     setEnrolling(true);
     try {
       const selectedBatch = batches.find(b => b.id === selectedBatchId)!;
-      const selectedSlot = selectedBatch.timeSlots?.find(s => s.id === selectedTimeSlotId || "");
+      const selectedSlot = selectedBatch.timeSlots?.find(s => s.id === (selectedTimeSlotId || ""));
       if (selectedBatch.timeSlots && selectedBatch.timeSlots.length > 0 && !selectedSlot) {
         alert("Please select a time slot.");
+        setEnrolling(false);
+        return;
+      }
+      if (selectedSlot && !selectedSlot.id) {
+        alert("Invalid time slot. Please choose again.");
         setEnrolling(false);
         return;
       }
