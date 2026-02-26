@@ -8,6 +8,7 @@ import {
   sendPasswordResetEmail,
   updateProfile,
   signInWithPopup,
+  getRedirectResult,
   GoogleAuthProvider,
   User
 } from "firebase/auth";
@@ -48,6 +49,25 @@ export default function LoginPage() {
     }
   }, [authUser, authLoading, router]);
 
+  // Handle Google redirect result
+  useEffect(() => {
+    let mounted = true;
+    const run = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (mounted && result && result.user) {
+          await processAuthUser(result.user);
+        }
+      } catch (err: any) {
+        if (mounted) {
+          setError("Failed to sign in with Google.");
+          setLoading(false);
+        }
+      }
+    };
+    run();
+    return () => { mounted = false; };
+  }, []);
   // Process user after successful authentication
   const processAuthUser = async (user: User) => {
     setLoading(true);
