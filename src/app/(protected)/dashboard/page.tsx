@@ -49,6 +49,7 @@ export default function DashboardPage() {
   const [lastEnrolled, setLastEnrolled] = useState<Enrollment | null>(null);
   const [loadingEnrollment, setLoadingEnrollment] = useState(true);
   const [recentEnrollments, setRecentEnrollments] = useState<Enrollment[]>([]);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
     const fetchNotifs = async () => {
@@ -62,6 +63,16 @@ export default function DashboardPage() {
       }
     };
     fetchNotifs();
+  }, []);
+
+  useEffect(() => {
+    const mq = typeof window !== "undefined" ? window.matchMedia("(min-width: 1024px)") : null;
+    if (mq) {
+      const update = () => setIsDesktop(mq.matches);
+      update();
+      mq.addEventListener("change", update);
+      return () => mq.removeEventListener("change", update);
+    }
   }, []);
 
   useEffect(() => {
@@ -280,13 +291,16 @@ export default function DashboardPage() {
     }
   ];
 
-  const filteredItems = menuItems.filter(item => {
-    // Role check
-    if (userData?.role && !item.roles.includes(userData.role)) {
-      return false;
-    }
-    return true;
-  });
+  const showAll = Boolean(isDesktop && userData?.role && ["superadmin", "developer"].includes(userData.role));
+
+  const filteredItems = showAll
+    ? menuItems
+    : menuItems.filter(item => {
+        if (userData?.role && !item.roles.includes(userData.role)) {
+          return false;
+        }
+        return true;
+      });
 
   // Group items by category
   const groupedItems = filteredItems.reduce((acc, item) => {
@@ -317,7 +331,7 @@ export default function DashboardPage() {
     show: { y: 0, opacity: 1 }
   };
 
-  if (userData?.role && ["admin", "superadmin", "developer"].includes(userData.role)) {
+  if (userData?.role && ["admin", "superadmin", "developer"].includes(userData.role) && !showAll) {
     return <AdminDashboard />;
   }
   if (userData?.role === "lecturer") {
