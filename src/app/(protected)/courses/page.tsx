@@ -27,6 +27,7 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { Course, Batch } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { PayHereCheckout } from "@/components/payment/PayHereCheckout";
+import { settingsService } from "@/services/settingsService";
 
 export default function CoursesPage() {
   const router = useRouter();
@@ -49,6 +50,7 @@ export default function CoursesPage() {
   const [enrolling, setEnrolling] = useState(false);
   const [enrollSuccess, setEnrollSuccess] = useState(false); // For Card (Active)
   const [pendingApproval, setPendingApproval] = useState(false); // For Transfer (Pending)
+  const [bankDetails, setBankDetails] = useState<{ bankName: string; accountName: string; accountNumber: string; branch: string } | null>(null);
 
   // PayHere State
   const [showPayHere, setShowPayHere] = useState(false);
@@ -61,6 +63,15 @@ export default function CoursesPage() {
 
   useEffect(() => {
     fetchCourses();
+    const loadSettings = async () => {
+      try {
+        const s = await settingsService.getSettings();
+        if (s.bankDetails) {
+          setBankDetails(s.bankDetails as any);
+        }
+      } catch {}
+    };
+    loadSettings();
   }, []);
 
   const fetchCourses = async () => {
@@ -614,6 +625,18 @@ export default function CoursesPage() {
                               )}
                             </Button>
                           </div>
+                      {paymentMethod === 'transfer' && bankDetails && (
+                        <div className="mt-4 p-4 rounded-xl border border-gray-200 bg-gray-50">
+                          <div className="text-sm font-semibold text-gray-900 mb-2">Bank Transfer Details</div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-gray-600">
+                            <div><span className="font-medium">Bank:</span> {bankDetails.bankName}</div>
+                            <div><span className="font-medium">Branch:</span> {bankDetails.branch}</div>
+                            <div><span className="font-medium">Account Name:</span> {bankDetails.accountName}</div>
+                            <div><span className="font-medium">Account Number:</span> {bankDetails.accountNumber}</div>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-2">Upload a clear receipt image and ensure your name and course appear in the payment reference.</p>
+                        </div>
+                      )}
                         </div>
                       )}
                     </>

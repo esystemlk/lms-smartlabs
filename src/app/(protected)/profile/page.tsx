@@ -9,7 +9,7 @@ import { auth } from "@/lib/firebase";
 import { signOut, updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Camera, Loader2, LogOut, Smile, Save, Award, Download, BookOpen, Clock, CheckCircle } from "lucide-react";
+import { Camera, Loader2, LogOut, Smile, Save, Award, Download, BookOpen, Clock, CheckCircle, ChevronDown, Trophy } from "lucide-react";
 import { userService } from "@/services/userService";
 import { MemojiSelector } from "@/components/features/MemojiSelector";
 import { countries } from "@/data/countries";
@@ -27,6 +27,9 @@ export default function ProfilePage() {
   const [myCourses, setMyCourses] = useState<Course[]>([]);
   const [myEnrollments, setMyEnrollments] = useState<Record<string, Enrollment | null>>({});
   const [coursesLoading, setCoursesLoading] = useState(false);
+  const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
+  const [badges, setBadges] = useState<Array<{ id: string; name: string; description: string; imageUrl: string }>>([]);
+  const [badgesLoading, setBadgesLoading] = useState(false);
 
   // Mock Certificates (In real app, fetch from collection)
   const certificates: { id: number; title: string; date: string; url: string }[] = [
@@ -38,11 +41,21 @@ export default function ProfilePage() {
     contact: string;
     country: string;
     gender: "male" | "female";
+    bio?: string;
+    websiteUrl?: string;
+    facebookUrl?: string;
+    instagramUrl?: string;
+    linkedinUrl?: string;
   }>({
     name: "",
     contact: "",
     country: "",
-    gender: "male"
+    gender: "male",
+    bio: "",
+    websiteUrl: "",
+    facebookUrl: "",
+    instagramUrl: "",
+    linkedinUrl: ""
   });
 
   useEffect(() => {
@@ -51,7 +64,12 @@ export default function ProfilePage() {
         name: userData.name || "",
         contact: userData.contact || "",
         country: userData.country || "",
-        gender: (userData.gender as "male" | "female") || "male"
+        gender: (userData.gender as "male" | "female") || "male",
+        bio: userData.bio || "",
+        websiteUrl: (userData as any).websiteUrl || "",
+        facebookUrl: (userData as any).facebookUrl || "",
+        instagramUrl: (userData as any).instagramUrl || "",
+        linkedinUrl: (userData as any).linkedinUrl || ""
       });
     }
   }, [userData]);
@@ -64,6 +82,9 @@ export default function ProfilePage() {
         const ids = userData.enrolledCourses || [];
         const courses = await Promise.all(ids.map(async (id) => await courseService.getCourse(id)));
         setMyCourses(courses.filter(Boolean) as Course[]);
+        const stored = typeof window !== "undefined" ? localStorage.getItem("activeCourseId") : null;
+        const initial = stored && ids.includes(stored) ? stored : (ids[0] || null);
+        setActiveCourseId(initial);
         const enrolls = await enrollmentService.getUserEnrollments(userData.uid);
         const map: Record<string, Enrollment | null> = {};
         enrolls.forEach(e => { map[e.courseId] = e; });
@@ -77,6 +98,24 @@ export default function ProfilePage() {
     };
     load();
   }, [userData?.uid, userData?.enrolledCourses]);
+
+  useEffect(() => {
+    const loadBadges = async () => {
+      if (!userData?.uid) return;
+      setBadgesLoading(true);
+      try {
+        const mod = await import("@/services/badgeService");
+        const bs = mod.badgeService;
+        const list = await bs.getUserBadges(userData.uid);
+        setBadges(list as any);
+      } catch {
+        setBadges([]);
+      } finally {
+        setBadgesLoading(false);
+      }
+    };
+    loadBadges();
+  }, [userData?.uid]);
 
   const handleLogout = async () => {
     await signOut(auth);
@@ -195,6 +234,32 @@ export default function ProfilePage() {
           <span className="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
             {userData?.role || "Student"}
           </span>
+          {myCourses.length >= 2 && (
+            <div className="mt-4">
+              <div className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                <BookOpen className="w-4 h-4 text-brand-blue" />
+                <span className="text-xs text-gray-500">Active Course</span>
+                <button
+                  className="flex items-center gap-1 text-sm font-semibold text-gray-900"
+                  onClick={() => {
+                    const idx = Math.max(0, myCourses.findIndex(c => c.id === activeCourseId));
+                    const next = myCourses[(idx + 1) % myCourses.length];
+                    setActiveCourseId(next?.id || null);
+                    if (next?.id && typeof window !== "undefined") {
+                      localStorage.setItem("activeCourseId", next.id);
+                    }
+                    if (next?.id) {
+                      router.push(`/courses/${next.id}`);
+                    }
+                  }}
+                  title="Switch to next course"
+                >
+                  <span className="truncate max-w-[160px]">{myCourses.find(c => c.id === activeCourseId)?.title || "Select"}</span>
+                  <ChevronDown className="w-4 h-4 text-gray-400" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Account Details Form */}
@@ -422,6 +487,85 @@ export default function ProfilePage() {
                 <Button size="sm">Browse Courses</Button>
               </Link>
             </div>
+            <div className="md:col-span-2">
+              <label className="text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300">Bio</label>
+              <textarea
+                value={formData.bio}
+                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                placeholder="Tell others about your learning goals, experience, and interests."
+                className="mt-1 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent dark:border-gray-700 dark:text-white"
+                rows={4}
+              />
+            </div>
+            <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-3">
+              <Input
+                label="Website"
+                value={formData.websiteUrl || ""}
+                onChange={(e) => setFormData({ ...formData, websiteUrl: e.target.value })}
+                placeholder="https://example.com"
+                className="text-xs md:text-sm"
+              />
+              <Input
+                label="LinkedIn"
+                value={formData.linkedinUrl || ""}
+                onChange={(e) => setFormData({ ...formData, linkedinUrl: e.target.value })}
+                placeholder="https://linkedin.com/in/username"
+                className="text-xs md:text-sm"
+              />
+              <Input
+                label="Facebook"
+                value={formData.facebookUrl || ""}
+                onChange={(e) => setFormData({ ...formData, facebookUrl: e.target.value })}
+                placeholder="https://facebook.com/username"
+                className="text-xs md:text-sm"
+              />
+              <Input
+                label="Instagram"
+                value={formData.instagramUrl || ""}
+                onChange={(e) => setFormData({ ...formData, instagramUrl: e.target.value })}
+                placeholder="https://instagram.com/username"
+                className="text-xs md:text-sm"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="bg-white dark:bg-card rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-border">
+        <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+          <Trophy className="text-amber-500" />
+          Achievements
+        </h2>
+        {badgesLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-6 h-6 animate-spin text-brand-blue" />
+          </div>
+        ) : badges.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {badges.map((b) => (
+              <div key={b.id} className="p-4 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex items-center gap-3">
+                <div className="w-12 h-12 rounded-lg bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-700 overflow-hidden flex items-center justify-center">
+                  {b.imageUrl ? (
+                    <Image src={b.imageUrl} alt={b.name} width={48} height={48} className="object-cover" />
+                  ) : (
+                    <Award className="w-6 h-6 text-amber-500" />
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold text-gray-900 dark:text-white truncate">{b.name}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{b.description}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-200 dark:border-gray-700">
+            <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto text-gray-400 mb-3">
+              <Trophy size={24} />
+            </div>
+            <p className="text-sm font-medium text-gray-900 dark:text-white">No achievements yet</p>
+            <p className="text-xs text-gray-500 max-w-xs mx-auto mt-1">
+              Complete activities and courses to earn badges and achievements.
+            </p>
           </div>
         )}
       </div>

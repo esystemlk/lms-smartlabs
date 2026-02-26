@@ -204,6 +204,57 @@ export function AdvancedSettingsManager() {
                   value={settings.announcement || ""} 
                   onChange={(e) => setSettings({ ...settings, announcement: e.target.value })} 
                 />
+
+                <div className="mt-6 p-4 rounded-2xl border border-gray-200 bg-gray-50">
+                  <h4 className="text-sm font-bold text-gray-900 mb-3">Bank Transfer Details</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <Input
+                      label="Bank Name"
+                      value={settings.bankDetails?.bankName || ""}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        bankDetails: { 
+                          ...(settings.bankDetails || { accountName: "", accountNumber: "", branch: "" }),
+                          bankName: e.target.value 
+                        }
+                      })}
+                    />
+                    <Input
+                      label="Account Name"
+                      value={settings.bankDetails?.accountName || ""}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        bankDetails: { 
+                          ...(settings.bankDetails || { bankName: "", accountNumber: "", branch: "" }),
+                          accountName: e.target.value 
+                        }
+                      })}
+                    />
+                    <Input
+                      label="Account Number"
+                      value={settings.bankDetails?.accountNumber || ""}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        bankDetails: { 
+                          ...(settings.bankDetails || { bankName: "", accountName: "", branch: "" }),
+                          accountNumber: e.target.value 
+                        }
+                      })}
+                    />
+                    <Input
+                      label="Branch"
+                      value={settings.bankDetails?.branch || ""}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        bankDetails: { 
+                          ...(settings.bankDetails || { bankName: "", accountName: "", accountNumber: "" }),
+                          branch: e.target.value 
+                        }
+                      })}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">These details appear in the Bank Transfer checkout instructions.</p>
+                </div>
               </div>
             )}
           </div>
