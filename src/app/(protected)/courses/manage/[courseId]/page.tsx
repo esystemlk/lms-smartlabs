@@ -86,6 +86,7 @@ export default function EditCoursePage() {
     schedule: "",
     status: "open" as "open" | "closed" | "ongoing" | "completed"
   });
+  const [newBatchSlots, setNewBatchSlots] = useState<Array<{ id: string; label: string; capacity?: string }>>([]);
   const [batchSaving, setBatchSaving] = useState(false);
 
   // Recording Modal State
@@ -315,7 +316,13 @@ export default function EditCoursePage() {
         endDate: newBatchData.endDate,
         maxStudents: newBatchData.maxStudents ? Number(newBatchData.maxStudents) : undefined,
         schedule: newBatchData.schedule,
-        status: newBatchData.status
+      status: newBatchData.status,
+      timeSlots: newBatchSlots.map(s => ({
+        id: s.id,
+        label: s.label,
+        capacity: s.capacity ? Number(s.capacity) : undefined,
+        enrolledCount: 0
+      }))
       };
 
       if (editingBatchId) {
@@ -354,6 +361,11 @@ export default function EditCoursePage() {
       schedule: batch.schedule || "",
       status: batch.status
     });
+    setNewBatchSlots((batch.timeSlots || []).map(s => ({
+      id: s.id,
+      label: s.label,
+      capacity: s.capacity?.toString()
+    })));
     setShowBatchModal(true);
   };
 
@@ -368,6 +380,7 @@ export default function EditCoursePage() {
       schedule: "",
       status: 'open'
     });
+    setNewBatchSlots([]);
   };
 
   const handleDeleteBatch = async (batchId: string) => {
@@ -1038,6 +1051,58 @@ export default function EditCoursePage() {
                 value={newBatchData.schedule}
                 onChange={(e) => setNewBatchData({...newBatchData, schedule: e.target.value})}
               />
+              
+              {/* Time Slots Editor */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="block text-sm font-medium text-gray-700">Time Slots</label>
+                  <button
+                    type="button"
+                    onClick={() => setNewBatchSlots([...newBatchSlots, { id: Date.now().toString(), label: "", capacity: "" }])}
+                    className="text-sm text-brand-blue hover:underline"
+                  >
+                    + Add Slot
+                  </button>
+                </div>
+                {newBatchSlots.length === 0 && (
+                  <div className="text-xs text-gray-500 bg-gray-50 border border-dashed border-gray-200 rounded-lg p-3">
+                    No time slots added. Students will enroll without slot selection.
+                  </div>
+                )}
+                {newBatchSlots.map((slot, idx) => (
+                  <div key={slot.id} className="grid grid-cols-1 md:grid-cols-[1fr_160px_40px] gap-2 items-end">
+                    <Input
+                      label={`Slot ${idx + 1} Label`}
+                      value={slot.label}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setNewBatchSlots(prev => prev.map(s => s.id === slot.id ? { ...s, label: val } : s));
+                      }}
+                      placeholder="e.g. Mon/Wed 08:00–10:00"
+                      required
+                    />
+                    <Input
+                      label="Capacity (optional)"
+                      type="number"
+                      value={slot.capacity || ""}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setNewBatchSlots(prev => prev.map(s => s.id === slot.id ? { ...s, capacity: val } : s));
+                      }}
+                      placeholder="e.g. 30"
+                      min="0"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setNewBatchSlots(prev => prev.filter(s => s.id !== slot.id))}
+                      className="h-10 md:h-[42px] px-3 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50"
+                      title="Remove slot"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
 
               <div className="flex justify-end gap-3 pt-4">
                 <Button 

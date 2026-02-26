@@ -18,6 +18,7 @@ interface TempBatch {
   startDate: string;
   imageFile: File | null;
   imagePreview: string;
+  timeSlots: Array<{ id: string; label: string; capacity?: string }>;
 }
 
 export default function NewCoursePage() {
@@ -72,7 +73,8 @@ export default function NewCoursePage() {
         name: "",
         startDate: "",
         imageFile: null,
-        imagePreview: ""
+        imagePreview: "",
+        timeSlots: []
       }
     ]);
   };
@@ -145,7 +147,13 @@ export default function NewCoursePage() {
             name: batch.name,
             startDate: batch.startDate,
             status: 'open',
-            image: batchImageUrl
+            image: batchImageUrl,
+            timeSlots: (batch.timeSlots || []).map(s => ({
+              id: s.id,
+              label: s.label,
+              capacity: s.capacity ? Number(s.capacity) : undefined,
+              enrolledCount: 0
+            }))
           });
         }
       }
@@ -346,6 +354,73 @@ export default function NewCoursePage() {
                         onChange={(e) => handleBatchChange(batch.id, "startDate", e.target.value)}
                         required
                       />
+                    </div>
+                    {/* Time Slots */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <label className="block text-sm font-medium text-gray-700">Time Slots</label>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setInitialBatches(prev => prev.map(b => b.id === batch.id ? {
+                              ...b,
+                              timeSlots: [...(b.timeSlots || []), { id: Date.now().toString(), label: "", capacity: "" }]
+                            } : b));
+                          }}
+                          className="text-sm text-brand-blue hover:underline"
+                        >
+                          + Add Slot
+                        </button>
+                      </div>
+                      {(batch.timeSlots || []).length === 0 && (
+                        <div className="text-xs text-gray-500 bg-white rounded-lg border border-dashed border-gray-200 p-3">
+                          No slots added. Students will enroll without slot selection.
+                        </div>
+                      )}
+                      {(batch.timeSlots || []).map((slot, idx) => (
+                        <div key={slot.id} className="grid grid-cols-1 md:grid-cols-[1fr_160px_40px] gap-2 items-end">
+                          <Input
+                            label={`Slot ${idx + 1} Label`}
+                            value={slot.label}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setInitialBatches(prev => prev.map(b => b.id === batch.id ? {
+                                ...b,
+                                timeSlots: b.timeSlots.map(s => s.id === slot.id ? { ...s, label: value } : s)
+                              } : b));
+                            }}
+                            placeholder="e.g. Mon/Wed 08:00–10:00"
+                            required
+                          />
+                          <Input
+                            label="Capacity (optional)"
+                            type="number"
+                            value={slot.capacity || ""}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setInitialBatches(prev => prev.map(b => b.id === batch.id ? {
+                                ...b,
+                                timeSlots: b.timeSlots.map(s => s.id === slot.id ? { ...s, capacity: value } : s)
+                              } : b));
+                            }}
+                            placeholder="e.g. 30"
+                            min="0"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setInitialBatches(prev => prev.map(b => b.id === batch.id ? {
+                                ...b,
+                                timeSlots: b.timeSlots.filter(s => s.id !== slot.id)
+                              } : b));
+                            }}
+                            className="h-10 md:h-[42px] px-3 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50"
+                            title="Remove slot"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
