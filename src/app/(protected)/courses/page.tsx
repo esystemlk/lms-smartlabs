@@ -39,6 +39,7 @@ export default function CoursesPage() {
   const [batches, setBatches] = useState<Batch[]>([]);
   const [loadingBatches, setLoadingBatches] = useState(false);
   const [selectedBatchId, setSelectedBatchId] = useState<string | null>(null);
+  const [selectedTimeSlotId, setSelectedTimeSlotId] = useState<string | null>(null);
 
   // Enrollment Flow State
   const [step, setStep] = useState<1 | 2>(1); // 1: Batch, 2: Payment
@@ -81,6 +82,7 @@ export default function CoursesPage() {
   const handleOpenEnrollModal = async (course: Course) => {
     setSelectedCourse(course);
     setSelectedBatchId(null);
+    setSelectedTimeSlotId(null);
     setEnrollSuccess(false);
     setPendingApproval(false);
     setStep(1);
@@ -112,6 +114,12 @@ export default function CoursesPage() {
     setEnrolling(true);
     try {
       const selectedBatch = batches.find(b => b.id === selectedBatchId)!;
+      const selectedSlot = selectedBatch.timeSlots?.find(s => s.id === selectedTimeSlotId || "");
+      if (selectedBatch.timeSlots && selectedBatch.timeSlots.length > 0 && !selectedSlot) {
+        alert("Please select a time slot.");
+        setEnrolling(false);
+        return;
+      }
       // Determine price based on current currency
       const priceLKR = selectedCourse.priceLKR || selectedCourse.price || 0;
       const priceUSD = selectedCourse.priceUSD || 0;
@@ -127,12 +135,13 @@ export default function CoursesPage() {
             selectedBatch,
             'payhere',
             finalAmount,
-            undefined
+            undefined,
+            selectedSlot ? { id: selectedSlot.id, label: selectedSlot.label } : null
         );
 
         setPayHereConfig({
             orderId: enrollmentId,
-            items: `${selectedCourse.title} - ${selectedBatch.name}`,
+            items: `${selectedCourse.title} - ${selectedBatch.name}${selectedSlot ? " (" + selectedSlot.label + ")" : ""}`,
             amount: finalAmount,
             currency: finalCurrency
         });
@@ -149,7 +158,8 @@ export default function CoursesPage() {
         selectedBatch,
         paymentMethod,
         finalAmount,
-        receiptFile || undefined
+        receiptFile || undefined,
+        selectedSlot ? { id: selectedSlot.id, label: selectedSlot.label } : null
       );
 
       if (paymentMethod === 'transfer') {
@@ -455,16 +465,46 @@ export default function CoursesPage() {
                               ))}
                             </div>
                           ) : (
-                            <div className="text-center py-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                              <div className="text-center py-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
                               <p className="text-gray-500">No open batches available for this course right now.</p>
                             </div>
                           )}
+
+                          {/* Time Slot selector when a batch is selected and it has slots */}
+                          {selectedBatchId && (() => {
+                            const b = batches.find(x => x.id === selectedBatchId);
+                            if (!b?.timeSlots || b.timeSlots.length === 0) return null;
+                            return (
+                              <div className="mt-4 space-y-2">
+                                <div className="font-semibold text-sm">Select your time slot</div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                  {b.timeSlots.map(slot => {
+                                    const full = slot.capacity !== undefined && slot.enrolledCount !== undefined && slot.capacity > 0 && slot.enrolledCount >= slot.capacity;
+                                    return (
+                                      <div
+                                        key={slot.id}
+                                        onClick={() => !full && setSelectedTimeSlotId(slot.id)}
+                                        className={`cursor-pointer p-3 rounded-lg border flex items-center justify-between ${selectedTimeSlotId === slot.id ? 'border-brand-blue bg-blue-50' : 'border-gray-200 hover:border-gray-300'} ${full ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                      >
+                                        <div className="text-sm">{slot.label}</div>
+                                        <div className="text-xs text-gray-600">{slot.enrolledCount || 0}/{slot.capacity || '∞'}</div>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            );
+                          })()}
 
                           <div className="flex gap-3 pt-2">
                             <Button variant="ghost" fullWidth onClick={closeModal}>Cancel</Button>
                             <Button
                               fullWidth
-                              disabled={!selectedBatchId}
+                              disabled={!selectedBatchId || (() => {
+                                const b = batches.find(x => x.id === selectedBatchId);
+                                if (!b?.timeSlots || b.timeSlots.length === 0) return false;
+                                return !selectedTimeSlotId;
+                              })()}
                               onClick={() => setStep(2)}
                             >
                               Next: Payment

@@ -34,7 +34,8 @@ export const enrollmentService = {
     batch: Batch,
     paymentMethod: 'card' | 'transfer' | 'payhere',
     amount: number,
-    receiptFile?: File
+    receiptFile?: File,
+    timeSlot?: { id: string; label: string } | null
   ) {
     let receiptUrl = "";
     if (paymentMethod === 'transfer' && receiptFile) {
@@ -93,6 +94,8 @@ export const enrollmentService = {
       courseTitle: course.title,
       batchId: batch.id,
       batchName: batch.name,
+      timeSlotId: timeSlot?.id,
+      timeSlotLabel: timeSlot?.label,
       status,
       paymentMethod,
       paymentProofUrl: receiptUrl,
@@ -120,6 +123,20 @@ export const enrollmentService = {
       batchOp.update(batchRef, {
         enrolledCount: increment(1)
       });
+
+      // Update timeslot capacity if applicable
+      if (timeSlot?.id) {
+        const batchSnap = await getDoc(batchRef);
+        if (batchSnap.exists()) {
+          const data = batchSnap.data() as Batch;
+          const updatedSlots = (data.timeSlots || []).map(s => 
+            s.id === timeSlot.id 
+              ? { ...s, enrolledCount: (s.enrolledCount || 0) + 1 } 
+              : s
+          );
+          batchOp.update(batchRef, { timeSlots: updatedSlots });
+        }
+      }
 
       await batchOp.commit();
     }

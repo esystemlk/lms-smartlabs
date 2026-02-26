@@ -192,6 +192,15 @@ export interface Batch {
   status: 'open' | 'closed' | 'ongoing' | 'completed';
   schedule?: string; // e.g. "Mon/Wed 10:00 AM"
   image?: string; // URL to batch specific image
+  timeSlots?: Array<{
+    id: string;
+    label: string; // e.g. "Mon/Wed 08:00–10:00"
+    days?: string[]; // ["Mon","Wed"]
+    startTime?: string; // "08:00"
+    endTime?: string; // "10:00"
+    capacity?: number;
+    enrolledCount?: number;
+  }>;
 
   // New: Batch specific content
   recordedClasses?: RecordedClass[];
@@ -209,6 +218,8 @@ export interface Enrollment {
   courseTitle: string;
   batchId: string;
   batchName: string;
+  timeSlotId?: string;
+  timeSlotLabel?: string;
 
   status: 'pending' | 'active' | 'rejected' | 'expired' | 'completed' | 'pending_payment';
   paymentMethod: 'card' | 'transfer' | 'admin' | 'payhere';
