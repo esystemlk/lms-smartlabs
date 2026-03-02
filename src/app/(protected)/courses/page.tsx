@@ -577,12 +577,18 @@ export default function CoursesPage() {
                             </div>
                           ) : (
                             <div className="space-y-4">
-                              <div className="bg-gray-50 p-4 rounded-xl space-y-2 text-sm text-gray-600">
-                                <p><span className="font-semibold text-gray-900">Bank:</span> Commercial Bank</p>
-                                <p><span className="font-semibold text-gray-900">Account Name:</span> Smart Labs Institute</p>
-                                <p><span className="font-semibold text-gray-900">Account No:</span> 1234567890</p>
-                                <p><span className="font-semibold text-gray-900">Branch:</span> Colombo 07</p>
-                              </div>
+                              {bankDetails ? (
+                                <div className="bg-gray-50 p-4 rounded-xl space-y-1 text-sm text-gray-600">
+                                  <p><span className="font-semibold text-gray-900">Bank:</span> {bankDetails.bankName}</p>
+                                  <p><span className="font-semibold text-gray-900">Account Name:</span> {bankDetails.accountName}</p>
+                                  <p><span className="font-semibold text-gray-900">Account Number:</span> {bankDetails.accountNumber}</p>
+                                  <p><span className="font-semibold text-gray-900">Branch:</span> {bankDetails.branch}</p>
+                                </div>
+                              ) : (
+                                <div className="bg-yellow-50 p-4 rounded-xl text-sm text-yellow-700">
+                                  Bank details are not configured. Please contact support or try card payment.
+                                </div>
+                              )}
 
                               <div className="space-y-2">
                                 <label className="block text-sm font-medium text-gray-700">Upload Receipt</label>
@@ -625,18 +631,6 @@ export default function CoursesPage() {
                               )}
                             </Button>
                           </div>
-                      {paymentMethod === 'transfer' && bankDetails && (
-                        <div className="mt-4 p-4 rounded-xl border border-gray-200 bg-gray-50">
-                          <div className="text-sm font-semibold text-gray-900 mb-2">Bank Transfer Details</div>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-gray-600">
-                            <div><span className="font-medium">Bank:</span> {bankDetails.bankName}</div>
-                            <div><span className="font-medium">Branch:</span> {bankDetails.branch}</div>
-                            <div><span className="font-medium">Account Name:</span> {bankDetails.accountName}</div>
-                            <div><span className="font-medium">Account Number:</span> {bankDetails.accountNumber}</div>
-                          </div>
-                          <p className="text-xs text-gray-500 mt-2">Upload a clear receipt image and ensure your name and course appear in the payment reference.</p>
-                        </div>
-                      )}
                         </div>
                       )}
                     </>
