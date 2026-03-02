@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Course, Resource, ResourceFolder } from "@/lib/types";
 import { courseService } from "@/services/courseService";
 import { resourceService } from "@/services/resourceService";
@@ -63,6 +63,14 @@ export function ResourceManager() {
   const [isBulkUpload, setIsBulkUpload] = useState(false);
   const [bulkFiles, setBulkFiles] = useState<FileList | null>(null);
   const [bulkUploading, setBulkUploading] = useState(false);
+  const bulkInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (isBulkUpload && bulkInputRef.current) {
+      bulkInputRef.current.setAttribute("webkitdirectory", "");
+      bulkInputRef.current.setAttribute("directory", "");
+    }
+  }, [isBulkUpload]);
 
   useEffect(() => {
     loadCourses();
@@ -508,9 +516,8 @@ export function ResourceManager() {
               <h3 className="text-lg font-bold mb-4">Bulk Upload from Your Computer</h3>
               <p className="text-sm text-gray-600 mb-3">Select a folder; its subfolders and files will be uploaded preserving structure.</p>
               <input
+                ref={bulkInputRef}
                 type="file"
-                webkitdirectory="true"
-                directory="true"
                 multiple
                 className="w-full"
                 onChange={(e) => setBulkFiles(e.target.files)}
