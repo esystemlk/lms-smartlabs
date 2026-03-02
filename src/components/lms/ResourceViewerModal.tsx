@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import { Resource } from "@/lib/types";
 import { X, FileText, Download, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -13,6 +13,22 @@ interface ResourceViewerModalProps {
 export function ResourceViewerModal({ resource, onClose }: ResourceViewerModalProps) {
   if (!resource) return null;
 
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const key = e.key.toLowerCase();
+      const ctrl = e.ctrlKey || e.metaKey;
+      if (
+        (ctrl && (key === "s" || key === "p" || key === "o")) ||
+        (ctrl && e.shiftKey && (key === "i" || key === "j" || key === "c"))
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+    document.addEventListener("keydown", handler, { capture: true });
+    return () => document.removeEventListener("keydown", handler, { capture: true } as any);
+  }, []);
+
   const renderContent = () => {
     switch (resource.type) {
       case 'pdf':
@@ -21,6 +37,8 @@ export function ResourceViewerModal({ resource, onClose }: ResourceViewerModalPr
             src={`${resource.url}#toolbar=0&navpanes=0&scrollbar=0`}
             className="w-full h-full rounded-lg bg-gray-100"
             title={resource.title}
+            sandbox="allow-same-origin allow-scripts allow-forms"
+            onContextMenu={(e) => e.preventDefault()}
           />
         );
       
@@ -33,6 +51,7 @@ export function ResourceViewerModal({ resource, onClose }: ResourceViewerModalPr
               controlsList="nodownload" 
               className="max-h-full max-w-full"
               onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
             />
           </div>
         );
@@ -46,6 +65,7 @@ export function ResourceViewerModal({ resource, onClose }: ResourceViewerModalPr
               controlsList="nodownload" 
               className="w-full max-w-md"
               onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
             />
           </div>
         );
@@ -58,6 +78,8 @@ export function ResourceViewerModal({ resource, onClose }: ResourceViewerModalPr
               alt={resource.title} 
               className="max-w-full max-h-full object-contain"
               onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
+              draggable={false}
             />
           </div>
         );
@@ -79,7 +101,10 @@ export function ResourceViewerModal({ resource, onClose }: ResourceViewerModalPr
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in duration-300 select-none"
+      onContextMenu={(e) => e.preventDefault()}
+    >
       <div className="relative w-full max-w-5xl h-[85vh] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
         
         {/* Header */}
