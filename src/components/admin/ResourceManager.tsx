@@ -55,6 +55,9 @@ export function ResourceManager() {
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadTitle, setUploadTitle] = useState("");
   const [uploadType, setUploadType] = useState<Resource['type']>('other');
+  const [isLinking, setIsLinking] = useState(false);
+  const [sourceCourseId, setSourceCourseId] = useState<string | null>(null);
+  const [sourceFolders, setSourceFolders] = useState<ResourceFolder[]>([]);
 
   useEffect(() => {
     loadCourses();
@@ -99,6 +102,22 @@ export function ResourceManager() {
       setDataLoading(false);
     }
   };
+
+  useEffect(() => {
+    const loadSource = async () => {
+      if (!sourceCourseId) {
+        setSourceFolders([]);
+        return;
+      }
+      try {
+        const data = await resourceService.getFoldersByCourse(sourceCourseId);
+        setSourceFolders(data);
+      } catch {
+        setSourceFolders([]);
+      }
+    };
+    loadSource();
+  }, [sourceCourseId]);
 
   const handleCreateFolder = async () => {
     if (!selectedCourseId || !newFolderName.trim()) return;
@@ -244,6 +263,9 @@ export function ResourceManager() {
                 <Button onClick={() => setIsUploading(true)}>
                     <Upload size={16} className="mr-2" /> Upload Resource
                 </Button>
+                <Button variant="secondary" onClick={() => setIsLinking(true)}>
+                    <FolderPlus size={16} className="mr-2" /> Attach Folder
+                </Button>
             </div>
         </div>
 
@@ -373,6 +395,72 @@ export function ResourceManager() {
                     </div>
                 </div>
             </div>
+        )}
+
+        {/* Attach Folder Modal */}
+        {isLinking && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div className="bg-white rounded-xl p-6 w-full max-w-lg">
+              <h3 className="text-lg font-bold mb-4">Attach Folder from Another Course</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-1 block">Source Course</label>
+                  <select
+                    className="w-full rounded-xl border border-gray-200 px-4 py-2"
+                    value={sourceCourseId || ""}
+                    onChange={(e) => setSourceCourseId(e.target.value || null)}
+                  >
+                    <option value="" disabled>Select a course</option>
+                    {courses
+                      .filter(c => c.id !== selectedCourseId)
+                      .map(c => (
+                        <option key={c.id} value={c.id}>{c.title}</option>
+                      ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">Folders</label>
+                  <div className="max-h-56 overflow-y-auto border rounded-xl">
+                    {(!sourceCourseId || sourceFolders.length === 0) ? (
+                      <div className="p-4 text-sm text-gray-400">No folders found</div>
+                    ) : (
+                      sourceFolders
+                        .filter(f => !f.parentId) // top-level folders for simplicity
+                        .map(f => (
+                          <div key={f.id} className="flex items-center justify-between px-4 py-2 border-b last:border-b-0">
+                            <div className="flex items-center gap-2">
+                              <Folder size={16} className="text-brand-blue" />
+                              <span className="text-sm font-medium">{f.name}</span>
+                            </div>
+                            <Button
+                              size="sm"
+                              onClick={async () => {
+                                if (!selectedCourseId) return;
+                                try {
+                                  await resourceService.attachFolderToCourse(f.id, selectedCourseId);
+                                  toast("Folder attached", "success");
+                                  setIsLinking(false);
+                                  setSourceCourseId(null);
+                                  loadCourseData(selectedCourseId);
+                                } catch {
+                                  toast("Failed to attach folder", "error");
+                                }
+                              }}
+                            >
+                              Attach
+                            </Button>
+                          </div>
+                        ))
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="ghost" onClick={() => { setIsLinking(false); setSourceCourseId(null); }}>Close</Button>
+              </div>
+            </div>
+          </div>
         )}
     </div>
   );

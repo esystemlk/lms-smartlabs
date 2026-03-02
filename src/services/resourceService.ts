@@ -9,7 +9,9 @@ import {
   updateDoc,
   deleteDoc,
   doc,
-  serverTimestamp
+  serverTimestamp,
+  arrayUnion,
+  arrayRemove
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Resource, ResourceFolder } from "@/lib/types";
@@ -55,13 +57,27 @@ export const resourceService = {
 
   // Folders
   async getFoldersByCourse(courseId: string): Promise<ResourceFolder[]> {
-    const q = query(
+    const ownQ = query(
       collection(db, "folders"),
       where("courseId", "==", courseId),
       orderBy("createdAt", "asc")
     );
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as ResourceFolder));
+    const linkedQ = query(
+      collection(db, "folders"),
+      where("linkedCourseIds", "array-contains", courseId)
+    );
+    const [ownSnap, linkedSnap] = await Promise.all([getDocs(ownQ), getDocs(linkedQ)]);
+    const seen = new Set<string>();
+    const rows: ResourceFolder[] = [];
+    ownSnap.docs.forEach(d => { if (!seen.has(d.id)) { seen.add(d.id); rows.push({ id: d.id, ...d.data() } as ResourceFolder); } });
+    linkedSnap.docs.forEach(d => { if (!seen.has(d.id)) { seen.add(d.id); rows.push({ id: d.id, ...d.data() } as ResourceFolder); } });
+    // Sort by createdAt if available
+    rows.sort((a, b) => {
+      const av = (a.createdAt as any)?.seconds || 0;
+      const bv = (b.createdAt as any)?.seconds || 0;
+      return av - bv;
+    });
+    return rows;
   },
 
   async createFolder(folder: Omit<ResourceFolder, "id" | "createdAt">): Promise<string> {
@@ -85,5 +101,19 @@ export const resourceService = {
   
   async updateFolder(folderId: string, data: Partial<ResourceFolder>): Promise<void> {
     await updateDoc(doc(db, "folders", folderId), data);
+  },
+
+  async attachFolderToCourse(folderId: string, courseId: string): Promise<void> {
+    await updateDoc(doc(db, "folders", folderId), {
+      linkedCourseIds: arrayUnion(courseId),
+      updatedAt: serverTimestamp()
+    } as any);
+  },
+
+  async detachFolderFromCourse(folderId: string, courseId: string): Promise<void> {
+    await updateDoc(doc(db, "folders", folderId), {
+      linkedCourseIds: arrayRemove(courseId),
+      updatedAt: serverTimestamp()
+    } as any);
   }
 };

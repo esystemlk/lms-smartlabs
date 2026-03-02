@@ -118,6 +118,7 @@ export interface ResourceFolder {
   courseId: string;
   parentId?: string; // For nested folders
   name: string;
+  linkedCourseIds?: string[]; // Courses that can also view this folder
   createdAt: any;
 }
 
