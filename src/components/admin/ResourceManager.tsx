@@ -266,6 +266,9 @@ export function ResourceManager() {
                 <Button variant="secondary" onClick={() => setIsLinking(true)}>
                     <FolderPlus size={16} className="mr-2" /> Attach Folder
                 </Button>
+                <Button onClick={() => setIsBulkUpload(true)}>
+                    <Upload size={16} className="mr-2" /> Bulk Upload (Folder)
+                </Button>
             </div>
         </div>
 
@@ -428,36 +431,145 @@ export function ResourceManager() {
                       sourceFolders
                         .filter(f => !f.parentId) // top-level folders for simplicity
                         .map(f => (
-                          <div key={f.id} className="flex items-center justify-between px-4 py-2 border-b last:border-b-0">
+                          <label key={f.id} className="flex items-center justify-between px-4 py-2 border-b last:border-b-0 cursor-pointer">
                             <div className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                checked={selectedFolderIds.includes(f.id)}
+                                onChange={(e) => {
+                                  const checked = e.target.checked;
+                                  setSelectedFolderIds(prev => checked ? [...prev, f.id] : prev.filter(id => id !== f.id));
+                                }}
+                              />
                               <Folder size={16} className="text-brand-blue" />
                               <span className="text-sm font-medium">{f.name}</span>
                             </div>
-                            <Button
-                              size="sm"
-                              onClick={async () => {
-                                if (!selectedCourseId) return;
-                                try {
-                                  await resourceService.attachFolderToCourse(f.id, selectedCourseId);
-                                  toast("Folder attached", "success");
-                                  setIsLinking(false);
-                                  setSourceCourseId(null);
-                                  loadCourseData(selectedCourseId);
-                                } catch {
-                                  toast("Failed to attach folder", "error");
-                                }
-                              }}
-                            >
-                              Attach
-                            </Button>
-                          </div>
+                            <span className="text-xs text-gray-400">Top-level</span>
+                          </label>
                         ))
                     )}
                   </div>
                 </div>
+                <div className="flex items-center gap-3">
+                  <label className="text-sm font-medium text-gray-700">Mode</label>
+                  <select
+                    className="rounded-xl border border-gray-200 px-3 py-2 text-sm"
+                    value={linkMode}
+                    onChange={(e) => setLinkMode(e.target.value as any)}
+                  >
+                    <option value="link">Link (share)</option>
+                    <option value="copy">Copy (duplicate)</option>
+                  </select>
+                  <button
+                    className="ml-auto px-3 py-2 rounded-lg bg-blue-600 text-white text-sm"
+                    onClick={async () => {
+                      if (!selectedCourseId || selectedFolderIds.length === 0) return;
+                      try {
+                        if (linkMode === "link") {
+                          for (const id of selectedFolderIds) {
+                            await resourceService.attachFolderToCourse(id, selectedCourseId);
+                          }
+                          toast("Folders linked", "success");
+                        } else {
+                          for (const id of selectedFolderIds) {
+                            await resourceService.cloneFolderToCourse(id, selectedCourseId);
+                          }
+                          toast("Folders copied", "success");
+                        }
+                        setIsLinking(false);
+                        setSourceCourseId(null);
+                        setSelectedFolderIds([]);
+                        loadCourseData(selectedCourseId);
+                      } catch (e) {
+                        toast("Operation failed", "error");
+                      }
+                    }}
+                  >
+                    Apply
+                  </button>
+                </div>
               </div>
               <div className="flex justify-end gap-2 mt-6">
                 <Button variant="ghost" onClick={() => { setIsLinking(false); setSourceCourseId(null); }}>Close</Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Bulk Upload Folder Modal */}
+        {isBulkUpload && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div className="bg-white rounded-xl p-6 w-full max-w-lg">
+              <h3 className="text-lg font-bold mb-4">Bulk Upload from Your Computer</h3>
+              <p className="text-sm text-gray-600 mb-3">Select a folder; its subfolders and files will be uploaded preserving structure.</p>
+              <input
+                type="file"
+                webkitdirectory="true"
+                directory="true"
+                multiple
+                className="w-full"
+                onChange={(e) => setBulkFiles(e.target.files)}
+              />
+              <div className="flex justify-end gap-2 mt-6">
+                <Button variant="ghost" onClick={() => { setIsBulkUpload(false); setBulkFiles(null); }}>Cancel</Button>
+                <Button
+                  onClick={async () => {
+                    if (!selectedCourseId || !bulkFiles || bulkFiles.length === 0) return;
+                    setBulkUploading(true);
+                    try {
+                      const ensureFolderPath = async (relativePath: string): Promise<string | null> => {
+                        const parts = relativePath.split("/").filter(Boolean);
+                        if (parts.length <= 1) return currentFolderId || null;
+                        const folderParts = parts.slice(0, -1);
+                        let parent: string | null = currentFolderId || null;
+                        for (const name of folderParts) {
+                          const existing = folders.find(f => f.name === name && ((f.parentId || null) === parent));
+                          let folderId = existing?.id || null;
+                          if (!folderId) {
+                            folderId = await resourceService.createFolder({ courseId: selectedCourseId, name, parentId: parent || undefined });
+                            folders.push({ id: folderId!, courseId: selectedCourseId, name, parentId: parent || undefined, createdAt: { seconds: Date.now()/1000 } } as any);
+                          }
+                          parent = folderId;
+                        }
+                        return parent;
+                      };
+                      for (const file of Array.from(bulkFiles)) {
+                        const rel = (file as any).webkitRelativePath || file.name;
+                        const folderId = await ensureFolderPath(rel);
+                        const path = `resources/${selectedCourseId}/${rel}`;
+                        const url = await resourceService.uploadFile(file, path);
+                        const ext = rel.split(".").pop()?.toLowerCase() || "";
+                        const typeMap: Record<string, Resource['type']> = {
+                          pdf: "pdf", png: "image", jpg: "image", jpeg: "image", gif: "image", svg: "image",
+                          mp4: "video", mov: "video", webm: "video",
+                          mp3: "audio", wav: "audio", m4a: "audio",
+                          zip: "archive", rar: "archive", "7z": "archive"
+                        };
+                        const rtype = typeMap[ext] || "other";
+                        const title = file.name.replace(/\.[^/.]+$/, "");
+                        await resourceService.createResource({
+                          courseId: selectedCourseId,
+                          folderId: folderId || undefined,
+                          title,
+                          type: rtype,
+                          url
+                        });
+                      }
+                      toast("Bulk upload completed", "success");
+                      setIsBulkUpload(false);
+                      setBulkFiles(null);
+                      loadCourseData(selectedCourseId);
+                    } catch (e) {
+                      console.error(e);
+                      toast("Bulk upload failed", "error");
+                    } finally {
+                      setBulkUploading(false);
+                    }
+                  }}
+                  disabled={bulkUploading || !bulkFiles || bulkFiles.length === 0}
+                >
+                  {bulkUploading ? "Uploading..." : "Upload"}
+                </Button>
               </div>
             </div>
           </div>

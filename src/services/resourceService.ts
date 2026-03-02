@@ -13,6 +13,7 @@ import {
   arrayUnion,
   arrayRemove
 } from "firebase/firestore";
+import { getDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Resource, ResourceFolder } from "@/lib/types";
 
@@ -115,5 +116,51 @@ export const resourceService = {
       linkedCourseIds: arrayRemove(courseId),
       updatedAt: serverTimestamp()
     } as any);
+  },
+
+  async getFolder(folderId: string): Promise<ResourceFolder | null> {
+    const snap = await getDoc(doc(db, "folders", folderId));
+    if (snap.exists()) {
+      return { id: snap.id, ...(snap.data() as any) } as ResourceFolder;
+    }
+    return null;
+  },
+
+  async getSubfolders(parentId: string): Promise<ResourceFolder[]> {
+    const q = query(collection(db, "folders"), where("parentId", "==", parentId));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(d => ({ id: d.id, ...(d.data() as any) } as ResourceFolder));
+  },
+
+  async getResourcesByFolder(folderId: string): Promise<Resource[]> {
+    const q = query(collection(db, "resources"), where("folderId", "==", folderId));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(d => ({ id: d.id, ...(d.data() as any) } as Resource));
+  },
+
+  async cloneFolderToCourse(folderId: string, targetCourseId: string, targetParentId?: string): Promise<string | null> {
+    const src = await resourceService.getFolder(folderId);
+    if (!src) return null;
+    const newFolderId = await resourceService.createFolder({
+      courseId: targetCourseId,
+      name: src.name,
+      parentId: targetParentId
+    });
+    const resources = await resourceService.getResourcesByFolder(folderId);
+    for (const r of resources) {
+      await resourceService.createResource({
+        courseId: targetCourseId,
+        folderId: newFolderId,
+        title: r.title,
+        type: r.type,
+        url: r.url,
+        description: r.description || undefined
+      });
+    }
+    const subs = await resourceService.getSubfolders(folderId);
+    for (const sf of subs) {
+      await resourceService.cloneFolderToCourse(sf.id, targetCourseId, newFolderId);
+    }
+    return newFolderId;
   }
 };
