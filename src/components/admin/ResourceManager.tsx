@@ -58,6 +58,11 @@ export function ResourceManager() {
   const [isLinking, setIsLinking] = useState(false);
   const [sourceCourseId, setSourceCourseId] = useState<string | null>(null);
   const [sourceFolders, setSourceFolders] = useState<ResourceFolder[]>([]);
+  const [selectedFolderIds, setSelectedFolderIds] = useState<string[]>([]);
+  const [linkMode, setLinkMode] = useState<"link" | "copy">("link");
+  const [isBulkUpload, setIsBulkUpload] = useState(false);
+  const [bulkFiles, setBulkFiles] = useState<FileList | null>(null);
+  const [bulkUploading, setBulkUploading] = useState(false);
 
   useEffect(() => {
     loadCourses();
