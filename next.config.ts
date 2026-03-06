@@ -2,13 +2,51 @@ import type { NextConfig } from "next";
 
 const withPWA = require("@ducanh2912/next-pwa").default({
   dest: "public",
-  cacheOnFrontEndNav: true,
-  aggressiveFrontEndNavCaching: true,
+  cacheOnFrontEndNav: false,
+  aggressiveFrontEndNavCaching: false,
   reloadOnOnline: true,
   swcMinify: true,
   disable: process.env.NODE_ENV === "development",
   workboxOptions: {
     disableDevLogs: true,
+    runtimeCaching: [
+      // Avoid caching problematic third-party trackers/cleardot
+      {
+        urlPattern: /https:\/\/www\.google\.com\/images\/cleardot\.gif/i,
+        handler: "NetworkOnly",
+        options: {
+          cacheName: "ignore-cleardot",
+        },
+      },
+      // Same-origin assets: standard SWR
+      {
+        urlPattern: ({ url }: { url: URL }) => url.origin === self.location.origin,
+        handler: "StaleWhileRevalidate",
+        options: {
+          cacheName: "static-resources",
+          expiration: {
+            maxEntries: 300,
+            maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+          },
+        },
+      },
+      // Cross-origin: avoid aggressive caching; prefer network and fall back to cache
+      {
+        urlPattern: ({ url }: { url: URL }) => url.origin !== self.location.origin,
+        handler: "NetworkFirst",
+        options: {
+          cacheName: "cross-origin",
+          networkTimeoutSeconds: 5,
+          cacheableResponse: {
+            statuses: [200],
+          },
+          expiration: {
+            maxEntries: 50,
+            maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+          },
+        },
+      },
+    ],
   },
 });
 
