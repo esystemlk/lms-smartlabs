@@ -16,7 +16,8 @@ import {
   Monitor,
   Flag,
   RotateCcw,
-  HardDrive
+  HardDrive,
+  Video
 } from "lucide-react";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useTheme } from "@/context/ThemeContext";
@@ -255,6 +256,108 @@ export function AdvancedSettingsManager() {
                   </div>
                   <p className="text-xs text-gray-500 mt-2">These details appear in the Bank Transfer checkout instructions.</p>
                 </div>
+
+              <div className="mt-6 p-4 rounded-2xl border border-gray-200 bg-gray-50">
+                <h4 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <Video className="w-4 h-4 text-blue-500" /> Zoom Credentials (Developer)
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <Input
+                    label="Zoom Account ID"
+                    value={settings.zoom?.serverToServer?.accountId || ""}
+                    onChange={(e) => setSettings({
+                      ...settings,
+                      zoom: {
+                        ...settings.zoom,
+                        serverToServer: {
+                          ...(settings.zoom?.serverToServer || {}),
+                          accountId: e.target.value
+                        }
+                      } as any
+                    })}
+                  />
+                  <Input
+                    label="Zoom Client ID"
+                    value={settings.zoom?.serverToServer?.clientId || ""}
+                    onChange={(e) => setSettings({
+                      ...settings,
+                      zoom: {
+                        ...settings.zoom,
+                        serverToServer: {
+                          ...(settings.zoom?.serverToServer || {}),
+                          clientId: e.target.value
+                        }
+                      } as any
+                    })}
+                  />
+                  <Input
+                    label="Zoom Client Secret"
+                    value={settings.zoom?.serverToServer?.clientSecret || ""}
+                    onChange={(e) => setSettings({
+                      ...settings,
+                      zoom: {
+                        ...settings.zoom,
+                        serverToServer: {
+                          ...(settings.zoom?.serverToServer || {}),
+                          clientSecret: e.target.value
+                        }
+                      } as any
+                    })}
+                  />
+                  <div />
+                  <Input
+                    label="Zoom SDK Key"
+                    value={settings.zoom?.sdk?.clientId || ""}
+                    onChange={(e) => setSettings({
+                      ...settings,
+                      zoom: {
+                        ...settings.zoom,
+                        sdk: {
+                          ...(settings.zoom?.sdk || {}),
+                          clientId: e.target.value
+                        }
+                      } as any
+                    })}
+                  />
+                  <Input
+                    label="Zoom SDK Secret"
+                    value={settings.zoom?.sdk?.clientSecret || ""}
+                    onChange={(e) => setSettings({
+                      ...settings,
+                      zoom: {
+                        ...settings.zoom,
+                        sdk: {
+                          ...(settings.zoom?.sdk || {}),
+                          clientSecret: e.target.value
+                        }
+                      } as any
+                    })}
+                  />
+                </div>
+                <div className="mt-3">
+                  <button
+                    onClick={async () => {
+                      try {
+                        setSuccessMsg("");
+                        setLocalError("");
+                        const res = await fetch("/api/zoom/test", { method: "POST" });
+                        const json = await res.json();
+                        if (json.success) {
+                          setSuccessMsg("Zoom connection successful");
+                        } else {
+                          setLocalError(json.error || "Zoom connection failed");
+                        }
+                      } catch (e: any) {
+                        setLocalError(e.message || "Zoom test failed");
+                      }
+                    }}
+                    className="px-3 py-2 rounded-lg border text-sm hover:bg-gray-50"
+                  >
+                    Test Zoom Connection
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">Stored in Firestore for developer access. Avoid .env for Zoom here.</p>
+              </div>
               </div>
             )}
           </div>

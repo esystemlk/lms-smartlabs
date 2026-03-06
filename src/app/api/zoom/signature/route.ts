@@ -20,12 +20,24 @@ export async function POST(req: Request) {
     const meetingNumber = String(parsed.data.meetingNumber);
     const role = parsed.data.role ?? 0;
 
-    // Use SDK-specific credentials (Meeting SDK App)
-    const ZOOM_SDK_KEY = process.env.ZOOM_SDK_CLIENT_ID;
-    const ZOOM_SDK_SECRET = process.env.ZOOM_SDK_CLIENT_SECRET;
+    // Use SDK-specific credentials (prefer settings over env)
+    let ZOOM_SDK_KEY = process.env.ZOOM_SDK_CLIENT_ID as string | undefined;
+    let ZOOM_SDK_SECRET = process.env.ZOOM_SDK_CLIENT_SECRET as string | undefined;
+    try {
+      const { db } = await import('@/lib/firebase');
+      const { doc, getDoc } = await import('firebase/firestore');
+      const snap = await getDoc(doc(db, 'settings', 'global'));
+      if (snap.exists()) {
+        const sdk = (snap.data() as any)?.zoom?.sdk;
+        if (sdk?.clientId && sdk?.clientSecret) {
+          ZOOM_SDK_KEY = sdk.clientId;
+          ZOOM_SDK_SECRET = sdk.clientSecret;
+        }
+      }
+    } catch {}
 
     if (!ZOOM_SDK_KEY || !ZOOM_SDK_SECRET) {
-      return NextResponse.json({ error: "Zoom SDK credentials missing (ZOOM_SDK_CLIENT_ID/SECRET)" }, { status: 500 });
+      return NextResponse.json({ error: "Zoom SDK credentials missing. Configure in Developer Settings." }, { status: 500 });
     }
 
     // Generate Signature

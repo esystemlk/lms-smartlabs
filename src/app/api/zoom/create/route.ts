@@ -21,10 +21,24 @@ export async function POST(req: Request) {
     }
     const { topic, startTime, duration, agenda, type } = parsed.data;
 
-    const ZOOM_ACCOUNT_ID = process.env.ZOOM_ACCOUNT_ID;
-    // Use API-specific credentials (Server-to-Server OAuth)
-    const ZOOM_CLIENT_ID = process.env.ZOOM_API_CLIENT_ID || process.env.ZOOM_CLIENT_ID;
-    const ZOOM_CLIENT_SECRET = process.env.ZOOM_API_CLIENT_SECRET || process.env.ZOOM_CLIENT_SECRET;
+    // Prefer Firestore settings over env
+    let ZOOM_ACCOUNT_ID = process.env.ZOOM_ACCOUNT_ID;
+    let ZOOM_CLIENT_ID = process.env.ZOOM_API_CLIENT_ID || process.env.ZOOM_CLIENT_ID;
+    let ZOOM_CLIENT_SECRET = process.env.ZOOM_API_CLIENT_SECRET || process.env.ZOOM_CLIENT_SECRET;
+
+    try {
+      const { db } = await import('@/lib/firebase');
+      const { doc, getDoc } = await import('firebase/firestore');
+      const snap = await getDoc(doc(db, 'settings', 'global'));
+      if (snap.exists()) {
+        const z = (snap.data() as any)?.zoom?.serverToServer;
+        if (z?.accountId && z?.clientId && z?.clientSecret) {
+          ZOOM_ACCOUNT_ID = z.accountId;
+          ZOOM_CLIENT_ID = z.clientId;
+          ZOOM_CLIENT_SECRET = z.clientSecret;
+        }
+      }
+    } catch {}
 
     if (!ZOOM_ACCOUNT_ID || !ZOOM_CLIENT_ID || !ZOOM_CLIENT_SECRET) {
       const missing = [];
@@ -32,7 +46,7 @@ export async function POST(req: Request) {
       if (!ZOOM_CLIENT_ID) missing.push("ZOOM_API_CLIENT_ID");
       if (!ZOOM_CLIENT_SECRET) missing.push("ZOOM_API_CLIENT_SECRET");
       
-      const errorMsg = `Zoom API credentials missing: ${missing.join(", ")}. Please check your .env.local file.`;
+      const errorMsg = `Zoom API credentials missing: ${missing.join(", ")}. Configure them in Developer Settings.`;
       console.error(errorMsg);
       return NextResponse.json({ error: errorMsg }, { status: 500 });
     }
