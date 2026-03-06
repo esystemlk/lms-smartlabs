@@ -25,10 +25,10 @@ export async function POST(req: Request) {
     const { db } = await import('@/lib/firebase');
     const { doc, getDoc } = await import('firebase/firestore');
     const snap = await getDoc(doc(db, 'settings', 'global'));
-    const z = snap.exists() ? (snap.data() as any)?.zoom?.serverToServer : null;
-    const ZOOM_ACCOUNT_ID = z?.accountId as string | undefined;
-    const ZOOM_CLIENT_ID = z?.clientId as string | undefined;
-    const ZOOM_CLIENT_SECRET = z?.clientSecret as string | undefined;
+    const zoomCfg = snap.exists() ? (snap.data() as any)?.zoom?.serverToServer : null;
+    const ZOOM_ACCOUNT_ID = zoomCfg?.accountId as string | undefined;
+    const ZOOM_CLIENT_ID = zoomCfg?.clientId as string | undefined;
+    const ZOOM_CLIENT_SECRET = zoomCfg?.clientSecret as string | undefined;
 
     if (!ZOOM_ACCOUNT_ID || !ZOOM_CLIENT_ID || !ZOOM_CLIENT_SECRET) {
       const missing = [];
