@@ -21,24 +21,14 @@ export async function POST(req: Request) {
     }
     const { topic, startTime, duration, agenda, type } = parsed.data;
 
-    // Prefer Firestore settings over env
-    let ZOOM_ACCOUNT_ID = process.env.ZOOM_ACCOUNT_ID;
-    let ZOOM_CLIENT_ID = process.env.ZOOM_API_CLIENT_ID || process.env.ZOOM_CLIENT_ID;
-    let ZOOM_CLIENT_SECRET = process.env.ZOOM_API_CLIENT_SECRET || process.env.ZOOM_CLIENT_SECRET;
-
-    try {
-      const { db } = await import('@/lib/firebase');
-      const { doc, getDoc } = await import('firebase/firestore');
-      const snap = await getDoc(doc(db, 'settings', 'global'));
-      if (snap.exists()) {
-        const z = (snap.data() as any)?.zoom?.serverToServer;
-        if (z?.accountId && z?.clientId && z?.clientSecret) {
-          ZOOM_ACCOUNT_ID = z.accountId;
-          ZOOM_CLIENT_ID = z.clientId;
-          ZOOM_CLIENT_SECRET = z.clientSecret;
-        }
-      }
-    } catch {}
+    // Read ONLY from Firestore Developer Settings
+    const { db } = await import('@/lib/firebase');
+    const { doc, getDoc } = await import('firebase/firestore');
+    const snap = await getDoc(doc(db, 'settings', 'global'));
+    const z = snap.exists() ? (snap.data() as any)?.zoom?.serverToServer : null;
+    const ZOOM_ACCOUNT_ID = z?.accountId as string | undefined;
+    const ZOOM_CLIENT_ID = z?.clientId as string | undefined;
+    const ZOOM_CLIENT_SECRET = z?.clientSecret as string | undefined;
 
     if (!ZOOM_ACCOUNT_ID || !ZOOM_CLIENT_ID || !ZOOM_CLIENT_SECRET) {
       const missing = [];

@@ -20,49 +20,10 @@ export async function POST(req: Request) {
     const meetingNumber = String(parsed.data.meetingNumber);
     const role = parsed.data.role ?? 0;
 
-    // Use SDK-specific credentials (prefer settings over env)
-    let ZOOM_SDK_KEY = process.env.ZOOM_SDK_CLIENT_ID as string | undefined;
-    let ZOOM_SDK_SECRET = process.env.ZOOM_SDK_CLIENT_SECRET as string | undefined;
-    try {
-      const { db } = await import('@/lib/firebase');
-      const { doc, getDoc } = await import('firebase/firestore');
-      const snap = await getDoc(doc(db, 'settings', 'global'));
-      if (snap.exists()) {
-        const sdk = (snap.data() as any)?.zoom?.sdk;
-        if (sdk?.clientId && sdk?.clientSecret) {
-          ZOOM_SDK_KEY = sdk.clientId;
-          ZOOM_SDK_SECRET = sdk.clientSecret;
-        }
-      }
-    } catch {}
-
-    if (!ZOOM_SDK_KEY || !ZOOM_SDK_SECRET) {
-      return NextResponse.json({ error: "Zoom SDK credentials missing. Configure in Developer Settings." }, { status: 500 });
-    }
-
-    // Generate Signature
-    const iat = Math.round(new Date().getTime() / 1000) - 30;
-    const exp = iat + 60 * 60 * 2;
-
-    const oHeader = { alg: 'HS256', typ: 'JWT' };
+    // Meeting SDK credentials are removed from settings by design.
+    // We disable signature generation to enforce S2S OAuth and native Zoom join.
+    return NextResponse.json({ error: "Zoom Meeting SDK is disabled. Use native Zoom links or S2S OAuth for server actions." }, { status: 400 });
     
-    // Zoom Meeting SDK Payload
-    // mn must be matching what is passed to join()
-    // role: 0 (attendee), 1 (host)
-    const oPayload = {
-      sdkKey: ZOOM_SDK_KEY,
-      mn: meetingNumber, 
-      role: role || 0,
-      iat: iat,
-      exp: exp,
-      tokenExp: exp
-    };
-
-    const sHeader = JSON.stringify(oHeader);
-    const sPayload = JSON.stringify(oPayload);
-    const signature = KJUR.jws.JWS.sign('HS256', sHeader, sPayload, ZOOM_SDK_SECRET);
-
-    return NextResponse.json({ signature, sdkKey: ZOOM_SDK_KEY });
 
   } catch (error: any) {
     console.error("Signature Error:", error);
