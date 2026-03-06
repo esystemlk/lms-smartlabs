@@ -346,10 +346,6 @@ export interface SystemSettings {
       clientId?: string;
       clientSecret?: string;
     };
-    sdk?: {
-      clientId?: string; // SDK Key
-      clientSecret?: string; // SDK Secret
-    };
   };
   developerEmails?: string[]; // List of emails authorized as developers
   features?: {

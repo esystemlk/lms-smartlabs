@@ -305,34 +305,6 @@ export function AdvancedSettingsManager() {
                     })}
                   />
                   <div />
-                  <Input
-                    label="Zoom SDK Key"
-                    value={settings.zoom?.sdk?.clientId || ""}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      zoom: {
-                        ...settings.zoom,
-                        sdk: {
-                          ...(settings.zoom?.sdk || {}),
-                          clientId: e.target.value
-                        }
-                      } as any
-                    })}
-                  />
-                  <Input
-                    label="Zoom SDK Secret"
-                    value={settings.zoom?.sdk?.clientSecret || ""}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      zoom: {
-                        ...settings.zoom,
-                        sdk: {
-                          ...(settings.zoom?.sdk || {}),
-                          clientSecret: e.target.value
-                        }
-                      } as any
-                    })}
-                  />
                 </div>
                 <div className="mt-3">
                   <button
