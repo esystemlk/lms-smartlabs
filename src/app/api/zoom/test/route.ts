@@ -16,11 +16,16 @@ export async function POST() {
     if (!accountId || !clientId || !clientSecret) {
       return NextResponse.json({ success: false, error: 'Zoom credentials are incomplete in settings' }, { status: 400 });
     }
-    const tokenRes = await fetch(`https://zoom.us/oauth/token?grant_type=account_credentials&account_id=${encodeURIComponent(accountId)}`, {
+    const tokenParams = new URLSearchParams();
+    tokenParams.set('grant_type', 'account_credentials');
+    tokenParams.set('account_id', accountId);
+    const tokenRes = await fetch(`https://zoom.us/oauth/token`, {
       method: 'POST',
       headers: {
-        'Authorization': `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`
-      }
+        'Authorization': `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: tokenParams.toString()
     });
     const tokenJson = await tokenRes.json();
     if (!tokenRes.ok || !tokenJson?.access_token) {

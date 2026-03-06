@@ -52,11 +52,16 @@ export async function POST(req: Request) {
     }
 
     // 1. Get Access Token (Server-to-Server OAuth)
-    const tokenResponse = await fetch(`https://zoom.us/oauth/token?grant_type=account_credentials&account_id=${ZOOM_ACCOUNT_ID}`, {
+    const params = new URLSearchParams();
+    params.set('grant_type', 'account_credentials');
+    params.set('account_id', String(ZOOM_ACCOUNT_ID));
+    const tokenResponse = await fetch(`https://zoom.us/oauth/token`, {
       method: 'POST',
       headers: {
-        'Authorization': `Basic ${Buffer.from(`${ZOOM_CLIENT_ID}:${ZOOM_CLIENT_SECRET}`).toString('base64')}`
-      }
+        'Authorization': `Basic ${Buffer.from(`${ZOOM_CLIENT_ID}:${ZOOM_CLIENT_SECRET}`).toString('base64')}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: params.toString()
     });
 
     const tokenData = await tokenResponse.json();
