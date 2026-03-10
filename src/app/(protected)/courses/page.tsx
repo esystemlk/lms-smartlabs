@@ -26,7 +26,6 @@ import { useAuth } from "@/context/AuthContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import { Course, Batch } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
-import { PayHereCheckout } from "@/components/payment/PayHereCheckout";
 import { settingsService } from "@/services/settingsService";
 
 export default function CoursesPage() {
@@ -45,21 +44,12 @@ export default function CoursesPage() {
 
   // Enrollment Flow State
   const [step, setStep] = useState<1 | 2>(1); // 1: Batch, 2: Payment
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'transfer'>('card');
+  const [paymentMethod, setPaymentMethod] = useState<'request' | 'transfer'>('request');
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const [enrolling, setEnrolling] = useState(false);
   const [enrollSuccess, setEnrollSuccess] = useState(false); // For Card (Active)
   const [pendingApproval, setPendingApproval] = useState(false); // For Transfer (Pending)
   const [bankDetails, setBankDetails] = useState<{ bankName: string; accountName: string; accountNumber: string; branch: string } | null>(null);
-
-  // PayHere State
-  const [showPayHere, setShowPayHere] = useState(false);
-  const [payHereConfig, setPayHereConfig] = useState<{
-    orderId: string;
-    items: string;
-    amount: number;
-    currency: string;
-  } | null>(null);
 
   useEffect(() => {
     fetchCourses();
@@ -98,7 +88,7 @@ export default function CoursesPage() {
     setEnrollSuccess(false);
     setPendingApproval(false);
     setStep(1);
-    setPaymentMethod('card');
+    setPaymentMethod('request');
     setReceiptFile(null);
     setLoadingBatches(true);
 
@@ -142,45 +132,19 @@ export default function CoursesPage() {
       const finalAmount = priceLKR;
       const finalCurrency = 'LKR';
 
-      if (paymentMethod === 'card') {
-        const enrollmentId = await enrollmentService.createEnrollment(
-            userData.uid,
-            userData.email,
-            userData.name,
-            selectedCourse,
-            selectedBatch,
-            'payhere',
-            finalAmount,
-            undefined,
-            selectedSlot ? { id: selectedSlot.id, label: selectedSlot.label } : null
-        );
-
-        setPayHereConfig({
-            orderId: enrollmentId,
-            items: `${selectedCourse.title} - ${selectedBatch.name}${selectedSlot ? " (" + selectedSlot.label + ")" : ""}`,
-            amount: finalAmount,
-            currency: finalCurrency
-        });
-        setShowPayHere(true);
-        setEnrolling(false);
-        return;
-      }
-
       await enrollmentService.createEnrollment(
         userData.uid,
         userData.email,
         userData.name,
         selectedCourse,
         selectedBatch,
-        paymentMethod,
+        paymentMethod === 'request' ? 'payhere' : 'transfer', // Using 'payhere' internal status for 'request'
         finalAmount,
         receiptFile || undefined,
         selectedSlot ? { id: selectedSlot.id, label: selectedSlot.label } : null
       );
 
-      if (paymentMethod === 'transfer') {
-        setPendingApproval(true);
-      }
+      setPendingApproval(true);
     } catch (error) {
       console.error("Enrollment failed:", error);
       alert("Failed to enroll. Please try again.");
@@ -241,28 +205,6 @@ export default function CoursesPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
         {courses.map((course) => (
           <div key={course.id} className="group bg-white dark:bg-card rounded-xl md:rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-border overflow-hidden flex flex-col h-full">
-            {/* Image */}
-            <Link href={`/courses/${course.id}`} className="relative aspect-square bg-gray-100 dark:bg-gray-800 overflow-hidden">
-              {course.image ? (
-                <Image
-                  src={course.image}
-                  alt={course.title}
-                  width={1024}
-                  height={1024}
-                  quality={95}
-                  className="w-full h-full object-cover"
-                  priority={false}
-                />
-              ) : (
-                <div className="flex items-center justify-center h-full text-gray-300 dark:text-gray-600">
-                  <BookOpen className="w-10 h-10 md:w-16 md:h-16" />
-                </div>
-              )}
-              <div className="absolute top-3 right-3 md:top-4 md:right-4 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-2 py-0.5 md:px-3 md:py-1 rounded-full text-[10px] md:text-xs font-bold text-brand-blue shadow-sm">
-                {course.lessonsCount} Lessons
-              </div>
-            </Link>
-
             {/* Content */}
             <div className="p-3 md:p-6 flex flex-col flex-1">
               <div className="mb-2 md:mb-4">
@@ -312,9 +254,13 @@ export default function CoursesPage() {
                   <Clock size={12} className="md:w-3.5 md:h-3.5" />
                   <span>Flexible</span>
                 </div>
+                <div className="flex items-center gap-1 ml-auto font-medium text-brand-blue">
+                   <BookOpen size={12} className="md:w-3.5 md:h-3.5" />
+                   <span>{course.lessonsCount} Lessons</span>
+                </div>
               </div>
 
-              <div className="mt-auto flex items-center justify-between">
+              <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-50 dark:border-gray-800">
                 <div className="flex flex-col">
                   <span className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider">Price</span>
                   <span className="text-base md:text-xl font-bold text-brand-blue">
@@ -539,21 +485,21 @@ export default function CoursesPage() {
                       {step === 2 && (
                         <div className="space-y-6">
                           {/* Payment Tabs */}
-                          <div className="flex p-1 bg-gray-100 rounded-xl">
+                          <div className="flex p-1 bg-gray-100 dark:bg-gray-800 rounded-xl">
                             <button
-                              onClick={() => setPaymentMethod('card')}
-                              className={`flex-1 py-2 text-sm font-medium rounded-lg flex items-center justify-center gap-2 transition-all ${paymentMethod === 'card'
-                                ? 'bg-white text-brand-blue shadow-sm'
+                              onClick={() => setPaymentMethod('request')}
+                              className={`flex-1 py-2 text-sm font-medium rounded-lg flex items-center justify-center gap-2 transition-all ${paymentMethod === 'request'
+                                ? 'bg-white dark:bg-gray-700 text-brand-blue shadow-sm'
                                 : 'text-gray-500 hover:text-gray-700'
                                 }`}
                             >
-                              <CreditCard size={16} />
-                              Card
+                              <BookOpen size={16} />
+                              Request Access
                             </button>
                             <button
                               onClick={() => setPaymentMethod('transfer')}
                               className={`flex-1 py-2 text-sm font-medium rounded-lg flex items-center justify-center gap-2 transition-all ${paymentMethod === 'transfer'
-                                ? 'bg-white text-brand-blue shadow-sm'
+                                ? 'bg-white dark:bg-gray-700 text-brand-blue shadow-sm'
                                 : 'text-gray-500 hover:text-gray-700'
                                 }`}
                             >
@@ -562,15 +508,15 @@ export default function CoursesPage() {
                             </button>
                           </div>
 
-                          {paymentMethod === 'card' ? (
+                          {paymentMethod === 'request' ? (
                             <div className="space-y-4">
-                              <div className="p-4 border border-blue-100 bg-blue-50 rounded-xl text-center">
-                                <p className="text-sm text-blue-800 font-medium">Secure Online Payment</p>
-                                <p className="text-xs text-blue-600 mt-1">Pay securely via PayHere (Cards, Genie, EzCash, etc.)</p>
+                              <div className="p-4 border border-blue-100 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-800 rounded-xl text-center">
+                                <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">Already Paid via Website?</p>
+                                <p className="text-xs text-blue-600 dark:text-blue-300 mt-1">If you have already made a payment through our main website, please request access here. Our team will verify and activate your course.</p>
                               </div>
                               <div className="flex justify-between items-center text-sm font-medium">
-                                <span>Total Amount:</span>
-                                <span className="text-lg font-bold text-gray-900">
+                                <span>Course Price:</span>
+                                <span className="text-lg font-bold text-gray-900 dark:text-white">
                                   {formatPrice(selectedCourse?.priceLKR || selectedCourse?.price, selectedCourse?.priceUSD)}
                                 </span>
                               </div>
@@ -578,21 +524,21 @@ export default function CoursesPage() {
                           ) : (
                             <div className="space-y-4">
                               {bankDetails ? (
-                                <div className="bg-gray-50 p-4 rounded-xl space-y-1 text-sm text-gray-600">
-                                  <p><span className="font-semibold text-gray-900">Bank:</span> {bankDetails.bankName}</p>
-                                  <p><span className="font-semibold text-gray-900">Account Name:</span> {bankDetails.accountName}</p>
-                                  <p><span className="font-semibold text-gray-900">Account Number:</span> {bankDetails.accountNumber}</p>
-                                  <p><span className="font-semibold text-gray-900">Branch:</span> {bankDetails.branch}</p>
+                                <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                                  <p><span className="font-semibold text-gray-900 dark:text-white">Bank:</span> {bankDetails.bankName}</p>
+                                  <p><span className="font-semibold text-gray-900 dark:text-white">Account Name:</span> {bankDetails.accountName}</p>
+                                  <p><span className="font-semibold text-gray-900 dark:text-white">Account Number:</span> {bankDetails.accountNumber}</p>
+                                  <p><span className="font-semibold text-gray-900 dark:text-white">Branch:</span> {bankDetails.branch}</p>
                                 </div>
                               ) : (
-                                <div className="bg-yellow-50 p-4 rounded-xl text-sm text-yellow-700">
-                                  Bank details are not configured. Please contact support or try card payment.
+                                <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-xl text-sm text-yellow-700 dark:text-yellow-300">
+                                  Bank details are not configured. Please contact support.
                                 </div>
                               )}
 
                               <div className="space-y-2">
-                                <label className="block text-sm font-medium text-gray-700">Upload Receipt</label>
-                                <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:bg-gray-50 transition-colors cursor-pointer relative">
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Upload Receipt</label>
+                                <div className="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-4 text-center hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer relative">
                                   <input
                                     type="file"
                                     accept="image/*,.pdf"
@@ -624,8 +570,8 @@ export default function CoursesPage() {
                                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                                   Processing...
                                 </>
-                              ) : paymentMethod === 'card' ? (
-                                "Pay Now"
+                              ) : paymentMethod === 'request' ? (
+                                "Request Access"
                               ) : (
                                 "Submit for Verification"
                               )}
@@ -642,23 +588,6 @@ export default function CoursesPage() {
         </Dialog>
       </Transition>
 
-      {showPayHere && payHereConfig && userData && (
-        <PayHereCheckout
-            orderId={payHereConfig.orderId}
-            items={payHereConfig.items}
-            amount={payHereConfig.amount}
-            currency={payHereConfig.currency}
-            userData={userData}
-            onDismiss={() => {
-                setShowPayHere(false);
-                setPayHereConfig(null);
-            }}
-            onError={(err) => {
-                setShowPayHere(false);
-                alert("Payment Error: " + err);
-            }}
-        />
-      )}
     </div>
   );
 }
