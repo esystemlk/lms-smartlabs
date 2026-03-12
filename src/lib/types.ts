@@ -229,8 +229,10 @@ export interface Enrollment {
   timeSlotLabel?: string;
 
   status: 'pending' | 'active' | 'rejected' | 'expired' | 'completed' | 'pending_payment';
-  paymentMethod: 'card' | 'transfer' | 'admin' | 'payhere';
+  paymentMethod: 'card' | 'transfer' | 'admin' | 'payhere' | 'website';
   paymentProofUrl?: string; // For bank transfers
+  websitePaymentEmail?: string; // For website payments
+  websitePaymentName?: string; // For website payments
   amount: number;
 
   validUntil: any; // Firestore Timestamp

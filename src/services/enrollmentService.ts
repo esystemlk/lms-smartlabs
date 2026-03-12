@@ -1,12 +1,12 @@
-import { 
-  collection, 
-  addDoc, 
-  updateDoc, 
-  doc, 
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
   getDoc,
   getDocs,
-  query, 
-  where, 
+  query,
+  where,
   orderBy,
   serverTimestamp,
   increment,
@@ -30,12 +30,14 @@ export const enrollmentService = {
     userId: string,
     userEmail: string,
     userName: string,
-    course: Course, 
+    course: Course,
     batch: Batch,
-    paymentMethod: 'card' | 'transfer' | 'payhere',
+    paymentMethod: 'card' | 'transfer' | 'payhere' | 'website',
     amount: number,
     receiptFile?: File,
-    timeSlot?: { id: string; label: string } | null
+    timeSlot?: { id: string; label: string } | null,
+    websitePaymentEmail?: string,
+    websitePaymentName?: string
   ) {
     let receiptUrl = "";
     if (paymentMethod === 'transfer' && receiptFile) {
@@ -51,7 +53,7 @@ export const enrollmentService = {
         .filter(e => e.status === 'completed' || (e.progress === 100))
         .map(e => e.courseId);
 
-      const hasAllPrerequisites = course.prerequisites.every(prereqId => 
+      const hasAllPrerequisites = course.prerequisites.every(prereqId =>
         completedCourseIds.includes(prereqId)
       );
 
@@ -61,7 +63,7 @@ export const enrollmentService = {
     }
 
     const status = paymentMethod === 'card' ? 'active' : (paymentMethod === 'payhere' ? 'pending_payment' : 'pending');
-    
+
     // Calculate validity if active immediately
     let validUntil = null;
     if (status === 'active') {
@@ -94,15 +96,17 @@ export const enrollmentService = {
       courseTitle: course.title,
       batchId: batch.id,
       batchName: batch.name,
-      ...(timeSlot?.id 
-        ? { 
-            timeSlotId: timeSlot.id, 
-            ...(timeSlot.label ? { timeSlotLabel: timeSlot.label } : {}) 
-          } 
+      ...(timeSlot?.id
+        ? {
+          timeSlotId: timeSlot.id,
+          ...(timeSlot.label ? { timeSlotLabel: timeSlot.label } : {})
+        }
         : {}),
       status,
       paymentMethod,
       paymentProofUrl: receiptUrl,
+      websitePaymentEmail: websitePaymentEmail || undefined,
+      websitePaymentName: websitePaymentName || undefined,
       amount,
       validUntil,
       enrolledAt: serverTimestamp(),
@@ -139,7 +143,7 @@ export const enrollmentService = {
     // If active immediately (Card), update user and batch counts
     if (status === 'active') {
       const batchOp = writeBatch(db);
-      
+
       // Update User
       const userRef = doc(db, USERS_COLLECTION, userId);
       batchOp.update(userRef, {
@@ -160,11 +164,11 @@ export const enrollmentService = {
           const data = batchSnap.data() as Batch;
           const updatedSlots = (data.timeSlots || []).map(s =>
             s.id === timeSlot.id
-              ? { 
-                  ...s, 
-                  enrolledCount: (s.enrolledCount || 0) + 1,
-                  reservedCount: Math.max(0, (s.reservedCount || 0) - 0) // no reservation for immediate activation
-                }
+              ? {
+                ...s,
+                enrolledCount: (s.enrolledCount || 0) + 1,
+                reservedCount: Math.max(0, (s.reservedCount || 0) - 0) // no reservation for immediate activation
+              }
               : s
           );
           batchOp.update(batchRef, { timeSlots: updatedSlots });
@@ -182,7 +186,7 @@ export const enrollmentService = {
     userId: string,
     userEmail: string,
     userName: string,
-    course: Course, 
+    course: Course,
     batch: Batch
   ) {
     // Check if already enrolled in this batch to prevent duplicates
@@ -235,7 +239,7 @@ export const enrollmentService = {
     const docRef = await addDoc(collection(db, ENROLLMENTS_COLLECTION), enrollmentData);
 
     const batchOp = writeBatch(db);
-    
+
     // Update User
     const userRef = doc(db, USERS_COLLECTION, userId);
     batchOp.update(userRef, {
@@ -265,7 +269,7 @@ export const enrollmentService = {
 
     // Lazy check for Course End Date expiry
     const activeEnrollments = enrollments.filter(e => e.status === 'active');
-    
+
     if (activeEnrollments.length > 0) {
       const updates = [];
       const batchOp = writeBatch(db);
@@ -274,12 +278,12 @@ export const enrollmentService = {
       // Fetch course details for active enrollments
       // Optimization: Group by courseId to avoid duplicate fetches
       const courseIds = [...new Set(activeEnrollments.map(e => e.courseId))];
-      
+
       try {
         const courseDocs = await Promise.all(
           courseIds.map(id => getDoc(doc(db, COURSES_COLLECTION, id)))
         );
-        
+
         const coursesMap = new Map();
         courseDocs.forEach(doc => {
           if (doc.exists()) {
@@ -293,7 +297,7 @@ export const enrollmentService = {
           const course = coursesMap.get(enrollment.courseId);
           if (course?.endDate) {
             const courseEndDate = parseISO(course.endDate);
-            
+
             // Check if course has ended
             if (isBefore(courseEndDate, now)) {
               // Mark as completed/expired
@@ -303,7 +307,7 @@ export const enrollmentService = {
                 validUntil: Timestamp.fromDate(courseEndDate), // Ensure validity matches end date
                 updatedAt: serverTimestamp()
               });
-              
+
               // Update local object
               enrollment.status = 'completed';
               enrollment.validUntil = Timestamp.fromDate(courseEndDate);
@@ -365,7 +369,7 @@ export const enrollmentService = {
   async approveEnrollment(enrollmentId: string) {
     const enrollmentRef = doc(db, ENROLLMENTS_COLLECTION, enrollmentId);
     const enrollmentSnap = await getDoc(enrollmentRef);
-    
+
     if (!enrollmentSnap.exists()) throw new Error("Enrollment not found");
     const enrollment = enrollmentSnap.data() as Enrollment;
 
@@ -436,7 +440,7 @@ export const enrollmentService = {
     const userRef = doc(db, USERS_COLLECTION, userId);
     const userSnap = await getDoc(userRef);
     if (!userSnap.exists()) return false;
-    
+
     const userData = userSnap.data();
     if (!userData.enrolledBatches?.includes(batchId)) return false;
 
@@ -463,35 +467,35 @@ export const enrollmentService = {
   // Mark Lesson as Complete
   async markLessonComplete(enrollmentId: string, lessonId: string, totalLessons: number) {
     const enrollmentRef = doc(db, ENROLLMENTS_COLLECTION, enrollmentId);
-    
+
     const enrollmentSnap = await getDoc(enrollmentRef);
     if (!enrollmentSnap.exists()) throw new Error("Enrollment not found");
     const data = enrollmentSnap.data() as Enrollment;
-    
+
     const completed = data.completedLessonIds || [];
-    
+
     // If already completed, do nothing but return success
     if (completed.includes(lessonId)) {
-        return { success: true, progress: data.progress || 0 };
+      return { success: true, progress: data.progress || 0 };
     }
 
     const newCompleted = [...completed, lessonId];
     // Calculate progress (capped at 100)
     const progress = Math.min(100, Math.round((newCompleted.length / totalLessons) * 100));
-    
+
     const updates: Record<string, unknown> = {
-        completedLessonIds: arrayUnion(lessonId),
-        progress: progress,
-        lastAccessed: serverTimestamp(),
-        updatedAt: serverTimestamp()
+      completedLessonIds: arrayUnion(lessonId),
+      progress: progress,
+      lastAccessed: serverTimestamp(),
+      updatedAt: serverTimestamp()
     };
 
     if (progress === 100) {
-        updates.status = 'completed';
+      updates.status = 'completed';
     }
-    
+
     await updateDoc(enrollmentRef, updates);
-    
+
     return { success: true, progress };
   }
 };

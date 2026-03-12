@@ -46,6 +46,8 @@ export default function CoursesPage() {
   const [step, setStep] = useState<1 | 2>(1); // 1: Batch, 2: Payment
   const [paymentMethod, setPaymentMethod] = useState<'request' | 'transfer'>('request');
   const [receiptFile, setReceiptFile] = useState<File | null>(null);
+  const [websitePaymentEmail, setWebsitePaymentEmail] = useState("");
+  const [websitePaymentName, setWebsitePaymentName] = useState("");
   const [enrolling, setEnrolling] = useState(false);
   const [enrollSuccess, setEnrollSuccess] = useState(false); // For Card (Active)
   const [pendingApproval, setPendingApproval] = useState(false); // For Transfer (Pending)
@@ -59,7 +61,7 @@ export default function CoursesPage() {
         if (s.bankDetails) {
           setBankDetails(s.bankDetails as any);
         }
-      } catch {}
+      } catch { }
     };
     loadSettings();
   }, []);
@@ -90,6 +92,8 @@ export default function CoursesPage() {
     setStep(1);
     setPaymentMethod('request');
     setReceiptFile(null);
+    setWebsitePaymentEmail("");
+    setWebsitePaymentName("");
     setLoadingBatches(true);
 
     try {
@@ -110,6 +114,12 @@ export default function CoursesPage() {
     // Validation for Transfer
     if (paymentMethod === 'transfer' && !receiptFile) {
       alert("Please upload your payment receipt.");
+      return;
+    }
+
+    // Validation for Request
+    if (paymentMethod === 'request' && (!websitePaymentEmail || !websitePaymentName)) {
+      alert("Please enter the name and email you used on the website.");
       return;
     }
 
@@ -138,10 +148,12 @@ export default function CoursesPage() {
         userData.name,
         selectedCourse,
         selectedBatch,
-        paymentMethod === 'request' ? 'payhere' : 'transfer', // Using 'payhere' internal status for 'request'
+        paymentMethod === 'request' ? 'website' : 'transfer',
         finalAmount,
         receiptFile || undefined,
-        selectedSlot ? { id: selectedSlot.id, label: selectedSlot.label } : null
+        selectedSlot ? { id: selectedSlot.id, label: selectedSlot.label } : null,
+        paymentMethod === 'request' ? websitePaymentEmail : undefined,
+        paymentMethod === 'request' ? websitePaymentName : undefined
       );
 
       setPendingApproval(true);
@@ -255,8 +267,8 @@ export default function CoursesPage() {
                   <span>Flexible</span>
                 </div>
                 <div className="flex items-center gap-1 ml-auto font-medium text-brand-blue">
-                   <BookOpen size={12} className="md:w-3.5 md:h-3.5" />
-                   <span>{course.lessonsCount} Lessons</span>
+                  <BookOpen size={12} className="md:w-3.5 md:h-3.5" />
+                  <span>{course.lessonsCount} Lessons</span>
                 </div>
               </div>
 
@@ -432,7 +444,7 @@ export default function CoursesPage() {
                               ))}
                             </div>
                           ) : (
-                              <div className="text-center py-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                            <div className="text-center py-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
                               <p className="text-gray-500">No open batches available for this course right now.</p>
                             </div>
                           )}
@@ -514,7 +526,31 @@ export default function CoursesPage() {
                                 <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">Already Paid via Website?</p>
                                 <p className="text-xs text-blue-600 dark:text-blue-300 mt-1">If you have already made a payment through our main website, please request access here. Our team will verify and activate your course.</p>
                               </div>
-                              <div className="flex justify-between items-center text-sm font-medium">
+
+                              <div className="space-y-4">
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name used on website</label>
+                                  <input
+                                    type="text"
+                                    value={websitePaymentName}
+                                    onChange={(e) => setWebsitePaymentName(e.target.value)}
+                                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-brand-blue"
+                                    placeholder="John Doe"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email used on website</label>
+                                  <input
+                                    type="email"
+                                    value={websitePaymentEmail}
+                                    onChange={(e) => setWebsitePaymentEmail(e.target.value)}
+                                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-brand-blue"
+                                    placeholder="john@example.com"
+                                  />
+                                </div>
+                              </div>
+
+                              <div className="flex justify-between items-center text-sm font-medium pt-2">
                                 <span>Course Price:</span>
                                 <span className="text-lg font-bold text-gray-900 dark:text-white">
                                   {formatPrice(selectedCourse?.priceLKR || selectedCourse?.price, selectedCourse?.priceUSD)}
@@ -562,7 +598,11 @@ export default function CoursesPage() {
                             <Button variant="ghost" fullWidth onClick={() => setStep(1)}>Back</Button>
                             <Button
                               fullWidth
-                              disabled={enrolling || (paymentMethod === 'transfer' && !receiptFile)}
+                              disabled={
+                                enrolling ||
+                                (paymentMethod === 'transfer' && !receiptFile) ||
+                                (paymentMethod === 'request' && (!websitePaymentEmail || !websitePaymentName))
+                              }
                               onClick={handleEnroll}
                             >
                               {enrolling ? (

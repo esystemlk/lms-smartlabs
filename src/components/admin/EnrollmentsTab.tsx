@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { enrollmentService } from "@/services/enrollmentService";
 import { Enrollment } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
-import { 
-  CheckCircle, 
-  XCircle, 
-  ExternalLink, 
-  Loader2, 
+import {
+  CheckCircle,
+  XCircle,
+  ExternalLink,
+  Loader2,
   Calendar,
   CreditCard,
   User,
@@ -36,7 +36,7 @@ export function EnrollmentsTab() {
 
   const handleApprove = async (id: string) => {
     if (!confirm("Are you sure you want to approve this enrollment?")) return;
-    
+
     setProcessingId(id);
     try {
       await enrollmentService.approveEnrollment(id);
@@ -77,7 +77,7 @@ export function EnrollmentsTab() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Pending Enrollments</h2>
-          <p className="text-gray-500">Review and approve bank transfer enrollments</p>
+          <p className="text-gray-500">Review and approve bank transfer and website payment enrollments</p>
         </div>
         <div className="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium">
           {enrollments.length} Pending Requests
@@ -95,7 +95,7 @@ export function EnrollmentsTab() {
       ) : (
         <div className="grid gap-4">
           {enrollments.map((enrollment) => (
-            <div 
+            <div
               key={enrollment.id}
               className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row md:items-center gap-6"
             >
@@ -111,8 +111,8 @@ export function EnrollmentsTab() {
                       <p className="text-sm text-gray-500">{enrollment.userEmail}</p>
                     </div>
                   </div>
-                  <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                    Pending
+                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${enrollment.paymentMethod === 'website' ? 'bg-purple-100 text-purple-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                    {enrollment.paymentMethod === 'website' ? 'Website Payment' : 'Bank Transfer'}
                   </span>
                 </div>
 
@@ -134,14 +134,22 @@ export function EnrollmentsTab() {
                     <span>Submitted: {enrollment.enrolledAt?.toDate().toLocaleDateString()}</span>
                   </div>
                 </div>
+
+                {enrollment.paymentMethod === 'website' && (
+                  <div className="mt-4 p-3 bg-purple-50 rounded-lg text-sm border border-purple-100">
+                    <div className="font-semibold text-purple-900 mb-1">Website Details Provided:</div>
+                    <div className="text-purple-800"><span className="opacity-70">Name:</span> {enrollment.websitePaymentName}</div>
+                    <div className="text-purple-800"><span className="opacity-70">Email:</span> {enrollment.websitePaymentEmail}</div>
+                  </div>
+                )}
               </div>
 
               {/* Actions */}
               <div className="flex flex-col sm:flex-row gap-3 md:border-l md:pl-6 md:border-gray-100">
                 {enrollment.paymentProofUrl && (
-                  <a 
-                    href={enrollment.paymentProofUrl} 
-                    target="_blank" 
+                  <a
+                    href={enrollment.paymentProofUrl}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
                   >
@@ -149,10 +157,10 @@ export function EnrollmentsTab() {
                     View Receipt
                   </a>
                 )}
-                
+
                 <div className="flex gap-2">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
                     onClick={() => handleReject(enrollment.id)}
                     disabled={processingId === enrollment.id}
@@ -164,8 +172,8 @@ export function EnrollmentsTab() {
                     )}
                     <span className="ml-2">Reject</span>
                   </Button>
-                  
-                  <Button 
+
+                  <Button
                     className="bg-green-600 hover:bg-green-700 text-white"
                     onClick={() => handleApprove(enrollment.id)}
                     disabled={processingId === enrollment.id}
