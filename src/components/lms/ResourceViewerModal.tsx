@@ -28,8 +28,34 @@ export function ResourceViewerModal({ resource, onClose }: ResourceViewerModalPr
     return () => document.removeEventListener("keydown", handler, { capture: true } as any);
   }, []);
 
+
   const renderContent = () => {
-    switch (resource.type) {
+    // Resolve effective type: check URL extension for misclassified resources
+    const getEffectiveType = (): string => {
+      const storedType = resource.type;
+      if (storedType && storedType !== 'other') return storedType;
+
+      // Try to detect from URL
+      try {
+        const urlPath = new URL(resource.url).pathname.toLowerCase();
+        if (urlPath.match(/\.(doc|docx|odt|rtf|ppt|pptx|xls|xlsx)(\?|$)/)) return 'document';
+        if (urlPath.match(/\.(pdf)(\?|$)/)) return 'pdf';
+        if (urlPath.match(/\.(txt|csv|md)(\?|$)/)) return 'text';
+        if (urlPath.match(/\.(jpg|jpeg|png|gif|svg|webp|bmp)(\?|$)/)) return 'image';
+        if (urlPath.match(/\.(mp4|webm|mov|avi|mkv)(\?|$)/)) return 'video';
+        if (urlPath.match(/\.(mp3|wav|ogg|aac|m4a|flac)(\?|$)/)) return 'audio';
+      } catch {
+        // If URL parsing fails, also check the filename in the URL string
+        const urlLower = resource.url.toLowerCase();
+        if (urlLower.includes('.docx') || urlLower.includes('.doc') || urlLower.includes('.pptx') || urlLower.includes('.xlsx')) return 'document';
+        if (urlLower.includes('.pdf')) return 'pdf';
+      }
+      return storedType;
+    };
+
+    const effectiveType = getEffectiveType();
+
+    switch (effectiveType) {
       case 'pdf':
         return (
           <div className="w-full h-full flex flex-col">
