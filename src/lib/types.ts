@@ -145,8 +145,9 @@ export interface Lesson {
   startTime?: string; // ISO string
   duration?: number; // minutes
   batchIds?: string[]; // IDs of batches this live class is scheduled for
+  timeSlotId?: string; // Optional: ID of the specific time slot
   status?: 'scheduled' | 'completed' | 'cancelled';
-  
+
   // Bunny.net / Recording fields
   bunnyVideoId?: string;
   recordingStatus?: 'processing' | 'processed' | 'failed';
@@ -232,7 +233,7 @@ export interface Enrollment {
   validUntil: any; // Firestore Timestamp
   enrolledAt: any; // Firestore Timestamp
   updatedAt: any; // Firestore Timestamp
-  
+
   // Progress Tracking
   progress?: number; // 0-100 percentage
   completedLessonIds?: string[]; // IDs of completed lessons

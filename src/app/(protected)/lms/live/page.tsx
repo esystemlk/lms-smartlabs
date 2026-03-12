@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { courseService } from "@/services/courseService";
+import { enrollmentService } from "@/services/enrollmentService";
 import { Lesson } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { Loader2, Video, Calendar, Clock, ExternalLink, Play } from "lucide-react";
@@ -23,24 +24,41 @@ export default function LiveClassesPage() {
     try {
       // Fetch all upcoming live classes
       const data = await courseService.getUpcomingLiveClasses();
-      
+
       // Filter by enrolled batches if user is a student
       let filteredClasses = data;
       if (userData && userData.role === 'student') {
-        // If user has no enrolled batches, they see nothing (or maybe public classes if any)
         const userBatches = userData.enrolledBatches || [];
-        
+
+        // Fetch user enrollments to check for time slots
+        const userEnrollments = await enrollmentService.getUserEnrollments(userData.uid);
+        const activeEnrollments = userEnrollments.filter(e => e.status === 'active' || e.status === 'completed');
+
         filteredClasses = data.filter(cls => {
-          // If class has specific batches assigned, user must be in one of them
-          if (cls.batchIds && cls.batchIds.length > 0) {
-            return cls.batchIds.some(id => userBatches.includes(id));
+          // 1. Check Course Access
+          const userCourseIds = activeEnrollments.map(e => e.courseId);
+          if (cls.courseId && !userCourseIds.includes(cls.courseId)) {
+            return false;
           }
-          // If class has NO batches assigned, it's considered "open to all" (or course-level)
-          // You might want to restrict this further to enrolled COURSES, but for now:
-          return true; 
+
+          // 2. Check Batch Access
+          if (cls.batchIds && cls.batchIds.length > 0) {
+            const hasBatchMatch = cls.batchIds.some(id => userBatches.includes(id));
+            if (!hasBatchMatch) return false;
+
+            // 3. Check Time Slot Access (if specified in class)
+            if (cls.timeSlotId) {
+              const matchingEnrollment = activeEnrollments.find(e =>
+                cls.batchIds?.includes(e.batchId) && e.timeSlotId === cls.timeSlotId
+              );
+              if (!matchingEnrollment) return false;
+            }
+          }
+
+          return true;
         });
       }
-      
+
       setClasses(filteredClasses);
     } catch (error) {
       console.error("Error fetching live classes:", error);
@@ -78,7 +96,7 @@ export default function LiveClassesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {classes.map((cls) => {
             const startDate = cls.startTime ? new Date(cls.startTime) : null;
-            const isHappeningNow = startDate 
+            const isHappeningNow = startDate
               ? (new Date() >= startDate && new Date() <= new Date(startDate.getTime() + (cls.duration || 60) * 60000))
               : false;
 
@@ -86,18 +104,17 @@ export default function LiveClassesPage() {
               <div key={cls.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden group flex flex-col">
                 <div className="p-5 flex-1">
                   <div className="flex items-start justify-between mb-4">
-                    <div className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 ${
-                      isHappeningNow 
-                        ? "bg-red-100 text-red-600 animate-pulse" 
-                        : "bg-blue-50 text-blue-600"
-                    }`}>
+                    <div className={`px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 ${isHappeningNow
+                      ? "bg-red-100 text-red-600 animate-pulse"
+                      : "bg-blue-50 text-blue-600"
+                      }`}>
                       <Video size={12} />
                       {isHappeningNow ? "Happening Now" : "Upcoming"}
                     </div>
                   </div>
-                  
+
                   <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-2">{cls.title}</h3>
-                  
+
                   <div className="space-y-2 text-sm text-gray-500">
                     <div className="flex items-center gap-2">
                       <Calendar size={14} className="text-gray-400" />
@@ -122,11 +139,11 @@ export default function LiveClassesPage() {
                           <ExternalLink size={14} className="ml-2" />
                         </Button>
                       </a>
-                      
-                      <a 
-                        href={`https://app.zoom.us/wc/${cls.zoomMeetingId}/join?pwd=${cls.zoomPassword || ''}`} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
+
+                      <a
+                        href={`https://app.zoom.us/wc/${cls.zoomMeetingId}/join?pwd=${cls.zoomPassword || ''}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="col-span-1"
                       >
                         <Button variant="outline" className="w-full border-blue-200 text-blue-700 hover:bg-blue-50 text-xs md:text-sm px-2">

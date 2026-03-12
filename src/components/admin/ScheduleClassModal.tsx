@@ -26,6 +26,7 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
     date: "",
     time: "",
     duration: 60,
+    timeSlotId: "",
   });
 
   useEffect(() => {
@@ -86,7 +87,7 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
     try {
       // 1. Create Zoom Meeting
       const startTime = new Date(`${formData.date}T${formData.time}`).toISOString();
-      
+
       const zoomRes = await fetch('/api/zoom/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -113,6 +114,7 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
         zoomStartUrl: zoomData.start_url,
         zoomJoinUrl: zoomData.join_url,
         batchIds: formData.batchIds,
+        timeSlotId: formData.timeSlotId || undefined,
         order: 999, // Append to end
         published: true
       });
@@ -200,36 +202,55 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
             </div>
 
             {formData.courseId && (
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Select Batches</label>
-                {fetchingBatches ? (
-                  <div className="text-sm text-gray-400 flex items-center gap-2">
-                    <Loader2 className="w-3 h-3 animate-spin" /> Loading batches...
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Select Batches</label>
+                  {fetchingBatches ? (
+                    <div className="text-sm text-gray-400 flex items-center gap-2">
+                      <Loader2 className="w-3 h-3 animate-spin" /> Loading batches...
+                    </div>
+                  ) : batches.length > 0 ? (
+                    <div className="grid grid-cols-2 gap-2">
+                      {batches.map(batch => {
+                        const isSelected = formData.batchIds.includes(batch.id);
+                        return (
+                          <button
+                            key={batch.id}
+                            type="button"
+                            onClick={() => toggleBatch(batch.id)}
+                            className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm border transition-all ${isSelected
+                                ? "bg-blue-50 border-blue-200 text-blue-700"
+                                : "bg-white border-gray-200 text-gray-600 hover:border-gray-300"
+                              }`}
+                          >
+                            <span className="truncate">{batch.name}</span>
+                            {isSelected && <Check size={14} />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500 italic">No batches found for this course.</p>
+                  )}
+                </div>
+
+                {formData.batchIds.length === 1 && (
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">Specific Time Slot (Optional)</label>
+                    <select
+                      className="w-full rounded-xl border-gray-200 focus:border-brand-blue focus:ring-brand-blue"
+                      value={formData.timeSlotId}
+                      onChange={e => setFormData({ ...formData, timeSlotId: e.target.value })}
+                    >
+                      <option value="">All Time Slots</option>
+                      {batches.find(b => b.id === formData.batchIds[0])?.timeSlots?.map(slot => (
+                        <option key={slot.id} value={slot.id}>{slot.label}</option>
+                      ))}
+                    </select>
+                    <p className="text-xs text-gray-500">If selected, only students in this specific time slot will see the class.</p>
                   </div>
-                ) : batches.length > 0 ? (
-                  <div className="grid grid-cols-2 gap-2">
-                    {batches.map(batch => {
-                      const isSelected = formData.batchIds.includes(batch.id);
-                      return (
-                        <button
-                          key={batch.id}
-                          type="button"
-                          onClick={() => toggleBatch(batch.id)}
-                          className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm border transition-all ${
-                            isSelected
-                              ? "bg-blue-50 border-blue-200 text-blue-700"
-                              : "bg-white border-gray-200 text-gray-600 hover:border-gray-300"
-                          }`}
-                        >
-                          <span className="truncate">{batch.name}</span>
-                          {isSelected && <Check size={14} />}
-                        </button>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <p className="text-sm text-gray-500 italic">No batches found for this course.</p>
                 )}
+
                 <p className="text-xs text-gray-500">Only students in selected batches will see this class.</p>
               </div>
             )}
@@ -238,8 +259,8 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
 
         <div className="px-6 py-4 border-t border-gray-100 bg-gray-50/50 flex justify-end gap-3">
           <Button variant="ghost" onClick={onClose} type="button">Cancel</Button>
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             form="schedule-form"
             disabled={loading || !formData.courseId || formData.batchIds.length === 0}
             className="bg-brand-blue hover:bg-blue-700 text-white"
