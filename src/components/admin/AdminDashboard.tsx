@@ -2,17 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { 
-  Users, BookOpen, DollarSign, Activity, 
+import {
+  Users, BookOpen, DollarSign, Activity,
   ArrowUpRight, ArrowDownRight, MoreHorizontal,
   Plus, Search, Bell, Calendar, GraduationCap,
   Settings, MessageSquare, Shield, Clock,
-  ChevronRight, PlayCircle, FolderOpen, CreditCard
+  ChevronRight, PlayCircle, FolderOpen, CreditCard, Video
 } from "lucide-react";
 import { userService } from "@/services/userService";
 import { courseService } from "@/services/courseService";
 import { enrollmentService } from "@/services/enrollmentService";
-import { UserData, Course, Enrollment } from "@/lib/types";
+import { assignmentService } from "@/services/assignmentService";
+import { UserData, Course, Enrollment, Lesson } from "@/lib/types";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/context/AuthContext";
@@ -24,6 +25,8 @@ export function AdminDashboard() {
   const [users, setUsers] = useState<UserData[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [upcomingClasses, setUpcomingClasses] = useState<Lesson[]>([]);
+  const [gradingQueue, setGradingQueue] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,14 +36,36 @@ export function AdminDashboard() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [usersData, coursesData, enrollmentsData] = await Promise.all([
-        userService.getAllUsers(),
+      const isAdmin = ["admin", "superadmin", "developer"].includes(userData?.role || '');
+
+      const promises: Promise<any>[] = [
         courseService.getAllCourses(),
-        enrollmentService.getAllEnrollments()
-      ]);
-      setUsers(usersData);
+        enrollmentService.getAllEnrollments(),
+        courseService.getUpcomingLiveClasses()
+      ];
+
+      if (isAdmin) {
+        promises.push(userService.getAllUsers());
+      }
+
+      const results = await Promise.all(promises);
+      const coursesData = results[0];
+      const enrollmentsData = results[1];
+      const liveClasses = results[2] || [];
+      const usersData = isAdmin ? results[3] : [];
+
       setCourses(coursesData);
       setEnrollments(enrollmentsData);
+      setUpcomingClasses(liveClasses);
+      setUsers(usersData);
+
+      // Fetch grading queue separately
+      if (userData?.uid) {
+        try {
+          const q = await assignmentService.getLecturerPendingSubmissions(userData.uid);
+          setGradingQueue(q || []);
+        } catch { /* silent */ }
+      }
     } catch (error) {
       console.error("Failed to fetch admin data:", error);
     } finally {
@@ -49,15 +74,25 @@ export function AdminDashboard() {
   };
 
   // Derived Stats
-  const totalStudents = users.filter(u => u.role === 'student').length;
+  const isAdmin = ["admin", "superadmin", "developer"].includes(userData?.role || '');
+
+  const filteredCourses = isAdmin ? courses : courses.filter(c =>
+    c.instructorId === userData?.uid || (c.lecturerIds && c.lecturerIds.includes(userData?.uid || ''))
+  );
+
+  const filteredEnrollments = isAdmin ? enrollments : enrollments.filter(e =>
+    filteredCourses.some(c => c.id === e.courseId)
+  );
+
+  const totalStudents = isAdmin ? users.filter(u => u.role === 'student').length : [...new Set(filteredEnrollments.map(e => e.userEmail))].length;
   const totalLecturers = users.filter(u => u.role === 'lecturer').length;
-  const activeCourses = courses.filter(c => c.published).length;
-  const totalRevenue = enrollments.reduce((sum, e) => sum + (e.amount || 0), 0);
-  const activeEnrollments = enrollments.filter(e => e.status === 'active').length;
-  const pendingEnrollments = enrollments.filter(e => e.status === 'pending').length;
-  
-  const recentUsers = users.slice(0, 5);
-  const recentCourses = courses.slice(0, 4);
+  const activeCourses = filteredCourses.filter(c => c.published).length;
+  const totalRevenue = filteredEnrollments.reduce((sum, e) => sum + (e.amount || 0), 0);
+  const activeEnrollments = filteredEnrollments.filter(e => e.status === 'active').length;
+  const pendingEnrollments = filteredEnrollments.filter(e => e.status === 'pending').length;
+
+  const recentUsers = isAdmin ? users.slice(0, 5) : [];
+  const recentCourses = filteredCourses.slice(0, 4);
 
   const container = {
     hidden: { opacity: 0 },
@@ -91,7 +126,7 @@ export function AdminDashboard() {
             <Calendar className="w-4 h-4 text-brand-blue" />
             {format(new Date(), "MMMM d, yyyy")}
           </div>
-          <Link href="/admin/settings">
+          <Link href="/management?tab=settings">
             <Button variant="outline" className="rounded-full w-10 h-10 p-0">
               <Settings className="w-4 h-4" />
             </Button>
@@ -100,45 +135,45 @@ export function AdminDashboard() {
       </div>
 
       {/* Stats Grid */}
-      <motion.div 
+      <motion.div
         variants={container}
         initial="hidden"
         animate="show"
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
       >
-        <StatCard 
-          title="Total Students" 
-          value={totalStudents} 
-          icon={GraduationCap} 
-          trend="+12%" 
+        <StatCard
+          title={isAdmin ? "Total Students" : "My Students"}
+          value={totalStudents}
+          icon={GraduationCap}
+          trend={isAdmin ? "+12%" : undefined}
           trendUp={true}
           color="blue"
           loading={loading}
         />
-        <StatCard 
-          title="Active Courses" 
-          value={activeCourses} 
-          icon={BookOpen} 
-          trend="+4" 
+        <StatCard
+          title={isAdmin ? "Active Courses" : "My Active Courses"}
+          value={activeCourses}
+          icon={BookOpen}
+          trend={isAdmin ? "+4" : undefined}
           trendUp={true}
           color="emerald"
           loading={loading}
         />
-        <StatCard 
-          title="Total Staff" 
-          value={totalLecturers} 
-          icon={Users} 
-          trend="Stable" 
-          trendUp={true}
+        <StatCard
+          title="Grading Queue"
+          value={gradingQueue.reduce((s, q) => s + (q.submissions?.length || 0), 0)}
+          icon={Clock}
+          trend="Pending"
+          trendUp={false}
           color="purple"
           loading={loading}
         />
-        <StatCard 
-          title="Total Revenue" 
+        <StatCard
+          title={isAdmin ? "Total Revenue" : "My Revenue"}
           value={useCurrency().formatPrice(totalRevenue, undefined)}
           label=""
-          icon={DollarSign} 
-          trend="Lifetime" 
+          icon={DollarSign}
+          trend={isAdmin ? "Lifetime" : "From My Courses"}
           trendUp={true}
           color="orange"
           loading={loading}
@@ -148,77 +183,135 @@ export function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
         {/* Main Content (Left 2 cols) */}
         <div className="lg:col-span-2 space-y-8">
-          
-          {/* Recent Activity / Users */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm"
-          >
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold text-gray-900 dark:text-white">New Registrations</h2>
-              <Link href="/admin/users" className="text-sm font-medium text-brand-blue hover:underline flex items-center gap-1">
-                View All <ChevronRight className="w-4 h-4" />
-              </Link>
-            </div>
-            
-            <div className="space-y-4">
-              {loading ? (
-                [1, 2, 3].map((i) => <SkeletonRow key={i} />)
-              ) : (
-                recentUsers.map((user) => (
-                  <div key={user.uid} className="flex items-center gap-4 p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-2xl transition-colors group">
-                    <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden font-bold text-gray-500 dark:text-gray-400 text-sm">
-                      {user.photoURL ? (
-                        <img src={user.photoURL} alt={user.name} className="w-full h-full object-cover" />
-                      ) : (
-                        user.name?.charAt(0).toUpperCase() || "U"
-                      )}
+
+          {/* Operation Metrics (Live Classes & Grading) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold">Upcoming Live Classes</h2>
+              </div>
+              <div className="space-y-3">
+                {loading ? (
+                  [1, 2].map(i => <div key={i} className="h-14 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />)
+                ) : upcomingClasses.length === 0 ? (
+                  <div className="text-sm text-gray-500 py-4 text-center">No upcoming sessions</div>
+                ) : (
+                  upcomingClasses.slice(0, 3).map(l => (
+                    <div key={l.id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                      <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 font-bold">
+                        <Video size={18} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold text-sm truncate">{l.title || "Live Class"}</div>
+                        <div className="text-[10px] text-gray-500">{l.startTime ? format(new Date(l.startTime), 'MMM d, h:mm a') : "-"}</div>
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-gray-900 dark:text-white truncate">{user.name}</h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+                  ))
+                )}
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold">Grading Queue</h2>
+              </div>
+              <div className="space-y-3">
+                {loading ? (
+                  [1, 2].map(i => <div key={i} className="h-14 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />)
+                ) : gradingQueue.length === 0 ? (
+                  <div className="text-sm text-gray-500 py-4 text-center">No pending submissions</div>
+                ) : (
+                  gradingQueue.slice(0, 3).map(item => (
+                    <div key={item.assignment.id} className="p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="text-sm font-semibold line-clamp-1">{item.assignment.title || "Assignment"}</div>
+                          <div className="text-[10px] text-gray-500">{item.courseTitle}</div>
+                        </div>
+                        <span className="shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300">
+                          {item.submissions?.length || 0}
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
-                        ${user.role === 'admin' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300' : 
-                          user.role === 'lecturer' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300' : 
-                          'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'}`}>
-                        {user.role}
-                      </span>
-                      <p className="text-[10px] text-gray-400 mt-1">
-                        {user.createdAt ? format(user.createdAt.toDate(), 'MMM d') : 'Just now'}
-                      </p>
+                  ))
+                )}
+              </div>
+            </motion.div>
+          </div>
+
+          {isAdmin && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-bold text-gray-900 dark:text-white">New Registrations</h2>
+                <Link href="/management?tab=users" className="text-sm font-medium text-brand-blue hover:underline flex items-center gap-1">
+                  View All <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              <div className="space-y-4">
+                {loading ? (
+                  [1, 2, 3].map((i) => <SkeletonRow key={i} />)
+                ) : (
+                  recentUsers.map((user) => (
+                    <div key={user.uid} className="flex items-center gap-4 p-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-2xl transition-colors group">
+                      <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden font-bold text-gray-500 dark:text-gray-400 text-sm">
+                        {user.photoURL ? (
+                          <img src={user.photoURL} alt={user.name} className="w-full h-full object-cover" />
+                        ) : (
+                          user.name?.charAt(0).toUpperCase() || "U"
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-gray-900 dark:text-white truncate">{user.name}</h4>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+                      </div>
+                      <div className="text-right">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
+                        ${user.role === 'admin' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300' :
+                            user.role === 'lecturer' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300' :
+                              'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'}`}>
+                          {user.role}
+                        </span>
+                        <p className="text-[10px] text-gray-400 mt-1">
+                          {user.createdAt ? format(user.createdAt.toDate(), 'MMM d') : 'Just now'}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </motion.div>
+                  ))
+                )}
+              </div>
+            </motion.div>
+          )}
 
           {/* Quick Actions Grid */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
             <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4 px-1">Quick Actions</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <QuickAction href="/admin/users" icon={Users} label="Add User" color="bg-blue-500" />
-              <QuickAction href="/admin/recorded" icon={PlayCircle} label="Rec. Classes" color="bg-violet-500" />
-              <QuickAction href="/admin/courses" icon={BookOpen} label="New Course" color="bg-emerald-500" />
-              <QuickAction 
-                href="/admin/enrollments" 
-                icon={CreditCard} 
-                label="Enrollments" 
-                color="bg-indigo-500" 
-                badge={pendingEnrollments > 0 ? pendingEnrollments : undefined}
-              />
-              <QuickAction href="/admin/attendance" icon={Calendar} label="Attendance" color="bg-rose-500" />
-              <QuickAction href="/admin/resources" icon={FolderOpen} label="Resources" color="bg-orange-500" />
-              <QuickAction href="/admin/support" icon={MessageSquare} label="Support" color="bg-purple-500" />
-              <QuickAction href="/admin/settings" icon={Settings} label="Settings" color="bg-gray-600" />
+              {isAdmin && <QuickAction href="/management?tab=users" icon={Users} label="Add User" color="bg-blue-500" />}
+              <QuickAction href="/management?tab=recordings" icon={PlayCircle} label="Rec. Classes" color="bg-violet-500" />
+              <QuickAction href="/management?tab=courses" icon={BookOpen} label="Courses" color="bg-emerald-500" />
+              {isAdmin && (
+                <QuickAction
+                  href="/management?tab=enrollments"
+                  icon={CreditCard}
+                  label="Enrollments"
+                  color="bg-indigo-500"
+                  badge={pendingEnrollments > 0 ? pendingEnrollments : undefined}
+                />
+              )}
+              {isAdmin && <QuickAction href="/management?tab=attendance" icon={Calendar} label="Attendance" color="bg-rose-500" />}
+              <QuickAction href="/management?tab=resources" icon={FolderOpen} label="Resources" color="bg-orange-500" />
+              {isAdmin && <QuickAction href="/management?tab=support" icon={MessageSquare} label="Support" color="bg-purple-500" />}
+              {isAdmin && <QuickAction href="/management?tab=settings" icon={Settings} label="Settings" color="bg-gray-600" />}
             </div>
           </motion.div>
 
@@ -226,9 +319,9 @@ export function AdminDashboard() {
 
         {/* Sidebar (Right Col) */}
         <div className="space-y-6">
-          
+
           {/* Latest Courses */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
@@ -236,15 +329,15 @@ export function AdminDashboard() {
           >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Latest Courses</h2>
-              <Link href="/admin/courses" className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
+              <Link href="/management?tab=courses" className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
                 <ArrowUpRight className="w-4 h-4 text-gray-500" />
               </Link>
             </div>
             <div className="space-y-4">
               {loading ? (
-                 <div className="space-y-4">
-                   {[1, 2].map(i => <div key={i} className="h-16 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />)}
-                 </div>
+                <div className="space-y-4">
+                  {[1, 2].map(i => <div key={i} className="h-16 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />)}
+                </div>
               ) : (
                 recentCourses.map((course) => (
                   <div key={course.id} className="group flex gap-3 items-start p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
@@ -273,7 +366,7 @@ export function AdminDashboard() {
           </motion.div>
 
           {/* Business Overview */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
@@ -288,19 +381,19 @@ export function AdminDashboard() {
                 <p className="text-xs text-blue-200">Real-time business metrics</p>
               </div>
             </div>
-            
+
             <div className="space-y-3 mt-6">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-blue-100">Active Enrollments</span>
                 <span className="font-mono text-white">{activeEnrollments}</span>
               </div>
               <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                <div 
-                  className="bg-white h-full transition-all duration-1000" 
-                  style={{ width: `${totalStudents > 0 ? (activeEnrollments / totalStudents) * 100 : 0}%` }} 
+                <div
+                  className="bg-white h-full transition-all duration-1000"
+                  style={{ width: `${totalStudents > 0 ? (activeEnrollments / totalStudents) * 100 : 0}%` }}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between text-sm mt-4">
                 <span className="text-blue-100">Conversion Rate</span>
                 <span className="font-mono text-white">
@@ -308,17 +401,17 @@ export function AdminDashboard() {
                 </span>
               </div>
               <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                <div 
-                  className="bg-emerald-400 h-full transition-all duration-1000" 
-                  style={{ width: `${totalStudents > 0 ? (activeEnrollments / totalStudents) * 100 : 0}%` }} 
+                <div
+                  className="bg-emerald-400 h-full transition-all duration-1000"
+                  style={{ width: `${totalStudents > 0 ? (activeEnrollments / totalStudents) * 100 : 0}%` }}
                 />
               </div>
             </div>
 
             <div className="mt-6 pt-4 border-t border-white/10">
-               <Link href="/admin/analytics" className="flex items-center justify-center gap-2 w-full py-2 bg-white/10 hover:bg-white/20 rounded-xl text-sm font-medium transition-colors">
-                 View Detailed Analytics
-               </Link>
+              <Link href="/management?tab=analytics" className="flex items-center justify-center gap-2 w-full py-2 bg-white/10 hover:bg-white/20 rounded-xl text-sm font-medium transition-colors">
+                View Detailed Analytics
+              </Link>
             </div>
           </motion.div>
 

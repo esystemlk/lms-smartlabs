@@ -1,24 +1,18 @@
-
 import { Calendar, Clock, Video, RefreshCw } from "lucide-react";
 import { UserData, Lesson, Enrollment } from "@/lib/types";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { courseService } from "@/services/courseService";
-import { attendanceService } from "@/services/attendanceService";
 import { enrollmentService } from "@/services/enrollmentService";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/Button";
 
 interface UpcomingScheduleProps {
   userData: UserData | null;
 }
 
 export function UpcomingSchedule({ userData }: UpcomingScheduleProps) {
-  const router = useRouter();
   const [classes, setClasses] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
-  const [joiningId, setJoiningId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -83,35 +77,6 @@ export function UpcomingSchedule({ userData }: UpcomingScheduleProps) {
     fetchClasses();
   }, [userData]);
 
-  const handleJoinClass = async (cls: Lesson) => {
-    if (!userData) return;
-
-    try {
-      setJoiningId(cls.id);
-
-      // Auto-mark attendance
-      await attendanceService.markAttendance({
-        userId: userData.uid,
-        userEmail: userData.email,
-        userName: userData.name,
-        courseId: cls.courseId,
-        lessonId: cls.id,
-        date: new Date(),
-        status: 'present',
-        method: 'zoom_auto'
-      });
-
-      // Navigate to class
-      router.push(`/lms/live/room/${cls.courseId}/${cls.id}`);
-    } catch (error) {
-      console.error("Failed to mark attendance or join:", error);
-      // Still try to navigate even if attendance fails
-      router.push(`/lms/live/room/${cls.courseId}/${cls.id}`);
-    } finally {
-      setJoiningId(null);
-    }
-  };
-
   if (loading) {
     return (
       <div className="glass-card rounded-3xl p-6 shadow-sm border-0 h-full flex flex-col items-center justify-center min-h-[200px]">
@@ -128,7 +93,7 @@ export function UpcomingSchedule({ userData }: UpcomingScheduleProps) {
           <Calendar className="text-brand-blue" size={20} />
           Upcoming Classes
         </h3>
-        <Link href="/live-classes">
+        <Link href="/lms/live">
           <span className="text-xs font-bold text-brand-blue hover:underline cursor-pointer">View All</span>
         </Link>
       </div>
@@ -136,44 +101,37 @@ export function UpcomingSchedule({ userData }: UpcomingScheduleProps) {
       {classes.length > 0 ? (
         <div className="space-y-4 flex-1">
           {classes.map((cls) => (
-            <div key={cls.id} className="flex items-center gap-4 p-3 rounded-2xl bg-white/50 dark:bg-gray-800/50 hover:bg-blue-50/80 dark:hover:bg-blue-900/30 transition-colors group border border-transparent hover:border-blue-100 dark:hover:border-blue-800">
-              <div className="flex-shrink-0 w-14 h-14 bg-white dark:bg-gray-600 text-brand-blue rounded-xl flex flex-col items-center justify-center text-center shadow-sm group-hover:scale-105 transition-transform">
-                <span className="text-[10px] font-bold uppercase text-gray-500 dark:text-gray-300">
-                  {cls.startTime ? format(new Date(cls.startTime), "MMM") : 'N/A'}
-                </span>
-                <span className="text-xl font-bold leading-none">
-                  {cls.startTime ? format(new Date(cls.startTime), "d") : '0'}
-                </span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-brand-blue transition-colors">
-                  {cls.title}
-                </h4>
-                <div className="flex items-center gap-3 mt-1">
-                  <span className="flex items-center text-xs text-gray-500 dark:text-gray-400">
-                    <Clock size={12} className="mr-1" />
-                    {cls.startTime ? format(new Date(cls.startTime), "h:mm a") : 'TBA'}
+            <Link key={cls.id} href="/lms/live">
+              <div className="flex items-center gap-4 p-3 mb-3 rounded-2xl bg-white/50 dark:bg-gray-800/50 hover:bg-blue-50/80 dark:hover:bg-blue-900/30 transition-all group border border-transparent hover:border-blue-100 dark:hover:border-blue-800 cursor-pointer shadow-sm hover:shadow-md">
+                <div className="flex-shrink-0 w-14 h-14 bg-white dark:bg-gray-600 text-brand-blue rounded-xl flex flex-col items-center justify-center text-center shadow-sm group-hover:scale-105 transition-transform">
+                  <span className="text-[10px] font-bold uppercase text-gray-500 dark:text-gray-300">
+                    {cls.startTime ? format(new Date(cls.startTime), "MMM") : 'N/A'}
                   </span>
-                  <span className="flex items-center text-xs text-brand-blue bg-blue-100 dark:bg-blue-900/50 px-2 py-0.5 rounded-full font-medium">
-                    <Video size={10} className="mr-1" />
-                    Live
+                  <span className="text-xl font-bold leading-none">
+                    {cls.startTime ? format(new Date(cls.startTime), "d") : '0'}
                   </span>
                 </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-brand-blue transition-colors">
+                    {cls.title}
+                  </h4>
+                  <div className="flex items-center gap-3 mt-1">
+                    <span className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                      <Clock size={12} className="mr-1" />
+                      {cls.startTime ? format(new Date(cls.startTime), "h:mm a") : 'TBA'}
+                    </span>
+                    <span className="flex items-center text-xs text-brand-blue bg-blue-100 dark:bg-blue-900/50 px-2 py-0.5 rounded-full font-medium">
+                      <Video size={10} className="mr-1" />
+                      Live
+                    </span>
+                  </div>
+                </div>
+                <div className="h-8 w-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center text-gray-400 group-hover:bg-brand-blue group-hover:text-white transition-all transform group-hover:rotate-45">
+                  <RefreshCw size={14} className="group-hover:hidden" />
+                  <Video size={16} className="hidden group-hover:block" />
+                </div>
               </div>
-              <Button
-                onClick={() => handleJoinClass(cls)}
-                disabled={joiningId === cls.id}
-                size="sm"
-                variant="ghost"
-                className="h-8 w-8 p-0 rounded-full text-gray-400 hover:text-brand-blue hover:bg-white shadow-sm disabled:opacity-50"
-              >
-                {joiningId === cls.id ? (
-                  <RefreshCw className="animate-spin" size={16} />
-                ) : (
-                  <Video size={16} />
-                )}
-              </Button>
-            </div>
+            </Link>
           ))}
         </div>
       ) : (

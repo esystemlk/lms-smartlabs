@@ -1,8 +1,9 @@
 
-import { 
-  doc, 
+import {
+  getDoc,
+  doc,
   updateDoc,
-  setDoc, 
+  setDoc,
   serverTimestamp,
   collection,
   query,
@@ -12,10 +13,10 @@ import {
   arrayRemove,
   where
 } from "firebase/firestore";
-import { 
-  ref, 
-  uploadBytes, 
-  getDownloadURL 
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL
 } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 import { initializeApp, deleteApp } from "firebase/app";
@@ -24,6 +25,15 @@ import { db, storage, auth, app } from "@/lib/firebase";
 import { UserData } from "@/lib/types";
 
 export const userService = {
+  async getUser(uid: string) {
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { uid: docSnap.id, ...docSnap.data() } as UserData;
+    }
+    return null;
+  },
+
   async createUser(userData: Partial<UserData>, password: string) {
     // Use a secondary app instance to create user without logging out the admin
     const secondaryApp = initializeApp(app.options, "Secondary");
@@ -48,7 +58,7 @@ export const userService = {
 
       // Sign out from secondary auth to be clean
       await signOut(secondaryAuth);
-      
+
       return uid;
     } catch (error) {
       console.error("Error creating user:", error);

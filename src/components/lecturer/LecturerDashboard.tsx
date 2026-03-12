@@ -53,10 +53,10 @@ export function LecturerDashboard() {
           <p className="text-gray-500 dark:text-gray-400">Manage your courses, live sessions and resources</p>
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/admin/courses">
+          <Link href="/management?tab=courses">
             <Button variant="outline" className="rounded-full px-5">Create Course</Button>
           </Link>
-          <Link href="/live-classes">
+          <Link href="/lms/live">
             <Button className="rounded-full px-5">Manage Live Classes</Button>
           </Link>
         </div>
@@ -78,13 +78,13 @@ export function LecturerDashboard() {
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold">Upcoming Live Classes</h2>
-              <Link href="/live-classes" className="text-sm font-medium text-brand-blue flex items-center gap-1">
+              <Link href="/lms/live" className="text-sm font-medium text-brand-blue flex items-center gap-1">
                 View <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
             <div className="space-y-3">
               {loading ? (
-                [1,2,3].map(i => <div key={i} className="h-14 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />)
+                [1, 2, 3].map(i => <div key={i} className="h-14 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />)
               ) : upcoming.length === 0 ? (
                 <div className="text-sm text-gray-500">No upcoming sessions</div>
               ) : (
@@ -109,10 +109,10 @@ export function LecturerDashboard() {
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <h2 className="text-lg font-bold mb-3">Quick Actions</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <QuickAction href="/admin/courses" icon={BookOpen} label="New Course" color="bg-emerald-500" />
-              <QuickAction href="/live-classes" icon={Calendar} label="Schedule Live" color="bg-indigo-500" />
-              <QuickAction href="/admin/resources" icon={FolderOpen} label="Resources" color="bg-orange-500" />
-              <QuickAction href="/lms/recordings" icon={PlayCircle} label="Recordings" color="bg-violet-600" />
+              <QuickAction href="/management?tab=courses" icon={BookOpen} label="Courses" color="bg-emerald-500" />
+              <QuickAction href="/lms/live" icon={Calendar} label="Live Schedule" color="bg-indigo-500" />
+              <QuickAction href="/management?tab=resources" icon={FolderOpen} label="Resources" color="bg-orange-500" />
+              <QuickAction href="/management?tab=recordings" icon={PlayCircle} label="Recordings" color="bg-violet-600" />
             </div>
           </motion.div>
 
@@ -125,7 +125,7 @@ export function LecturerDashboard() {
             </div>
             <div className="space-y-3">
               {loading ? (
-                [1,2,3].map(i => <div key={i} className="h-14 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />)
+                [1, 2, 3].map(i => <div key={i} className="h-14 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />)
               ) : queue.length === 0 ? (
                 <div className="text-sm text-gray-500">No pending submissions</div>
               ) : (
@@ -162,13 +162,13 @@ export function LecturerDashboard() {
           <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold">Your Courses</h2>
-              <Link href="/admin/courses" className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+              <Link href="/management?tab=courses" className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
                 <Settings className="w-4 h-4 text-gray-500" />
               </Link>
             </div>
             <div className="space-y-3">
               {loading ? (
-                [1,2].map(i => <div key={i} className="h-16 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />)
+                [1, 2].map(i => <div key={i} className="h-16 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse" />)
               ) : courses.length === 0 ? (
                 <div className="text-sm text-gray-500">No courses yet</div>
               ) : (

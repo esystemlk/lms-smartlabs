@@ -36,6 +36,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { QuizBuilder } from "@/components/quiz/QuizBuilder";
+import { BatchModal, LessonModal, RecordingsModal } from "@/components/admin/CourseManagementModals";
 
 export default function EditCoursePage() {
   const { userData } = useAuth();
@@ -1011,492 +1012,50 @@ export default function EditCoursePage() {
         />
       )}
 
-      {/* Batch Modal Overlay */}
+      {/* Modals Refactored */}
       {showBatchModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
-          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-in zoom-in-95">
-            <div className="flex items-center justify-between p-4 border-b border-gray-100">
-              <h3 className="text-lg font-bold text-gray-900">{editingBatchId ? "Edit Batch" : "Add New Batch"}</h3>
-              <button
-                onClick={handleCloseBatchModal}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveBatch} className="p-6 space-y-4">
-
-              <Input
-                label="Batch Name"
-                placeholder="e.g. Intake 01 - 2026"
-                value={newBatchData.name}
-                onChange={(e) => setNewBatchData({ ...newBatchData, name: e.target.value })}
-                required
-              />
-
-              <div className="grid grid-cols-2 gap-4">
-                <Input
-                  label="Start Date"
-                  type="date"
-                  value={newBatchData.startDate}
-                  onChange={(e) => setNewBatchData({ ...newBatchData, startDate: e.target.value })}
-                  required
-                />
-                <Input
-                  label="End Date"
-                  type="date"
-                  value={newBatchData.endDate}
-                  onChange={(e) => setNewBatchData({ ...newBatchData, endDate: e.target.value })}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Input
-                  label="Max Students"
-                  type="number"
-                  placeholder="Optional"
-                  value={newBatchData.maxStudents}
-                  onChange={(e) => setNewBatchData({ ...newBatchData, maxStudents: e.target.value })}
-                />
-                <div className="space-y-1">
-                  <label className="block text-sm font-medium text-gray-700">Status</label>
-                  <select
-                    value={newBatchData.status}
-                    onChange={(e) => setNewBatchData({ ...newBatchData, status: e.target.value as any })}
-                    className="w-full h-10 px-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all bg-white"
-                  >
-                    <option value="open">Open</option>
-                    <option value="closed">Closed</option>
-                    <option value="ongoing">Ongoing</option>
-                    <option value="completed">Completed</option>
-                  </select>
-                </div>
-              </div>
-
-              <Input
-                label="Schedule"
-                placeholder="e.g. Mon/Wed 7PM"
-                value={newBatchData.schedule}
-                onChange={(e) => setNewBatchData({ ...newBatchData, schedule: e.target.value })}
-              />
-
-              {/* Time Slots Editor */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <label className="block text-sm font-medium text-gray-700">Time Slots</label>
-                  <button
-                    type="button"
-                    onClick={() => setNewBatchSlots([...newBatchSlots, { id: Date.now().toString(), label: "", capacity: "" }])}
-                    className="text-sm text-brand-blue hover:underline"
-                  >
-                    + Add Slot
-                  </button>
-                </div>
-                {newBatchSlots.length === 0 && (
-                  <div className="text-xs text-gray-500 bg-gray-50 border border-dashed border-gray-200 rounded-lg p-3">
-                    No time slots added. Students will enroll without slot selection.
-                  </div>
-                )}
-                {newBatchSlots.map((slot, idx) => (
-                  <div key={slot.id} className="grid grid-cols-1 md:grid-cols-[1fr_160px_40px] gap-2 items-end">
-                    <Input
-                      label={`Slot ${idx + 1} Label`}
-                      value={slot.label}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setNewBatchSlots(prev => prev.map(s => s.id === slot.id ? { ...s, label: val } : s));
-                      }}
-                      placeholder="e.g. Mon/Wed 08:00–10:00"
-                      required
-                    />
-                    <Input
-                      label="Capacity (optional)"
-                      type="number"
-                      value={slot.capacity || ""}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setNewBatchSlots(prev => prev.map(s => s.id === slot.id ? { ...s, capacity: val } : s));
-                      }}
-                      placeholder="e.g. 30"
-                      min="0"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setNewBatchSlots(prev => prev.filter(s => s.id !== slot.id))}
-                      className="h-10 md:h-[42px] px-3 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50"
-                      title="Remove slot"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex justify-end gap-3 pt-4">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={handleCloseBatchModal}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={batchSaving}>
-                  {batchSaving ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      {editingBatchId ? "Updating..." : "Creating..."}
-                    </>
-                  ) : (
-                    editingBatchId ? "Update Batch" : "Create Batch"
-                  )}
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <BatchModal
+          courseId={courseId}
+          editingBatchId={editingBatchId}
+          newBatchData={newBatchData}
+          setNewBatchData={setNewBatchData}
+          newBatchSlots={newBatchSlots}
+          setNewBatchSlots={setNewBatchSlots}
+          batchSaving={batchSaving}
+          onClose={handleCloseBatchModal}
+          onSave={handleSaveBatch}
+        />
       )}
 
-      {/* Lesson Creation Modal */}
       {showLessonModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
-          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-in zoom-in-95">
-            <div className="flex items-center justify-between p-4 border-b border-gray-100">
-              <h3 className="text-lg font-bold text-gray-900">Add New Lesson</h3>
-              <button
-                onClick={() => setShowLessonModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleAddLesson} className="p-6 space-y-4">
-              <Input
-                label="Lesson Title"
-                value={newLessonData.title}
-                onChange={(e) => setNewLessonData({ ...newLessonData, title: e.target.value })}
-                placeholder="e.g. Introduction to Speaking Task 1"
-                required
-                autoFocus
-              />
-
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">Lesson Type</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {[
-                    { id: 'video', label: 'Video Lesson', icon: PlayCircle },
-                    { id: 'live_class', label: 'Live Class (Zoom)', icon: Video },
-                    { id: 'speaking', label: 'Speaking', icon: Mic },
-                    { id: 'writing', label: 'Writing', icon: PenTool },
-                    { id: 'reading', label: 'Reading', icon: BookOpen },
-                    { id: 'listening', label: 'Listening', icon: Headphones },
-                    { id: 'quiz', label: 'Quiz', icon: HelpCircle },
-                  ].map((type) => (
-                    <button
-                      key={type.id}
-                      type="button"
-                      onClick={() => setNewLessonData({ ...newLessonData, type: type.id as any })}
-                      className={`flex items-center gap-2 p-3 rounded-xl border text-sm font-medium transition-all ${newLessonData.type === type.id
-                        ? "border-brand-blue bg-blue-50 text-brand-blue"
-                        : "border-gray-200 hover:border-brand-blue/50 hover:bg-gray-50 text-gray-600"
-                        }`}
-                    >
-                      <type.icon className="w-4 h-4" />
-                      {type.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {newLessonData.type === 'live_class' && (
-                <div className="grid grid-cols-2 gap-4 bg-blue-50 p-4 rounded-xl border border-blue-100">
-                  <div className="col-span-2">
-                    <p className="text-xs text-blue-600 mb-2 font-medium flex items-center gap-2">
-                      <Video size={14} />
-                      Zoom Meeting Details
-                    </p>
-                  </div>
-                  <Input
-                    label="Start Time"
-                    type="datetime-local"
-                    value={newLessonData.startTime}
-                    onChange={(e) => setNewLessonData({ ...newLessonData, startTime: e.target.value })}
-                    required
-                  />
-                  <Input
-                    label="Duration (minutes)"
-                    type="number"
-                    value={newLessonData.duration}
-                    onChange={(e) => setNewLessonData({ ...newLessonData, duration: e.target.value })}
-                    required
-                  />
-
-                  <div className="col-span-2 space-y-2">
-                    <label className="block text-sm font-medium text-gray-700">Select Batches (Optional)</label>
-                    <p className="text-xs text-gray-500 mb-2">If selected, only students in these batches will see this class.</p>
-                    {batches.length > 0 ? (
-                      <div className="grid grid-cols-1 gap-2 max-h-40 overflow-y-auto p-2 border border-gray-200 rounded-lg bg-white">
-                        {batches.map(batch => (
-                          <label key={batch.id} className="flex items-center gap-2 text-sm p-1 hover:bg-gray-50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={newLessonData.batchIds.includes(batch.id)}
-                              onChange={(e) => {
-                                const isChecked = e.target.checked;
-                                setNewLessonData(prev => ({
-                                  ...prev,
-                                  batchIds: isChecked
-                                    ? [...prev.batchIds, batch.id]
-                                    : prev.batchIds.filter(id => id !== batch.id)
-                                }));
-                              }}
-                              className="w-4 h-4 text-brand-blue rounded border-gray-300 focus:ring-brand-blue"
-                            />
-                            <span className="text-gray-900 font-medium">{batch.name}</span>
-                            <span className="text-xs text-gray-500">({batch.startDate})</span>
-                          </label>
-                        ))}
-                      </div>
-                    ) : (
-                      <p className="text-sm text-gray-500 italic">No batches created yet.</p>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* Attachments Section */}
-              <div className="space-y-3 pt-2 border-t border-gray-100">
-                <label className="block text-sm font-medium text-gray-700">Lesson Resources (PDF, Zip, etc.)</label>
-
-                <div className="flex gap-2">
-                  <input
-                    type="file"
-                    id="attachment-upload"
-                    className="hidden"
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
-
-                      setAttachmentUploading(true);
-                      try {
-                        const url = await courseService.uploadImage(file, `courses/${courseId}/lessons/${Date.now()}_${file.name}`);
-                        setNewLessonData(prev => ({
-                          ...prev,
-                          attachments: [...prev.attachments, { name: file.name, url }]
-                        }));
-                      } catch (error) {
-                        console.error("Upload failed:", error);
-                        alert("Failed to upload attachment");
-                      } finally {
-                        setAttachmentUploading(false);
-                        // Reset input
-                        (e.target as HTMLInputElement).value = "";
-                      }
-                    }}
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    disabled={attachmentUploading}
-                    onClick={() => document.getElementById('attachment-upload')?.click()}
-                  >
-                    {attachmentUploading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Upload className="w-4 h-4 mr-2" />}
-                    Upload Resource
-                  </Button>
-                </div>
-
-                {newLessonData.attachments.length > 0 && (
-                  <div className="space-y-2 bg-gray-50 p-3 rounded-lg border border-gray-100">
-                    {newLessonData.attachments.map((att, idx) => (
-                      <div key={idx} className="flex items-center justify-between text-sm bg-white p-2 rounded border border-gray-200">
-                        <span className="truncate flex-1 pr-2">{att.name}</span>
-                        <button
-                          type="button"
-                          onClick={() => setNewLessonData(prev => ({
-                            ...prev,
-                            attachments: prev.attachments.filter((_, i) => i !== idx)
-                          }))}
-                          className="text-gray-400 hover:text-red-500"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className="pt-4 flex justify-end gap-3">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={() => setShowLessonModal(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={lessonSaving}>
-                  {lessonSaving ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Creating...
-                    </>
-                  ) : (
-                    "Create Lesson"
-                  )}
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <LessonModal
+          courseId={courseId}
+          batches={batches}
+          newLessonData={newLessonData}
+          setNewLessonData={setNewLessonData}
+          lessonSaving={lessonSaving}
+          attachmentUploading={attachmentUploading}
+          setAttachmentUploading={setAttachmentUploading}
+          onClose={() => setShowLessonModal(false)}
+          onSave={handleAddLesson}
+        />
       )}
 
-      {/* Recordings Modal */}
       {showRecordingsModal && selectedBatch && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
-          <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 flex flex-col max-h-[90vh]">
-            <div className="flex items-center justify-between p-4 border-b border-gray-100 shrink-0">
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">Manage Recordings</h3>
-                <p className="text-sm text-gray-500">{selectedBatch.name}</p>
-              </div>
-              <button
-                onClick={() => setShowRecordingsModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-6 space-y-6">
-              {/* Add New Recording Form */}
-              <div className="bg-gray-50 rounded-xl p-4 space-y-4 border border-gray-100">
-                <h4 className="font-semibold text-sm text-gray-900">Add New Recording</h4>
-
-                {/* Upload Section */}
-                <div className="bg-white p-4 rounded-lg border border-gray-200 space-y-3">
-                  <p className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                    <Upload size={16} />
-                    Upload from Device (Bunny.net)
-                  </p>
-                  <div className="flex gap-2">
-                    <input
-                      type="file"
-                      accept="video/*"
-                      onChange={(e) => setUploadFile(e.target.files ? e.target.files[0] : null)}
-                      className="text-sm flex-1"
-                    />
-                    <Button
-                      size="sm"
-                      disabled={!uploadFile || uploading}
-                      onClick={async () => {
-                        if (!uploadFile) return;
-                        setUploading(true);
-                        try {
-                          // 1. Create Video
-                          const videoObj = await bunnyService.createVideo(uploadFile.name);
-                          // 2. Upload
-                          await bunnyService.uploadVideo(uploadFile, videoObj.guid, setUploadProgress);
-                          // 3. Auto-fill form
-                          setNewRecording(prev => ({
-                            ...prev,
-                            title: uploadFile.name.replace(/\.[^/.]+$/, ""),
-                            videoUrl: `https://iframe.mediadelivery.net/embed/${process.env.NEXT_PUBLIC_BUNNY_LIBRARY_ID}/${videoObj.guid}`, // Construct or fetch embed URL
-                            bunnyVideoId: videoObj.guid
-                          }));
-                          alert("Upload complete! Please verify details and click 'Add Recording'.");
-                        } catch (e) {
-                          console.error(e);
-                          alert("Upload failed");
-                        } finally {
-                          setUploading(false);
-                          setUploadProgress(0);
-                        }
-                      }}
-                    >
-                      {uploading ? `${uploadProgress}%` : "Upload"}
-                    </Button>
-                  </div>
-                  {uploading && (
-                    <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
-                      <div className="h-full bg-brand-blue transition-all duration-300" style={{ width: `${uploadProgress}%` }} />
-                    </div>
-                  )}
-                </div>
-
-                <form onSubmit={handleSaveRecording} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input
-                      label="Title"
-                      placeholder="e.g. Week 1 - Introduction"
-                      value={newRecording.title}
-                      onChange={(e) => setNewRecording({ ...newRecording, title: e.target.value })}
-                      required
-                    />
-                    <Input
-                      label="Video URL / Embed Link"
-                      placeholder="https://..."
-                      value={newRecording.videoUrl}
-                      onChange={(e) => setNewRecording({ ...newRecording, videoUrl: e.target.value })}
-                      required
-                    />
-                    <Input
-                      label="Date"
-                      type="date"
-                      value={newRecording.date}
-                      onChange={(e) => setNewRecording({ ...newRecording, date: e.target.value })}
-                      required
-                    />
-                    <Input
-                      label="Duration (mins)"
-                      type="number"
-                      placeholder="e.g. 60"
-                      value={newRecording.durationMinutes}
-                      onChange={(e) => setNewRecording({ ...newRecording, durationMinutes: e.target.value })}
-                    />
-                  </div>
-                  <div className="flex justify-end">
-                    <Button type="submit" size="sm" disabled={recordingSaving}>
-                      {recordingSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4 mr-2" />}
-                      Add Recording
-                    </Button>
-                  </div>
-                </form>
-              </div>
-
-              {/* Recordings List */}
-              <div className="space-y-2">
-                <h4 className="font-semibold text-sm text-gray-900">Existing Recordings</h4>
-                {!selectedBatch.recordedClasses?.length ? (
-                  <p className="text-sm text-gray-500 italic">No recordings added yet.</p>
-                ) : (
-                  selectedBatch.recordedClasses.map((rec) => (
-                    <div key={rec.id} className="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-lg hover:border-blue-100 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-blue-50 text-brand-blue rounded-full flex items-center justify-center">
-                          <PlayCircle size={16} />
-                        </div>
-                        <div>
-                          <p className="font-medium text-sm text-gray-900">{rec.title}</p>
-                          <p className="text-xs text-gray-500">{new Date(rec.date).toLocaleDateString()} • {rec.durationMinutes} mins</p>
-                        </div>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-red-500 hover:bg-red-50 hover:text-red-600"
-                        onClick={() => handleDeleteRecording(rec.id)}
-                      >
-                        <Trash2 size={16} />
-                      </Button>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+        <RecordingsModal
+          courseId={courseId}
+          selectedBatch={selectedBatch}
+          newRecording={newRecording}
+          setNewRecording={setNewRecording}
+          recordingSaving={recordingSaving}
+          uploading={uploading}
+          uploadProgress={uploadProgress}
+          setUploading={setUploading}
+          setUploadProgress={setUploadProgress}
+          onClose={() => setShowRecordingsModal(false)}
+          onSave={handleSaveRecording}
+          onDelete={handleDeleteRecording}
+        />
       )}
     </div>
   );

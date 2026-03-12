@@ -271,18 +271,18 @@ export function ResourceManager() {
           ))}
         </div>
 
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={() => setIsCreatingFolder(true)}>
+        <div className="flex flex-wrap gap-2 md:gap-3">
+          <Button variant="outline" size="sm" onClick={() => setIsCreatingFolder(true)} className="flex-1 sm:flex-none">
             <FolderPlus size={16} className="mr-2" /> New Folder
           </Button>
-          <Button onClick={() => setIsUploading(true)}>
+          <Button size="sm" onClick={() => setIsUploading(true)} className="flex-1 sm:flex-none">
             <Upload size={16} className="mr-2" /> Upload Resource
           </Button>
-          <Button variant="secondary" onClick={() => setIsLinking(true)}>
+          <Button variant="secondary" size="sm" onClick={() => setIsLinking(true)} className="flex-1 sm:flex-none">
             <FolderPlus size={16} className="mr-2" /> Attach Folder
           </Button>
-          <Button onClick={() => setIsBulkUpload(true)}>
-            <Upload size={16} className="mr-2" /> Bulk Upload (Folder)
+          <Button size="sm" onClick={() => setIsBulkUpload(true)} className="flex-1 sm:flex-none">
+            <Upload size={16} className="mr-2" /> Bulk Upload
           </Button>
         </div>
       </div>

@@ -36,25 +36,9 @@ const navConfig = [
   { href: "/lecturers", label: "Lecturers", icon: GraduationCap, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
   { href: "/activities", label: "Activities", icon: Activity, section: "Learning", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
 
-  { href: "/lms", label: "LMS Portal", icon: Monitor, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/live-classes", label: "Live Manager", icon: Video, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/lms/live", label: "Live Schedule", icon: Calendar, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/lms/recordings", label: "Recordings", icon: Play, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/admin/recordings/upload", label: "Class Rec. Upload", icon: Upload, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/courses/manage", label: "Course Manager", icon: BookOpen, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/management", label: "Management Portal", icon: Monitor, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
 
-  { href: "/admin", label: "Admin Dashboard", icon: LayoutDashboard, section: "Admin", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/admin/users", label: "Users", icon: Users, section: "Admin", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/admin/students", label: "Students", icon: GraduationCap, section: "Admin", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/admin/courses", label: "Manage Courses", icon: BookOpen, section: "Admin", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/admin/resources", label: "Resources", icon: FolderOpen, section: "Admin", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/admin/enrollments", label: "Enrollments", icon: GraduationCap, section: "Admin", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/admin/recorded", label: "Recorded Classes", icon: Play, section: "Admin", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/admin/recorded-packages", label: "Recorded Packages", icon: FolderOpen, section: "Admin", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/admin/analytics", label: "Analytics", icon: Activity, section: "Admin", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/admin/settings", label: "System Settings", icon: Settings, section: "Admin", roles: ["admin", "superadmin", "developer"] as const },
-
-  { href: "/developer", label: "Developer Console", icon: ShieldAlert, section: "Developer", roles: ["developer"] as const },
+  { href: "/developer", label: "Developer", icon: ShieldAlert, section: "Developer", roles: ["developer"] as const },
 ] as const;
 
 interface SidebarProps {

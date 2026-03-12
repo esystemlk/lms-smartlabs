@@ -10,14 +10,14 @@ import { Button } from "@/components/ui/Button";
 import { motion, AnimatePresence } from "framer-motion";
 import { enrollmentService } from "@/services/enrollmentService";
 import { Enrollment } from "@/lib/types";
-import { 
-  BookOpen, 
-  Globe, 
-  ShieldCheck, 
-  Users, 
-  Edit, 
-  Activity, 
-  BarChart2, 
+import {
+  BookOpen,
+  Globe,
+  ShieldCheck,
+  Users,
+  Edit,
+  Activity,
+  BarChart2,
   Video,
   GraduationCap,
   Bell,
@@ -83,9 +83,9 @@ export default function DashboardPage() {
         const active = enrollments.filter(e => e.status === 'active');
         if (active.length > 0) {
           active.sort((a, b) => {
-             const timeA = a.lastAccessed?.seconds || a.enrolledAt?.seconds || 0;
-             const timeB = b.lastAccessed?.seconds || b.enrolledAt?.seconds || 0;
-             return timeB - timeA;
+            const timeA = a.lastAccessed?.seconds || a.enrolledAt?.seconds || 0;
+            const timeB = b.lastAccessed?.seconds || b.enrolledAt?.seconds || 0;
+            return timeB - timeA;
           });
           setLastEnrolled(active[0]);
           setRecentEnrollments(active.slice(0, 4));
@@ -173,10 +173,10 @@ export default function DashboardPage() {
       category: "Learning Hub"
     },
     {
-      title: "Admin Console",
-      description: "System management & user controls",
+      title: "Management Portal",
+      description: "System management, users & courses",
       icon: ShieldCheck,
-      href: "/admin",
+      href: "/management",
       gradient: "from-red-500 to-rose-600",
       roles: ["admin", "superadmin", "developer"],
       category: "Management"
@@ -185,7 +185,7 @@ export default function DashboardPage() {
       title: "Course Manager",
       description: "Create and edit course content",
       icon: Edit,
-      href: "/courses/manage",
+      href: "/management?tab=courses",
       gradient: "from-cyan-500 to-blue-600",
       roles: ["lecturer", "admin", "superadmin", "developer"],
       category: "Management"
@@ -194,7 +194,7 @@ export default function DashboardPage() {
       title: "Resource Manager",
       description: "Manage course study materials",
       icon: FolderOpen,
-      href: "/admin/resources",
+      href: "/management?tab=resources",
       gradient: "from-orange-500 to-amber-600",
       roles: ["lecturer", "admin", "superadmin", "developer"],
       category: "Management"
@@ -203,7 +203,7 @@ export default function DashboardPage() {
       title: "Users",
       description: "Manage user accounts",
       icon: Users,
-      href: "/admin/users",
+      href: "/management?tab=users",
       gradient: "from-sky-500 to-cyan-600",
       roles: ["lecturer", "admin", "superadmin", "developer"],
       category: "Management"
@@ -212,16 +212,16 @@ export default function DashboardPage() {
       title: "Enrollments",
       description: "Manage student enrollments",
       icon: GraduationCap,
-      href: "/admin/enrollments",
+      href: "/management?tab=users",
       gradient: "from-emerald-600 to-green-700",
       roles: ["lecturer", "admin", "superadmin", "developer"],
       category: "Management"
     },
     {
-      title: "Manage Courses",
+      title: "Courses Admin",
       description: "Course catalog administration",
       icon: BookOpen,
-      href: "/admin/courses",
+      href: "/management?tab=courses",
       gradient: "from-lime-500 to-green-600",
       roles: ["lecturer", "admin", "superadmin", "developer"],
       category: "Management"
@@ -230,16 +230,16 @@ export default function DashboardPage() {
       title: "Recorded Classes",
       description: "Manage recorded library",
       icon: Play,
-      href: "/admin/recorded",
+      href: "/management?tab=recordings",
       gradient: "from-indigo-600 to-violet-600",
       roles: ["lecturer", "admin", "superadmin", "developer"],
       category: "Management"
     },
     {
-      title: "Recorded Packages",
+      title: "Packages",
       description: "Manage subscription packages",
       icon: FolderOpen,
-      href: "/admin/recorded-packages",
+      href: "/management?tab=recordings",
       gradient: "from-fuchsia-500 to-pink-600",
       roles: ["lecturer", "admin", "superadmin", "developer"],
       category: "Management"
@@ -248,7 +248,7 @@ export default function DashboardPage() {
       title: "System Settings",
       description: "General configuration",
       icon: Settings,
-      href: "/admin/settings",
+      href: "/management?tab=settings",
       gradient: "from-slate-600 to-gray-700",
       roles: ["lecturer", "admin", "superadmin", "developer"],
       category: "System"
@@ -281,10 +281,10 @@ export default function DashboardPage() {
       category: "Resources"
     },
     {
-      title: "System Status",
+      title: "Analytics",
       description: "Analytics & performance monitoring",
       icon: BarChart2,
-      href: "/admin/analytics",
+      href: "/management?tab=dashboard",
       gradient: "from-slate-700 to-slate-800",
       roles: ["admin", "superadmin", "developer"],
       category: "System"
@@ -296,11 +296,11 @@ export default function DashboardPage() {
   const filteredItems = showAll
     ? menuItems
     : menuItems.filter(item => {
-        if (userData?.role && !item.roles.includes(userData.role)) {
-          return false;
-        }
-        return true;
-      });
+      if (userData?.role && !item.roles.includes(userData.role)) {
+        return false;
+      }
+      return true;
+    });
 
   // Group items by category
   const groupedItems = filteredItems.reduce((acc, item) => {
@@ -308,7 +308,7 @@ export default function DashboardPage() {
     acc[item.category].push(item);
     return acc;
   }, {} as Record<string, typeof menuItems>);
-  
+
   // Sort categories order
   const categoryOrder = ["Learning Hub", "Management", "Resources", "System"];
   const sortedCategories = Object.keys(groupedItems).sort((a, b) => {
@@ -343,9 +343,9 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <GreetingWidget />
-          
+
           {latestNotification && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="glass-card border-l-4 border-brand-blue rounded-r-2xl p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 hover:shadow-lg transition-all duration-300"
@@ -367,7 +367,7 @@ export default function DashboardPage() {
                   <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1 mt-0.5 break-words">{latestNotification.message}</p>
                 </div>
               </div>
-              
+
               <Link href="/lms" className="self-end sm:self-center w-full sm:w-auto">
                 <Button variant="ghost" size="sm" className="text-brand-blue hover:bg-blue-50 rounded-xl w-full sm:w-auto justify-center sm:justify-start">
                   View <ChevronRight size={16} className="ml-1" />
@@ -405,7 +405,7 @@ export default function DashboardPage() {
                     <span>{lastEnrolled.progress || 15}%</span>
                   </div>
                   <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full bg-brand-blue rounded-full transition-all duration-1000 ease-out"
                       style={{ width: `${lastEnrolled.progress || 15}%` }}
                     />
@@ -428,7 +428,7 @@ export default function DashboardPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-             <UpcomingSchedule userData={userData} />
+            <UpcomingSchedule userData={userData} />
           </motion.div>
 
           {/* Recent Courses */}
@@ -480,7 +480,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Learning Stats Widget (Replaces Quick Stats) */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           className="h-full"
@@ -489,7 +489,7 @@ export default function DashboardPage() {
         </motion.div>
       </div>
 
-          {/* Main Content Area */}
+      {/* Main Content Area */}
       <div className="space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <h2 className="text-2xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
@@ -567,13 +567,13 @@ export default function DashboardPage() {
                   className="space-y-5 scroll-mt-24"
                 >
                   <div className="flex items-center gap-4">
-                     <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-gray-800 flex items-center gap-2">
                       <span className="w-1 h-6 bg-brand-blue rounded-full"></span>
                       {category}
                     </h3>
                     <div className="h-px bg-gray-100 flex-1"></div>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6">
                     {groupedItems[category].map((menu, idx) => (
                       <motion.div key={idx} variants={item}>
@@ -584,13 +584,13 @@ export default function DashboardPage() {
                               "absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 bg-gradient-to-br",
                               menu.gradient
                             )} />
-                            
+
                             {/* Top Pattern Circle */}
                             <div className={clsx(
                               "absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-5 group-hover:opacity-20 transition-all duration-500 bg-gradient-to-br transform group-hover:scale-150",
                               menu.gradient
                             )} />
-                            
+
                             <div className="flex flex-col h-full justify-between relative z-10">
                               <div className="space-y-3 md:space-y-5">
                                 <div className="flex justify-between items-start">
@@ -600,12 +600,12 @@ export default function DashboardPage() {
                                   )}>
                                     <menu.icon className="w-5 h-5 md:w-7 md:h-7" strokeWidth={1.5} />
                                   </div>
-                                  
+
                                   <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-slate-100 dark:bg-slate-800/50 flex items-center justify-center text-gray-400 group-hover:bg-brand-blue group-hover:text-white transition-all duration-300 transform group-hover:rotate-[-45deg]">
                                     <ArrowRight className="w-3 h-3 md:w-3.5 md:h-3.5" />
                                   </div>
                                 </div>
-                                
+
                                 <div>
                                   <h3 className="font-bold text-slate-800 dark:text-white text-sm md:text-xl mb-1 md:mb-2 group-hover:text-brand-blue dark:group-hover:text-blue-300 transition-colors">
                                     {menu.title}

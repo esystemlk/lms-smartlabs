@@ -344,8 +344,8 @@ export function Header({ onMenuClick }: HeaderProps) {
                     onClick={() => setTheme('light')}
                     className={clsx(
                       "flex-1 flex items-center justify-center p-2 rounded-lg transition-all",
-                      theme === 'light' 
-                        ? "bg-blue-50 text-brand-blue ring-1 ring-blue-200 shadow-sm" 
+                      theme === 'light'
+                        ? "bg-blue-50 text-brand-blue ring-1 ring-blue-200 shadow-sm"
                         : "text-gray-500 hover:bg-gray-100"
                     )}
                     title="Light Mode"
@@ -356,8 +356,8 @@ export function Header({ onMenuClick }: HeaderProps) {
                     onClick={() => setTheme('dark')}
                     className={clsx(
                       "flex-1 flex items-center justify-center p-2 rounded-lg transition-all",
-                      theme === 'dark' 
-                        ? "bg-gray-800 text-white shadow-sm" 
+                      theme === 'dark'
+                        ? "bg-gray-800 text-white shadow-sm"
                         : "text-gray-500 hover:bg-gray-100"
                     )}
                     title="Dark Mode"
@@ -368,8 +368,8 @@ export function Header({ onMenuClick }: HeaderProps) {
                     onClick={() => setTheme('system')}
                     className={clsx(
                       "flex-1 flex items-center justify-center p-2 rounded-lg transition-all",
-                      theme === 'system' 
-                        ? "bg-gray-100 text-gray-900 ring-1 ring-gray-200 shadow-sm" 
+                      theme === 'system'
+                        ? "bg-gray-100 text-gray-900 ring-1 ring-gray-200 shadow-sm"
                         : "text-gray-500 hover:bg-gray-100"
                     )}
                     title="System Default"
@@ -387,8 +387,8 @@ export function Header({ onMenuClick }: HeaderProps) {
                     onClick={() => setCompact(false)}
                     className={clsx(
                       "flex-1 flex items-center justify-center p-2 rounded-lg transition-all text-xs font-bold",
-                      !isCompact 
-                        ? "bg-blue-50 text-brand-blue ring-1 ring-blue-200 shadow-sm" 
+                      !isCompact
+                        ? "bg-blue-50 text-brand-blue ring-1 ring-blue-200 shadow-sm"
                         : "text-gray-500 hover:bg-gray-100"
                     )}
                     title="Comfortable"
@@ -399,8 +399,8 @@ export function Header({ onMenuClick }: HeaderProps) {
                     onClick={() => setCompact(true)}
                     className={clsx(
                       "flex-1 flex items-center justify-center p-2 rounded-lg transition-all text-xs font-bold",
-                      isCompact 
-                        ? "bg-blue-50 text-brand-blue ring-1 ring-blue-200 shadow-sm" 
+                      isCompact
+                        ? "bg-blue-50 text-brand-blue ring-1 ring-blue-200 shadow-sm"
                         : "text-gray-500 hover:bg-gray-100"
                     )}
                     title="Compact"
@@ -421,7 +421,7 @@ export function Header({ onMenuClick }: HeaderProps) {
               </div>
 
               <div className="p-1">
-                {userData?.role && ['admin','superadmin','developer'].includes(userData.role) && (
+                {userData?.role && ['admin', 'superadmin', 'developer'].includes(userData.role) && (
                   <Menu.Item>
                     {({ active }) => (
                       <button
@@ -429,10 +429,10 @@ export function Header({ onMenuClick }: HeaderProps) {
                           active ? 'bg-gray-50 text-brand-blue' : 'text-gray-700',
                           'group flex w-full items-center rounded-lg px-2 py-2 text-sm'
                         )}
-                        onClick={() => router.push('/admin')}
+                        onClick={() => router.push('/management')}
                       >
                         <LayoutDashboard className="mr-2 h-4 w-4" />
-                        Admin Dashboard
+                        Management Portal
                       </button>
                     )}
                   </Menu.Item>
