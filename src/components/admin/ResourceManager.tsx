@@ -402,6 +402,25 @@ export function ResourceManager() {
                     if (file) {
                       setUploadFile(file);
                       if (!uploadTitle) setUploadTitle(file.name.split('.')[0]);
+                      // Auto-detect type from extension
+                      const ext = file.name.split('.').pop()?.toLowerCase() || '';
+                      if (['doc', 'docx', 'odt', 'rtf'].includes(ext)) {
+                        setUploadType('document');
+                      } else if (ext === 'pdf') {
+                        setUploadType('pdf');
+                      } else if (['txt', 'csv', 'md'].includes(ext)) {
+                        setUploadType('text');
+                      } else if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'bmp'].includes(ext)) {
+                        setUploadType('image');
+                      } else if (['mp4', 'webm', 'mov', 'avi', 'mkv'].includes(ext)) {
+                        setUploadType('video');
+                      } else if (['mp3', 'wav', 'ogg', 'aac', 'm4a', 'flac'].includes(ext)) {
+                        setUploadType('audio');
+                      } else if (['zip', 'rar', '7z', 'tar', 'gz'].includes(ext)) {
+                        setUploadType('archive');
+                      } else if (['ppt', 'pptx', 'xls', 'xlsx'].includes(ext)) {
+                        setUploadType('document');
+                      }
                     }
                   }}
                 />

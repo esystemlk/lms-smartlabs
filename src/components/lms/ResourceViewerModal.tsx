@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Resource } from "@/lib/types";
-import { X, FileText, AlertCircle, Loader2 } from "lucide-react";
+import { X, FileText, AlertCircle, Loader2, RefreshCw, ExternalLink } from "lucide-react";
 
 interface ResourceViewerModalProps {
   resource: Resource | null;
@@ -46,19 +46,7 @@ export function ResourceViewerModal({ resource, onClose }: ResourceViewerModalPr
         );
 
       case 'document':
-        // Use Google Docs Viewer for Word documents
-        return (
-          <div className="w-full h-full flex flex-col">
-            <iframe
-              src={`https://docs.google.com/viewer?url=${encodeURIComponent(resource.url)}&embedded=true`}
-              className="w-full h-full rounded-lg bg-gray-100 border-none shadow-inner"
-              title={resource.title}
-            />
-            <div className="mt-2 flex justify-center gap-4">
-              <p className="text-[10px] text-gray-400 self-center">Powered by Google Docs Viewer • View Only</p>
-            </div>
-          </div>
-        );
+        return <DocumentViewer url={resource.url} title={resource.title} />;
 
       case 'text':
         return <TextFileViewer url={resource.url} />;
@@ -129,6 +117,155 @@ export function ResourceViewerModal({ resource, onClose }: ResourceViewerModalPr
         );
     }
   };
+
+  function DocumentViewer({ url, title }: { url: string; title: string }) {
+    const [viewerMode, setViewerMode] = useState<'office' | 'google' | 'failed'>('office');
+    const [loading, setLoading] = useState(true);
+    const [loadError, setLoadError] = useState(false);
+    const [retryCount, setRetryCount] = useState(0);
+
+    const officeViewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`;
+    const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
+
+    const getCurrentUrl = useCallback(() => {
+      if (viewerMode === 'office') return officeViewerUrl;
+      if (viewerMode === 'google') return googleViewerUrl;
+      return '';
+    }, [viewerMode, officeViewerUrl, googleViewerUrl]);
+
+    const handleIframeLoad = () => {
+      setLoading(false);
+      setLoadError(false);
+    };
+
+    const handleIframeError = () => {
+      setLoading(false);
+      if (viewerMode === 'office') {
+        // Try Google Docs as fallback
+        setViewerMode('google');
+        setLoading(true);
+        setLoadError(false);
+      } else {
+        setLoadError(true);
+        setViewerMode('failed');
+      }
+    };
+
+    // Auto fallback after timeout
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        if (loading && viewerMode === 'office') {
+          setViewerMode('google');
+          setLoading(true);
+        } else if (loading && viewerMode === 'google') {
+          setLoading(false);
+          setLoadError(true);
+          setViewerMode('failed');
+        }
+      }, 12000);
+
+      return () => clearTimeout(timer);
+    }, [viewerMode, loading, retryCount]);
+
+    const handleRetry = () => {
+      setViewerMode('office');
+      setLoading(true);
+      setLoadError(false);
+      setRetryCount(prev => prev + 1);
+    };
+
+    if (viewerMode === 'failed') {
+      return (
+        <div className="w-full h-full flex flex-col items-center justify-center text-center p-8">
+          <div className="w-20 h-20 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center text-blue-500 mb-6">
+            <FileText size={40} />
+          </div>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
+          <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md">
+            This document could not be previewed inline. You can open it externally or try again.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <button
+              onClick={handleRetry}
+              className="flex items-center gap-2 px-5 py-2.5 bg-brand-blue text-white rounded-xl font-bold hover:bg-blue-600 transition-all shadow-md active:scale-95"
+            >
+              <RefreshCw size={16} />
+              Try Again
+            </button>
+            <a
+              href={officeViewerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
+            >
+              <ExternalLink size={16} />
+              Open in Office Online
+            </a>
+            <a
+              href={googleViewerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all"
+            >
+              <ExternalLink size={16} />
+              Open in Google Docs
+            </a>
+          </div>
+          <p className="text-[10px] text-gray-400 mt-6">View Only • No Download Available</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="w-full h-full flex flex-col relative">
+        {/* Loading overlay */}
+        {loading && (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white dark:bg-gray-900 rounded-lg">
+            <Loader2 className="w-10 h-10 animate-spin text-brand-blue mb-4" />
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-300">
+              Loading document...
+            </p>
+            <p className="text-[10px] text-gray-400 mt-1">
+              Using {viewerMode === 'office' ? 'Microsoft Office Online' : 'Google Docs Viewer'}
+            </p>
+          </div>
+        )}
+
+        <iframe
+          key={`${viewerMode}-${retryCount}`}
+          src={getCurrentUrl()}
+          className="w-full h-full rounded-lg bg-gray-100 border-none shadow-inner"
+          title={title}
+          onLoad={handleIframeLoad}
+          onError={handleIframeError}
+        />
+
+        <div className="mt-2 flex items-center justify-between px-1">
+          <p className="text-[10px] text-gray-400">
+            Powered by {viewerMode === 'office' ? 'Microsoft Office Online' : 'Google Docs Viewer'} • View Only
+          </p>
+          <div className="flex items-center gap-3">
+            {viewerMode === 'office' && (
+              <button
+                onClick={() => { setViewerMode('google'); setLoading(true); }}
+                className="text-[10px] text-gray-400 hover:text-brand-blue transition-colors cursor-pointer"
+              >
+                Switch to Google Viewer
+              </button>
+            )}
+            {viewerMode === 'google' && (
+              <button
+                onClick={() => { setViewerMode('office'); setLoading(true); }}
+                className="text-[10px] text-gray-400 hover:text-brand-blue transition-colors cursor-pointer"
+              >
+                Switch to Office Viewer
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   function TextFileViewer({ url }: { url: string }) {
     const [content, setContent] = useState<string>("");
