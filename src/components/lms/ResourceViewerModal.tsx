@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Resource } from "@/lib/types";
-import { X, FileText, Download, AlertCircle, ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/Button";
+import { X, FileText, AlertCircle, Loader2 } from "lucide-react";
 
 interface ResourceViewerModalProps {
   resource: Resource | null;
@@ -36,59 +35,57 @@ export function ResourceViewerModal({ resource, onClose }: ResourceViewerModalPr
           <div className="w-full h-full flex flex-col">
             <iframe
               src={`${resource.url}#toolbar=0&navpanes=0&scrollbar=0`}
-              className="w-full h-full rounded-lg bg-gray-100 border-none"
+              className="w-full h-full rounded-lg bg-gray-100 border-none shadow-inner"
               title={resource.title}
               onContextMenu={(e) => e.preventDefault()}
             />
-            <div className="mt-2 flex justify-center">
-              <a
-                href={resource.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-brand-blue hover:underline flex items-center gap-1"
-              >
-                <ExternalLink size={12} />
-                Open PDF in new tab if it doesn't load
-              </a>
+            <div className="mt-2 text-center">
+              <p className="text-[10px] text-gray-400">Secure Preview Mode</p>
             </div>
           </div>
         );
 
-      case 'video':
+      case 'document':
+        // Use Google Docs Viewer for Word documents
         return (
-          <div className="flex items-center justify-center h-full bg-black rounded-lg overflow-hidden">
-            <video
-              src={resource.url}
-              controls
-              controlsList="nodownload"
-              className="max-h-full max-w-full"
-              onContextMenu={(e) => e.preventDefault()}
-              onDragStart={(e) => e.preventDefault()}
+          <div className="w-full h-full flex flex-col">
+            <iframe
+              src={`https://docs.google.com/viewer?url=${encodeURIComponent(resource.url)}&embedded=true`}
+              className="w-full h-full rounded-lg bg-gray-100 border-none shadow-inner"
+              title={resource.title}
             />
+            <div className="mt-2 flex justify-center gap-4">
+              <p className="text-[10px] text-gray-400 self-center">Powered by Google Docs Viewer • View Only</p>
+            </div>
           </div>
         );
 
-      case 'audio':
+      case 'text':
+        return <TextFileViewer url={resource.url} />;
+
+      case 'video':
         return (
-          <div className="flex items-center justify-center h-full bg-gray-900 rounded-lg p-10">
-            <audio
-              src={resource.url}
-              controls
-              controlsList="nodownload"
-              className="w-full max-w-md"
-              onContextMenu={(e) => e.preventDefault()}
-              onDragStart={(e) => e.preventDefault()}
-            />
+          <div className="flex flex-col h-full bg-black rounded-lg overflow-hidden border border-gray-800">
+            <div className="flex-1 flex items-center justify-center overflow-hidden">
+              <video
+                src={resource.url}
+                controls
+                controlsList="nodownload"
+                className="max-h-full max-w-full"
+                onContextMenu={(e) => e.preventDefault()}
+                onDragStart={(e) => e.preventDefault()}
+              />
+            </div>
           </div>
         );
 
       case 'image':
         return (
-          <div className="flex items-center justify-center h-full bg-black/50 rounded-lg overflow-auto">
+          <div className="flex items-center justify-center h-full bg-gray-100 dark:bg-black/20 rounded-lg overflow-auto border border-gray-100 dark:border-gray-800">
             <img
               src={resource.url}
               alt={resource.title}
-              className="max-w-full max-h-full object-contain"
+              className="max-w-full max-h-full object-contain shadow-lg"
               onContextMenu={(e) => e.preventDefault()}
               onDragStart={(e) => e.preventDefault()}
               draggable={false}
@@ -96,29 +93,70 @@ export function ResourceViewerModal({ resource, onClose }: ResourceViewerModalPr
           </div>
         );
 
+      case 'audio':
+        return (
+          <div className="flex flex-col items-center justify-center h-full bg-gray-50 dark:bg-gray-900 rounded-lg p-10 border border-gray-100 dark:border-gray-800">
+            <div className="w-20 h-20 bg-brand-blue/10 rounded-full flex items-center justify-center text-brand-blue mb-6">
+              <AlertCircle size={40} />
+            </div>
+            <audio
+              src={resource.url}
+              controls
+              controlsList="nodownload"
+              className="w-full max-w-md shadow-sm"
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
+            />
+          </div>
+        );
+
       default:
         return (
-          <div className="flex flex-col items-center justify-center h-full text-center p-6">
-            <FileText size={64} className="text-gray-400 mb-4" />
-            <h3 className="text-xl font-bold text-gray-900 mb-2">{resource.title}</h3>
-            <p className="text-gray-500 mb-6">This file type cannot be previewed directly.</p>
+          <div className="flex flex-col items-center justify-center h-full text-center p-6 bg-gray-50 dark:bg-gray-900/50 rounded-xl border border-dashed border-gray-200 dark:border-gray-800">
+            <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-gray-400 mb-4">
+              <FileText size={40} />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{resource.title}</h3>
+            <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-xs mx-auto">This file type ({resource.type}) cannot be previewed directly.</p>
 
-            <div className="flex flex-col items-center gap-3">
-              <a href={resource.url} download target="_blank" rel="noopener noreferrer">
-                <Button className="bg-brand-blue text-white">
-                  <Download size={18} className="mr-2" />
-                  Download File
-                </Button>
-              </a>
-              <div className="flex items-center gap-2 text-yellow-600 bg-yellow-50 px-4 py-2 rounded-lg">
+            <div className="flex flex-col items-center gap-4">
+              <div className="flex items-center gap-2 text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-4 py-2 rounded-xl border border-amber-100 dark:border-amber-800/30">
                 <AlertCircle size={16} />
-                <span className="text-sm">Preview not available for this format.</span>
+                <span className="text-sm font-medium">Download restricted. Please view within the LMS.</span>
               </div>
             </div>
           </div>
         );
     }
   };
+
+  function TextFileViewer({ url }: { url: string }) {
+    const [content, setContent] = useState<string>("");
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+      fetch(url)
+        .then(res => res.text())
+        .then(text => {
+          setContent(text);
+          setLoading(false);
+        })
+        .catch(() => {
+          setError(true);
+          setLoading(false);
+        });
+    }, [url]);
+
+    if (loading) return <div className="h-full flex items-center justify-center"><Loader2 className="animate-spin text-brand-blue" /></div>;
+    if (error) return <div className="h-full flex items-center justify-center text-red-500">Failed to load text content.</div>;
+
+    return (
+      <div className="h-full w-full bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 overflow-auto p-6 font-mono text-sm whitespace-pre-wrap select-text">
+        {content}
+      </div>
+    );
+  }
 
   return (
     <div

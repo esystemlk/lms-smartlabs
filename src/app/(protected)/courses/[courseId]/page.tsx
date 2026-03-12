@@ -6,11 +6,11 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/context/AuthContext";
-import { 
-  PlayCircle, 
-  FileText, 
-  CheckCircle, 
-  Circle, 
+import {
+  PlayCircle,
+  FileText,
+  CheckCircle,
+  Circle,
   Loader2,
   Mic,
   Headphones,
@@ -34,11 +34,11 @@ export default function CourseDetailsPage() {
   const courseId = params.courseId as string;
   const { userData } = useAuth();
   const { formatPrice } = useCurrency();
-  
+
   const [course, setCourse] = useState<Course | null>(null);
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Access Control
   const [enrolledBatch, setEnrolledBatch] = useState<Batch | null>(null);
   const [accessGranted, setAccessGranted] = useState(false);
@@ -74,19 +74,19 @@ export default function CourseDetailsPage() {
         setCheckingAccess(false);
         return;
       }
-      
+
       try {
         const enrollments = await enrollmentService.getUserEnrollments(userData.uid);
         // Find active enrollment for this course
         const enrollment = enrollments.find(e => e.courseId === courseId && e.status === 'active');
-        
+
         if (enrollment) {
           // Check expiry
           let isValid = true;
           if (enrollment.validUntil) {
-             const now = new Date();
-             const expiry = enrollment.validUntil.toDate();
-             if (now > expiry) isValid = false;
+            const now = new Date();
+            const expiry = enrollment.validUntil.toDate();
+            if (now > expiry) isValid = false;
           }
 
           if (isValid) {
@@ -104,7 +104,7 @@ export default function CourseDetailsPage() {
         setCheckingAccess(false);
       }
     };
-    
+
     checkEnrollment();
   }, [userData, courseId]);
 
@@ -137,7 +137,7 @@ export default function CourseDetailsPage() {
           <h1 className="text-xl md:text-2xl font-bold text-gray-900">{course.title}</h1>
           <p className="text-sm md:text-base text-gray-500">{lessons.length} Lessons • {course.instructorName}</p>
         </div>
-        
+
         {accessGranted ? (
           <div className="w-full md:w-auto flex flex-col items-end gap-2">
             <div className="flex items-center gap-4 w-full md:w-auto">
@@ -147,7 +147,7 @@ export default function CourseDetailsPage() {
                   <span>{progress}%</span>
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full bg-brand-blue transition-all duration-500 rounded-full"
                     style={{ width: `${progress}%` }}
                   />
@@ -233,10 +233,9 @@ export default function CourseDetailsPage() {
         <div className="flex flex-wrap gap-4 mb-6">
           {course.level && (
             <div className="flex items-center gap-2 text-sm font-medium text-gray-700 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-100">
-              <span className={`w-2 h-2 rounded-full ${
-                course.level === 'Beginner' ? 'bg-green-500' : 
-                course.level === 'Intermediate' ? 'bg-yellow-500' : 'bg-red-500'
-              }`} />
+              <span className={`w-2 h-2 rounded-full ${course.level === 'Beginner' ? 'bg-green-500' :
+                  course.level === 'Intermediate' ? 'bg-yellow-500' : 'bg-red-500'
+                }`} />
               {course.level} Level
             </div>
           )}
@@ -281,7 +280,7 @@ export default function CourseDetailsPage() {
               Live class recordings from <span className="font-medium text-brand-blue">{enrolledBatch.name}</span>
             </p>
           </div>
-          
+
           {(() => {
             // Check 3-Month Expiry from Batch Start Date
             const startDate = new Date(enrolledBatch.startDate);
@@ -309,44 +308,46 @@ export default function CourseDetailsPage() {
               <div className="divide-y divide-gray-100">
                 {/* Expiry Warning if close */}
                 {daysLeft > 0 && daysLeft <= 14 && (
-                   <div className="bg-amber-50 px-4 py-2 text-xs text-amber-800 flex items-center gap-2 border-b border-amber-100">
-                     <Clock size={12} />
-                     <span>Recordings expire in {daysLeft} days ({expiryDate.toLocaleDateString()})</span>
-                   </div>
+                  <div className="bg-amber-50 px-4 py-2 text-xs text-amber-800 flex items-center gap-2 border-b border-amber-100">
+                    <Clock size={12} />
+                    <span>Recordings expire in {daysLeft} days ({expiryDate.toLocaleDateString()})</span>
+                  </div>
                 )}
 
-                {enrolledBatch.recordedClasses.map((recording, index) => (
-                  <a 
-                    key={recording.id} 
-                    href={recording.videoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 md:gap-4 p-3 md:p-4 hover:bg-blue-50 transition-colors group"
-                  >
-                    <div className="flex-shrink-0 text-blue-300 group-hover:text-brand-blue">
-                      <PlayCircle size={20} className="md:w-6 md:h-6" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium text-sm md:text-base text-gray-900 group-hover:text-brand-blue transition-colors line-clamp-1">
-                        {recording.title}
-                      </h3>
-                      <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <Clock size={12} />
-                          {new Date(recording.date).toLocaleDateString()}
-                        </span>
-                        {recording.durationMinutes && (
-                          <span>{recording.durationMinutes} mins</span>
-                        )}
+                {[...(enrolledBatch.recordedClasses || [])]
+                  .sort((a, b) => (b.order || 0) - (a.order || 0) || new Date(b.date).getTime() - new Date(a.date).getTime())
+                  .map((recording, index) => (
+                    <a
+                      key={recording.id}
+                      href={recording.videoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 md:gap-4 p-3 md:p-4 hover:bg-blue-50 transition-colors group"
+                    >
+                      <div className="flex-shrink-0 text-blue-300 group-hover:text-brand-blue">
+                        <PlayCircle size={20} className="md:w-6 md:h-6" />
                       </div>
-                    </div>
-                    <div className="flex-shrink-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Button size="sm" variant="ghost" className="rounded-full h-8 text-xs md:text-sm">
-                        Watch
-                      </Button>
-                    </div>
-                  </a>
-                ))}
+                      <div className="flex-1">
+                        <h3 className="font-medium text-sm md:text-base text-gray-900 group-hover:text-brand-blue transition-colors line-clamp-1">
+                          {recording.title}
+                        </h3>
+                        <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <Clock size={12} />
+                            {new Date(recording.date).toLocaleDateString()}
+                          </span>
+                          {recording.durationMinutes && (
+                            <span>{recording.durationMinutes} mins</span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex-shrink-0 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button size="sm" variant="ghost" className="rounded-full h-8 text-xs md:text-sm">
+                          Watch
+                        </Button>
+                      </div>
+                    </a>
+                  ))}
               </div>
             );
           })()}
@@ -367,7 +368,7 @@ export default function CourseDetailsPage() {
           ) : (
             lessons.map((lesson, index) => {
               const isCompleted = completedLessonIds.includes(lesson.id);
-              
+
               const content = (
                 <>
                   <div className={clsx(
@@ -421,16 +422,16 @@ export default function CourseDetailsPage() {
               );
 
               return accessGranted ? (
-                <Link 
-                  key={lesson.id} 
+                <Link
+                  key={lesson.id}
                   href={`/courses/${courseId}/lessons/${lesson.id}`}
                   className="flex items-center gap-3 md:gap-4 p-3 md:p-4 hover:bg-gray-50 transition-colors group"
                 >
                   {content}
                 </Link>
               ) : (
-                <div 
-                  key={lesson.id} 
+                <div
+                  key={lesson.id}
                   className="flex items-center gap-3 md:gap-4 p-3 md:p-4 opacity-75 cursor-not-allowed bg-gray-50/50"
                 >
                   {content}

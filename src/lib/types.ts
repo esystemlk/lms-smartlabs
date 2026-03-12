@@ -50,8 +50,9 @@ export interface Course {
   description: string;
   instructorId: string;
   instructorName: string;
-  lecturerId?: string;
+  lecturerId?: string; // Main lecturer
   lecturerName?: string;
+  lecturerIds?: string[]; // Multiple lecturers
   image?: string;
   price?: number; // Deprecated: Use priceLKR instead
   priceLKR?: number;
@@ -108,7 +109,7 @@ export interface Resource {
   folderId?: string; // Optional: if null/undefined, it's in root
   title: string;
   description?: string;
-  type: 'pdf' | 'video' | 'audio' | 'image' | 'archive' | 'other';
+  type: 'pdf' | 'video' | 'audio' | 'image' | 'archive' | 'document' | 'text' | 'other';
   url: string;
   createdAt: any;
 }
@@ -160,6 +161,8 @@ export interface RecordedClass {
   videoUrl: string;
   date: string; // ISO date
   durationMinutes?: number;
+  order?: number; // For manual ordering
+  timeSlotId?: string; // Optional restriction
 }
 
 export interface CommunityMessage {

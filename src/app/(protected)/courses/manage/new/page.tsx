@@ -35,6 +35,7 @@ export default function NewCoursePage() {
     price: "",
     published: false,
     instructorId: "",
+    lecturerIds: [] as string[],
     endDate: ""
   });
 
@@ -84,7 +85,7 @@ export default function NewCoursePage() {
   };
 
   const handleBatchChange = (id: string, field: keyof TempBatch, value: any) => {
-    setInitialBatches(initialBatches.map(b => 
+    setInitialBatches(initialBatches.map(b =>
       b.id === id ? { ...b, [field]: value } : b
     ));
   };
@@ -100,7 +101,7 @@ export default function NewCoursePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userData) return;
-    
+
     // Validate instructor selection
     if (!formData.instructorId) {
       alert("Please select a lecturer for the course.");
@@ -125,6 +126,7 @@ export default function NewCoursePage() {
         published: formData.published,
         instructorId: formData.instructorId,
         instructorName: instructorName,
+        lecturerIds: formData.lecturerIds,
         image: imageUrl,
         endDate: formData.endDate
       });
@@ -138,7 +140,7 @@ export default function NewCoursePage() {
           if (batch.imageFile) {
             // Upload batch image
             batchImageUrl = await courseService.uploadImage(
-              batch.imageFile, 
+              batch.imageFile,
               `courses/${courseId}/batches/${Date.now()}_${batch.imageFile.name}`
             );
           }
@@ -183,7 +185,7 @@ export default function NewCoursePage() {
         {/* Course Details Section */}
         <div className="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 space-y-6">
           <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-2">Course Details</h2>
-          
+
           {/* Image Upload */}
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700">Course Cover Image</label>
@@ -216,10 +218,10 @@ export default function NewCoursePage() {
             placeholder="e.g. IELTS Academic Preparation"
             required
           />
-          
-          {/* Lecturer Selection */}
+
+          {/* Primary Lecturer Selection */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Lecturer</label>
+            <label className="block text-sm font-medium text-gray-700">Primary Lecturer</label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
               <select
@@ -228,7 +230,7 @@ export default function NewCoursePage() {
                 className="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all appearance-none"
                 required
               >
-                <option value="">Select a Lecturer</option>
+                <option value="">Select Primary Lecturer</option>
                 {lecturers.map((lecturer) => (
                   <option key={lecturer.uid} value={lecturer.uid}>
                     {lecturer.name} ({lecturer.email})
@@ -237,8 +239,35 @@ export default function NewCoursePage() {
               </select>
             </div>
             {lecturers.length === 0 && (
-               <p className="text-xs text-amber-600 mt-1">No lecturers found. Please add a lecturer in the Admin portal.</p>
+              <p className="text-xs text-amber-600 mt-1">No lecturers found. Please add a lecturer in the Admin portal.</p>
             )}
+          </div>
+
+          {/* Additional Lecturers Selection */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">Additional Lecturers (Optional)</label>
+            <div className="p-3 border border-gray-200 rounded-xl bg-gray-50 max-h-40 overflow-y-auto space-y-2">
+              {lecturers.length > 0 ? lecturers.filter(l => l.uid !== formData.instructorId).map(l => (
+                <label key={l.uid} className="flex items-center gap-2 cursor-pointer hover:bg-white p-1 rounded">
+                  <input
+                    type="checkbox"
+                    checked={formData.lecturerIds.includes(l.uid)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setFormData({ ...formData, lecturerIds: [...formData.lecturerIds, l.uid] });
+                      } else {
+                        setFormData({ ...formData, lecturerIds: formData.lecturerIds.filter(id => id !== l.uid) });
+                      }
+                    }}
+                    className="rounded border-gray-300 text-brand-blue focus:ring-brand-blue"
+                  />
+                  <span className="text-sm text-gray-700">{l.name}</span>
+                </label>
+              )) : (
+                <p className="text-sm text-gray-500 italic">No other lecturers found.</p>
+              )}
+            </div>
+            <p className="text-xs text-gray-500">Selected lecturers will also have manage access to this course.</p>
           </div>
 
           <div className="space-y-2">
@@ -294,7 +323,7 @@ export default function NewCoursePage() {
               Add Batch
             </Button>
           </div>
-          
+
           <div className="space-y-4">
             {initialBatches.length === 0 && (
               <div className="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
@@ -326,9 +355,9 @@ export default function NewCoursePage() {
                       )}
                       <label className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
                         <Upload className="w-6 h-6 text-white" />
-                        <input 
-                          type="file" 
-                          className="hidden" 
+                        <input
+                          type="file"
+                          className="hidden"
                           accept="image/*"
                           onChange={(e) => handleBatchImageChange(batch.id, e)}
                         />
@@ -444,7 +473,7 @@ export default function NewCoursePage() {
             )}
           </Button>
         </div>
-      </form>
-    </div>
+      </form >
+    </div >
   );
 }

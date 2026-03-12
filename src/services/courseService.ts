@@ -1,14 +1,14 @@
-import { 
-  collection, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
-  doc, 
-  getDocs, 
-  getDoc, 
-  query, 
-  where, 
-  orderBy, 
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  getDocs,
+  getDoc,
+  query,
+  where,
+  orderBy,
   serverTimestamp,
   arrayUnion,
   collectionGroup
@@ -21,8 +21,19 @@ import { notificationService } from "@/services/notificationService";
 const COURSES_COLLECTION = "courses";
 const LESSONS_COLLECTION = "lessons";
 const BATCHES_COLLECTION = "batches";
+const USERS_COLLECTION = "users";
 
 export const courseService = {
+  // User Operations
+  async getLecturers() {
+    const q = query(
+      collection(db, USERS_COLLECTION),
+      where("role", "in", ["lecturer", "instructor", "admin", "superadmin"])
+    );
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({ uid: doc.id, ...doc.data() } as any));
+  },
+
   // Course Operations
   async getAllCourses() {
     const q = query(collection(db, COURSES_COLLECTION), orderBy("createdAt", "desc"));
@@ -32,12 +43,12 @@ export const courseService = {
 
   async getPublishedCourses() {
     const q = query(
-      collection(db, COURSES_COLLECTION), 
+      collection(db, COURSES_COLLECTION),
       where("published", "==", true)
     );
     const snapshot = await getDocs(q);
     const courses = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Course));
-    
+
     // Sort client-side to avoid composite index requirement
     return courses.sort((a, b) => {
       const dateA = a.createdAt?.seconds || 0;
@@ -106,7 +117,7 @@ export const courseService = {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
-    
+
     // Update lesson count on course
     const courseRef = doc(db, COURSES_COLLECTION, courseId);
     const courseSnap = await getDoc(courseRef);
@@ -114,7 +125,7 @@ export const courseService = {
       const courseData = courseSnap.data();
       const currentCount = courseData.lessonsCount || 0;
       await updateDoc(courseRef, { lessonsCount: currentCount + 1 });
-      
+
       // Automatic Notification: New Course Material
       // Only notify if it's published and not a live class (live classes have their own schedule)
       if (lessonData.published && lessonData.type !== 'live_class') {
@@ -131,7 +142,7 @@ export const courseService = {
         }
       }
     }
-    
+
     return docRef.id;
   },
 

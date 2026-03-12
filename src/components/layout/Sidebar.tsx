@@ -18,7 +18,8 @@ import {
   MessageCircle,
   Calendar,
   FolderOpen,
-  ShieldAlert
+  ShieldAlert,
+  Upload
 } from "lucide-react";
 import { clsx } from "clsx";
 import { Transition } from "@headlessui/react";
@@ -39,6 +40,7 @@ const navConfig = [
   { href: "/live-classes", label: "Live Manager", icon: Video, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
   { href: "/lms/live", label: "Live Schedule", icon: Calendar, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
   { href: "/lms/recordings", label: "Recordings", icon: Play, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/admin/recordings/upload", label: "Class Rec. Upload", icon: Upload, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
   { href: "/courses/manage", label: "Course Manager", icon: BookOpen, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
 
   { href: "/admin", label: "Admin Dashboard", icon: LayoutDashboard, section: "Admin", roles: ["admin", "superadmin", "developer"] as const },

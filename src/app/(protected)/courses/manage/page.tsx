@@ -6,15 +6,16 @@ import { useAuth } from "@/context/AuthContext";
 import { courseService } from "@/services/courseService";
 import { Course } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
-  BookOpen, 
+import {
+  Plus,
+  Edit,
+  Trash2,
+  BookOpen,
   Users,
   MoreVertical,
   Search,
-  Loader2
+  Loader2,
+  Video
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -38,7 +39,16 @@ export default function CourseManagementPage() {
 
   const fetchCourses = async () => {
     try {
-      const data = await courseService.getAllCourses();
+      let data = await courseService.getAllCourses();
+
+      // Filter based on role if not admin/developer
+      if (userData && !["admin", "superadmin", "developer"].includes(userData.role)) {
+        data = data.filter(c =>
+          c.instructorId === userData.uid ||
+          (c.lecturerIds && c.lecturerIds.includes(userData.uid))
+        );
+      }
+
       setCourses(data);
     } catch (error) {
       console.error("Error fetching courses:", error);
@@ -59,7 +69,7 @@ export default function CourseManagementPage() {
     }
   };
 
-  const filteredCourses = courses.filter(course => 
+  const filteredCourses = courses.filter(course =>
     course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     course.instructorName.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -79,12 +89,20 @@ export default function CourseManagementPage() {
           <h1 className="text-2xl font-bold text-gray-900">Course Management</h1>
           <p className="text-gray-500">Create and manage your courses</p>
         </div>
-        <Link href="/courses/manage/new">
-          <Button className="w-full sm:w-auto">
-            <Plus className="w-4 h-4 mr-2" />
-            Create New Course
-          </Button>
-        </Link>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Link href="/admin/recordings/upload">
+            <Button variant="outline" className="flex-1 sm:flex-none">
+              <Video className="w-4 h-4 mr-2" />
+              Upload Recording
+            </Button>
+          </Link>
+          <Link href="/courses/manage/new">
+            <Button className="flex-1 sm:flex-none">
+              <Plus className="w-4 h-4 mr-2" />
+              Create New Course
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Search and Filter */}
@@ -122,7 +140,7 @@ export default function CourseManagementPage() {
                     <Edit className="w-4 h-4" />
                   </button>
                 </Link>
-                <button 
+                <button
                   onClick={() => handleDelete(course.id)}
                   className="p-2 bg-white/90 rounded-lg hover:bg-white text-gray-700 hover:text-red-600 transition-colors shadow-sm"
                 >
@@ -136,15 +154,14 @@ export default function CourseManagementPage() {
                 <h3 className="text-base md:text-lg font-bold text-gray-900 line-clamp-1" title={course.title}>
                   {course.title}
                 </h3>
-                <span className={`px-2 py-0.5 text-[10px] md:text-xs rounded-full font-medium ${
-                  course.published 
-                    ? "bg-green-100 text-green-700" 
-                    : "bg-yellow-100 text-yellow-700"
-                }`}>
+                <span className={`px-2 py-0.5 text-[10px] md:text-xs rounded-full font-medium ${course.published
+                  ? "bg-green-100 text-green-700"
+                  : "bg-yellow-100 text-yellow-700"
+                  }`}>
                   {course.published ? "Published" : "Draft"}
                 </span>
               </div>
-              
+
               <p className="text-xs md:text-sm text-gray-500 line-clamp-2 min-h-[2.5rem]">
                 {course.description || "No description provided."}
               </p>

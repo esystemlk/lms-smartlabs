@@ -1,10 +1,11 @@
 
 import { Calendar, Clock, Video, RefreshCw } from "lucide-react";
-import { UserData, Lesson } from "@/lib/types";
+import { UserData, Lesson, Enrollment } from "@/lib/types";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { courseService } from "@/services/courseService";
 import { attendanceService } from "@/services/attendanceService";
+import { enrollmentService } from "@/services/enrollmentService";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
@@ -21,27 +22,53 @@ export function UpcomingSchedule({ userData }: UpcomingScheduleProps) {
 
   useEffect(() => {
     const fetchClasses = async () => {
-      if (!userData) return;
-      
-      try {
-        const allClasses = await courseService.getUpcomingLiveClasses();
-        
-        // Filter classes based on user's enrollment
-        const userClasses = allClasses.filter(cls => {
-          // Check if user is enrolled in the course
-          const isEnrolledInCourse = userData.enrolledCourses?.includes(cls.courseId);
-          
-          // Check if class is specific to batches and user is in one of them
-          // If cls.batchIds is empty/undefined, it might be for all batches in the course
-          const isEnrolledInBatch = cls.batchIds && cls.batchIds.length > 0 
-            ? cls.batchIds.some(bid => userData.enrolledBatches?.includes(bid))
-            : true; // If no specific batches, assume open to course students
+      if (!userData?.uid) return;
 
-          return isEnrolledInCourse && isEnrolledInBatch;
+      try {
+        const [allClasses, enrollments] = await Promise.all([
+          courseService.getUpcomingLiveClasses(),
+          enrollmentService.getUserEnrollments(userData.uid)
+        ]);
+
+        const activeEnrollments = enrollments.filter((e: Enrollment) => e.status === 'active' || e.status === 'completed');
+        const userCourseIds = activeEnrollments.map((e: Enrollment) => e.courseId);
+        const userBatchIds = activeEnrollments.map((e: Enrollment) => e.batchId);
+
+        // Map batchId -> timeSlotId for precise filtering
+        const userBatchSlotMap = new Map<string, string>();
+        activeEnrollments.forEach((e: Enrollment) => {
+          if (e.timeSlotId) userBatchSlotMap.set(e.batchId, e.timeSlotId);
+        });
+
+        // Filter classes based on user's enrollment
+        const userClasses = allClasses.filter((cls: Lesson) => {
+          // 1. Basic course access
+          const hasCourseAccess = userCourseIds.includes(cls.courseId);
+          if (!hasCourseAccess) return false;
+
+          // 2. Batch-level access
+          const hasBatchAccess = cls.batchIds && cls.batchIds.length > 0
+            ? cls.batchIds.some((bid: string) => userBatchIds.includes(bid))
+            : true; // Open to course if no batch specified
+
+          if (!hasBatchAccess) return false;
+
+          // 3. Time-slot precision (only if class specifies a slot)
+          if (cls.timeSlotId && cls.batchIds && cls.batchIds.length > 0) {
+            // Find which enrolled batch this class is for
+            const relevantBatchId = cls.batchIds.find((bid: string) => userBatchIds.includes(bid));
+            if (relevantBatchId) {
+              const studentSlot = userBatchSlotMap.get(relevantBatchId);
+              // If student has a slot, it must match the class slot
+              if (studentSlot && studentSlot !== cls.timeSlotId) return false;
+            }
+          }
+
+          return true;
         });
 
         // Sort by start time (closest first)
-        userClasses.sort((a, b) => {
+        userClasses.sort((a: Lesson, b: Lesson) => {
           return new Date(a.startTime!).getTime() - new Date(b.startTime!).getTime();
         });
 
@@ -58,10 +85,10 @@ export function UpcomingSchedule({ userData }: UpcomingScheduleProps) {
 
   const handleJoinClass = async (cls: Lesson) => {
     if (!userData) return;
-    
+
     try {
       setJoiningId(cls.id);
-      
+
       // Auto-mark attendance
       await attendanceService.markAttendance({
         userId: userData.uid,
@@ -73,7 +100,7 @@ export function UpcomingSchedule({ userData }: UpcomingScheduleProps) {
         status: 'present',
         method: 'zoom_auto'
       });
-      
+
       // Navigate to class
       router.push(`/lms/live/room/${cls.courseId}/${cls.id}`);
     } catch (error) {
@@ -105,7 +132,7 @@ export function UpcomingSchedule({ userData }: UpcomingScheduleProps) {
           <span className="text-xs font-bold text-brand-blue hover:underline cursor-pointer">View All</span>
         </Link>
       </div>
-      
+
       {classes.length > 0 ? (
         <div className="space-y-4 flex-1">
           {classes.map((cls) => (
@@ -133,11 +160,11 @@ export function UpcomingSchedule({ userData }: UpcomingScheduleProps) {
                   </span>
                 </div>
               </div>
-              <Button 
+              <Button
                 onClick={() => handleJoinClass(cls)}
                 disabled={joiningId === cls.id}
-                size="sm" 
-                variant="ghost" 
+                size="sm"
+                variant="ghost"
                 className="h-8 w-8 p-0 rounded-full text-gray-400 hover:text-brand-blue hover:bg-white shadow-sm disabled:opacity-50"
               >
                 {joiningId === cls.id ? (
