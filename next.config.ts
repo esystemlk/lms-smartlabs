@@ -18,6 +18,14 @@ const withPWA = require("@ducanh2912/next-pwa").default({
           cacheName: "ignore-cleardot",
         },
       },
+      // Bypass caching for Firestore and Firebase APIs as it breaks real-time streams
+      {
+        urlPattern: /^https:\/\/(firestore\.googleapis\.com|firebasestorage\.googleapis\.com|firebaseinstallations\.googleapis\.com)\/.*/i,
+        handler: "NetworkOnly",
+        options: {
+          cacheName: "ignore-firebase",
+        },
+      },
       // Same-origin assets: standard SWR
       {
         urlPattern: ({ url }: { url: URL }) => url.origin === self.location.origin,

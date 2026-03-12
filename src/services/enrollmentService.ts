@@ -88,7 +88,7 @@ export const enrollmentService = {
       }
     }
 
-    const enrollmentData: Omit<Enrollment, "id"> = {
+    const enrollmentData: any = {
       userId,
       userEmail,
       userName,
@@ -105,13 +105,20 @@ export const enrollmentService = {
       status,
       paymentMethod,
       paymentProofUrl: receiptUrl,
-      websitePaymentEmail: websitePaymentEmail || undefined,
-      websitePaymentName: websitePaymentName || undefined,
+      ...(websitePaymentEmail ? { websitePaymentEmail } : {}),
+      ...(websitePaymentName ? { websitePaymentName } : {}),
       amount,
       validUntil,
       enrolledAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     };
+
+    // Remove undefined values to prevent Firestore errors
+    Object.keys(enrollmentData).forEach(key => {
+      if (enrollmentData[key] === undefined) {
+        delete enrollmentData[key];
+      }
+    });
 
     // Enforce slot capacity
     const batchRef = doc(db, COURSES_COLLECTION, course.id, BATCHES_COLLECTION, batch.id);
