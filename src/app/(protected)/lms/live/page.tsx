@@ -7,7 +7,7 @@ import { courseService } from "@/services/courseService";
 import { enrollmentService } from "@/services/enrollmentService";
 import { Lesson } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
-import { Loader2, Video, Calendar, Clock, ExternalLink, Play } from "lucide-react";
+import { Loader2, Video, Calendar, Clock, ExternalLink, Play, Presentation } from "lucide-react";
 import Link from "next/link";
 
 export default function LiveClassesPage() {
@@ -57,6 +57,14 @@ export default function LiveClassesPage() {
 
           return true;
         });
+      } else if (userData && userData.role === 'lecturer') {
+        // Fetch courses to filter by lecturer
+        const allCourses = await courseService.getAllCourses();
+        const myCourseIds = allCourses
+          .filter(c => c.lecturerId === userData.uid || c.instructorId === userData.uid)
+          .map(c => c.id);
+
+        filteredClasses = data.filter(cls => cls.courseId && myCourseIds.includes(cls.courseId));
       }
 
       setClasses(filteredClasses);
@@ -80,7 +88,9 @@ export default function LiveClassesPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Live Classes</h1>
-          <p className="text-gray-500">Join your scheduled sessions</p>
+          <p className="text-gray-500">
+            {userData?.role === 'student' ? 'Join your scheduled sessions' : 'Manage and start your live sessions'}
+          </p>
         </div>
       </div>
 
@@ -130,8 +140,17 @@ export default function LiveClassesPage() {
                 </div>
 
                 <div className="p-4 bg-gray-50 border-t border-gray-100 grid grid-cols-2 gap-3">
-                  {/* Join Buttons */}
-                  {cls.zoomJoinUrl ? (
+                  {/* Join buttons for students, Start buttons for hosts */}
+                  {cls.zoomStartUrl && userData?.role !== 'student' ? (
+                    <div className="col-span-2">
+                      <a href={cls.zoomStartUrl} target="_blank" rel="noopener noreferrer">
+                        <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-sm">
+                          Start Class (Host)
+                          <Presentation size={16} className="ml-2" />
+                        </Button>
+                      </a>
+                    </div>
+                  ) : cls.zoomJoinUrl ? (
                     <>
                       <a href={cls.zoomJoinUrl} className="col-span-1">
                         <Button className="w-full bg-blue-600 hover:bg-blue-700 text-xs md:text-sm px-2">
