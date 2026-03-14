@@ -360,6 +360,11 @@ export interface SystemSettings {
     enableNewDashboard?: boolean;
     [key: string]: boolean | undefined;
   };
+  smtp?: {
+    email?: string;
+    appPassword?: string;
+  };
+  adminEmails?: string; // Comma-separated or single email string
   updatedAt: any;
   updatedBy?: string;
 }

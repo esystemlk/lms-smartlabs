@@ -5,14 +5,14 @@ import { settingsService } from "@/services/settingsService";
 import { SystemSettings } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { 
-  Save, 
-  RefreshCw, 
-  Trash2, 
-  AlertTriangle, 
-  Terminal, 
-  Smartphone, 
-  Globe, 
+import {
+  Save,
+  RefreshCw,
+  Trash2,
+  AlertTriangle,
+  Terminal,
+  Smartphone,
+  Globe,
   Monitor,
   Flag,
   RotateCcw,
@@ -143,7 +143,7 @@ export function AdvancedSettingsManager() {
               <Globe className="w-5 h-5 text-blue-500" />
               Global Settings (Firestore)
             </h3>
-            
+
             {settings && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
@@ -154,21 +154,19 @@ export function AdvancedSettingsManager() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setSettings(s => s ? { ...s, payhereMode: "sandbox" } : s)}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${
-                        settings.payhereMode !== "live" 
-                          ? "bg-blue-600 text-white border-blue-600" 
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${settings.payhereMode !== "live"
+                          ? "bg-blue-600 text-white border-blue-600"
                           : "bg-white text-gray-700 border-gray-200 hover:border-blue-300"
-                      }`}
+                        }`}
                     >
                       Sandbox
                     </button>
                     <button
                       onClick={() => setSettings(s => s ? { ...s, payhereMode: "live" } : s)}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${
-                        settings.payhereMode === "live" 
-                          ? "bg-emerald-600 text-white border-emerald-600" 
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium border ${settings.payhereMode === "live"
+                          ? "bg-emerald-600 text-white border-emerald-600"
                           : "bg-white text-gray-700 border-gray-200 hover:border-emerald-300"
-                      }`}
+                        }`}
                     >
                       Live
                     </button>
@@ -179,7 +177,7 @@ export function AdvancedSettingsManager() {
                     <span className="font-medium text-gray-900 block">Maintenance Mode</span>
                     <span className="text-xs text-gray-500">Blocks non-admin access to the platform</span>
                   </div>
-                  <button 
+                  <button
                     onClick={() => setSettings({ ...settings, maintenanceMode: !settings.maintenanceMode })}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue ${settings.maintenanceMode ? 'bg-red-600' : 'bg-gray-200'}`}
                   >
@@ -187,23 +185,23 @@ export function AdvancedSettingsManager() {
                   </button>
                 </div>
 
-                <Input 
-                  label="Site Name" 
-                  value={settings.siteName} 
-                  onChange={(e) => setSettings({ ...settings, siteName: e.target.value })} 
-                />
-                
-                <Input 
-                  label="Support Email" 
-                  value={settings.supportEmail || ""} 
-                  onChange={(e) => setSettings({ ...settings, supportEmail: e.target.value })} 
+                <Input
+                  label="Site Name"
+                  value={settings.siteName}
+                  onChange={(e) => setSettings({ ...settings, siteName: e.target.value })}
                 />
 
-                <Input 
-                  label="Global Announcement (Optional)" 
+                <Input
+                  label="Support Email"
+                  value={settings.supportEmail || ""}
+                  onChange={(e) => setSettings({ ...settings, supportEmail: e.target.value })}
+                />
+
+                <Input
+                  label="Global Announcement (Optional)"
                   placeholder="e.g. System maintenance scheduled for..."
-                  value={settings.announcement || ""} 
-                  onChange={(e) => setSettings({ ...settings, announcement: e.target.value })} 
+                  value={settings.announcement || ""}
+                  onChange={(e) => setSettings({ ...settings, announcement: e.target.value })}
                 />
 
                 <div className="mt-6 p-4 rounded-2xl border border-gray-200 bg-gray-50">
@@ -214,9 +212,9 @@ export function AdvancedSettingsManager() {
                       value={settings.bankDetails?.bankName || ""}
                       onChange={(e) => setSettings({
                         ...settings,
-                        bankDetails: { 
+                        bankDetails: {
                           ...(settings.bankDetails || { accountName: "", accountNumber: "", branch: "" }),
-                          bankName: e.target.value 
+                          bankName: e.target.value
                         }
                       })}
                     />
@@ -225,9 +223,9 @@ export function AdvancedSettingsManager() {
                       value={settings.bankDetails?.accountName || ""}
                       onChange={(e) => setSettings({
                         ...settings,
-                        bankDetails: { 
+                        bankDetails: {
                           ...(settings.bankDetails || { bankName: "", accountNumber: "", branch: "" }),
-                          accountName: e.target.value 
+                          accountName: e.target.value
                         }
                       })}
                     />
@@ -236,9 +234,9 @@ export function AdvancedSettingsManager() {
                       value={settings.bankDetails?.accountNumber || ""}
                       onChange={(e) => setSettings({
                         ...settings,
-                        bankDetails: { 
+                        bankDetails: {
                           ...(settings.bankDetails || { bankName: "", accountName: "", branch: "" }),
-                          accountNumber: e.target.value 
+                          accountNumber: e.target.value
                         }
                       })}
                     />
@@ -247,9 +245,9 @@ export function AdvancedSettingsManager() {
                       value={settings.bankDetails?.branch || ""}
                       onChange={(e) => setSettings({
                         ...settings,
-                        bankDetails: { 
+                        bankDetails: {
                           ...(settings.bankDetails || { bankName: "", accountName: "", accountNumber: "" }),
-                          branch: e.target.value 
+                          branch: e.target.value
                         }
                       })}
                     />
@@ -257,79 +255,121 @@ export function AdvancedSettingsManager() {
                   <p className="text-xs text-gray-500 mt-2">These details appear in the Bank Transfer checkout instructions.</p>
                 </div>
 
-              <div className="mt-6 p-4 rounded-2xl border border-gray-200 bg-gray-50">
-                <h4 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <Video className="w-4 h-4 text-blue-500" /> Zoom Credentials (Developer)
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <Input
-                    label="Zoom Account ID"
-                    value={settings.zoom?.serverToServer?.accountId || ""}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      zoom: {
-                        ...settings.zoom,
-                        serverToServer: {
-                          ...(settings.zoom?.serverToServer || {}),
-                          accountId: e.target.value
+                <div className="mt-6 p-4 rounded-2xl border border-gray-200 bg-gray-50">
+                  <h4 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <Video className="w-4 h-4 text-blue-500" /> Zoom Credentials (Developer)
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <Input
+                      label="Zoom Account ID"
+                      value={settings.zoom?.serverToServer?.accountId || ""}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        zoom: {
+                          ...settings.zoom,
+                          serverToServer: {
+                            ...(settings.zoom?.serverToServer || {}),
+                            accountId: e.target.value
+                          }
+                        } as any
+                      })}
+                    />
+                    <Input
+                      label="Zoom Client ID"
+                      value={settings.zoom?.serverToServer?.clientId || ""}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        zoom: {
+                          ...settings.zoom,
+                          serverToServer: {
+                            ...(settings.zoom?.serverToServer || {}),
+                            clientId: e.target.value
+                          }
+                        } as any
+                      })}
+                    />
+                    <Input
+                      label="Zoom Client Secret"
+                      value={settings.zoom?.serverToServer?.clientSecret || ""}
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        zoom: {
+                          ...settings.zoom,
+                          serverToServer: {
+                            ...(settings.zoom?.serverToServer || {}),
+                            clientSecret: e.target.value
+                          }
+                        } as any
+                      })}
+                    />
+                    <div />
+                  </div>
+                  <div className="mt-3">
+                    <button
+                      onClick={async () => {
+                        try {
+                          setSuccessMsg("");
+                          setLocalError("");
+                          const res = await fetch("/api/zoom/test", { method: "POST" });
+                          const json = await res.json();
+                          if (json.success) {
+                            setSuccessMsg("Zoom connection successful");
+                          } else {
+                            setLocalError(json.error || "Zoom connection failed");
+                          }
+                        } catch (e: any) {
+                          setLocalError(e.message || "Zoom test failed");
                         }
-                      } as any
-                    })}
-                  />
-                  <Input
-                    label="Zoom Client ID"
-                    value={settings.zoom?.serverToServer?.clientId || ""}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      zoom: {
-                        ...settings.zoom,
-                        serverToServer: {
-                          ...(settings.zoom?.serverToServer || {}),
-                          clientId: e.target.value
-                        }
-                      } as any
-                    })}
-                  />
-                  <Input
-                    label="Zoom Client Secret"
-                    value={settings.zoom?.serverToServer?.clientSecret || ""}
-                    onChange={(e) => setSettings({
-                      ...settings,
-                      zoom: {
-                        ...settings.zoom,
-                        serverToServer: {
-                          ...(settings.zoom?.serverToServer || {}),
-                          clientSecret: e.target.value
-                        }
-                      } as any
-                    })}
-                  />
-                  <div />
+                      }}
+                      className="px-3 py-2 rounded-lg border text-sm hover:bg-gray-50"
+                    >
+                      Test Zoom Connection
+                    </button>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-2">Stored in Firestore for developer access. Avoid .env for Zoom here.</p>
                 </div>
-                <div className="mt-3">
-                  <button
-                    onClick={async () => {
-                      try {
-                        setSuccessMsg("");
-                        setLocalError("");
-                        const res = await fetch("/api/zoom/test", { method: "POST" });
-                        const json = await res.json();
-                        if (json.success) {
-                          setSuccessMsg("Zoom connection successful");
-                        } else {
-                          setLocalError(json.error || "Zoom connection failed");
+
+                <div className="mt-6 p-4 rounded-2xl border border-gray-200 bg-gray-50">
+                  <h4 className="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+                    <Globe className="w-4 h-4 text-orange-500" /> Notifications & SMTP
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                    <Input
+                      label="SMTP Email Address"
+                      value={settings.smtp?.email || ""}
+                      placeholder="e.g. notifications@example.com"
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        smtp: {
+                          ...(settings.smtp || { appPassword: "" }),
+                          email: e.target.value
                         }
-                      } catch (e: any) {
-                        setLocalError(e.message || "Zoom test failed");
-                      }
-                    }}
-                    className="px-3 py-2 rounded-lg border text-sm hover:bg-gray-50"
-                  >
-                    Test Zoom Connection
-                  </button>
+                      } as any)}
+                    />
+                    <Input
+                      label="SMTP App Password"
+                      type="password"
+                      value={settings.smtp?.appPassword || ""}
+                      placeholder="e.g. abcd efgh ijkl mnop"
+                      onChange={(e) => setSettings({
+                        ...settings,
+                        smtp: {
+                          ...(settings.smtp || { email: "" }),
+                          appPassword: e.target.value
+                        }
+                      } as any)}
+                    />
+                  </div>
+
+                  <h5 className="text-xs font-bold text-gray-700 mb-2">Admin Recipients</h5>
+                  <Input
+                    label="Admin Notification Emails"
+                    placeholder="admin@example.com, owner@example.com"
+                    value={settings.adminEmails || ""}
+                    onChange={(e) => setSettings({ ...settings, adminEmails: e.target.value })}
+                  />
+                  <p className="text-xs text-gray-500 mt-2">Comma-separated list of emails that should receive notifications (e.g., when a new user enrolls).</p>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">Stored in Firestore for developer access. Avoid .env for Zoom here.</p>
-              </div>
               </div>
             )}
           </div>
@@ -340,12 +380,12 @@ export function AdvancedSettingsManager() {
               <Flag className="w-5 h-5 text-orange-500" />
               Feature Flags
             </h3>
-            
+
             {settings && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <span className="text-sm font-medium text-gray-700">Enable Debug Mode</span>
-                  <button 
+                  <button
                     onClick={() => toggleFeature('enableDebugMode')}
                     className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${settings.features?.enableDebugMode ? 'bg-orange-500' : 'bg-gray-200'}`}
                   >
@@ -354,7 +394,7 @@ export function AdvancedSettingsManager() {
                 </div>
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <span className="text-sm font-medium text-gray-700">Enable Beta Features</span>
-                  <button 
+                  <button
                     onClick={() => toggleFeature('enableBetaFeatures')}
                     className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${settings.features?.enableBetaFeatures ? 'bg-orange-500' : 'bg-gray-200'}`}
                   >
@@ -363,7 +403,7 @@ export function AdvancedSettingsManager() {
                 </div>
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <span className="text-sm font-medium text-gray-700">Enable New Dashboard</span>
-                  <button 
+                  <button
                     onClick={() => toggleFeature('enableNewDashboard')}
                     className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${settings.features?.enableNewDashboard ? 'bg-orange-500' : 'bg-gray-200'}`}
                   >
@@ -376,7 +416,7 @@ export function AdvancedSettingsManager() {
 
           {/* Environment Variables */}
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-             <h3 className="text-md font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <h3 className="text-md font-bold text-gray-900 mb-4 flex items-center gap-2">
               <Terminal className="w-5 h-5 text-gray-700" />
               Environment Variables
             </h3>
@@ -410,16 +450,16 @@ export function AdvancedSettingsManager() {
               System Utilities
             </h3>
             <div className="grid grid-cols-2 gap-4">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => forceReload(false)}
                 className="justify-start text-sm"
               >
                 <RotateCcw className="w-4 h-4 mr-2" />
                 Reload App
               </Button>
-               <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => forceReload(true)}
                 className="justify-start text-sm"
               >
@@ -435,30 +475,30 @@ export function AdvancedSettingsManager() {
               <Smartphone className="w-5 h-5 text-purple-500" />
               Client Diagnostics
             </h3>
-            
+
             <div className="space-y-4">
               <div className="p-3 bg-gray-50 rounded-lg text-xs font-mono text-gray-600 break-all">
                 <span className="font-bold block mb-1">User Agent:</span>
                 {typeof navigator !== 'undefined' ? navigator.userAgent : 'Server'}
               </div>
-              
+
               <div className="grid grid-cols-2 gap-4">
-                 <div className="p-3 bg-gray-50 rounded-lg text-xs text-gray-600">
-                    <span className="font-bold block mb-1">Screen Size:</span>
-                    {typeof window !== 'undefined' ? `${window.innerWidth}x${window.innerHeight}` : 'N/A'}
-                 </div>
-                 <div className="p-3 bg-gray-50 rounded-lg text-xs text-gray-600">
-                    <span className="font-bold block mb-1">Pixel Ratio:</span>
-                    {typeof window !== 'undefined' ? window.devicePixelRatio : 'N/A'}
-                 </div>
-                 <div className="p-3 bg-gray-50 rounded-lg text-xs text-gray-600">
-                    <span className="font-bold block mb-1">Platform:</span>
-                    {typeof navigator !== 'undefined' ? navigator.platform : 'N/A'}
-                 </div>
-                 <div className="p-3 bg-gray-50 rounded-lg text-xs text-gray-600">
-                    <span className="font-bold block mb-1">Language:</span>
-                    {typeof navigator !== 'undefined' ? navigator.language : 'N/A'}
-                 </div>
+                <div className="p-3 bg-gray-50 rounded-lg text-xs text-gray-600">
+                  <span className="font-bold block mb-1">Screen Size:</span>
+                  {typeof window !== 'undefined' ? `${window.innerWidth}x${window.innerHeight}` : 'N/A'}
+                </div>
+                <div className="p-3 bg-gray-50 rounded-lg text-xs text-gray-600">
+                  <span className="font-bold block mb-1">Pixel Ratio:</span>
+                  {typeof window !== 'undefined' ? window.devicePixelRatio : 'N/A'}
+                </div>
+                <div className="p-3 bg-gray-50 rounded-lg text-xs text-gray-600">
+                  <span className="font-bold block mb-1">Platform:</span>
+                  {typeof navigator !== 'undefined' ? navigator.platform : 'N/A'}
+                </div>
+                <div className="p-3 bg-gray-50 rounded-lg text-xs text-gray-600">
+                  <span className="font-bold block mb-1">Language:</span>
+                  {typeof navigator !== 'undefined' ? navigator.language : 'N/A'}
+                </div>
               </div>
             </div>
           </div>
@@ -469,11 +509,11 @@ export function AdvancedSettingsManager() {
               <Trash2 className="w-5 h-5 text-red-500" />
               Dangerous Actions
             </h3>
-            
+
             <div className="space-y-3">
-              <Button 
-                variant="outline" 
-                fullWidth 
+              <Button
+                variant="outline"
+                fullWidth
                 onClick={clearLocalStorage}
                 className="justify-start text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200"
               >
@@ -484,16 +524,16 @@ export function AdvancedSettingsManager() {
               <div className="h-px bg-gray-100 my-2"></div>
 
               <div className="grid grid-cols-2 gap-3">
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={resetTheme}
                   className="justify-start text-sm"
                 >
                   <Monitor className="w-4 h-4 mr-2" />
                   Reset Theme
                 </Button>
-                 <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={resetCurrency}
                   className="justify-start text-sm"
                 >

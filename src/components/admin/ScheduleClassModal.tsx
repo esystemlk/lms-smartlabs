@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/Input";
 import { Loader2, X, Calendar, Clock, Video, Users, Check } from "lucide-react";
 import { courseService } from "@/services/courseService";
 import { Course, Batch } from "@/lib/types";
+import { useAuth } from "@/context/AuthContext";
 
 interface ScheduleClassModalProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface ScheduleClassModalProps {
 }
 
 export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: ScheduleClassModalProps) {
+  const { userData } = useAuth();
   const [courses, setCourses] = useState<Course[]>([]);
   const [batches, setBatches] = useState<Batch[]>([]);
   const [loading, setLoading] = useState(false);
@@ -47,7 +49,18 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
   const fetchCourses = async () => {
     try {
       const data = await courseService.getAllCourses();
-      setCourses(data);
+      const isAdmin = ["admin", "superadmin", "developer"].includes(userData?.role || '');
+      
+      if (isAdmin) {
+        setCourses(data);
+      } else if (userData?.role === 'lecturer') {
+        const mine = data.filter(c => 
+            c.lecturerId === userData?.uid || 
+            c.instructorId === userData?.uid ||
+            (c.lecturerIds && c.lecturerIds.includes(userData.uid))
+        );
+        setCourses(mine);
+      }
     } catch (error) {
       console.error("Error fetching courses:", error);
     }

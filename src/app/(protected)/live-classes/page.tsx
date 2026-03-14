@@ -108,10 +108,28 @@ export default function LiveClassManagementPage() {
 
   const fetchClasses = async () => {
     try {
+      const isAdmin = ["admin", "superadmin", "developer"].includes(userData?.role || '');
+      
       const upcoming = await courseService.getUpcomingLiveClasses();
-      setClasses(upcoming);
       const past = await courseService.getPastLiveClasses();
-      setPastClasses(past);
+
+      if (isAdmin) {
+        setClasses(upcoming);
+        setPastClasses(past);
+      } else if (userData?.role === 'lecturer') {
+         // Get lecturer's courses first if needed, or filter by courseId
+         const allCourses = await courseService.getAllCourses();
+         const myCourseIds = allCourses
+            .filter(c => 
+                c.lecturerId === userData.uid || 
+                c.instructorId === userData.uid || 
+                (c.lecturerIds && c.lecturerIds.includes(userData.uid))
+            )
+            .map(c => c.id);
+         
+         setClasses(upcoming.filter(l => l.courseId && myCourseIds.includes(l.courseId)));
+         setPastClasses(past.filter(l => l.courseId && myCourseIds.includes(l.courseId)));
+      }
     } catch (error) {
       console.error("Error fetching live classes:", error);
     } finally {
@@ -122,7 +140,18 @@ export default function LiveClassManagementPage() {
   const fetchCourses = async () => {
     try {
       const data = await courseService.getAllCourses();
-      setCourses(data);
+      const isAdmin = ["admin", "superadmin", "developer"].includes(userData?.role || '');
+      
+      if (isAdmin) {
+        setCourses(data);
+      } else if (userData?.role === 'lecturer') {
+        const mine = data.filter(c => 
+            c.lecturerId === userData?.uid || 
+            c.instructorId === userData?.uid ||
+            (c.lecturerIds && c.lecturerIds.includes(userData.uid))
+        );
+        setCourses(mine);
+      }
     } catch (error) {
       console.error("Error fetching courses:", error);
     }

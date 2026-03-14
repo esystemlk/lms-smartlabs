@@ -95,11 +95,28 @@ export function LecturerDashboard() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold truncate">{l.title || "Live Class"}</div>
-                      <div className="text-xs text-gray-500">{l.startTime ? new Date(l.startTime).toLocaleString() : "-"}</div>
+                      <div className="flex items-center gap-2">
+                        <div className="text-xs text-gray-500">{l.startTime ? new Date(l.startTime).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : "-"}</div>
+                        {l.startTime && (new Date() >= new Date(l.startTime) && new Date() <= new Date(new Date(l.startTime).getTime() + (l.duration || 60) * 60000)) && (
+                          <span className="flex h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                        )}
+                      </div>
                     </div>
-                    {l.courseId && (
-                      <Link href={`/courses/manage/${l.courseId}`} className="text-xs text-brand-blue">Manage</Link>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {l.zoomStartUrl && (
+                        <a href={l.zoomStartUrl} target="_blank" rel="noopener noreferrer">
+                          <Button size="sm" className="h-8 px-3 text-xs bg-brand-blue hover:bg-blue-600 gap-1.5 shadow-sm">
+                            <PlayCircle size={14} />
+                            Start
+                          </Button>
+                        </a>
+                      )}
+                      {l.courseId && (
+                        <Link href={`/courses/manage/${l.courseId}`} className="text-xs text-brand-blue hover:underline font-medium p-2">
+                          Manage
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 ))
               )}
