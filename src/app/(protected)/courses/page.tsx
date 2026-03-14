@@ -170,8 +170,19 @@ export default function CoursesPage() {
       setSelectedCourse(null);
     } else if (enrollSuccess || pendingApproval) {
       // Allow closing after success
+      const courseId = selectedCourse?.id;
+      const isWebinar = selectedCourse?.category?.toLowerCase() === 'webinar' || 
+                        selectedCourse?.title.toLowerCase().includes('webinar');
+      
       setSelectedCourse(null);
-      if (enrollSuccess) router.push("/dashboard");
+      
+      if (enrollSuccess) {
+        if (isWebinar) {
+          router.push(`/webinar/join/${courseId}`);
+        } else {
+          router.push("/dashboard");
+        }
+      }
     }
   };
 

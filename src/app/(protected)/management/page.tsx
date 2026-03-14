@@ -29,12 +29,13 @@ import { EnrollmentsTab } from "@/components/admin/EnrollmentsTab";
 import { AttendanceTab } from "@/components/admin/AttendanceTab";
 import { SupportTab } from "@/components/admin/SupportTab";
 import { StudentManagementTab } from "@/components/admin/StudentManagementTab";
+import { WebinarTab } from "@/components/admin/WebinarTab";
 import { courseService } from "@/services/courseService";
 import { enrollmentService } from "@/services/enrollmentService";
 import { userService } from "@/services/userService";
 import { Course, Enrollment, UserData } from "@/lib/types";
 
-type ManagementTab = 'dashboard' | 'courses' | 'recordings' | 'resources' | 'users' | 'settings' | 'analytics' | 'enrollments' | 'attendance' | 'support' | 'students';
+type ManagementTab = 'dashboard' | 'courses' | 'webinars' | 'recordings' | 'resources' | 'users' | 'settings' | 'analytics' | 'enrollments' | 'attendance' | 'support' | 'students';
 
 export default function ManagementPortalPage() {
     const { userData, loading: authLoading } = useAuth();
@@ -150,6 +151,12 @@ export default function ManagementPortalPage() {
                         label="Courses"
                     />
                     <TabButton
+                        active={activeTab === 'webinars'}
+                        onClick={() => handleTabChange('webinars')}
+                        icon={Video}
+                        label="Webinars"
+                    />
+                    <TabButton
                         active={activeTab === 'recordings'}
                         onClick={() => handleTabChange('recordings')}
                         icon={PlayCircle}
@@ -230,6 +237,12 @@ export default function ManagementPortalPage() {
                             onCourseUpdated={fetchData}
                         />
                     </div>
+                )}
+                {activeTab === 'webinars' && (
+                    <WebinarTab 
+                        courses={courses} 
+                        onWebinarUpdated={fetchData} 
+                    />
                 )}
                 {activeTab === 'recordings' && (
                     <div className="space-y-6">
