@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
-import { adminDb } from '@/lib/firebase-admin'; // Using admin db for server-side
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 export async function POST(req: Request) {
     try {
@@ -8,9 +9,9 @@ export async function POST(req: Request) {
         const { to, subject, html } = body;
 
         // Fetch SMTP settings from Firestore
-        const settingsDoc = await adminDb.collection('settings').doc('global').get();
+        const settingsDoc = await getDoc(doc(db, 'settings', 'global'));
 
-        if (!settingsDoc.exists) {
+        if (!settingsDoc.exists()) {
             return NextResponse.json({ success: false, error: 'Settings not configured' }, { status: 400 });
         }
 
