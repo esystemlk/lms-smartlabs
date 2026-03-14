@@ -84,7 +84,9 @@ export function BunnyManager() {
         order: Date.now(),
         active: true,
         views: 0,
-        thumbnailUrl: `https://${video.thumbnailFileName}`
+        thumbnailUrl: settings.bunnyLibraryId 
+          ? `https://vz-${settings.bunnyLibraryId}.b-cdn.net/${video.guid}/${video.thumbnailFileName}` 
+          : `https://${video.thumbnailFileName}`
       });
       toast("Class synced successfully", "success");
       fetchSyncedClasses();

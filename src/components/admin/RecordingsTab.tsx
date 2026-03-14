@@ -130,12 +130,18 @@ function ClassesTab() {
     const loadData = async () => {
         setLoading(true);
         try {
+            const settings = await bunnyService.getSettings();
+            const libId = settings.bunnyLibraryId;
+
             const [dbClasses, apiVideos] = await Promise.all([
                 recordedClassService.getClasses(),
                 bunnyService.getVideos(1, 100)
             ]);
             setClasses(dbClasses);
-            setBunnyVideos(apiVideos.items || []);
+            setBunnyVideos(apiVideos.items?.map((v: any) => ({
+                ...v,
+                thumbnailUrl: libId ? `https://vz-${libId}.b-cdn.net/${v.guid}/${v.thumbnailFileName}` : `https://${v.thumbnailFileName}`
+            })) || []);
         } catch (e) {
             toast("Failed to load data", "error");
         } finally {
@@ -146,6 +152,9 @@ function ClassesTab() {
     const handleSync = async (video: any) => {
         setSyncing(true);
         try {
+            const settings = await bunnyService.getSettings();
+            const libId = settings.bunnyLibraryId;
+            
             await recordedClassService.syncClass({
                 bunnyVideoId: video.guid,
                 title: video.title,
@@ -153,7 +162,7 @@ function ClassesTab() {
                 order: Date.now(),
                 active: true,
                 views: 0,
-                thumbnailUrl: `https://${video.thumbnailFileName}`
+                thumbnailUrl: libId ? `https://vz-${libId}.b-cdn.net/${video.guid}/${video.thumbnailFileName}` : `https://${video.thumbnailFileName}`
             });
             toast("Class synced successfully", "success");
             loadData();
