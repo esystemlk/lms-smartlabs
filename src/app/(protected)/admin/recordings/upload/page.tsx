@@ -95,15 +95,18 @@ export default function RecordingUploadPage() {
             await bunnyService.uploadVideo(videoFile, videoId, (p) => setProgress(p));
 
             // 3. Save to Firestore
-            const recording: RecordedClass = {
+            const recording: any = {
                 id: videoId,
                 title: formData.title,
                 videoUrl: videoId, // Bunny ID
                 date: formData.date,
-                durationMinutes: parseInt(formData.duration),
-                order: parseInt(formData.order),
-                timeSlotId: formData.timeSlotId || undefined
+                durationMinutes: parseInt(formData.duration) || 0,
+                order: parseInt(formData.order) || 0,
             };
+
+            if (formData.timeSlotId) {
+                recording.timeSlotId = formData.timeSlotId;
+            }
 
             await courseService.addRecording(formData.courseId, formData.batchId, recording);
 

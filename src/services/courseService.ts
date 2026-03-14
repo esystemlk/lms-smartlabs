@@ -273,8 +273,14 @@ export const courseService = {
 
   async addRecording(courseId: string, batchId: string, recording: RecordedClass) {
     const batchRef = doc(db, COURSES_COLLECTION, courseId, BATCHES_COLLECTION, batchId);
+    
+    // Sanitize recording object to remove any undefined values
+    const sanitizedRecording = Object.fromEntries(
+      Object.entries(recording).filter(([_, v]) => v !== undefined)
+    );
+
     await updateDoc(batchRef, {
-      recordedClasses: arrayUnion(recording),
+      recordedClasses: arrayUnion(sanitizedRecording),
       updatedAt: serverTimestamp()
     });
   },

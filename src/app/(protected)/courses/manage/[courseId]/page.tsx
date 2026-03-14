@@ -416,14 +416,12 @@ export default function EditCoursePage() {
     setRecordingSaving(true);
     try {
       // Create a recording object
-      const recordingData = {
+      const recordingData: any = {
         id: Date.now().toString(),
-        title: newRecording.title,
+        title: newRecording.title || "Untitled Recording",
         videoUrl: newRecording.videoUrl,
-        date: newRecording.date,
+        date: newRecording.date || new Date().toISOString().split('T')[0],
         durationMinutes: parseInt(newRecording.durationMinutes) || 0,
-        batchId: selectedBatch.id,
-        courseId: courseId
       };
 
       // Add to Firestore
