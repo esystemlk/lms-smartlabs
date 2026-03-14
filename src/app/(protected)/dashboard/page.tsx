@@ -412,10 +412,14 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                <Link href={`/courses/${lastEnrolled.courseId}`}>
+                <Link href={
+                  (lastEnrolled.courseTitle.toLowerCase().includes('webinar'))
+                    ? `/webinar/join/${lastEnrolled.courseId}`
+                    : `/courses/${lastEnrolled.courseId}`
+                }>
                   <Button className="bg-white text-gray-900 hover:bg-gray-100 border-0 rounded-xl px-6 py-2 h-auto font-bold shadow-lg shadow-gray-900/20">
                     <PlayCircle size={18} className="mr-2 text-brand-blue" />
-                    Resume Course
+                    {lastEnrolled.courseTitle.toLowerCase().includes('webinar') ? "Join Webinar" : "Resume Course"}
                   </Button>
                 </Link>
               </div>
