@@ -111,9 +111,14 @@ export const courseService = {
   },
 
   async addLesson(courseId: string, lessonData: Partial<Lesson>) {
-    const sanitizedData = Object.fromEntries(
-      Object.entries(lessonData).filter(([_, v]) => v !== undefined)
-    );
+    // Aggressive sanitization to prevent any undefined values from reaching Firestore
+    const sanitizedData: any = {};
+    Object.keys(lessonData).forEach(key => {
+      const val = (lessonData as any)[key];
+      if (val !== undefined) {
+        sanitizedData[key] = val;
+      }
+    });
 
     const docRef = await addDoc(collection(db, COURSES_COLLECTION, courseId, LESSONS_COLLECTION), {
       ...sanitizedData,
@@ -151,9 +156,13 @@ export const courseService = {
   },
 
   async updateLesson(courseId: string, lessonId: string, lessonData: Partial<Lesson>) {
-    const sanitizedData = Object.fromEntries(
-      Object.entries(lessonData).filter(([_, v]) => v !== undefined)
-    );
+    const sanitizedData: any = {};
+    Object.keys(lessonData).forEach(key => {
+      const val = (lessonData as any)[key];
+      if (val !== undefined) {
+        sanitizedData[key] = val;
+      }
+    });
 
     const docRef = doc(db, COURSES_COLLECTION, courseId, LESSONS_COLLECTION, lessonId);
     await updateDoc(docRef, {
@@ -283,9 +292,13 @@ export const courseService = {
     const batchRef = doc(db, COURSES_COLLECTION, courseId, BATCHES_COLLECTION, batchId);
     
     // Sanitize recording object to remove any undefined values
-    const sanitizedRecording = Object.fromEntries(
-      Object.entries(recording).filter(([_, v]) => v !== undefined)
-    );
+    const sanitizedRecording: any = {};
+    Object.keys(recording).forEach(key => {
+      const val = (recording as any)[key];
+      if (val !== undefined) {
+        sanitizedRecording[key] = val;
+      }
+    });
 
     await updateDoc(batchRef, {
       recordedClasses: arrayUnion(sanitizedRecording),

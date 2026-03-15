@@ -128,15 +128,6 @@ export default function DashboardPage() {
       category: "Learning Hub"
     },
     {
-      title: "Live Classes",
-      description: "Join or manage Zoom sessions",
-      icon: Video,
-      href: "/live-classes",
-      gradient: "from-violet-500 to-purple-600",
-      roles: ["lecturer", "admin", "superadmin", "developer"],
-      category: "Learning Hub"
-    },
-    {
       title: "Live Schedule",
       description: "Upcoming sessions calendar",
       icon: Calendar,
@@ -412,14 +403,10 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                <Link href={
-                  (lastEnrolled.courseTitle.toLowerCase().includes('webinar'))
-                    ? `/webinar/join/${lastEnrolled.courseId}`
-                    : `/courses/${lastEnrolled.courseId}`
-                }>
+                <Link href={`/courses/${lastEnrolled.courseId}`}>
                   <Button className="bg-white text-gray-900 hover:bg-gray-100 border-0 rounded-xl px-6 py-2 h-auto font-bold shadow-lg shadow-gray-900/20">
                     <PlayCircle size={18} className="mr-2 text-brand-blue" />
-                    {lastEnrolled.courseTitle.toLowerCase().includes('webinar') ? "Join Webinar" : "Resume Course"}
+                    Resume Course
                   </Button>
                 </Link>
               </div>

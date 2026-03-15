@@ -297,7 +297,6 @@ export function AdminDashboard() {
             <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4 px-1">Quick Actions</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {isAdmin && <QuickAction href="/management?tab=users" icon={Users} label="Add User" color="bg-blue-500" />}
-              <QuickAction href="/management?tab=webinars" icon={Video} label="Webinars" color="bg-indigo-600" />
               <QuickAction href="/management?tab=recordings" icon={PlayCircle} label="Rec. Classes" color="bg-violet-500" />
               <QuickAction href="/management?tab=courses" icon={BookOpen} label="Courses" color="bg-emerald-500" />
               {isAdmin && (

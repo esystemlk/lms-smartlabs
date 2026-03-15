@@ -73,13 +73,6 @@ export interface Course {
   resourceAvailabilityMonths?: number; // Duration in months (e.g., 3)
   endDate?: string; // ISO Date string (YYYY-MM-DD) for fixed course end date
 
-  // New: Webinar Details
-  zoomDetails?: {
-    joinUrl: string;
-    meetingId: string;
-    passcode: string;
-  };
-
   createdAt: any; // Firestore Timestamp
   updatedAt: any; // Firestore Timestamp
 }

@@ -153,15 +153,7 @@ export default function CourseDetailsPage() {
                   />
                 </div>
               </div>
-              {(course.category?.toLowerCase() === 'webinar' || course.title.toLowerCase().includes('webinar')) && (
-                <Link href={`/webinar/join/${courseId}`}>
-                  <Button className="rounded-full shadow-lg shadow-indigo-200 shrink-0 bg-indigo-600 hover:bg-indigo-700">
-                    <Video className="mr-2 h-5 w-5" />
-                    Join Live Webinar
-                  </Button>
-                </Link>
-              )}
-              {lessons.length > 0 && !(course.category?.toLowerCase() === 'webinar' || course.title.toLowerCase().includes('webinar')) && (
+              {lessons.length > 0 && (
                 <Link href={`/courses/${courseId}/lessons/${lessons[0].id}`}>
                   <Button className="rounded-full shadow-lg shadow-blue-200 shrink-0">
                     <PlayCircle className="mr-2 h-5 w-5" />
