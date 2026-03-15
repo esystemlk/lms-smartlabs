@@ -111,8 +111,12 @@ export const courseService = {
   },
 
   async addLesson(courseId: string, lessonData: Partial<Lesson>) {
+    const sanitizedData = Object.fromEntries(
+      Object.entries(lessonData).filter(([_, v]) => v !== undefined)
+    );
+
     const docRef = await addDoc(collection(db, COURSES_COLLECTION, courseId, LESSONS_COLLECTION), {
-      ...lessonData,
+      ...sanitizedData,
       courseId,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
@@ -147,9 +151,13 @@ export const courseService = {
   },
 
   async updateLesson(courseId: string, lessonId: string, lessonData: Partial<Lesson>) {
+    const sanitizedData = Object.fromEntries(
+      Object.entries(lessonData).filter(([_, v]) => v !== undefined)
+    );
+
     const docRef = doc(db, COURSES_COLLECTION, courseId, LESSONS_COLLECTION, lessonId);
     await updateDoc(docRef, {
-      ...lessonData,
+      ...sanitizedData,
       updatedAt: serverTimestamp()
     });
   },

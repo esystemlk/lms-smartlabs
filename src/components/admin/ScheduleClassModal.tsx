@@ -127,7 +127,7 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
         zoomStartUrl: zoomData.start_url,
         zoomJoinUrl: zoomData.join_url,
         batchIds: formData.batchIds,
-        timeSlotId: formData.timeSlotId || undefined,
+        ...(formData.timeSlotId ? { timeSlotId: formData.timeSlotId } : {}),
         order: 999, // Append to end
         published: true
       });
