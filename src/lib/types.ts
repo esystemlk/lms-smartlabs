@@ -228,7 +228,7 @@ export interface Enrollment {
   timeSlotId?: string;
   timeSlotLabel?: string;
 
-  status: 'pending' | 'active' | 'rejected' | 'expired' | 'completed' | 'pending_payment';
+  status: 'pending' | 'active' | 'rejected' | 'expired' | 'completed' | 'pending_payment' | 'banned';
   paymentMethod: 'card' | 'transfer' | 'admin' | 'payhere' | 'website';
   paymentProofUrl?: string; // For bank transfers
   websitePaymentEmail?: string; // For website payments
