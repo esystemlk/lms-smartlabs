@@ -70,6 +70,16 @@ export default function RootLayout({
           </ThemeProvider>
         </AuthProvider>
       </body>
+      <Script id="chunk-error-handler" strategy="beforeInteractive">
+        {`
+          window.addEventListener('error', (event) => {
+            if (event.message && (event.message.includes('ChunkLoadError') || event.message.includes('Loading chunk'))) {
+              console.warn('Chunk loading failed, reloading page...', event);
+              window.location.reload();
+            }
+          }, true);
+        `}
+      </Script>
       <Script src="https://www.payhere.lk/lib/payhere.js" strategy="lazyOnload" />
     </html>
   );
