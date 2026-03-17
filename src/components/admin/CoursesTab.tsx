@@ -37,6 +37,7 @@ export function CoursesTab({ courses, enrollments = [], onCourseUpdated }: Cours
       "Student Name": e.userName,
       "Email": e.userEmail,
       "Batch": e.batchName || "N/A",
+      "Time Slot": (e as any).timeSlotLabel || (e as any).timeSlotId || "Default",
       "Enrolled Date": e.enrolledAt?.seconds ? new Date(e.enrolledAt.seconds * 1000).toLocaleDateString() : "N/A",
       "Status": e.status,
       "Progress (%)": e.progress || 0,

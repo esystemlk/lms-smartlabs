@@ -45,6 +45,7 @@ export default function CourseDetailsPage() {
   const [checkingAccess, setCheckingAccess] = useState(true);
   const [progress, setProgress] = useState(0);
   const [completedLessonIds, setCompletedLessonIds] = useState<string[]>([]);
+  const [userTimeSlotId, setUserTimeSlotId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,6 +94,7 @@ export default function CourseDetailsPage() {
             setAccessGranted(true);
             setProgress(enrollment.progress || 0);
             setCompletedLessonIds(enrollment.completedLessonIds || []);
+            setUserTimeSlotId(enrollment.timeSlotId || null);
             // Fetch Batch Details
             const batch = await courseService.getBatch(courseId, enrollment.batchId);
             setEnrolledBatch(batch);
@@ -278,6 +280,9 @@ export default function CourseDetailsPage() {
             </div>
             <p className="text-xs md:text-sm text-gray-500 mt-1">
               Live class recordings from <span className="font-medium text-brand-blue">{enrolledBatch.name}</span>
+              {userTimeSlotId && (
+                <> • Restricted to <span className="font-medium text-brand-blue">{userTimeSlotId}</span></>
+              )}
             </p>
           </div>
 
@@ -304,6 +309,20 @@ export default function CourseDetailsPage() {
               );
             }
 
+            // Filter recordings by timeSlot if applicable
+            const filteredRecordings = (enrolledBatch.recordedClasses || []).filter(recording => {
+              if (!recording.timeSlotId) return true; // Show to everyone if no restriction
+              return recording.timeSlotId === userTimeSlotId; // Show only if matches student's slot
+            });
+
+            if (filteredRecordings.length === 0) {
+              return (
+                <div className="p-8 text-center bg-gray-50/50">
+                  <p className="text-sm text-gray-500">No recorded classes available for your time slot yet.</p>
+                </div>
+              );
+            }
+
             return (
               <div className="divide-y divide-gray-100">
                 {/* Expiry Warning if close */}
@@ -314,7 +333,7 @@ export default function CourseDetailsPage() {
                   </div>
                 )}
 
-                {[...(enrolledBatch.recordedClasses || [])]
+                {[...filteredRecordings]
                   .sort((a, b) => (b.order || 0) - (a.order || 0) || new Date(b.date).getTime() - new Date(a.date).getTime())
                   .map((recording, index) => (
                     <a
