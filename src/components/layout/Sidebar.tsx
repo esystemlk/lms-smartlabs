@@ -19,7 +19,8 @@ import {
   Calendar,
   FolderOpen,
   ShieldAlert,
-  Upload
+  Upload,
+  CreditCard
 } from "lucide-react";
 import { clsx } from "clsx";
 import { Transition } from "@headlessui/react";
@@ -27,18 +28,30 @@ import { Fragment, useMemo } from "react";
 import { useAuth } from "@/context/AuthContext";
 
 const navConfig = [
-  { href: "/dashboard", label: "Main Menu", icon: LayoutDashboard, section: "General", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/learn", label: "Learn", icon: Play, section: "Learning", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/community", label: "Community", icon: MessageCircle, section: "Learning", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/courses", label: "Courses", icon: BookOpen, section: "Learning", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/websites", label: "Our Websites", icon: Globe, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/messages", label: "Messages", icon: MessageSquare, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/lecturers", label: "Lecturers", icon: GraduationCap, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/activities", label: "Activities", icon: Activity, section: "Learning", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, section: "General", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
 
+  { href: "/learn", label: "My Learning", icon: Play, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/courses", label: "Browse Courses", icon: BookOpen, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/lms/live", label: "Join Live Classes", icon: Video, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+
+  { href: "/live-classes", label: "Schedule Classes", icon: Calendar, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/management?tab=courses", label: "My Courses", icon: BookOpen, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/management?tab=recordings", label: "Recorded Classes", icon: Video, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
   { href: "/management", label: "Management Portal", icon: Monitor, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
 
-  { href: "/developer", label: "Developer", icon: ShieldAlert, section: "Developer", roles: ["developer"] as const },
+  { href: "/management?tab=users", label: "User Management", icon: Users, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
+  { href: "/management?tab=enrollments", label: "Enrollments & Payments", icon: CreditCard, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
+  { href: "/management?tab=attendance", label: "Attendance Records", icon: Activity, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
+  { href: "/management?tab=settings", label: "System Settings", icon: Settings, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
+
+  { href: "/community", label: "Community", icon: MessageCircle, section: "Interaction", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/messages", label: "Messages", icon: MessageSquare, section: "Interaction", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+
+  { href: "/websites", label: "Our Websites", icon: Globe, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/lecturers", label: "Lecturers", icon: GraduationCap, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/activities", label: "Activities", icon: Activity, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+
+  { href: "/developer", label: "Developer Tools", icon: ShieldAlert, section: "Developer", roles: ["developer"] as const },
 ] as const;
 
 interface SidebarProps {
@@ -66,10 +79,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       if (!grouped[item.section]) grouped[item.section] = [];
       grouped[item.section].push(item);
     }
-    const order = ["General", "Learning", "Management", "Admin", "Developer", "Resources"];
+    const order = ["General", "Student", "Management", "Administration", "Interaction", "Resources", "Developer"];
     return Object.keys(grouped)
-      .sort((a, b) => order.indexOf(a) - order.indexOf(b))
-      .map(label => ({ label, items: grouped[label] }));
+      .sort((a, b) => {
+        const indexA = order.indexOf(a);
+        const indexB = order.indexOf(b);
+        return (indexA === -1 ? 99 : indexA) - (indexB === -1 ? 99 : indexB);
+      })
+      .map(label => ({ label, items: grouped[label as keyof typeof grouped] }));
   }, [userData]);
 
   return (

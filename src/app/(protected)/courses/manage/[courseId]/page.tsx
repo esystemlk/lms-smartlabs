@@ -674,7 +674,7 @@ export default function EditCoursePage() {
 
           <Input
             label="Tags (comma separated)"
-            placeholder="e.g. ielts, pte, grammar, vocabulary"
+            placeholder="e.g. pte, reading, grammar, vocabulary"
             value={formData.tags}
             onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
           />

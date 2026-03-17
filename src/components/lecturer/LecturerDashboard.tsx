@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Calendar, PlayCircle, BookOpen, Users, FolderOpen, Video, Settings, ChevronRight } from "lucide-react";
+import { Calendar, PlayCircle, BookOpen, Users, FolderOpen, Video, Settings, ChevronRight, MessageSquare, ArrowRight } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { courseService } from "@/services/courseService";
 import { assignmentService } from "@/services/assignmentService";
@@ -124,12 +124,16 @@ export function LecturerDashboard() {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-            <h2 className="text-lg font-bold mb-3">Quick Actions</h2>
+            <h2 className="text-lg font-bold mb-4 px-1">Manage My Content</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <QuickAction href="/management?tab=courses" icon={BookOpen} label="Courses" color="bg-emerald-500" />
-              <QuickAction href="/lms/live" icon={Calendar} label="Live Schedule" color="bg-indigo-500" />
-              <QuickAction href="/management?tab=resources" icon={FolderOpen} label="Resources" color="bg-orange-500" />
-              <QuickAction href="/management?tab=recordings" icon={PlayCircle} label="Recordings" color="bg-violet-600" />
+              <QuickAction href="/management?tab=courses" icon={BookOpen} label="My Courses" color="bg-emerald-500" />
+              <QuickAction href="/lms/live" icon={Video} label="Live Schedule" color="bg-indigo-500" />
+              <QuickAction href="/management?tab=recordings" icon={PlayCircle} label="Recorded" color="bg-violet-600" />
+              <QuickAction href="/management?tab=resources" icon={FolderOpen} label="Study Materials" color="bg-orange-500" />
+              <QuickAction href="/management?tab=attendance" icon={Calendar} label="Attendance" color="bg-rose-500" />
+              <QuickAction href="/community" icon={Users} label="Community" color="bg-pink-500" />
+              <QuickAction href="/messages" icon={MessageSquare} label="Messages" color="bg-blue-400" />
+              <QuickAction href="/profile" icon={Settings} label="Profile" color="bg-gray-500" />
             </div>
           </motion.div>
 
