@@ -9,7 +9,8 @@ import {
   Menu,
   BookOpen,
   Monitor,
-  Video
+  Video,
+  LayoutGrid
 } from "lucide-react";
 import { clsx } from "clsx";
 import { useAuth } from "@/context/AuthContext";
@@ -25,6 +26,7 @@ export function MobileNav({ onMenuClick }: MobileNavProps) {
   const getNavItems = () => {
     const base = [
       { href: "/dashboard", label: "Home", icon: LayoutDashboard },
+      { href: "/lms", label: "LMS", icon: LayoutGrid },
     ];
 
     if (!userData) return base;

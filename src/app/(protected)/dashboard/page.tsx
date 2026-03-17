@@ -101,6 +101,15 @@ export default function DashboardPage() {
 
   const menuItems = [
     {
+      title: "Smart Labs LMS",
+      description: "Complete Learning Management System for all your courses",
+      icon: LayoutGrid,
+      href: "/lms",
+      gradient: "from-brand-blue to-indigo-600",
+      roles: ["student", "lecturer", "admin", "superadmin", "developer"],
+      category: "Learning Hub"
+    },
+    {
       title: "My Learning",
       description: "Access your lessons, assignments & materials",
       icon: PlayCircle,
@@ -277,7 +286,15 @@ export default function DashboardPage() {
       {/* Top Section: Greeting & Notification */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <GreetingWidget />
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <GreetingWidget />
+            <Link href="/lms">
+              <Button className="bg-brand-blue hover:bg-blue-600 text-white rounded-2xl px-8 h-12 font-bold shadow-lg shadow-blue-500/20 flex items-center gap-2 group">
+                <LayoutGrid size={20} className="group-hover:rotate-12 transition-transform" />
+                Open Smart Labs LMS
+              </Button>
+            </Link>
+          </div>
 
           {latestNotification && (
             <motion.div

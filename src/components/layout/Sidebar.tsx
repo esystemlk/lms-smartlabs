@@ -20,7 +20,8 @@ import {
   FolderOpen,
   ShieldAlert,
   Upload,
-  CreditCard
+  CreditCard,
+  LayoutGrid
 } from "lucide-react";
 import { clsx } from "clsx";
 import { Transition } from "@headlessui/react";
@@ -29,6 +30,7 @@ import { useAuth } from "@/context/AuthContext";
 
 const navConfig = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, section: "General", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/lms", label: "Smart Labs LMS", icon: LayoutGrid, section: "General", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
 
   { href: "/learn", label: "My Learning", icon: Play, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
   { href: "/courses", label: "Browse Courses", icon: BookOpen, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },

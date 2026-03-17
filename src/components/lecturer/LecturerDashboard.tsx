@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Calendar, PlayCircle, BookOpen, Users, FolderOpen, Video, Settings, ChevronRight, MessageSquare, ArrowRight } from "lucide-react";
+import { Calendar, PlayCircle, BookOpen, Users, FolderOpen, Video, Settings, ChevronRight, MessageSquare, ArrowRight, LayoutGrid } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { courseService } from "@/services/courseService";
 import { assignmentService } from "@/services/assignmentService";
@@ -89,6 +89,12 @@ export function LecturerDashboard() {
           <Link href="/management?tab=courses">
             <Button variant="outline" className="rounded-full px-5">Create Course</Button>
           </Link>
+          <Link href="/lms">
+            <Button variant="outline" className="rounded-full px-5 border-brand-blue text-brand-blue hover:bg-blue-50 flex items-center gap-2">
+              <LayoutGrid size={16} />
+              Enter LMS
+            </Button>
+          </Link>
           <Link href="/lms/live">
             <Button className="rounded-full px-5">Manage Live Classes</Button>
           </Link>
@@ -99,11 +105,12 @@ export function LecturerDashboard() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
       >
         <StatCard title="Active Courses" value={stats.activeCourses} icon={BookOpen} color="bg-emerald-500" />
         <StatCard title="Upcoming Sessions" value={stats.upcomingCount} icon={Calendar} color="bg-indigo-500" />
         <StatCard title="Students (est.)" value={stats.totalStudents} icon={Users} color="bg-blue-500" />
+        <StatCard title="LMS Access" value="Learning Hub" icon={LayoutGrid} color="bg-brand-blue" />
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
