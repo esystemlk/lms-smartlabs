@@ -129,7 +129,7 @@ export function AdminDashboard() {
           <Link href="/lms">
             <Button className="rounded-full px-5 bg-brand-blue hover:bg-blue-600 flex items-center gap-2">
               <LayoutGrid size={16} />
-              Open LMS Portal
+              LMS Dashboard
             </Button>
           </Link>
           <Link href="/management?tab=settings">

@@ -26,7 +26,7 @@ export function MobileNav({ onMenuClick }: MobileNavProps) {
   const getNavItems = () => {
     const base = [
       { href: "/dashboard", label: "Home", icon: LayoutDashboard },
-      { href: "/lms", label: "LMS", icon: LayoutGrid },
+      { href: "/lms", label: "LMS Dash", icon: LayoutGrid },
     ];
 
     if (!userData) return base;
@@ -38,7 +38,6 @@ export function MobileNav({ onMenuClick }: MobileNavProps) {
         ...base,
         { href: "/learn", label: "Learn", icon: Play },
         { href: "/courses", label: "Courses", icon: BookOpen },
-        { href: "/lms/live", label: "Live", icon: Video },
       ];
     }
 

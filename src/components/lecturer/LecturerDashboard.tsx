@@ -92,7 +92,7 @@ export function LecturerDashboard() {
           <Link href="/lms">
             <Button variant="outline" className="rounded-full px-5 border-brand-blue text-brand-blue hover:bg-blue-50 flex items-center gap-2">
               <LayoutGrid size={16} />
-              Enter LMS
+              LMS Dashboard
             </Button>
           </Link>
           <Link href="/lms/live">

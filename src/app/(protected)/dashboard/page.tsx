@@ -101,8 +101,8 @@ export default function DashboardPage() {
 
   const menuItems = [
     {
-      title: "Smart Labs LMS",
-      description: "Complete Learning Management System for all your courses",
+      title: "LMS DASHBOARD",
+      description: "Access resources, schedule, assignments & recordings",
       icon: LayoutGrid,
       href: "/lms",
       gradient: "from-brand-blue to-indigo-600",
@@ -291,7 +291,7 @@ export default function DashboardPage() {
             <Link href="/lms">
               <Button className="bg-brand-blue hover:bg-blue-600 text-white rounded-2xl px-8 h-12 font-bold shadow-lg shadow-blue-500/20 flex items-center gap-2 group">
                 <LayoutGrid size={20} className="group-hover:rotate-12 transition-transform" />
-                Open Smart Labs LMS
+                ENTER LMS DASHBOARD
               </Button>
             </Link>
           </div>
