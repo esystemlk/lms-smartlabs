@@ -39,6 +39,26 @@ export const enrollmentService = {
     websitePaymentEmail?: string,
     websitePaymentName?: string
   ) {
+    // Check for existing enrollment to prevent duplicates
+    const existingQ = query(
+      collection(db, ENROLLMENTS_COLLECTION),
+      where("userId", "==", userId),
+      where("courseId", "==", course.id),
+      where("batchId", "==", batch.id),
+      where("status", "in", ["active", "pending", "pending_payment", "completed"])
+    );
+    const existingSnapshot = await getDocs(existingQ);
+    if (!existingSnapshot.empty) {
+      const existing = existingSnapshot.docs[0].data() as Enrollment;
+      if (existing.status === 'active') {
+        throw new Error("You are already enrolled in this course and batch.");
+      } else if (existing.status === 'completed') {
+        throw new Error("You have already completed this course.");
+      } else {
+        throw new Error("You already have a pending enrollment request for this course and batch. Please wait for admin approval.");
+      }
+    }
+
     let receiptUrl = "";
     if (paymentMethod === 'transfer' && receiptFile) {
       const storageRef = ref(storage, `receipts/${userId}/${Date.now()}_${receiptFile.name}`);

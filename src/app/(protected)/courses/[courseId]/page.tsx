@@ -46,6 +46,7 @@ export default function CourseDetailsPage() {
   const [progress, setProgress] = useState(0);
   const [completedLessonIds, setCompletedLessonIds] = useState<string[]>([]);
   const [userTimeSlotId, setUserTimeSlotId] = useState<string | null>(null);
+  const [hasPendingRequest, setHasPendingRequest] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,27 +103,35 @@ export default function CourseDetailsPage() {
 
       try {
         const enrollments = await enrollmentService.getUserEnrollments(userData.uid);
-        // Find active enrollment for this course
-        const enrollment = enrollments.find(e => e.courseId === courseId && e.status === 'active');
+        // Find active or pending enrollment for this course
+        const active = enrollments.find(e => e.courseId === courseId && e.status === 'active');
+        const pending = enrollments.find(e => e.courseId === courseId && (e.status === 'pending' || e.status === 'pending_payment'));
+        const completed = enrollments.find(e => e.courseId === courseId && e.status === 'completed');
 
-        if (enrollment) {
+        if (active || completed) {
+          const enrollment = active || completed;
           // Check expiry
           let isValid = true;
-          if (enrollment.validUntil) {
+          if (enrollment?.validUntil) {
             const now = new Date();
             const expiry = enrollment.validUntil.toDate();
             if (now > expiry) isValid = false;
           }
 
-          if (isValid) {
+          if (isValid || completed) {
             setAccessGranted(true);
-            setProgress(enrollment.progress || 0);
-            setCompletedLessonIds(enrollment.completedLessonIds || []);
-            setUserTimeSlotId(enrollment.timeSlotId || null);
+            setProgress(enrollment?.progress || 0);
+            setCompletedLessonIds(enrollment?.completedLessonIds || []);
+            setUserTimeSlotId(enrollment?.timeSlotId || null);
             // Fetch Batch Details
-            const batch = await courseService.getBatch(courseId, enrollment.batchId);
-            setEnrolledBatch(batch);
+            if (enrollment?.batchId) {
+              const batch = await courseService.getBatch(courseId, enrollment.batchId);
+              setEnrolledBatch(batch);
+            }
           }
+        } else if (pending) {
+            // Found a pending request
+            setHasPendingRequest(true);
         }
       } catch (err) {
         console.error("Error checking enrollment:", err);
@@ -188,6 +197,21 @@ export default function CourseDetailsPage() {
                 </Link>
               )}
             </div>
+          </div>
+        ) : hasPendingRequest ? (
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="bg-amber-50 border border-amber-100 px-4 py-2 rounded-xl flex items-center gap-2">
+              <Clock className="w-4 h-4 text-amber-600" />
+              <div className="text-xs text-amber-800">
+                <p className="font-bold">Enrollment Pending</p>
+                <p>Waiting for admin approval</p>
+              </div>
+            </div>
+            <Link href="/dashboard">
+              <Button variant="outline" className="rounded-full">
+                Go to Dashboard
+              </Button>
+            </Link>
           </div>
         ) : (
           <div className="flex flex-col md:flex-row items-center gap-4">
