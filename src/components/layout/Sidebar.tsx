@@ -105,7 +105,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         leaveTo="opacity-0"
       >
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 z-[90] md:hidden"
           onClick={onClose}
         />
       </Transition>
@@ -121,7 +121,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         leaveFrom="translate-x-0"
         leaveTo="-translate-x-full"
       >
-        <aside className="fixed top-0 left-0 bottom-0 w-72 bg-white/90 dark:bg-gray-900/95 backdrop-blur-xl z-50 shadow-2xl flex flex-col md:hidden transition-colors duration-300">
+        <aside className="fixed top-0 left-0 bottom-0 w-72 bg-white dark:bg-gray-900 z-[100] shadow-2xl flex flex-col md:hidden transition-colors duration-300 pb-safe">
           <div className="p-6 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 relative">
@@ -174,18 +174,18 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             ))}
           </nav>
 
-          <div className="p-4 border-t border-border">
-            <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800">
-              <div className="w-8 h-8 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold text-xs">
+          <div className="p-3 md:p-4 border-t border-border mt-auto">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 dark:bg-gray-800">
+              <div className="w-7 h-7 rounded-lg bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold text-[10px]">
                 SL
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">Smart Labs LMS</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">v1.0.0 (Mobile)</p>
+                <p className="text-xs font-semibold text-foreground truncate">Smart Labs LMS</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">v1.1.0 (Mobile Optimized)</p>
               </div>
             </div>
-            <div className="mt-4 text-center">
-              <p className="text-[10px] text-gray-400 dark:text-gray-600">
+            <div className="mt-3 text-center">
+              <p className="text-[9px] text-gray-400 dark:text-gray-600">
                 Developed & Powered by <span className="font-bold text-brand-blue">ESystemLK</span>
               </p>
             </div>

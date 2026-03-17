@@ -85,27 +85,27 @@ export function ProfileCompletionModal({ user }: ProfileCompletionModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-      <div className="bg-white dark:bg-gray-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-800">
+    <div className="fixed inset-0 z-[200] flex items-end md:items-center justify-center bg-black/80 backdrop-blur-sm p-0 md:p-4 animate-in fade-in duration-300">
+      <div className="bg-white dark:bg-gray-900 w-full max-w-lg rounded-t-[2.5rem] md:rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-800 animate-in slide-in-from-bottom-10 duration-500">
         
         {/* Header */}
-        <div className="bg-brand-blue/10 dark:bg-brand-blue/20 p-6 text-center border-b border-brand-blue/10">
-          <div className="w-16 h-16 bg-brand-blue text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/30">
+        <div className="bg-brand-blue/10 dark:bg-brand-blue/20 p-6 md:p-8 text-center border-b border-brand-blue/10">
+          <div className="w-16 h-16 bg-brand-blue text-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/30 rotate-3 group-hover:rotate-0 transition-transform">
             <UserCheck size={32} />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Complete Your Profile</h2>
-          <p className="text-gray-600 dark:text-gray-300 mt-2 text-sm">
-            Please verify and complete your details to continue accessing the platform.
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Complete Profile</h2>
+          <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm md:text-base font-medium">
+            Just a few more details to unlock <br className="hidden md:block"/> your learning journey.
           </p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[60vh] overflow-y-auto custom-scrollbar">
+        <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-5 max-h-[75vh] md:max-h-[60vh] overflow-y-auto custom-scrollbar">
           
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/50 rounded-lg p-3 flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 flex-shrink-0 mt-0.5" />
-            <p className="text-xs text-yellow-700 dark:text-yellow-400">
-              Your contact and location details are required for course enrollments and certificate issuance.
+          <div className="bg-amber-50 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-800/30 rounded-2xl p-4 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-500 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-amber-800 dark:text-amber-400 leading-relaxed font-medium">
+              We need your contact and location details for course assignments and official certificate generation.
             </p>
           </div>
 
