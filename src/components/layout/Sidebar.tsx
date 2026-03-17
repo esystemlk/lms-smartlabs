@@ -53,7 +53,7 @@ const navConfig = [
   { href: "/lecturers", label: "Lecturers", icon: GraduationCap, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
   { href: "/activities", label: "Activities", icon: Activity, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
 
-  { href: "/developer", label: "Developer Tools", icon: ShieldAlert, section: "Developer", roles: ["developer"] as const },
+  { href: "/developer", label: "Developer Tools", icon: ShieldAlert, section: "Developer", roles: ["admin", "superadmin", "developer"] as const },
 ] as const;
 
 interface SidebarProps {
