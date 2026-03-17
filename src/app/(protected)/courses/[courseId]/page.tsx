@@ -55,7 +55,31 @@ export default function CourseDetailsPage() {
           courseService.getLessons(courseId)
         ]);
         setCourse(courseData);
-        setLessons(lessonsData);
+
+        // Filter lessons based on access rights
+        let filteredLessons = lessonsData;
+        if (userData && userData.role === 'student' && !["admin", "superadmin", "developer"].includes(userData.role)) {
+          // Find enrollment for this course
+          const enrollments = await enrollmentService.getUserEnrollments(userData.uid);
+          const enrollment = enrollments.find(e => e.courseId === courseId && (e.status === 'active' || e.status === 'completed'));
+          
+          if (enrollment) {
+            filteredLessons = lessonsData.filter(lesson => {
+              // If it's a live class recording with batch restrictions
+              if (lesson.type === 'live_class' && lesson.batchIds && lesson.batchIds.length > 0) {
+                const matchesBatch = lesson.batchIds.includes(enrollment.batchId);
+                if (!matchesBatch) return false;
+
+                // If also restricted by time slot
+                if (lesson.timeSlotId) {
+                  return lesson.timeSlotId === enrollment.timeSlotId;
+                }
+              }
+              return true;
+            });
+          }
+        }
+        setLessons(filteredLessons);
       } catch (error) {
         console.error("Error fetching course details:", error);
       } finally {

@@ -53,8 +53,8 @@ export function UpcomingSchedule({ userData }: UpcomingScheduleProps) {
             const relevantBatchId = cls.batchIds.find((bid: string) => userBatchIds.includes(bid));
             if (relevantBatchId) {
               const studentSlot = userBatchSlotMap.get(relevantBatchId);
-              // If student has a slot, it must match the class slot
-              if (studentSlot && studentSlot !== cls.timeSlotId) return false;
+              // Only show if student is in the EXACT same time slot
+              return studentSlot === cls.timeSlotId;
             }
           }
 

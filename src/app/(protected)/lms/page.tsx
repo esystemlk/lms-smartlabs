@@ -19,7 +19,8 @@ import {
 import { motion } from "framer-motion";
 import { courseService } from "@/services/courseService";
 import { notificationService, Notification } from "@/services/notificationService";
-import { Lesson } from "@/lib/types";
+import { enrollmentService } from "@/services/enrollmentService";
+import { Lesson, Enrollment } from "@/lib/types";
 import { format, formatDistanceToNow } from "date-fns";
 
 export default function LMSPage() {
@@ -33,19 +34,47 @@ export default function LMSPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [upcoming, notifs] = await Promise.all([
+        if (!userData) return;
+
+        const [upcoming, notifs, enrollments] = await Promise.all([
           courseService.getUpcomingLiveClasses(),
-          notificationService.getRecentNotifications(3)
+          notificationService.getRecentNotifications(3),
+          userData.role === 'student' ? enrollmentService.getUserEnrollments(userData.uid) : Promise.resolve([] as Enrollment[])
         ]);
 
         let filtered = upcoming;
         
-        // Filter for student's enrolled batches
+        // Filter for student's enrolled batches and time slots
         if (userData && userData.role === 'student') {
+          const activeEnrollments = enrollments.filter(e => e.status === 'active' || e.status === 'completed');
           const userBatches = userData.enrolledBatches || [];
-          if (userBatches.length > 0) {
-            filtered = filtered.filter(cls => {
-                return !cls.batchIds || cls.batchIds.length === 0 || cls.batchIds.some(id => userBatches.includes(id));
+          
+          if (userBatches.length === 0) {
+            filtered = [];
+          } else {
+            // Map batchId -> timeSlotId
+            const batchTimeSlots = new Map<string, string>();
+            activeEnrollments.forEach(e => {
+              if (e.batchId && e.timeSlotId) {
+                batchTimeSlots.set(e.batchId, e.timeSlotId);
+              }
+            });
+
+            filtered = upcoming.filter(cls => {
+                // Must have batchIds
+                if (!cls.batchIds || cls.batchIds.length === 0) return false;
+
+                // Check if student is in any of the batches assigned to this class
+                const matchingBatchId = cls.batchIds.find(id => userBatches.includes(id));
+                if (!matchingBatchId) return false;
+
+                // If class has a time slot restriction
+                if (cls.timeSlotId) {
+                  const studentTimeSlotId = batchTimeSlots.get(matchingBatchId);
+                  return studentTimeSlotId === cls.timeSlotId;
+                }
+
+                return true;
             });
           }
         }
