@@ -42,6 +42,7 @@ const navConfig = [
   { href: "/management", label: "Management Portal", icon: Monitor, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
 
   { href: "/management?tab=users", label: "User Management", icon: Users, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
+  { href: "/management?tab=students", label: "Student Management", icon: GraduationCap, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
   { href: "/management?tab=enrollments", label: "Enrollments & Payments", icon: CreditCard, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
   { href: "/management?tab=attendance", label: "Attendance Records", icon: Activity, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
   { href: "/management?tab=settings", label: "System Settings", icon: Settings, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
