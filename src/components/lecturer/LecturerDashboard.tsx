@@ -10,6 +10,8 @@ import { assignmentService } from "@/services/assignmentService";
 import { enrollmentService } from "@/services/enrollmentService";
 import { Course, Lesson } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
+import { useTutorial, TutorialStep } from "@/context/TutorialContext";
+import { HelpCircle } from "lucide-react";
 
 export function LecturerDashboard() {
   const { userData } = useAuth();
@@ -21,6 +23,40 @@ export function LecturerDashboard() {
   const [courseEnrollments, setCourseEnrollments] = useState<Record<string, number>>({});
   const [recentRecordings, setRecentRecordings] = useState<any[]>([]);
   const [recentEnrollments, setRecentEnrollments] = useState<any[]>([]);
+  
+  const { startTutorial } = useTutorial();
+
+  const lecturerSteps: TutorialStep[] = [
+    {
+      target: "#t-quick-actions",
+      title: "Quick Commands",
+      content: "Create new courses or jump to live class management instantly from this header."
+    },
+    {
+      target: "#t-stats",
+      title: "Dashboard Overview",
+      content: "Track your active courses, upcoming sessions, and total student reach at a glance."
+    },
+    {
+      target: "#t-upcoming",
+      title: "Live Session Hub",
+      content: "View your upcoming classes and start your Zoom sessions with a single click."
+    },
+    {
+      target: "#t-content-manage",
+      title: "Management Tools",
+      content: "Deep-dive into assignments, recordings, resources, and attendance management."
+    },
+    {
+        target: "#t-my-courses",
+        title: "Your Course Portfolio",
+        content: "Access and edit the specific courses you are currently teaching."
+    }
+  ];
+
+  const handleStartTour = () => {
+    startTutorial(lecturerSteps);
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -89,7 +125,7 @@ export function LecturerDashboard() {
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Lecturer Dashboard</h1>
           <p className="text-gray-500 dark:text-gray-400">Manage your courses, live sessions and resources</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div id="t-quick-actions" className="flex items-center gap-2">
           <Link href="/management?tab=courses">
             <Button variant="outline" className="rounded-full px-5">Create Course</Button>
           </Link>
@@ -102,10 +138,19 @@ export function LecturerDashboard() {
           <Link href="/lms/live">
             <Button className="rounded-full px-5">Manage Live Classes</Button>
           </Link>
+          <Button 
+            variant="ghost" 
+            onClick={handleStartTour}
+            className="rounded-full p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-all"
+            title="Take a Tour"
+          >
+            <HelpCircle size={24} />
+          </Button>
         </div>
       </div>
 
       <motion.div
+        id="t-stats"
         variants={container}
         initial="hidden"
         animate="show"
@@ -119,7 +164,7 @@ export function LecturerDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+          <motion.div id="t-upcoming" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold">Upcoming Live Classes</h2>
               <Link href="/lms/live" className="text-sm font-medium text-brand-blue flex items-center gap-1">
@@ -172,7 +217,7 @@ export function LecturerDashboard() {
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+          <motion.div id="t-content-manage" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
             <h2 className="text-lg font-bold mb-4 px-1">Manage My Content</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <QuickAction href="/management?tab=courses" icon={BookOpen} label="My Courses" color="bg-emerald-500" />
@@ -296,7 +341,7 @@ export function LecturerDashboard() {
           animate={{ opacity: 1, x: 0 }}
           className="space-y-6"
         >
-          <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+          <div id="t-my-courses" className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold">Your Courses</h2>
               <Link href="/management?tab=courses" className="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">

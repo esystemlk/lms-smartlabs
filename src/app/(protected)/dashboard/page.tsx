@@ -8,6 +8,8 @@ import { UpcomingSchedule } from "@/components/features/UpcomingSchedule";
 import { notificationService, Notification } from "@/services/notificationService";
 import { Button } from "@/components/ui/Button";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTutorial, TutorialStep } from "@/context/TutorialContext";
+import { HelpCircle } from "lucide-react";
 import { enrollmentService } from "@/services/enrollmentService";
 import { Enrollment } from "@/lib/types";
 import {
@@ -50,6 +52,40 @@ export default function DashboardPage() {
   const [loadingEnrollment, setLoadingEnrollment] = useState(true);
   const [recentEnrollments, setRecentEnrollments] = useState<Enrollment[]>([]);
   const [isDesktop, setIsDesktop] = useState(false);
+  
+  const { startTutorial } = useTutorial();
+
+  const studentSteps: TutorialStep[] = [
+    {
+      target: "#t-stats-student",
+      title: "Learning Stats",
+      content: "Keep track of your study time and course progress here to stay motivated."
+    },
+    {
+      target: "#t-enter-lms",
+      title: "The LMS Hub",
+      content: "This is your primary classroom area for lessons and materials."
+    },
+    {
+      target: "#t-continue-learning",
+      title: "Smart Resume",
+      content: "Continue exactly where you left off in your most recent course."
+    },
+    {
+      target: "#t-upcoming-student",
+      title: "Upcoming Classes",
+      content: "Never miss a live session. Your schedule is synced here with join links."
+    },
+    {
+      target: "#t-quick-access",
+      title: "Discover More",
+      content: "Explore the community, messages, and new courses from this menu."
+    }
+  ];
+
+  const handleStartTour = () => {
+    startTutorial(studentSteps);
+  };
 
   useEffect(() => {
     const fetchNotifs = async () => {
@@ -288,12 +324,22 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <GreetingWidget />
-            <Link href="/lms">
-              <Button className="bg-brand-blue hover:bg-blue-600 text-white rounded-2xl px-8 h-12 font-bold shadow-lg shadow-blue-500/20 flex items-center gap-2 group">
-                <LayoutGrid size={20} className="group-hover:rotate-12 transition-transform" />
-                ENTER LMS DASHBOARD
+            <div className="flex items-center gap-3">
+              <Link id="t-enter-lms" href="/lms">
+                <Button className="bg-brand-blue hover:bg-blue-600 text-white rounded-2xl px-8 h-12 font-bold shadow-lg shadow-blue-500/20 flex items-center gap-2 group">
+                  <LayoutGrid size={20} className="group-hover:rotate-12 transition-transform" />
+                  ENTER LMS DASHBOARD
+                </Button>
+              </Link>
+              <Button 
+                variant="ghost" 
+                onClick={handleStartTour}
+                className="rounded-full p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-all h-12 w-12 flex items-center justify-center"
+                title="Take a Tour"
+              >
+                <HelpCircle size={24} />
               </Button>
-            </Link>
+            </div>
           </div>
 
           {latestNotification && (
@@ -341,7 +387,7 @@ export default function DashboardPage() {
                 <GraduationCap size={180} />
               </div>
 
-              <div className="relative z-10">
+              <div id="t-continue-learning" className="relative z-10">
                 <div className="flex items-center gap-2 text-gray-400 text-sm font-medium mb-4">
                   <Clock size={16} />
                   <span>Continue Learning</span>
@@ -376,6 +422,7 @@ export default function DashboardPage() {
 
           {/* Upcoming Schedule (New) */}
           <motion.div
+            id="t-upcoming-student"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -437,14 +484,16 @@ export default function DashboardPage() {
           animate={{ opacity: 1, x: 0 }}
           className="h-full"
         >
-          <LearningStats userData={userData} />
+          <div id="t-stats-student">
+             <LearningStats userData={userData} />
+          </div>
         </motion.div>
       </div>
 
       {/* Main Content Area */}
       <div className="space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <h2 className="text-2xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
+          <h2 id="t-quick-access" className="text-2xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
             <LayoutGrid size={24} className="text-brand-blue" />
             Quick Access
           </h2>

@@ -19,6 +19,8 @@ import { PageTransition } from "@/components/layout/PageTransition";
 import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
 import { ProfileCompletionModal } from "@/components/features/ProfileCompletionModal";
 import { settingsService } from "@/services/settingsService";
+import { TutorialProvider } from "@/context/TutorialContext";
+import { TutorialTour } from "@/components/features/TutorialTour";
 
 export default function ProtectedLayout({
   children,
@@ -94,105 +96,108 @@ export default function ProtectedLayout({
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex transition-colors duration-300 w-full relative overflow-x-hidden">
-      {/* Dynamic Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950" />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] opacity-50 mix-blend-multiply dark:mix-blend-screen animate-pulse" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] opacity-50 mix-blend-multiply dark:mix-blend-screen" />
-        <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03]" 
-             style={{ backgroundImage: 'radial-gradient(#64748b 1px, transparent 1px)', backgroundSize: '32px 32px' }}>
+    <TutorialProvider>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex transition-colors duration-300 w-full relative overflow-x-hidden">
+        {/* Dynamic Background */}
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] opacity-50 mix-blend-multiply dark:mix-blend-screen animate-pulse" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] opacity-50 mix-blend-multiply dark:mix-blend-screen" />
+          <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03]" 
+               style={{ backgroundImage: 'radial-gradient(#64748b 1px, transparent 1px)', backgroundSize: '32px 32px' }}>
+          </div>
         </div>
-      </div>
 
-      <div className="relative z-10 flex w-full">
-        {userData && <ProfileCompletionModal user={userData} />}
-        <ScrollProgressBar />
-        {/* Mobile Sidebar (Drawer) */}
-        <Sidebar
-          isOpen={isMobileMenuOpen}
-          onClose={() => setIsMobileMenuOpen(false)}
-        />
+        <div className="relative z-10 flex w-full">
+          {userData && <ProfileCompletionModal user={userData} />}
+          <ScrollProgressBar />
+          {/* Mobile Sidebar (Drawer) */}
+          <Sidebar
+            isOpen={isMobileMenuOpen}
+            onClose={() => setIsMobileMenuOpen(false)}
+          />
 
-        <div className="flex-1 flex flex-col min-h-screen">
-          <TitleBar />
-          
-          {/* Impersonation Banner */}
-          {isImpersonating && (
-            <div className="bg-purple-600 text-white px-4 py-2 flex items-center justify-between shadow-md relative z-50">
-              <div className="flex items-center gap-2">
-                <div className="bg-white/20 p-1 rounded">
-                  <UserCog className="w-4 h-4" />
+          <div className="flex-1 flex flex-col min-h-screen">
+            <TitleBar />
+            
+            {/* Impersonation Banner */}
+            {isImpersonating && (
+              <div className="bg-purple-600 text-white px-4 py-2 flex items-center justify-between shadow-md relative z-50">
+                <div className="flex items-center gap-2">
+                  <div className="bg-white/20 p-1 rounded">
+                    <UserCog className="w-4 h-4" />
+                  </div>
+                  <span className="text-sm font-medium">
+                    Viewing as <strong>{(user as any)?.role}</strong> (Actual: {originalRole})
+                  </span>
                 </div>
-                <span className="text-sm font-medium">
-                  Viewing as <strong>{(user as any)?.role}</strong> (Actual: {originalRole})
-                </span>
+                <button
+                  onClick={stopImpersonating}
+                  className="flex items-center gap-1 bg-white/10 hover:bg-white/20 px-3 py-1 rounded text-xs font-semibold transition-colors"
+                >
+                  <LogOut className="w-3 h-3" />
+                  Exit View
+                </button>
               </div>
-              <button
-                onClick={stopImpersonating}
-                className="flex items-center gap-1 bg-white/10 hover:bg-white/20 px-3 py-1 rounded text-xs font-semibold transition-colors"
-              >
-                <LogOut className="w-3 h-3" />
-                Exit View
-              </button>
-            </div>
-          )}
+            )}
 
-          <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
-          {!hideBanner && (announcement || (!isAdmin && maintenanceMode)) && (
-            <div className="max-w-7xl mx-auto w-full px-4 md:px-8 mt-2">
-              {announcement && (
-                <div className="flex items-start gap-3 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-xl p-3 md:p-4">
-                  <div className="p-2 bg-yellow-100 rounded-lg">
-                    <Megaphone className="w-4 h-4" />
+            <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
+            {!hideBanner && (announcement || (!isAdmin && maintenanceMode)) && (
+              <div className="max-w-7xl mx-auto w-full px-4 md:px-8 mt-2">
+                {announcement && (
+                  <div className="flex items-start gap-3 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-xl p-3 md:p-4">
+                    <div className="p-2 bg-yellow-100 rounded-lg">
+                      <Megaphone className="w-4 h-4" />
+                    </div>
+                    <div className="flex-1 text-sm md:text-base">
+                      {announcement}
+                    </div>
+                    <button
+                      onClick={() => setHideBanner(true)}
+                      className="text-yellow-700 hover:text-yellow-900 p-1 rounded-md"
+                      aria-label="Dismiss announcement"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
                   </div>
-                  <div className="flex-1 text-sm md:text-base">
-                    {announcement}
+                )}
+                {!isAdmin && maintenanceMode && (
+                  <div className="mt-2 flex items-start gap-3 bg-red-50 border border-red-200 text-red-800 rounded-xl p-3 md:p-4">
+                    <div className="p-2 bg-red-100 rounded-lg">
+                      <AlertTriangle className="w-4 h-4" />
+                    </div>
+                    <div className="flex-1 text-sm md:text-base">
+                      The system is undergoing maintenance. Some features may be unavailable.
+                    </div>
+                    <button
+                      onClick={() => setHideBanner(true)}
+                      className="text-red-700 hover:text-red-900 p-1 rounded-md"
+                      aria-label="Dismiss maintenance notice"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
                   </div>
-                  <button
-                    onClick={() => setHideBanner(true)}
-                    className="text-yellow-700 hover:text-yellow-900 p-1 rounded-md"
-                    aria-label="Dismiss announcement"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              )}
-              {!isAdmin && maintenanceMode && (
-                <div className="mt-2 flex items-start gap-3 bg-red-50 border border-red-200 text-red-800 rounded-xl p-3 md:p-4">
-                  <div className="p-2 bg-red-100 rounded-lg">
-                    <AlertTriangle className="w-4 h-4" />
-                  </div>
-                  <div className="flex-1 text-sm md:text-base">
-                    The system is undergoing maintenance. Some features may be unavailable.
-                  </div>
-                  <button
-                    onClick={() => setHideBanner(true)}
-                    className="text-red-700 hover:text-red-900 p-1 rounded-md"
-                    aria-label="Dismiss maintenance notice"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-          <main className={clsx(
-            "flex-1 max-w-7xl mx-auto w-full transition-all duration-300 pb-20 md:pb-0",
-            // Conditional padding: Remove padding for lesson pages to allow full-width video/content
-            !isLessonPage && (isCompact ? "p-2 md:p-4" : "p-4 md:p-8")
-          )}>
-            <Breadcrumbs />
-            <PageTransition>
-              {children}
-            </PageTransition>
-          </main>
+                )}
+              </div>
+            )}
+            <main className={clsx(
+              "flex-1 max-w-7xl mx-auto w-full transition-all duration-300 pb-20 md:pb-0",
+              // Conditional padding: Remove padding for lesson pages to allow full-width video/content
+              !isLessonPage && (isCompact ? "p-2 md:p-4" : "p-4 md:p-8")
+            )}>
+              <Breadcrumbs />
+              <PageTransition>
+                {children}
+              </PageTransition>
+            </main>
+          </div>
+          <MobileNav onMenuClick={() => setIsMobileMenuOpen(true)} />
+          <FloatingChatWidget />
+          <NotificationListener />
+          <CommandPalette />
+          <TutorialTour />
         </div>
-        <MobileNav onMenuClick={() => setIsMobileMenuOpen(true)} />
-        <FloatingChatWidget />
-        <NotificationListener />
-        <CommandPalette />
       </div>
-    </div>
+    </TutorialProvider>
   );
 }
