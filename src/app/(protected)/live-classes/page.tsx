@@ -38,6 +38,8 @@ export default function LiveClassManagementPage() {
   });
   const [instantLoading, setInstantLoading] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterCourseId, setFilterCourseId] = useState("");
 
   const handleSyncRecordings = async () => {
     setSyncing(true);
@@ -113,22 +115,9 @@ export default function LiveClassManagementPage() {
       const upcoming = await courseService.getUpcomingLiveClasses();
       const past = await courseService.getPastLiveClasses();
 
-      if (isAdmin) {
+      if (isAdmin || userData?.role === 'lecturer') {
         setClasses(upcoming);
         setPastClasses(past);
-      } else if (userData?.role === 'lecturer') {
-         // Get lecturer's courses first if needed, or filter by courseId
-         const allCourses = await courseService.getAllCourses();
-         const myCourseIds = allCourses
-            .filter(c => 
-                c.lecturerId === userData.uid || 
-                c.instructorId === userData.uid || 
-                (c.lecturerIds && c.lecturerIds.includes(userData.uid))
-            )
-            .map(c => c.id);
-         
-         setClasses(upcoming.filter(l => l.courseId && myCourseIds.includes(l.courseId)));
-         setPastClasses(past.filter(l => l.courseId && myCourseIds.includes(l.courseId)));
       }
     } catch (error) {
       console.error("Error fetching live classes:", error);
@@ -142,15 +131,8 @@ export default function LiveClassManagementPage() {
       const data = await courseService.getAllCourses();
       const isAdmin = ["admin", "superadmin", "developer"].includes(userData?.role || '');
       
-      if (isAdmin) {
+      if (isAdmin || userData?.role === 'lecturer') {
         setCourses(data);
-      } else if (userData?.role === 'lecturer') {
-        const mine = data.filter(c => 
-            c.lecturerId === userData?.uid || 
-            c.instructorId === userData?.uid ||
-            (c.lecturerIds && c.lecturerIds.includes(userData.uid))
-        );
-        setCourses(mine);
       }
     } catch (error) {
       console.error("Error fetching courses:", error);
@@ -272,11 +254,32 @@ export default function LiveClassManagementPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content: Scheduled Classes */}
         <div className="lg:col-span-2 space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                     <Calendar className="text-brand-blue" size={20} />
                     Upcoming Schedule
                 </h2>
+                <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                    <div className="relative flex-1 sm:w-64">
+                        <Input
+                            placeholder="Search class topic..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="pl-9 h-10 rounded-xl"
+                        />
+                        <MoreVertical size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 rotate-90" />
+                    </div>
+                    <select
+                        value={filterCourseId}
+                        onChange={(e) => setFilterCourseId(e.target.value)}
+                        className="h-10 px-3 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-brand-blue/20 outline-none flex-1 sm:w-48 bg-white"
+                    >
+                        <option value="">All Courses</option>
+                        {courses.map(c => (
+                            <option key={c.id} value={c.id}>{c.title}</option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -290,20 +293,28 @@ export default function LiveClassManagementPage() {
                     </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                    {classes.length === 0 ? (
-                        <tr>
-                        <td colSpan={3} className="px-6 py-12 text-center text-gray-500">
-                            <div className="flex flex-col items-center gap-2">
-                            <Video size={32} className="text-gray-300" />
-                            <p>No upcoming classes found.</p>
-                            <Button variant="ghost" onClick={() => setScheduleModalOpen(true)} className="text-blue-600 hover:underline">
-                                Schedule one now
-                            </Button>
-                            </div>
-                        </td>
-                        </tr>
-                    ) : (
-                        classes.map((cls) => {
+                    {(() => {
+                        const filtered = classes.filter(cls => {
+                            const matchSearch = cls.title?.toLowerCase().includes(searchTerm.toLowerCase());
+                            const matchCourse = !filterCourseId || cls.courseId === filterCourseId;
+                            return matchSearch && matchCourse;
+                        });
+                        if (filtered.length === 0) {
+                            return (
+                                <tr>
+                                <td colSpan={3} className="px-6 py-12 text-center text-gray-500">
+                                    <div className="flex flex-col items-center gap-2">
+                                    <Video size={32} className="text-gray-300" />
+                                    <p>{searchTerm || filterCourseId ? "No matching classes found." : "No upcoming classes found."}</p>
+                                    <Button variant="ghost" onClick={() => setScheduleModalOpen(true)} className="text-blue-600 hover:underline">
+                                        Schedule one now
+                                    </Button>
+                                    </div>
+                                </td>
+                                </tr>
+                            );
+                        }
+                        return filtered.map((cls) => {
                         const startDate = cls.startTime ? new Date(cls.startTime) : null;
                         const isHappeningNow = startDate 
                             ? (new Date() >= startDate && new Date() <= new Date(startDate.getTime() + (cls.duration || 60) * 60000))
@@ -410,7 +421,7 @@ export default function LiveClassManagementPage() {
                             </tr>
                         );
                         })
-                    )}
+                    })()}
                     </tbody>
                 </table>
                 </div>

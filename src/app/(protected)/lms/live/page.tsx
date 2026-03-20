@@ -15,6 +15,9 @@ export default function LiveClassesPage() {
   const router = useRouter();
   const [classes, setClasses] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [courses, setCourses] = useState<any[]>([]);
+  const [filterCourseId, setFilterCourseId] = useState("");
 
   useEffect(() => {
     fetchClasses();
@@ -58,17 +61,9 @@ export default function LiveClassesPage() {
           return true;
         });
       } else if (userData && userData.role === 'lecturer') {
-        // Fetch courses to filter by lecturer
+        filteredClasses = data;
         const allCourses = await courseService.getAllCourses();
-        const myCourseIds = allCourses
-          .filter(c => 
-            c.lecturerId === userData.uid || 
-            c.instructorId === userData.uid ||
-            (c.lecturerIds && c.lecturerIds.includes(userData.uid))
-          )
-          .map(c => c.id);
-
-        filteredClasses = data.filter(cls => cls.courseId && myCourseIds.includes(cls.courseId));
+        setCourses(allCourses);
       }
 
       setClasses(filteredClasses);
@@ -89,26 +84,63 @@ export default function LiveClassesPage() {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-20 pt-4 px-4 md:px-0 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Live Classes</h1>
-          <p className="text-gray-500">
-            {userData?.role === 'student' ? 'Join your scheduled sessions' : 'Manage and start your live sessions'}
-          </p>
-        </div>
-      </div>
-
-      {classes.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-200">
-          <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Video size={32} />
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Live Classes</h1>
+            <p className="text-gray-500">
+              {userData?.role === 'student' ? 'Join your scheduled sessions' : 'View and start any scheduled session'}
+            </p>
           </div>
-          <h3 className="text-lg font-medium text-gray-900">No Upcoming Classes</h3>
-          <p className="text-gray-500 mt-1">Check back later for scheduled sessions.</p>
+          {userData?.role === 'lecturer' && (
+            <div className="flex flex-1 flex-wrap items-center gap-2 w-full">
+              <div className="relative flex-1 min-w-[200px]">
+                <input
+                  type="text"
+                  placeholder="Search class topic..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full h-10 pl-9 pr-4 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/20 transition-all text-sm"
+                />
+                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+              </div>
+              <select
+                value={filterCourseId}
+                onChange={(e) => setFilterCourseId(e.target.value)}
+                className="h-10 px-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/20 transition-all text-sm min-w-[150px]"
+              >
+                <option value="">All Courses</option>
+                {courses.map(c => (
+                  <option key={c.id} value={c.id}>{c.title}</option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {classes.map((cls) => {
+
+      {(() => {
+        const filtered = classes.filter(cls => {
+          const matchSearch = cls.title?.toLowerCase().includes(searchTerm.toLowerCase());
+          const matchCourse = !filterCourseId || cls.courseId === filterCourseId;
+          return matchSearch && matchCourse;
+        });
+
+        if (filtered.length === 0) {
+          return (
+            <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-200">
+              <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Video size={32} />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900">No Upcoming Classes</h3>
+              <p className="text-gray-500 mt-1">
+                {searchTerm || filterCourseId ? "No matching classes found." : "Check back later for scheduled sessions."}
+              </p>
+            </div>
+          );
+        }
+
+        return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filtered.map((cls) => {
             const startDate = cls.startTime ? new Date(cls.startTime) : null;
             const isHappeningNow = startDate
               ? (new Date() >= startDate && new Date() <= new Date(startDate.getTime() + (cls.duration || 60) * 60000))
@@ -182,8 +214,9 @@ export default function LiveClassesPage() {
               </div>
             );
           })}
-        </div>
-      )}
+          </div>
+        );
+      })()}
     </div>
   );
 }
