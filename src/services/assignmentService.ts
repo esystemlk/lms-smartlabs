@@ -99,20 +99,20 @@ export const assignmentService = {
       .map(d => ({ id: d.id, ...d.data() } as Assignment))
       .filter(a => Boolean(a.courseId));
     const courseIds = [...new Set(assignments.map(a => a.courseId))];
-    const coursesMap = new Map<string, { title: string; lecturerId?: string; instructorId?: string }>();
+    const coursesMap = new Map<string, { title: string; lecturerId?: string; instructorId?: string; lecturerIds?: string[] }>();
     if (courseIds.length > 0) {
       const courseDocs = await Promise.all(courseIds.map(id => getDoc(doc(db, "courses", id))));
       courseDocs.forEach(cd => {
         if (cd.exists()) {
           const data: any = cd.data();
-          coursesMap.set(cd.id, { title: data.title, lecturerId: data.lecturerId, instructorId: data.instructorId });
+          coursesMap.set(cd.id, { title: data.title, lecturerId: data.lecturerId, instructorId: data.instructorId, lecturerIds: data.lecturerIds });
         }
       });
     }
     const mineAssignments = assignments.filter(a => {
       const c = coursesMap.get(a.courseId);
       if (!c) return false;
-      return c.lecturerId === lecturerId || c.instructorId === lecturerId;
+      return c.lecturerId === lecturerId || c.instructorId === lecturerId || (c.lecturerIds && c.lecturerIds.includes(lecturerId));
     });
     const results: Array<{ assignment: Assignment; courseTitle: string; submissions: AssignmentSubmission[] }> = [];
     for (const a of mineAssignments) {

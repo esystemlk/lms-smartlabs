@@ -61,7 +61,11 @@ export default function LiveClassesPage() {
         // Fetch courses to filter by lecturer
         const allCourses = await courseService.getAllCourses();
         const myCourseIds = allCourses
-          .filter(c => c.lecturerId === userData.uid || c.instructorId === userData.uid)
+          .filter(c => 
+            c.lecturerId === userData.uid || 
+            c.instructorId === userData.uid ||
+            (c.lecturerIds && c.lecturerIds.includes(userData.uid))
+          )
           .map(c => c.id);
 
         filteredClasses = data.filter(cls => cls.courseId && myCourseIds.includes(cls.courseId));

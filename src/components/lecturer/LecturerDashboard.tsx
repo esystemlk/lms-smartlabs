@@ -21,7 +21,11 @@ export function LecturerDashboard() {
     const load = async () => {
       try {
         const all = await courseService.getAllCourses();
-        const mine = all.filter(c => c.lecturerId === userData?.uid || c.instructorId === userData?.uid);
+        const mine = all.filter(c => 
+          c.lecturerId === userData?.uid || 
+          c.instructorId === userData?.uid || 
+          (c.lecturerIds && c.lecturerIds.includes(userData?.uid || ""))
+        );
         setCourses(mine);
         const live = await courseService.getUpcomingLiveClasses();
         const mineLive = live.filter(l => mine.some(c => c.id === l.courseId));

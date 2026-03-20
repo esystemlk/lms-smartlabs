@@ -245,29 +245,34 @@ export default function NewCoursePage() {
 
           {/* Additional Lecturers Selection */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Additional Lecturers (Optional)</label>
+            <label className="block text-sm font-medium text-gray-700">Additional Lecturers (Max 4)</label>
             <div className="p-3 border border-gray-200 rounded-xl bg-gray-50 max-h-40 overflow-y-auto space-y-2">
               {lecturers.length > 0 ? lecturers.filter(l => l.uid !== formData.instructorId).map(l => (
-                <label key={l.uid} className="flex items-center gap-2 cursor-pointer hover:bg-white p-1 rounded">
+                <label key={l.uid} className={`flex items-center gap-2 cursor-pointer hover:bg-white p-1 rounded ${!formData.lecturerIds.includes(l.uid) && formData.lecturerIds.length >= 4 ? 'opacity-50 cursor-not-allowed' : ''}`}>
                   <input
                     type="checkbox"
                     checked={formData.lecturerIds.includes(l.uid)}
+                    disabled={!formData.lecturerIds.includes(l.uid) && formData.lecturerIds.length >= 4}
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setFormData({ ...formData, lecturerIds: [...formData.lecturerIds, l.uid] });
+                        if (formData.lecturerIds.length < 4) {
+                          setFormData({ ...formData, lecturerIds: [...formData.lecturerIds, l.uid] });
+                        }
                       } else {
                         setFormData({ ...formData, lecturerIds: formData.lecturerIds.filter(id => id !== l.uid) });
                       }
                     }}
                     className="rounded border-gray-300 text-brand-blue focus:ring-brand-blue"
                   />
-                  <span className="text-sm text-gray-700">{l.name}</span>
+                  <span className="text-sm text-gray-700">{l.name} ({l.email})</span>
                 </label>
               )) : (
                 <p className="text-sm text-gray-500 italic">No other lecturers found.</p>
               )}
             </div>
-            <p className="text-xs text-gray-500">Selected lecturers will also have manage access to this course.</p>
+            <p className="text-xs text-gray-500">
+              Attached lecturers (total 5 including primary) can view the course on their dashboard and manage/start sessions.
+            </p>
           </div>
 
           <div className="space-y-2">
