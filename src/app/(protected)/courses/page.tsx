@@ -33,6 +33,7 @@ export default function CoursesPage() {
   const { userData } = useAuth();
   const { currency, formatPrice } = useCurrency();
   const [courses, setCourses] = useState<Course[]>([]);
+  const [pendingCourses, setPendingCourses] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Enrollment Modal State
@@ -63,8 +64,24 @@ export default function CoursesPage() {
         }
       } catch { }
     };
+    
+    const checkPending = async () => {
+      if (userData) {
+        try {
+          const enrollments = await enrollmentService.getUserEnrollments(userData.uid);
+          const pending = enrollments
+            .filter(e => e.status === 'pending' || e.status === 'pending_payment')
+            .map(e => e.courseId);
+          setPendingCourses(pending);
+        } catch (err) {
+          console.error("Error checking pending enrollments:", err);
+        }
+      }
+    };
+
     loadSettings();
-  }, []);
+    checkPending();
+  }, [userData]);
 
   const fetchCourses = async () => {
     try {
@@ -79,8 +96,10 @@ export default function CoursesPage() {
     }
   };
 
-  const isEnrolled = (courseId: string) => {
-    return userData?.enrolledCourses?.includes(courseId);
+  const getEnrollmentStatus = (courseId: string) => {
+    if (userData?.enrolledCourses?.includes(courseId)) return 'active';
+    if (pendingCourses.includes(courseId)) return 'pending';
+    return 'none';
   };
 
   const handleOpenEnrollModal = async (course: Course) => {
@@ -282,23 +301,37 @@ export default function CoursesPage() {
                     {formatPrice(course.priceLKR || course.price, course.priceUSD)}
                   </span>
                 </div>
-                {isEnrolled(course.id) ? (
-                  <Button
-                    onClick={() => router.push('/dashboard')}
-                    variant="outline"
-                    className="border-brand-blue text-brand-blue hover:bg-blue-50 text-xs md:text-sm h-8 md:h-10"
-                  >
-                    Continue Learning
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={() => handleOpenEnrollModal(course)}
-                    variant="secondary"
-                    className="shadow-lg shadow-blue-500/20 text-xs md:text-sm h-8 md:h-10"
-                  >
-                    Enroll Now
-                  </Button>
-                )}
+                {(() => {
+                  const status = getEnrollmentStatus(course.id);
+                  if (status === 'active') {
+                    return (
+                      <Button
+                        onClick={() => router.push('/dashboard')}
+                        variant="outline"
+                        className="border-brand-blue text-brand-blue hover:bg-blue-50 text-xs md:text-sm h-8 md:h-10"
+                      >
+                        Continue Learning
+                      </Button>
+                    );
+                  } else if (status === 'pending') {
+                    return (
+                      <div className="flex items-center gap-2 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100">
+                        <Clock size={12} className="text-amber-600" />
+                        <span className="text-[10px] md:text-xs font-bold text-amber-800">Pending Approval</span>
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <Button
+                        onClick={() => handleOpenEnrollModal(course)}
+                        variant="secondary"
+                        className="shadow-lg shadow-blue-500/20 text-xs md:text-sm h-8 md:h-10"
+                      >
+                        Enroll Now
+                      </Button>
+                    );
+                  }
+                })()}
               </div>
             </div>
           </div>

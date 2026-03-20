@@ -426,6 +426,22 @@ export function RecordingsModal({
                                 value={newRecording.durationMinutes}
                                 onChange={e => setNewRecording({ ...newRecording, durationMinutes: e.target.value })}
                             />
+                            {selectedBatch.timeSlots && selectedBatch.timeSlots.length > 0 && (
+                                <div className="space-y-1">
+                                    <label className="block text-sm font-medium text-gray-700">Restrict to Time Slot</label>
+                                    <select
+                                        value={newRecording.timeSlotId || ""}
+                                        onChange={e => setNewRecording({ ...newRecording, timeSlotId: e.target.value })}
+                                        className="w-full h-10 px-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all bg-white text-sm"
+                                    >
+                                        <option value="">All Students (Default)</option>
+                                        {selectedBatch.timeSlots.map(slot => (
+                                            <option key={slot.id} value={slot.id}>{slot.label}</option>
+                                        ))}
+                                    </select>
+                                    <p className="text-[10px] text-gray-400">If selected, only students in this slot will see the recording.</p>
+                                </div>
+                            )}
                             <div className="col-span-2 flex justify-end">
                                 <Button type="submit" disabled={recordingSaving}>
                                     {recordingSaving ? "Adding..." : "Add to Batch"}

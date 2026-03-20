@@ -5,7 +5,8 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { courseService } from "@/services/courseService";
 import { bunnyService } from "@/services/bunnyService";
-import { Lesson } from "@/lib/types";
+import { enrollmentService } from "@/services/enrollmentService";
+import { Lesson, Enrollment } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { Loader2, Play, Calendar, Clock, Video, X } from "lucide-react";
 import { format } from "date-fns";
@@ -34,22 +35,48 @@ export default function MyRecordingsPage() {
 
   const fetchRecordings = async () => {
     try {
-      const data = await courseService.getPastLiveClasses();
+      if (!userData) return;
+
+      const [data, enrollments] = await Promise.all([
+        courseService.getPastLiveClasses(),
+        userData.role === 'student' ? enrollmentService.getUserEnrollments(userData.uid) : Promise.resolve([] as Enrollment[])
+      ]);
       
-      // Filter by enrolled batches and recording status
+      // Filter by recording status and video ID presence
       let filtered = data.filter(l => l.recordingStatus === 'processed' && l.bunnyVideoId);
       
-      if (userData && userData.role === 'student') {
+      if (userData.role === 'student') {
+        const activeEnrollments = enrollments.filter(e => e.status === 'active' || e.status === 'completed');
         const userBatches = userData.enrolledBatches || [];
         
         if (userBatches.length === 0) {
-            // If student has no batches, show nothing (strict)
             filtered = [];
         } else {
+            // Map batchId -> timeSlotId for quick lookup
+            const batchTimeSlots = new Map<string, string>();
+            activeEnrollments.forEach(e => {
+              if (e.batchId && e.timeSlotId) {
+                batchTimeSlots.set(e.batchId, e.timeSlotId);
+              }
+            });
+
             filtered = filtered.filter(cls => {
-                // Must have batchIds and at least one must match user's batches
-                // STRICT MODE: Only show videos that belong to the user's batches
-                return cls.batchIds && cls.batchIds.length > 0 && cls.batchIds.some(id => userBatches.includes(id));
+                // Must have batchIds
+                if (!cls.batchIds || cls.batchIds.length === 0) return false;
+
+                // Check if student is in any of the batches assigned to this class
+                const matchingBatchId = cls.batchIds.find(id => userBatches.includes(id));
+                if (!matchingBatchId) return false;
+
+                // If class has a time slot restriction
+                if (cls.timeSlotId) {
+                  const studentTimeSlotId = batchTimeSlots.get(matchingBatchId);
+                  // Only show if student is in the EXACT same time slot
+                  return studentTimeSlotId === cls.timeSlotId;
+                }
+
+                // If no time slot restriction on the class, any student in the matching batch can see it
+                return true;
             });
         }
       }

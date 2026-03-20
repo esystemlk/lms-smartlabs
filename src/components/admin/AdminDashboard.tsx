@@ -7,7 +7,7 @@ import {
   ArrowUpRight, ArrowDownRight, MoreHorizontal,
   Plus, Search, Bell, Calendar, GraduationCap,
   Settings, MessageSquare, Shield, Clock,
-  ChevronRight, PlayCircle, FolderOpen, CreditCard, Video
+  ChevronRight, PlayCircle, FolderOpen, CreditCard, Video, LayoutGrid
 } from "lucide-react";
 import { userService } from "@/services/userService";
 import { courseService } from "@/services/courseService";
@@ -126,6 +126,12 @@ export function AdminDashboard() {
             <Calendar className="w-4 h-4 text-brand-blue" />
             {format(new Date(), "MMMM d, yyyy")}
           </div>
+          <Link href="/lms">
+            <Button className="rounded-full px-5 bg-brand-blue hover:bg-blue-600 flex items-center gap-2">
+              <LayoutGrid size={16} />
+              LMS Dashboard
+            </Button>
+          </Link>
           <Link href="/management?tab=settings">
             <Button variant="outline" className="rounded-full w-10 h-10 p-0">
               <Settings className="w-4 h-4" />
@@ -296,6 +302,7 @@ export function AdminDashboard() {
           >
             <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4 px-1">Quick Actions</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <QuickAction href="/lms" icon={LayoutGrid} label="Open LMS" color="bg-brand-blue" />
               {isAdmin && <QuickAction href="/management?tab=users" icon={Users} label="Add User" color="bg-blue-500" />}
               <QuickAction href="/management?tab=recordings" icon={PlayCircle} label="Rec. Classes" color="bg-violet-500" />
               <QuickAction href="/management?tab=courses" icon={BookOpen} label="Courses" color="bg-emerald-500" />

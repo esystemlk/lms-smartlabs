@@ -240,13 +240,13 @@ export default function LoginPage() {
   );
 
   return (
-    <div className="min-h-screen w-full relative flex items-center justify-center overflow-hidden bg-[#0f172a]">
+    <div className="min-h-screen w-full relative flex items-center justify-center overflow-y-auto lg:overflow-hidden bg-[#0f172a] py-12 md:py-0">
       {/* Dynamic Background */}
-      <div className="absolute inset-0 z-0">
+      <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-slate-900 to-slate-950 z-10" />
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-brand-blue/30 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-500/10 rounded-full blur-[120px]" />
-        <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-[80px]" />
+        <div className="absolute -top-40 -right-40 w-64 h-64 md:w-96 md:h-96 bg-brand-blue/20 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-indigo-500/10 rounded-full blur-[120px]" />
+        <div className="absolute -bottom-20 -left-20 w-48 h-48 md:w-72 md:h-72 bg-purple-500/10 rounded-full blur-[80px]" />
         
         {/* Pattern Overlay */}
         <div className="absolute inset-0 z-20 opacity-[0.03]" 
@@ -255,7 +255,7 @@ export default function LoginPage() {
       </div>
 
       {/* Main Container */}
-      <div className="relative z-30 w-full max-w-6xl mx-auto p-4 flex flex-col md:flex-row items-center gap-12 lg:gap-24">
+      <div className="relative z-30 w-full max-w-6xl mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center gap-10 md:gap-12 lg:gap-24">
         
         {/* Left Side: Brand & Welcome */}
         <div className="hidden md:flex flex-col flex-1 text-white space-y-8 animate-fade-in-up">
@@ -354,7 +354,7 @@ export default function LoginPage() {
 
             {/* Forms */}
             {mode === 'login' && (
-              <form onSubmit={handleLogin} className="space-y-5">
+              <form onSubmit={handleLogin} className="space-y-4 md:space-y-5">
                 <div className="space-y-1.5">
                   <label className="text-xs font-semibold text-gray-700 uppercase tracking-wider">Email</label>
                   <div className="relative">
@@ -363,7 +363,7 @@ export default function LoginPage() {
                       type="email" 
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all text-sm font-medium"
+                      className="w-full pl-10 pr-4 py-2.5 md:py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all text-sm font-medium"
                       placeholder="student@smartlabs.lk"
                       required
                     />
@@ -387,7 +387,7 @@ export default function LoginPage() {
                       type={showPassword ? "text" : "password"} 
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full pl-10 pr-10 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all text-sm font-medium"
+                      className="w-full pl-10 pr-10 py-2.5 md:py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all text-sm font-medium"
                       placeholder="••••••••"
                       required
                     />
@@ -401,18 +401,18 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                <Button type="submit" fullWidth className="h-12 text-base rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all">
+                <Button type="submit" fullWidth className="h-11 md:h-12 text-base rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all">
                   {loading ? <Loader2 className="animate-spin" /> : "Sign In"}
                 </Button>
 
-                <div className="relative flex items-center justify-center my-6">
+                <div className="relative flex items-center justify-center my-4 md:my-6">
                   <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
-                  <span className="relative bg-white px-3 text-xs text-gray-500 uppercase font-medium">Or continue with</span>
+                  <span className="relative bg-white px-3 text-[10px] md:text-xs text-gray-500 uppercase font-medium">Or continue with</span>
                 </div>
 
                 <GoogleButton />
                 
-                <p className="text-center text-sm text-gray-600 mt-6">
+                <p className="text-center text-sm text-gray-600 mt-4 md:mt-6">
                   Don't have an account?{" "}
                   <button type="button" onClick={() => setMode('register')} className="text-brand-blue font-bold hover:underline">
                     Sign Up
@@ -422,26 +422,26 @@ export default function LoginPage() {
             )}
 
             {mode === 'register' && (
-              <form onSubmit={handleRegister} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+              <form onSubmit={handleRegister} className="space-y-3 md:space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-gray-700 uppercase">Name</label>
+                    <label className="text-[10px] md:text-xs font-semibold text-gray-700 uppercase">Name</label>
                     <input 
                       type="text" 
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
+                      className="w-full px-4 py-2.5 md:py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
                       placeholder="John Doe"
                       required
                     />
                   </div>
                   <div className="space-y-1.5">
-                     <label className="text-xs font-semibold text-gray-700 uppercase">Mobile</label>
+                     <label className="text-[10px] md:text-xs font-semibold text-gray-700 uppercase">Mobile</label>
                      <input 
                       type="tel" 
                       value={contact}
                       onChange={(e) => setContact(e.target.value)}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
+                      className="w-full px-4 py-2.5 md:py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
                       placeholder="077..."
                       required
                     />

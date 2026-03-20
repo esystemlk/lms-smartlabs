@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import {
     Loader2,
     LayoutDashboard,
+    GraduationCap,
     BookOpen,
     PlayCircle,
     FolderOpen,
@@ -184,7 +185,7 @@ export default function ManagementPortalPage() {
                             <TabButton
                                 active={activeTab === 'students'}
                                 onClick={() => handleTabChange('students')}
-                                icon={LayoutDashboard}
+                                icon={GraduationCap}
                                 label="Students"
                             />
                             <TabButton

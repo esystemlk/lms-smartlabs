@@ -19,7 +19,9 @@ import {
   Calendar,
   FolderOpen,
   ShieldAlert,
-  Upload
+  Upload,
+  CreditCard,
+  LayoutGrid
 } from "lucide-react";
 import { clsx } from "clsx";
 import { Transition } from "@headlessui/react";
@@ -27,18 +29,32 @@ import { Fragment, useMemo } from "react";
 import { useAuth } from "@/context/AuthContext";
 
 const navConfig = [
-  { href: "/dashboard", label: "Main Menu", icon: LayoutDashboard, section: "General", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/learn", label: "Learn", icon: Play, section: "Learning", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/community", label: "Community", icon: MessageCircle, section: "Learning", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/courses", label: "Courses", icon: BookOpen, section: "Learning", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/websites", label: "Our Websites", icon: Globe, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/messages", label: "Messages", icon: MessageSquare, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/lecturers", label: "Lecturers", icon: GraduationCap, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/activities", label: "Activities", icon: Activity, section: "Learning", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, section: "General", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/lms", label: "LMS Dashboard", icon: LayoutGrid, section: "General", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
 
+  { href: "/learn", label: "My Learning", icon: Play, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/courses", label: "Browse Courses", icon: BookOpen, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/lms/live", label: "Join Live Classes", icon: Video, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+
+  { href: "/live-classes", label: "Schedule Classes", icon: Calendar, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/management?tab=courses", label: "My Courses", icon: BookOpen, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/management?tab=recordings", label: "Recorded Classes", icon: Video, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
   { href: "/management", label: "Management Portal", icon: Monitor, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
 
-  { href: "/developer", label: "Developer", icon: ShieldAlert, section: "Developer", roles: ["developer"] as const },
+  { href: "/management?tab=users", label: "User Management", icon: Users, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
+  { href: "/management?tab=students", label: "Student Management", icon: GraduationCap, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
+  { href: "/management?tab=enrollments", label: "Enrollments & Payments", icon: CreditCard, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
+  { href: "/management?tab=attendance", label: "Attendance Records", icon: Activity, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
+  { href: "/management?tab=settings", label: "System Settings", icon: Settings, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
+
+  { href: "/community", label: "Community", icon: MessageCircle, section: "Interaction", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/messages", label: "Messages", icon: MessageSquare, section: "Interaction", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+
+  { href: "/websites", label: "Our Websites", icon: Globe, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/lecturers", label: "Lecturers", icon: GraduationCap, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/activities", label: "Activities", icon: Activity, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+
+  { href: "/developer", label: "Developer Tools", icon: ShieldAlert, section: "Developer", roles: ["admin", "superadmin", "developer"] as const },
 ] as const;
 
 interface SidebarProps {
@@ -56,7 +72,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     const isNewStudent = userData.role === 'student' && (!userData.enrolledBatches || userData.enrolledBatches.length === 0);
 
     if (isNewStudent) {
-      const items = navConfig.filter(i => ["/courses", "/activities", "/websites", "/community", "/learn"].includes(i.href));
+      const items = navConfig.filter(i => ["/lms", "/courses", "/activities", "/websites", "/community", "/learn"].includes(i.href));
       return [{ label: "Menu", items }];
     }
 
@@ -66,10 +82,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       if (!grouped[item.section]) grouped[item.section] = [];
       grouped[item.section].push(item);
     }
-    const order = ["General", "Learning", "Management", "Admin", "Developer", "Resources"];
+    const order = ["General", "Student", "Management", "Administration", "Interaction", "Resources", "Developer"];
     return Object.keys(grouped)
-      .sort((a, b) => order.indexOf(a) - order.indexOf(b))
-      .map(label => ({ label, items: grouped[label] }));
+      .sort((a, b) => {
+        const indexA = order.indexOf(a);
+        const indexB = order.indexOf(b);
+        return (indexA === -1 ? 99 : indexA) - (indexB === -1 ? 99 : indexB);
+      })
+      .map(label => ({ label, items: grouped[label as keyof typeof grouped] }));
   }, [userData]);
 
   return (
@@ -86,7 +106,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         leaveTo="opacity-0"
       >
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 z-[90] md:hidden"
           onClick={onClose}
         />
       </Transition>
@@ -102,7 +122,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         leaveFrom="translate-x-0"
         leaveTo="-translate-x-full"
       >
-        <aside className="fixed top-0 left-0 bottom-0 w-72 bg-white/90 dark:bg-gray-900/95 backdrop-blur-xl z-50 shadow-2xl flex flex-col md:hidden transition-colors duration-300">
+        <aside className="fixed top-0 left-0 bottom-0 w-72 bg-white dark:bg-gray-900 z-[100] shadow-2xl flex flex-col md:hidden transition-colors duration-300 pb-safe">
           <div className="p-6 border-b border-border flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 relative">
@@ -155,18 +175,18 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             ))}
           </nav>
 
-          <div className="p-4 border-t border-border">
-            <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800">
-              <div className="w-8 h-8 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold text-xs">
+          <div className="p-3 md:p-4 border-t border-border mt-auto">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 dark:bg-gray-800">
+              <div className="w-7 h-7 rounded-lg bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold text-[10px]">
                 SL
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">Smart Labs LMS</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">v1.0.0 (Mobile)</p>
+                <p className="text-xs font-semibold text-foreground truncate">Smart Labs LMS</p>
+                <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">v1.1.0 (Mobile Optimized)</p>
               </div>
             </div>
-            <div className="mt-4 text-center">
-              <p className="text-[10px] text-gray-400 dark:text-gray-600">
+            <div className="mt-3 text-center">
+              <p className="text-[9px] text-gray-400 dark:text-gray-600">
                 Developed & Powered by <span className="font-bold text-brand-blue">ESystemLK</span>
               </p>
             </div>

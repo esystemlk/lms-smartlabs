@@ -45,6 +45,8 @@ export default function CourseDetailsPage() {
   const [checkingAccess, setCheckingAccess] = useState(true);
   const [progress, setProgress] = useState(0);
   const [completedLessonIds, setCompletedLessonIds] = useState<string[]>([]);
+  const [userTimeSlotId, setUserTimeSlotId] = useState<string | null>(null);
+  const [hasPendingRequest, setHasPendingRequest] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +56,31 @@ export default function CourseDetailsPage() {
           courseService.getLessons(courseId)
         ]);
         setCourse(courseData);
-        setLessons(lessonsData);
+
+        // Filter lessons based on access rights
+        let filteredLessons = lessonsData;
+        if (userData && userData.role === 'student' && !["admin", "superadmin", "developer"].includes(userData.role)) {
+          // Find enrollment for this course
+          const enrollments = await enrollmentService.getUserEnrollments(userData.uid);
+          const enrollment = enrollments.find(e => e.courseId === courseId && (e.status === 'active' || e.status === 'completed'));
+          
+          if (enrollment) {
+            filteredLessons = lessonsData.filter(lesson => {
+              // If it's a live class recording with batch restrictions
+              if (lesson.type === 'live_class' && lesson.batchIds && lesson.batchIds.length > 0) {
+                const matchesBatch = lesson.batchIds.includes(enrollment.batchId);
+                if (!matchesBatch) return false;
+
+                // If also restricted by time slot
+                if (lesson.timeSlotId) {
+                  return lesson.timeSlotId === enrollment.timeSlotId;
+                }
+              }
+              return true;
+            });
+          }
+        }
+        setLessons(filteredLessons);
       } catch (error) {
         console.error("Error fetching course details:", error);
       } finally {
@@ -77,26 +103,35 @@ export default function CourseDetailsPage() {
 
       try {
         const enrollments = await enrollmentService.getUserEnrollments(userData.uid);
-        // Find active enrollment for this course
-        const enrollment = enrollments.find(e => e.courseId === courseId && e.status === 'active');
+        // Find active or pending enrollment for this course
+        const active = enrollments.find(e => e.courseId === courseId && e.status === 'active');
+        const pending = enrollments.find(e => e.courseId === courseId && (e.status === 'pending' || e.status === 'pending_payment'));
+        const completed = enrollments.find(e => e.courseId === courseId && e.status === 'completed');
 
-        if (enrollment) {
+        if (active || completed) {
+          const enrollment = active || completed;
           // Check expiry
           let isValid = true;
-          if (enrollment.validUntil) {
+          if (enrollment?.validUntil) {
             const now = new Date();
             const expiry = enrollment.validUntil.toDate();
             if (now > expiry) isValid = false;
           }
 
-          if (isValid) {
+          if (isValid || completed) {
             setAccessGranted(true);
-            setProgress(enrollment.progress || 0);
-            setCompletedLessonIds(enrollment.completedLessonIds || []);
+            setProgress(enrollment?.progress || 0);
+            setCompletedLessonIds(enrollment?.completedLessonIds || []);
+            setUserTimeSlotId(enrollment?.timeSlotId || null);
             // Fetch Batch Details
-            const batch = await courseService.getBatch(courseId, enrollment.batchId);
-            setEnrolledBatch(batch);
+            if (enrollment?.batchId) {
+              const batch = await courseService.getBatch(courseId, enrollment.batchId);
+              setEnrolledBatch(batch);
+            }
           }
+        } else if (pending) {
+            // Found a pending request
+            setHasPendingRequest(true);
         }
       } catch (err) {
         console.error("Error checking enrollment:", err);
@@ -162,6 +197,21 @@ export default function CourseDetailsPage() {
                 </Link>
               )}
             </div>
+          </div>
+        ) : hasPendingRequest ? (
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="bg-amber-50 border border-amber-100 px-4 py-2 rounded-xl flex items-center gap-2">
+              <Clock className="w-4 h-4 text-amber-600" />
+              <div className="text-xs text-amber-800">
+                <p className="font-bold">Enrollment Pending</p>
+                <p>Waiting for admin approval</p>
+              </div>
+            </div>
+            <Link href="/dashboard">
+              <Button variant="outline" className="rounded-full">
+                Go to Dashboard
+              </Button>
+            </Link>
           </div>
         ) : (
           <div className="flex flex-col md:flex-row items-center gap-4">
@@ -278,6 +328,9 @@ export default function CourseDetailsPage() {
             </div>
             <p className="text-xs md:text-sm text-gray-500 mt-1">
               Live class recordings from <span className="font-medium text-brand-blue">{enrolledBatch.name}</span>
+              {userTimeSlotId && (
+                <> • Restricted to <span className="font-medium text-brand-blue">{userTimeSlotId}</span></>
+              )}
             </p>
           </div>
 
@@ -304,6 +357,20 @@ export default function CourseDetailsPage() {
               );
             }
 
+            // Filter recordings by timeSlot if applicable
+            const filteredRecordings = (enrolledBatch.recordedClasses || []).filter(recording => {
+              if (!recording.timeSlotId) return true; // Show to everyone if no restriction
+              return recording.timeSlotId === userTimeSlotId; // Show only if matches student's slot
+            });
+
+            if (filteredRecordings.length === 0) {
+              return (
+                <div className="p-8 text-center bg-gray-50/50">
+                  <p className="text-sm text-gray-500">No recorded classes available for your time slot yet.</p>
+                </div>
+              );
+            }
+
             return (
               <div className="divide-y divide-gray-100">
                 {/* Expiry Warning if close */}
@@ -314,7 +381,7 @@ export default function CourseDetailsPage() {
                   </div>
                 )}
 
-                {[...(enrolledBatch.recordedClasses || [])]
+                {[...filteredRecordings]
                   .sort((a, b) => (b.order || 0) - (a.order || 0) || new Date(b.date).getTime() - new Date(a.date).getTime())
                   .map((recording, index) => (
                     <a

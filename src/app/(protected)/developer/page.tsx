@@ -14,14 +14,13 @@ import { ShieldAlert, Database, HardDrive, Video, Bell, Settings, UserCog } from
 export default function DeveloperPage() {
   const { userData, loading } = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("database");
+  const [activeTab, setActiveTab] = useState(() => {
+    if (["developer", "superadmin"].includes(userData?.role || "")) return "database";
+    return "bunny";
+  });
 
   useEffect(() => {
-    if (!loading && userData?.role !== "developer") {
-      // router.push("/dashboard"); 
-      // Commented out strict redirect for testing if I can't simulate developer role easily, 
-      // but in production code I should enable it. 
-      // For now I'll redirect to dashboard as requested by "limited to see the developer role".
+    if (!loading && !["developer", "admin", "superadmin"].includes(userData?.role || "")) {
       router.push("/dashboard");
     }
   }, [userData, loading, router]);
@@ -35,7 +34,7 @@ export default function DeveloperPage() {
   }
 
   // Double check render protection
-  if (userData?.role !== "developer") {
+  if (!["developer", "admin", "superadmin"].includes(userData?.role || "")) {
       return null;
   }
 
@@ -54,22 +53,26 @@ export default function DeveloperPage() {
        {/* Tabs Navigation */}
        <div className="-mx-4 md:mx-0 px-4 md:px-0">
          <div className="flex overflow-x-auto border-b bg-white rounded-t-xl px-2 pb-1 md:pb-0 scrollbar-hide">
-            <button
-              onClick={() => setActiveTab("database")}
-              className={`px-4 md:px-6 py-3 md:py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${
-                activeTab === "database" ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              <Database className="w-4 h-4" /> Firestore
-            </button>
-            <button
-              onClick={() => setActiveTab("storage")}
-              className={`px-4 md:px-6 py-3 md:py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${
-                activeTab === "storage" ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              <HardDrive className="w-4 h-4" /> Storage
-            </button>
+            {["developer", "superadmin"].includes(userData?.role || "") && (
+              <button
+                onClick={() => setActiveTab("database")}
+                className={`px-4 md:px-6 py-3 md:py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${
+                  activeTab === "database" ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <Database className="w-4 h-4" /> Firestore
+              </button>
+            )}
+            {["developer", "superadmin"].includes(userData?.role || "") && (
+              <button
+                onClick={() => setActiveTab("storage")}
+                className={`px-4 md:px-6 py-3 md:py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${
+                  activeTab === "storage" ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <HardDrive className="w-4 h-4" /> Storage
+              </button>
+            )}
             <button
               onClick={() => setActiveTab("bunny")}
               className={`px-4 md:px-6 py-3 md:py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${
@@ -94,14 +97,16 @@ export default function DeveloperPage() {
             >
               <Settings className="w-4 h-4" /> Settings
             </button>
-            <button
-              onClick={() => setActiveTab("impersonation")}
-              className={`px-4 md:px-6 py-3 md:py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${
-                activeTab === "impersonation" ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              <UserCog className="w-4 h-4" /> Roles
-            </button>
+            {["developer", "superadmin"].includes(userData?.role || "") && (
+              <button
+                onClick={() => setActiveTab("impersonation")}
+                className={`px-4 md:px-6 py-3 md:py-4 font-medium text-sm flex items-center gap-2 border-b-2 transition-colors whitespace-nowrap ${
+                  activeTab === "impersonation" ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <UserCog className="w-4 h-4" /> Roles
+              </button>
+            )}
          </div>
        </div>
 

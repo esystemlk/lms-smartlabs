@@ -98,7 +98,8 @@ export default function EditCoursePage() {
     title: "",
     videoUrl: "",
     date: new Date().toISOString().split('T')[0],
-    durationMinutes: ""
+    durationMinutes: "",
+    timeSlotId: ""
   });
   const [recordingSaving, setRecordingSaving] = useState(false);
 
@@ -415,13 +416,13 @@ export default function EditCoursePage() {
 
     setRecordingSaving(true);
     try {
-      // Create a recording object
       const recordingData: any = {
         id: Date.now().toString(),
         title: newRecording.title || "Untitled Recording",
         videoUrl: newRecording.videoUrl,
         date: newRecording.date || new Date().toISOString().split('T')[0],
         durationMinutes: parseInt(newRecording.durationMinutes) || 0,
+        timeSlotId: newRecording.timeSlotId || null,
       };
 
       // Add to Firestore
@@ -433,7 +434,8 @@ export default function EditCoursePage() {
         title: "",
         videoUrl: "",
         date: new Date().toISOString().split('T')[0],
-        durationMinutes: ""
+        durationMinutes: "",
+        timeSlotId: ""
       });
 
       alert("Recording added successfully!");
@@ -679,7 +681,7 @@ export default function EditCoursePage() {
 
           <Input
             label="Tags (comma separated)"
-            placeholder="e.g. ielts, pte, grammar, vocabulary"
+            placeholder="e.g. pte, reading, grammar, vocabulary"
             value={formData.tags}
             onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
           />

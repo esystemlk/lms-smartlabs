@@ -39,6 +39,26 @@ export const enrollmentService = {
     websitePaymentEmail?: string,
     websitePaymentName?: string
   ) {
+    // Check for existing enrollment to prevent duplicates
+    const existingQ = query(
+      collection(db, ENROLLMENTS_COLLECTION),
+      where("userId", "==", userId),
+      where("courseId", "==", course.id),
+      where("batchId", "==", batch.id),
+      where("status", "in", ["active", "pending", "pending_payment", "completed"])
+    );
+    const existingSnapshot = await getDocs(existingQ);
+    if (!existingSnapshot.empty) {
+      const existing = existingSnapshot.docs[0].data() as Enrollment;
+      if (existing.status === 'active') {
+        throw new Error("You are already enrolled in this course and batch.");
+      } else if (existing.status === 'completed') {
+        throw new Error("You have already completed this course.");
+      } else {
+        throw new Error("You already have a pending enrollment request for this course and batch. Please wait for admin approval.");
+      }
+    }
+
     let receiptUrl = "";
     if (paymentMethod === 'transfer' && receiptFile) {
       const storageRef = ref(storage, `receipts/${userId}/${Date.now()}_${receiptFile.name}`);
@@ -504,5 +524,137 @@ export const enrollmentService = {
     await updateDoc(enrollmentRef, updates);
 
     return { success: true, progress };
+  },
+
+  // Delete Enrollment (Admin)
+  async deleteEnrollment(enrollmentId: string) {
+    const enrollmentRef = doc(db, ENROLLMENTS_COLLECTION, enrollmentId);
+    const enrollmentSnap = await getDoc(enrollmentRef);
+    if (!enrollmentSnap.exists()) throw new Error("Enrollment not found");
+    const data = enrollmentSnap.data() as Enrollment;
+
+    const batchOp = writeBatch(db);
+
+    // 1. Remove from User's arrays (if active/completed)
+    if (['active', 'completed'].includes(data.status)) {
+      const userRef = doc(db, USERS_COLLECTION, data.userId);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        const updatedCourses = (userData.enrolledCourses || []).filter((id: string) => id !== data.courseId);
+        const updatedBatches = (userData.enrolledBatches || []).filter((id: string) => id !== data.batchId);
+        batchOp.update(userRef, {
+          enrolledCourses: updatedCourses,
+          enrolledBatches: updatedBatches
+        });
+      }
+
+      // 2. Decrement Batch Count
+      const batchRef = doc(db, COURSES_COLLECTION, data.courseId, BATCHES_COLLECTION, data.batchId);
+      batchOp.update(batchRef, {
+        enrolledCount: increment(-1)
+      });
+    }
+
+    // 3. Delete the enrollment document
+    batchOp.delete(enrollmentRef);
+
+    await batchOp.commit();
+  },
+
+  // Change Student Course/Batch (Admin)
+  async updateStudentEnrollment(
+    enrollmentId: string,
+    newCourse: Course,
+    newBatch: Batch,
+    newTimeSlot?: { id: string; label: string } | null
+  ) {
+    const enrollmentRef = doc(db, ENROLLMENTS_COLLECTION, enrollmentId);
+    const enrollmentSnap = await getDoc(enrollmentRef);
+    if (!enrollmentSnap.exists()) throw new Error("Enrollment not found");
+    const oldData = enrollmentSnap.data() as Enrollment;
+
+    const batchOp = writeBatch(db);
+    const userRef = doc(db, USERS_COLLECTION, oldData.userId);
+
+    // 1. If changing course/batch, handle counts and arrays if status was active
+    if (oldData.status === 'active' || oldData.status === 'completed') {
+      // Remove old
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        let enrolledCourses = (userData.enrolledCourses || []).filter((id: string) => id !== oldData.courseId);
+        let enrolledBatches = (userData.enrolledBatches || []).filter((id: string) => id !== oldData.batchId);
+        
+        // Add new
+        enrolledCourses = [...new Set([...enrolledCourses, newCourse.id])];
+        enrolledBatches = [...new Set([...enrolledBatches, newBatch.id])];
+        
+        batchOp.update(userRef, { enrolledCourses, enrolledBatches });
+      }
+
+      // Decrement old batch
+      const oldBatchRef = doc(db, COURSES_COLLECTION, oldData.courseId, BATCHES_COLLECTION, oldData.batchId);
+      batchOp.update(oldBatchRef, { enrolledCount: increment(-1) });
+
+      // Increment new batch
+      const newBatchRef = doc(db, COURSES_COLLECTION, newCourse.id, BATCHES_COLLECTION, newBatch.id);
+      batchOp.update(newBatchRef, { enrolledCount: increment(1) });
+    }
+
+    // 2. Update Enrollment Doc
+    batchOp.update(enrollmentRef, {
+      courseId: newCourse.id,
+      courseTitle: newCourse.title,
+      batchId: newBatch.id,
+      batchName: newBatch.name,
+      timeSlotId: newTimeSlot?.id || null,
+      timeSlotLabel: newTimeSlot?.label || null,
+      updatedAt: serverTimestamp()
+    });
+
+    await batchOp.commit();
+  },
+
+  // Toggle Status (Admin - Can use for banning/deactivating)
+  async toggleEnrollmentStatus(enrollmentId: string, newStatus: Enrollment['status']) {
+    const enrollmentRef = doc(db, ENROLLMENTS_COLLECTION, enrollmentId);
+    const enrollmentSnap = await getDoc(enrollmentRef);
+    if (!enrollmentSnap.exists()) throw new Error("Enrollment not found");
+    const data = enrollmentSnap.data() as Enrollment;
+
+    const batchOp = writeBatch(db);
+    const userRef = doc(db, USERS_COLLECTION, data.userId);
+
+    // If moving FROM active/completed TO something else (like banned/rejected)
+    if ((data.status === 'active' || data.status === 'completed') && !['active', 'completed'].includes(newStatus)) {
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        const enrolledCourses = (userData.enrolledCourses || []).filter((id: string) => id !== data.courseId);
+        const enrolledBatches = (userData.enrolledBatches || []).filter((id: string) => id !== data.batchId);
+        batchOp.update(userRef, { enrolledCourses, enrolledBatches });
+      }
+
+      const batchRef = doc(db, COURSES_COLLECTION, data.courseId, BATCHES_COLLECTION, data.batchId);
+      batchOp.update(batchRef, { enrolledCount: increment(-1) });
+    }
+    // If moving TO active/completed FROM something else
+    else if (!['active', 'completed'].includes(data.status) && (newStatus === 'active' || newStatus === 'completed')) {
+      batchOp.update(userRef, {
+        enrolledCourses: arrayUnion(data.courseId),
+        enrolledBatches: arrayUnion(data.batchId)
+      });
+
+      const batchRef = doc(db, COURSES_COLLECTION, data.courseId, BATCHES_COLLECTION, data.batchId);
+      batchOp.update(batchRef, { enrolledCount: increment(1) });
+    }
+
+    batchOp.update(enrollmentRef, {
+      status: newStatus,
+      updatedAt: serverTimestamp()
+    });
+
+    await batchOp.commit();
   }
 };

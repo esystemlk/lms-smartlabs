@@ -35,7 +35,7 @@ import {
   MessageSquare,
   Settings,
   Calendar,
-  Play, Sparkles
+  Play, Sparkles, CreditCard
 } from "lucide-react";
 import Link from "next/link";
 import { clsx } from "clsx";
@@ -101,17 +101,17 @@ export default function DashboardPage() {
 
   const menuItems = [
     {
-      title: "LMS Portal",
-      description: "Access classes, assignments & recordings",
-      icon: GraduationCap,
+      title: "LMS DASHBOARD",
+      description: "Access resources, schedule, assignments & recordings",
+      icon: LayoutGrid,
       href: "/lms",
-      gradient: "from-blue-500 to-blue-600",
+      gradient: "from-brand-blue to-indigo-600",
       roles: ["student", "lecturer", "admin", "superadmin", "developer"],
       category: "Learning Hub"
     },
     {
-      title: "Learn",
-      description: "Recorded lessons & subscriptions",
+      title: "My Learning",
+      description: "Access your lessons, assignments & materials",
       icon: PlayCircle,
       href: "/learn",
       gradient: "from-violet-600 to-indigo-600",
@@ -119,35 +119,17 @@ export default function DashboardPage() {
       category: "Learning Hub"
     },
     {
-      title: "Community",
-      description: "Chat with students & instructors",
-      icon: Users,
-      href: "/community",
-      gradient: "from-pink-500 to-rose-600",
+      title: "Live Classes",
+      description: "Join your ongoing and upcoming sessions",
+      icon: Video,
+      href: "/lms/live",
+      gradient: "from-blue-500 to-blue-600",
       roles: ["student", "lecturer", "admin", "superadmin", "developer"],
       category: "Learning Hub"
     },
     {
-      title: "Live Schedule",
-      description: "Upcoming sessions calendar",
-      icon: Calendar,
-      href: "/lms/live",
-      gradient: "from-purple-500 to-fuchsia-600",
-      roles: ["lecturer", "admin", "superadmin", "developer"],
-      category: "Learning Hub"
-    },
-    {
-      title: "Recordings",
-      description: "Manage or view recordings",
-      icon: Play,
-      href: "/lms/recordings",
-      gradient: "from-indigo-500 to-blue-700",
-      roles: ["lecturer", "admin", "superadmin", "developer"],
-      category: "Learning Hub"
-    },
-    {
-      title: "Courses",
-      description: "Browse, subscribe and join your courses",
+      title: "Browse Courses",
+      description: "Explore and enroll in new programs",
       icon: BookOpen,
       href: "/courses",
       gradient: "from-emerald-500 to-teal-600",
@@ -155,34 +137,43 @@ export default function DashboardPage() {
       category: "Learning Hub"
     },
     {
-      title: "Activities",
-      description: "Quizzes & interactive tasks",
-      icon: Activity,
-      href: "/activities",
-      gradient: "from-pink-500 to-rose-500",
+      title: "Community",
+      description: "Interact with students & instructors",
+      icon: Users,
+      href: "/community",
+      gradient: "from-pink-500 to-rose-600",
       roles: ["student", "lecturer", "admin", "superadmin", "developer"],
-      category: "Learning Hub"
+      category: "Social"
+    },
+    {
+      title: "Messages",
+      description: "Direct inbox and notices",
+      icon: MessageSquare,
+      href: "/messages",
+      gradient: "from-rose-500 to-pink-600",
+      roles: ["student", "lecturer", "admin", "superadmin", "developer"],
+      category: "Social"
     },
     {
       title: "Management Portal",
-      description: "System management, users & courses",
+      description: "Admin & Lecturer Command Center",
       icon: ShieldCheck,
       href: "/management",
       gradient: "from-red-500 to-rose-600",
-      roles: ["admin", "superadmin", "developer"],
-      category: "Management"
-    },
-    {
-      title: "Course Manager",
-      description: "Create and edit course content",
-      icon: Edit,
-      href: "/management?tab=courses",
-      gradient: "from-cyan-500 to-blue-600",
       roles: ["lecturer", "admin", "superadmin", "developer"],
       category: "Management"
     },
     {
-      title: "Resource Manager",
+      title: "Schedule Classes",
+      description: "Create and manage Zoom sessions",
+      icon: Calendar,
+      href: "/live-classes",
+      gradient: "from-purple-500 to-fuchsia-600",
+      roles: ["lecturer", "admin", "superadmin", "developer"],
+      category: "Management"
+    },
+    {
+      title: "Resources",
       description: "Manage course study materials",
       icon: FolderOpen,
       href: "/management?tab=resources",
@@ -191,58 +182,31 @@ export default function DashboardPage() {
       category: "Management"
     },
     {
-      title: "Users",
-      description: "Manage user accounts",
+      title: "User Management",
+      description: "Manage student & faculty accounts",
       icon: Users,
       href: "/management?tab=users",
       gradient: "from-sky-500 to-cyan-600",
-      roles: ["lecturer", "admin", "superadmin", "developer"],
-      category: "Management"
+      roles: ["admin", "superadmin", "developer"],
+      category: "Administration"
     },
     {
       title: "Enrollments",
-      description: "Manage student enrollments",
-      icon: GraduationCap,
-      href: "/management?tab=users",
+      description: "Approve and track payments",
+      icon: CreditCard,
+      href: "/management?tab=enrollments",
       gradient: "from-emerald-600 to-green-700",
-      roles: ["lecturer", "admin", "superadmin", "developer"],
-      category: "Management"
-    },
-    {
-      title: "Courses Admin",
-      description: "Course catalog administration",
-      icon: BookOpen,
-      href: "/management?tab=courses",
-      gradient: "from-lime-500 to-green-600",
-      roles: ["lecturer", "admin", "superadmin", "developer"],
-      category: "Management"
-    },
-    {
-      title: "Recorded Classes",
-      description: "Manage recorded library",
-      icon: Play,
-      href: "/management?tab=recordings",
-      gradient: "from-indigo-600 to-violet-600",
-      roles: ["lecturer", "admin", "superadmin", "developer"],
-      category: "Management"
-    },
-    {
-      title: "Packages",
-      description: "Manage subscription packages",
-      icon: FolderOpen,
-      href: "/management?tab=recordings",
-      gradient: "from-fuchsia-500 to-pink-600",
-      roles: ["lecturer", "admin", "superadmin", "developer"],
-      category: "Management"
+      roles: ["admin", "superadmin", "developer"],
+      category: "Administration"
     },
     {
       title: "System Settings",
-      description: "General configuration",
+      description: "Platform-wide configuration",
       icon: Settings,
       href: "/management?tab=settings",
       gradient: "from-slate-600 to-gray-700",
-      roles: ["lecturer", "admin", "superadmin", "developer"],
-      category: "System"
+      roles: ["admin", "superadmin", "developer"],
+      category: "Administration"
     },
     {
       title: "Our Websites",
@@ -254,30 +218,21 @@ export default function DashboardPage() {
       category: "Resources"
     },
     {
-      title: "Messages",
-      description: "Inbox and conversations",
-      icon: MessageSquare,
-      href: "/messages",
-      gradient: "from-rose-500 to-pink-600",
+      title: "Activities",
+      description: "Quizzes & interactive tasks",
+      icon: Activity,
+      href: "/activities",
+      gradient: "from-pink-500 to-rose-500",
       roles: ["student", "lecturer", "admin", "superadmin", "developer"],
       category: "Resources"
     },
     {
-      title: "Lecturers",
-      description: "View profiles and schedules",
-      icon: Users,
-      href: "/lecturers",
-      gradient: "from-amber-500 to-orange-600",
-      roles: ["student", "lecturer", "admin", "superadmin", "developer"],
-      category: "Resources"
-    },
-    {
-      title: "Analytics",
-      description: "Analytics & performance monitoring",
+      title: "Developer Tools",
+      description: "System debugging & stats",
       icon: BarChart2,
-      href: "/management?tab=dashboard",
+      href: "/developer",
       gradient: "from-slate-700 to-slate-800",
-      roles: ["admin", "superadmin", "developer"],
+      roles: ["developer"],
       category: "System"
     }
   ];
@@ -293,15 +248,13 @@ export default function DashboardPage() {
       return true;
     });
 
-  // Group items by category
   const groupedItems = filteredItems.reduce((acc, item) => {
     if (!acc[item.category]) acc[item.category] = [];
     acc[item.category].push(item);
     return acc;
   }, {} as Record<string, typeof menuItems>);
 
-  // Sort categories order
-  const categoryOrder = ["Learning Hub", "Management", "Resources", "System"];
+  const categoryOrder = ["Learning Hub", "Management", "Administration", "Social", "Resources", "System"];
   const sortedCategories = Object.keys(groupedItems).sort((a, b) => {
     return categoryOrder.indexOf(a) - categoryOrder.indexOf(b);
   });
@@ -333,7 +286,15 @@ export default function DashboardPage() {
       {/* Top Section: Greeting & Notification */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <GreetingWidget />
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <GreetingWidget />
+            <Link href="/lms">
+              <Button className="bg-brand-blue hover:bg-blue-600 text-white rounded-2xl px-8 h-12 font-bold shadow-lg shadow-blue-500/20 flex items-center gap-2 group">
+                <LayoutGrid size={20} className="group-hover:rotate-12 transition-transform" />
+                ENTER LMS DASHBOARD
+              </Button>
+            </Link>
+          </div>
 
           {latestNotification && (
             <motion.div

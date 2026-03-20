@@ -215,7 +215,7 @@ export default function NewCoursePage() {
             label="Course Title"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            placeholder="e.g. IELTS Academic Preparation"
+            placeholder="e.g. PTE Academic Preparation"
             required
           />
 
