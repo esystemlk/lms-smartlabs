@@ -107,6 +107,9 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
   const toggleBatch = (selectionIndex: number, batchId: string) => {
     setSelections(prev => {
       const updated = [...prev];
+      // IMPORTANT: Spread the object at this index to trigger a re-render
+      updated[selectionIndex] = { ...updated[selectionIndex] }; 
+      
       const sel = updated[selectionIndex];
       const exists = sel.batchIds.includes(batchId);
       
@@ -328,11 +331,11 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
                           <div className="pt-2">
                             <label className="block text-xs font-bold text-gray-500 mb-2">Specific Time Slot (Optional)</label>
                             <select
-                              className="w-full h-9 px-3 rounded-lg border border-gray-200 bg-white text-xs outline-none"
+                              className="w-full h-9 px-3 rounded-lg border border-gray-200 bg-white text-xs text-gray-900 outline-none"
                               value={sel.timeSlotId || ""}
                               onChange={e => {
                                 const updated = [...selections];
-                                updated[idx].timeSlotId = e.target.value;
+                                updated[idx] = { ...updated[idx], timeSlotId: e.target.value };
                                 setSelections(updated);
                               }}
                             >
