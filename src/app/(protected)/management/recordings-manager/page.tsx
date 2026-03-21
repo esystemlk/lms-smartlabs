@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -76,7 +76,7 @@ export default function RecordingManagerPage() {
             }
 
             // Filter only those with recordings
-            const withRecordings = (allPastClasses as Lesson[]).filter(cls => !!cls.bunnyVideoId || !!cls.recordingUrl);
+            const withRecordings = (allPastClasses as Lesson[]).filter((cls: Lesson) => !!cls.bunnyVideoId || !!cls.recordingUrl);
             setRecordings(withRecordings);
             setCourses(allCourses);
         } catch (error) {
@@ -95,14 +95,14 @@ export default function RecordingManagerPage() {
             });
             const data = await res.json();
             if (data.processedMeetings > 0) {
-                toast(`Sync complete! Processed ${data.processedMeetings} sessions.`, "success");
+                toast({ title: "Sync complete!", description: `Processed ${data.processedMeetings} sessions.`, variant: "success" });
                 fetchData();
             } else {
-                toast("Sync complete. No new recordings found.", "info");
+                toast({ title: "Sync complete", description: "No new recordings found.", variant: "info" });
             }
         } catch (error) {
             console.error("Sync failed:", error);
-            toast("Failed to sync recordings.", "error");
+            toast({ title: "Error", description: "Failed to sync recordings.", variant: "error" });
         } finally {
             setSyncing(false);
         }
@@ -153,7 +153,7 @@ export default function RecordingManagerPage() {
 
     const handleAttach = async () => {
         if (!selectedRecording || !targetCourseId || selectedBatchIds.length === 0) {
-            toast("Please select a course and at least one batch", "error");
+            toast({ title: "Missing selection", description: "Please select a course and at least one batch", variant: "error" });
             return;
         }
 
@@ -168,17 +168,17 @@ export default function RecordingManagerPage() {
                     durationMinutes: selectedRecording.duration || 60
                 });
             }
-            toast(`Successfully attached to ${selectedBatchIds.length} batches`, "success");
+            toast({ title: "Success", description: `Successfully attached to ${selectedBatchIds.length} batches`, variant: "success" });
             setAttachModalOpen(false);
         } catch (error) {
             console.error("Attachment failed:", error);
-            toast("Failed to attach recording", "error");
+            toast({ title: "Error", description: "Failed to attach recording", variant: "error" });
         } finally {
             setAttaching(false);
         }
     };
 
-    const filteredRecordings = recordings.filter(rec => {
+    const filteredRecordings = recordings.filter((rec: Lesson) => {
         const matchSearch = rec.title?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchCourse = !filterCourseId || rec.courseId === filterCourseId;
         return matchSearch && matchCourse;
@@ -226,7 +226,7 @@ export default function RecordingManagerPage() {
                     <Input 
                         placeholder="Search by topic..." 
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                         className="pl-10 h-11 bg-gray-50/50 border-transparent focus:bg-white focus:ring-brand-blue/20 rounded-xl"
                     />
                 </div>
@@ -234,11 +234,11 @@ export default function RecordingManagerPage() {
                     <Filter size={18} className="text-gray-400" />
                     <select 
                         value={filterCourseId}
-                        onChange={(e) => setFilterCourseId(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterCourseId(e.target.value)}
                         className="h-11 px-4 pr-10 rounded-xl border-gray-100 bg-gray-50/50 text-sm focus:ring-brand-blue/20 outline-none cursor-pointer hover:bg-white transition-colors"
                     >
                         <option value="">All Courses</option>
-                        {courses.map(c => (
+                        {courses.map((c: Course) => (
                             <option key={c.id} value={c.id}>{c.title}</option>
                         ))}
                     </select>
@@ -268,7 +268,7 @@ export default function RecordingManagerPage() {
                                     </td>
                                 </tr>
                             ) : (
-                                filteredRecordings.map((rec) => (
+                                filteredRecordings.map((rec: Lesson) => (
                                     <tr key={rec.id} className="hover:bg-gray-50/50 transition-colors group">
                                         <td className="px-6 py-5">
                                             <div className="flex items-start gap-4">
@@ -298,11 +298,11 @@ export default function RecordingManagerPage() {
                                         </td>
                                         <td className="px-6 py-5">
                                             <div className="text-sm text-gray-600 font-medium truncate max-w-[200px]">
-                                                {courses.find(c => c.id === rec.courseId)?.title || "Unknown Course"}
+                                                {courses.find((c: Course) => c.id === rec.courseId)?.title || "Unknown Course"}
                                             </div>
                                             {rec.batchIds && rec.batchIds.length > 0 && (
                                                 <div className="mt-1 flex flex-wrap gap-1">
-                                                    {rec.batchIds.map(bid => (
+                                                    {rec.batchIds.map((bid: string) => (
                                                         <span key={bid} className="px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded text-[10px] font-medium">
                                                             {bid}
                                                         </span>
@@ -337,8 +337,8 @@ export default function RecordingManagerPage() {
                                                     >
                                                         <Menu.Items className="absolute right-0 w-48 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-xl shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                                                             <div className="px-1 py-1">
-                                                                <Menu.Item>
-                                                                    {({ active }) => (
+                                                                 <Menu.Item>
+                                                                    {({ active }: { active: boolean }) => (
                                                                         <a 
                                                                             href={`https://iframe.mediadelivery.net/play/${bunnyLibraryId || '301323'}/${rec.bunnyVideoId}`} 
                                                                             target="_blank"
@@ -349,8 +349,8 @@ export default function RecordingManagerPage() {
                                                                         </a>
                                                                     )}
                                                                 </Menu.Item>
-                                                                <Menu.Item>
-                                                                    {({ active }) => (
+                                                                 <Menu.Item>
+                                                                    {({ active }: { active: boolean }) => (
                                                                         <button
                                                                             onClick={() => handleDeleteRecording(rec)}
                                                                             className={`${active ? 'bg-red-50 text-red-600' : 'text-red-700'} group flex rounded-lg items-center w-full px-3 py-2 text-sm transition-colors`}
@@ -394,13 +394,13 @@ export default function RecordingManagerPage() {
                                 <select 
                                     className="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all cursor-pointer"
                                     value={targetCourseId}
-                                    onChange={(e) => {
+                                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                         setTargetCourseId(e.target.value);
                                         setSelectedBatchIds([]);
                                     }}
                                 >
                                     <option value="">-- Select Target Course --</option>
-                                    {courses.map(c => (
+                                    {courses.map((c: Course) => (
                                         <option key={c.id} value={c.id}>{c.title}</option>
                                     ))}
                                 </select>
@@ -414,24 +414,27 @@ export default function RecordingManagerPage() {
                                     </label>
                                     <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
                                         {targetBatches.length > 0 ? (
-                                            targetBatches.map(batch => {
+                                            targetBatches.map((batch: Batch) => {
                                                 const isSelected = selectedBatchIds.includes(batch.id);
                                                 return (
                                                     <button
                                                         key={batch.id}
+                                                        type="button"
                                                         onClick={() => {
-                                                            setSelectedBatchIds(prev => 
-                                                                isSelected ? prev.filter(id => id !== batch.id) : [...prev, batch.id]
-                                                            );
+                                                            const isSelected = selectedBatchIds.includes(batch.id);
+                                                            if (isSelected) {
+                                                                setSelectedBatchIds((prev: string[]) => prev.filter((id: string) => id !== batch.id));
+                                                            } else {
+                                                                setSelectedBatchIds((prev: string[]) => [...prev, batch.id]);
+                                                            }
                                                         }}
-                                                        className={`flex items-center justify-between px-4 py-3 rounded-xl border transition-all text-sm font-medium ${
-                                                            isSelected 
-                                                            ? "bg-blue-50 border-brand-blue/50 text-brand-blue" 
-                                                            : "bg-white border-gray-100 text-gray-600 hover:border-gray-200"
+                                                        className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs border transition-all ${selectedBatchIds.includes(batch.id)
+                                                            ? "bg-blue-50 border-brand-blue/50 text-brand-blue"
+                                                            : "bg-white border-gray-200 text-gray-700 hover:border-gray-300 shadow-sm"
                                                         }`}
                                                     >
                                                         <span className="truncate">{batch.name}</span>
-                                                        {isSelected && <CheckCircle size={14} className="shrink-0" />}
+                                                        {selectedBatchIds.includes(batch.id) && <CheckCircle size={14} className="shrink-0" />}
                                                     </button>
                                                 );
                                             })

@@ -41,16 +41,16 @@ export default function RecordingsPage() {
       const combined = [...data, ...batchRecs];
 
       // Filter by enrolled batches and recording status
-      let filtered = combined.filter(l => 
+      let filtered = combined.filter((l: Lesson) => 
         (l.recordingStatus === 'processed' || (l as any).isAttached) && 
         (l.bunnyVideoId || l.recordingUrl)
       );
       
       if (userData && userData.role === 'student') {
         const userBatches = userData.enrolledBatches || [];
-        filtered = filtered.filter(cls => {
+        filtered = filtered.filter((cls: Lesson) => {
           if (cls.batchIds && cls.batchIds.length > 0) {
-            return cls.batchIds.some(id => userBatches.includes(id));
+            return cls.batchIds.some((id: string) => userBatches.includes(id));
           }
           return true; // Open to all if no batches
         });

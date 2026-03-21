@@ -47,10 +47,10 @@ export const courseService = {
       where("published", "==", true)
     );
     const snapshot = await getDocs(q);
-    const courses = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Course));
+    const data = snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() } as Course));
 
     // Sort client-side to avoid composite index requirement
-    return courses.sort((a, b) => {
+    return data.sort((a, b) => {
       const dateA = a.createdAt?.seconds || 0;
       const dateB = b.createdAt?.seconds || 0;
       return dateB - dateA;
@@ -98,7 +98,7 @@ export const courseService = {
       orderBy("order", "asc")
     );
     const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Lesson));
+    return snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() } as Lesson));
   },
 
   async getLesson(courseId: string, lessonId: string) {
@@ -198,13 +198,13 @@ export const courseService = {
       now.setHours(now.getHours() - 2); // Keep classes from last 2 hours visible
 
       return snapshot.docs
-        .map(doc => {
+        .map((doc: any) => {
           const data = doc.data();
           // Ensure courseId is available (fallback to parent doc ID if missing in data)
           const courseId = data.courseId || doc.ref.parent.parent?.id;
           return { id: doc.id, ...data, courseId } as Lesson;
         })
-        .filter(lesson => {
+        .filter((lesson: any) => {
           if (lesson.status === 'completed') return false;
           if (!lesson.startTime) return false;
           return new Date(lesson.startTime) > now;
@@ -229,12 +229,12 @@ export const courseService = {
       now.setHours(now.getHours() - 2); // Classes older than 2 hours ago
 
       return snapshot.docs
-        .map(doc => {
+        .map((doc: any) => {
           const data = doc.data();
           const courseId = data.courseId || doc.ref.parent.parent?.id;
           return { id: doc.id, ...data, courseId } as Lesson;
         })
-        .filter(lesson => {
+        .filter((lesson: any) => {
           if (lesson.status === 'completed') return true;
           if (!lesson.startTime) return false;
           return new Date(lesson.startTime) <= now;
@@ -252,10 +252,10 @@ export const courseService = {
       // Removing orderBy to avoid index requirement for new users
     );
     const snapshot = await getDocs(q);
-    const batches = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Batch));
+    const batches = snapshot.docs.map((doc: any) => ({ id: doc.id, ...doc.data() } as Batch));
     
     // Sort in memory by startDate desc
-    return batches.sort((a, b) => {
+    return batches.sort((a: Batch, b: Batch) => {
         const dateA = a.startDate || "";
         const dateB = b.startDate || "";
         return dateB.localeCompare(dateA);
@@ -323,19 +323,20 @@ export const courseService = {
       const q = query(collectionGroup(db, BATCHES_COLLECTION));
       const snapshot = await getDocs(q);
       let allRecordings: any[] = [];
-      snapshot.forEach(docSnap => {
+      
+      snapshot.docs.forEach((docSnap: any) => {
           const data = docSnap.data();
           if (data.recordedClasses && data.recordedClasses.length > 0) {
               const courseId = data.courseId || docSnap.ref.parent.parent?.id;
-              const batchRecordings = (data.recordedClasses as RecordedClass[]).map(r => ({
+              const batchRecordings = (data.recordedClasses as any[]).map((r: any) => ({
                   ...r,
                   id: r.id || `${docSnap.id}_${Math.random().toString(36).substr(2, 9)}`,
                   courseId,
                   batchIds: [docSnap.id],
                   isAttached: true,
                   // Map RecordedClass fields to Lesson fields for UI consistency
-                  bunnyVideoId: r.videoUrl.includes('http') ? "" : r.videoUrl,
-                  recordingUrl: r.videoUrl.includes('http') ? r.videoUrl : "",
+                  bunnyVideoId: r.videoUrl && !r.videoUrl.includes('http') ? r.videoUrl : (r.bunnyVideoId || ""),
+                  recordingUrl: r.videoUrl && r.videoUrl.includes('http') ? r.videoUrl : (r.recordingUrl || ""),
                   startTime: r.date,
                   duration: r.durationMinutes || 60,
                   recordingStatus: 'processed'
