@@ -31,7 +31,12 @@ export default function RecordingManagerPage() {
     const router = useRouter();
     const { toast } = useToast();
     
-    const [recordings, setRecordings] = useState<Lesson[]>([]);
+    interface ManagerRecording extends Lesson {
+        isAttached?: boolean;
+        originalBatchId?: string;
+    }
+
+    const [recordings, setRecordings] = useState<ManagerRecording[]>([]);
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
@@ -41,7 +46,7 @@ export default function RecordingManagerPage() {
 
     // Attach Modal State
     const [attachModalOpen, setAttachModalOpen] = useState(false);
-    const [selectedRecording, setSelectedRecording] = useState<Lesson | null>(null);
+    const [selectedRecording, setSelectedRecording] = useState<ManagerRecording | null>(null);
     const [targetCourseId, setTargetCourseId] = useState("");
     const [targetBatches, setTargetBatches] = useState<Batch[]>([]);
     const [selectedBatchIds, setSelectedBatchIds] = useState<string[]>([]);
@@ -138,7 +143,7 @@ export default function RecordingManagerPage() {
         }
     };
 
-    const handleDeleteRecording = async (recording: any) => {
+    const handleDeleteRecording = async (recording: ManagerRecording) => {
         if (!confirm("Are you sure you want to remove this recording? This won't delete the video from Bunny.net.")) return;
         
         try {
@@ -163,7 +168,7 @@ export default function RecordingManagerPage() {
     };
 
     // Attachment Logic
-    const openAttachModal = (recording: Lesson) => {
+    const openAttachModal = (recording: ManagerRecording) => {
         setSelectedRecording(recording);
         setTargetCourseId("");
         setTargetBatches([]);
@@ -215,7 +220,7 @@ export default function RecordingManagerPage() {
         }
     };
 
-    const filteredRecordings = recordings.filter((rec: Lesson) => {
+    const filteredRecordings = recordings.filter((rec: ManagerRecording) => {
         const matchSearch = rec.title?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchCourse = !filterCourseId || rec.courseId === filterCourseId;
         return matchSearch && matchCourse;
@@ -305,7 +310,7 @@ export default function RecordingManagerPage() {
                                     </td>
                                 </tr>
                             ) : (
-                                filteredRecordings.map((rec: Lesson) => (
+                                filteredRecordings.map((rec: ManagerRecording) => (
                                     <tr key={rec.id} className="hover:bg-gray-50/50 transition-colors group">
                                         <td className="px-6 py-5">
                                             <div className="flex items-start gap-4">
