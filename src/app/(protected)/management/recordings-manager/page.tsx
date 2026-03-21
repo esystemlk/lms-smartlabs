@@ -37,6 +37,7 @@ export default function RecordingManagerPage() {
     const [searchTerm, setSearchTerm] = useState("");
     const [filterCourseId, setFilterCourseId] = useState("");
     const [syncing, setSyncing] = useState(false);
+    const [bunnyLibraryId, setBunnyLibraryId] = useState("");
 
     // Attach Modal State
     const [attachModalOpen, setAttachModalOpen] = useState(false);
@@ -62,6 +63,18 @@ export default function RecordingManagerPage() {
                 courseService.getAllCourses()
             ]);
             
+            // Fetch bunny settings for preview link
+            try {
+                const { doc, getDoc } = await import("firebase/firestore");
+                const { db } = await import("@/lib/firebase");
+                const settingsSnap = await getDoc(doc(db, "settings", "general"));
+                if (settingsSnap.exists()) {
+                    setBunnyLibraryId(settingsSnap.data().bunnyLibraryId || "");
+                }
+            } catch (err) {
+                console.error("Error fetching settings:", err);
+            }
+
             // Filter only those with recordings
             const withRecordings = (allPastClasses as Lesson[]).filter(cls => !!cls.bunnyVideoId || !!cls.recordingUrl);
             setRecordings(withRecordings);
@@ -327,7 +340,7 @@ export default function RecordingManagerPage() {
                                                                 <Menu.Item>
                                                                     {({ active }) => (
                                                                         <a 
-                                                                            href={`https://iframe.mediadelivery.net/play/301323/${rec.bunnyVideoId}`} 
+                                                                            href={`https://iframe.mediadelivery.net/play/${bunnyLibraryId || '301323'}/${rec.bunnyVideoId}`} 
                                                                             target="_blank"
                                                                             className={`${active ? 'bg-blue-50 text-blue-700' : 'text-gray-700'} group flex rounded-lg items-center w-full px-3 py-2 text-sm transition-colors`}
                                                                         >
