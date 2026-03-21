@@ -158,11 +158,7 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
     const validSelections = selections.filter((s: CourseSelection) => s.courseId && s.batchIds.length > 0);
 
     if (validSelections.length === 0) {
-        toast({
-            title: "Selection missing",
-            description: "Please select at least one course and batch.",
-            variant: "error"
-        });
+        toast("Please select at least one course and batch.", "error");
         return;
     }
 
@@ -206,12 +202,12 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
 
       await Promise.all(promises);
 
-      toast({ title: "Success", description: "Class scheduled successfully for all courses" });
+      toast("Class scheduled successfully for all courses", "success");
       onSuccess();
       onClose();
     } catch (error: any) {
       console.error("Scheduling error:", error);
-      toast({ title: "Error", description: error.message || "Failed to schedule class", variant: "error" });
+      toast(error.message || "Failed to schedule class", "error");
     } finally {
       setLoading(false);
     }

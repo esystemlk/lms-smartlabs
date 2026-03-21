@@ -95,14 +95,14 @@ export default function RecordingManagerPage() {
             });
             const data = await res.json();
             if (data.processedMeetings > 0) {
-                toast({ title: "Sync complete!", description: `Processed ${data.processedMeetings} sessions.`, variant: "success" });
+                toast(`Sync complete! Processed ${data.processedMeetings} sessions.`, "success");
                 fetchData();
             } else {
-                toast({ title: "Sync complete", description: "No new recordings found.", variant: "info" });
+                toast("Sync complete. No new recordings found.", "info");
             }
         } catch (error) {
             console.error("Sync failed:", error);
-            toast({ title: "Error", description: "Failed to sync recordings.", variant: "error" });
+            toast("Failed to sync recordings.", "error");
         } finally {
             setSyncing(false);
         }
@@ -153,7 +153,7 @@ export default function RecordingManagerPage() {
 
     const handleAttach = async () => {
         if (!selectedRecording || !targetCourseId || selectedBatchIds.length === 0) {
-            toast({ title: "Missing selection", description: "Please select a course and at least one batch", variant: "error" });
+            toast("Please select a course and at least one batch", "error");
             return;
         }
 
@@ -168,11 +168,11 @@ export default function RecordingManagerPage() {
                     durationMinutes: selectedRecording.duration || 60
                 });
             }
-            toast({ title: "Success", description: `Successfully attached to ${selectedBatchIds.length} batches`, variant: "success" });
+            toast(`Successfully attached to ${selectedBatchIds.length} batches`, "success");
             setAttachModalOpen(false);
         } catch (error) {
             console.error("Attachment failed:", error);
-            toast({ title: "Error", description: "Failed to attach recording", variant: "error" });
+            toast("Failed to attach recording", "error");
         } finally {
             setAttaching(false);
         }
