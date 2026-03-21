@@ -58,26 +58,43 @@ export default function RecordingManagerPage() {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [allPastClasses, allCourses] = await Promise.all([
+            const [allPastClasses, allCourses, allBatchRecs] = await Promise.all([
                 courseService.getPastLiveClasses(),
-                courseService.getAllCourses()
+                courseService.getAllCourses(),
+                courseService.getAllBatchRecordings()
             ]);
-            
-            // Fetch bunny settings for preview link
+
             try {
-                const { doc, getDoc } = await import("firebase/firestore");
-                const { db } = await import("@/lib/firebase");
-                const settingsSnap = await getDoc(doc(db, "settings", "general"));
-                if (settingsSnap.exists()) {
-                    setBunnyLibraryId(settingsSnap.data().bunnyLibraryId || "");
+                const settings = await courseService.getGlobalSettings();
+                if (settings?.bunny?.libraryId) {
+                    setBunnyLibraryId(settings.bunny.libraryId);
                 }
             } catch (err) {
                 console.error("Error fetching settings:", err);
             }
 
-            // Filter only those with recordings
-            const withRecordings = (allPastClasses as Lesson[]).filter((cls: Lesson) => !!cls.bunnyVideoId || !!cls.recordingUrl);
-            setRecordings(withRecordings);
+            // Standardize all recordings for display
+            const lessonsWithRecs = (allPastClasses as Lesson[]).filter((cls: Lesson) => !!cls.bunnyVideoId || !!cls.recordingUrl);
+            
+            // Map batch recordings to look like lessons for the table
+            const mappedBatchRecs = (allBatchRecs || []).map((r: any) => ({
+                ...r,
+                type: 'live_class',
+                isAttached: true,
+                // Ensure field names match for display
+                bunnyVideoId: r.bunnyVideoId || (r.videoUrl && !r.videoUrl.includes('http') ? r.videoUrl : ""),
+                recordingUrl: r.recordingUrl || (r.videoUrl && r.videoUrl.includes('http') ? r.videoUrl : ""),
+                startTime: r.date || r.startTime,
+                // Keep reference to which batch it belongs to for identification
+                originalBatchId: r.batchIds?.[0]
+            }));
+
+            // Combine both sources
+            const combined = [...lessonsWithRecs, ...mappedBatchRecs].sort((a, b) => 
+                new Date(b.startTime || b.date || 0).getTime() - new Date(a.startTime || a.date || 0).getTime()
+            );
+
+            setRecordings(combined);
             setCourses(allCourses);
         } catch (error) {
             console.error("Error fetching recordings:", error);
@@ -90,34 +107,54 @@ export default function RecordingManagerPage() {
     const handleSyncRecordings = async () => {
         setSyncing(true);
         try {
-            const res = await fetch('/api/cron/process-recordings', {
-                headers: { 'x-cron-secret': process.env.NEXT_PUBLIC_CRON_SECRET || '' }
-            });
+            // Priority 1: Cloud Sync via the new /api/zoom/sync-recordings
+            const res = await fetch('/api/zoom/sync-recordings', { method: 'POST' });
             const data = await res.json();
-            if (data.processedMeetings > 0) {
-                toast(`Sync complete! Processed ${data.processedMeetings} sessions.`, "success");
-                fetchData();
+            
+            if (res.ok) {
+                if (data.processedMeetings > 0) {
+                    toast(`Sync successful! Cloud recordings linked to ${data.processedMeetings} sessions.`, "success");
+                    fetchData();
+                } else {
+                    toast("Cloud check complete. No new recordings found for recent sessions.", "info");
+                }
             } else {
-                toast("Sync complete. No new recordings found.", "info");
+                // Try fallback to cron route if new sync route fails
+                const cronRes = await fetch('/api/cron/process-recordings', {
+                    headers: { 'x-cron-secret': process.env.NEXT_PUBLIC_CRON_SECRET || '' }
+                });
+                if (cronRes.ok) {
+                    toast("Sync successful (via processing route).", "success");
+                    fetchData();
+                } else {
+                    throw new Error(data.error || "Sync failed");
+                }
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error("Sync failed:", error);
-            toast("Failed to sync recordings.", "error");
+            toast(error.message || "Failed to sync recordings.", "error");
         } finally {
             setSyncing(false);
         }
     };
 
-    const handleDeleteRecording = async (recording: Lesson) => {
-        if (!confirm("Are you sure you want to remove this recording from this class? This won't delete the video from Bunny.net.")) return;
+    const handleDeleteRecording = async (recording: any) => {
+        if (!confirm("Are you sure you want to remove this recording? This won't delete the video from Bunny.net.")) return;
         
         try {
-            await courseService.updateLesson(recording.courseId, recording.id, {
-                bunnyVideoId: "",
-                recordingUrl: "",
-                recordingStatus: "processed" // Set to an empty state but not pending
-            });
-            toast("Recording removed from class", "success");
+            if (recording.isAttached && recording.originalBatchId) {
+                // It's a manual batch recording
+                await courseService.removeRecordedClassFromBatch(recording.courseId, recording.originalBatchId, recording.id);
+                toast("Attached recording removed", "success");
+            } else {
+                // It's a lesson recording
+                await courseService.updateLesson(recording.courseId, recording.id, {
+                    bunnyVideoId: "",
+                    recordingUrl: "",
+                    recordingStatus: "processed"
+                });
+                toast("Recording removed from lesson", "success");
+            }
             fetchData();
         } catch (error) {
             console.error("Failed to remove recording:", error);
@@ -290,6 +327,11 @@ export default function RecordingManagerPage() {
                                                         {rec.bunnyVideoId && (
                                                             <span className="px-2 py-0.5 bg-purple-50 text-purple-600 rounded text-[10px] font-bold tracking-tight">
                                                                 BUNNY.NET
+                                                            </span>
+                                                        )}
+                                                        {rec.isAttached && (
+                                                            <span className="text-[10px] text-brand-blue font-bold uppercase tracking-wider flex items-center gap-1">
+                                                                <LinkIcon size={10} /> Manually Attached
                                                             </span>
                                                         )}
                                                     </div>

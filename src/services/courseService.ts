@@ -373,5 +373,15 @@ export const courseService = {
     const storageRef = ref(storage, path);
     const snapshot = await uploadBytes(storageRef, file);
     return await getDownloadURL(snapshot.ref);
+  },
+
+  async getGlobalSettings() {
+    try {
+      const snap = await getDoc(doc(db, 'settings', 'global'));
+      return snap.exists() ? snap.data() : null;
+    } catch (error) {
+      console.error("Error fetching global settings:", error);
+      return null;
+    }
   }
 };

@@ -47,6 +47,26 @@ export default function CourseDetailsPage() {
   const [completedLessonIds, setCompletedLessonIds] = useState<string[]>([]);
   const [userTimeSlotId, setUserTimeSlotId] = useState<string | null>(null);
   const [hasPendingRequest, setHasPendingRequest] = useState(false);
+  const [bunnyLibraryId, setBunnyLibraryId] = useState<string>("");
+
+  // Video Player state
+  const [showVideo, setShowVideo] = useState(false);
+  const [activeVideoId, setActiveVideoId] = useState<string>("");
+  const [activeLibraryId, setActiveLibraryId] = useState<string>("");
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+        try {
+            const settings = await courseService.getGlobalSettings();
+            if (settings?.bunny?.libraryId) {
+                setBunnyLibraryId(settings.bunny.libraryId);
+            }
+        } catch (error) {
+            console.error("Error fetching settings:", error);
+        }
+    };
+    fetchSettings();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -384,12 +404,19 @@ export default function CourseDetailsPage() {
                 {[...filteredRecordings]
                   .sort((a, b) => (b.order || 0) - (a.order || 0) || new Date(b.date).getTime() - new Date(a.date).getTime())
                   .map((recording, index) => (
-                    <a
+                    <div
                       key={recording.id}
-                      href={recording.videoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 md:gap-4 p-3 md:p-4 hover:bg-blue-50 transition-colors group"
+                      onClick={() => {
+                        const videoId = recording.videoUrl;
+                        if (videoId.includes('http')) {
+                            window.open(videoId, '_blank');
+                        } else {
+                            setActiveVideoId(videoId);
+                            setActiveLibraryId(bunnyLibraryId || "301323");
+                            setShowVideo(true);
+                        }
+                      }}
+                      className="flex items-center gap-3 md:gap-4 p-3 md:p-4 hover:bg-blue-50 transition-colors group cursor-pointer"
                     >
                       <div className="flex-shrink-0 text-blue-300 group-hover:text-brand-blue">
                         <PlayCircle size={20} className="md:w-6 md:h-6" />
@@ -413,7 +440,7 @@ export default function CourseDetailsPage() {
                           Watch
                         </Button>
                       </div>
-                    </a>
+                    </div>
                   ))}
               </div>
             );
@@ -508,6 +535,26 @@ export default function CourseDetailsPage() {
           )}
         </div>
       </div>
+      {/* Video Player Modal */}
+      {showVideo && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="w-full max-w-5xl aspect-video relative bg-black rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+            <button 
+              onClick={() => setShowVideo(false)}
+              className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
+            >
+              <FileText className="w-6 h-6 rotate-45" /> {/* Using as an X Close button alternative if X is not imported */}
+            </button>
+            <iframe
+              src={`https://iframe.mediadelivery.net/embed/${activeLibraryId}/${activeVideoId}?autoplay=true&loop=false&muted=false&preload=true`}
+              loading="lazy"
+              className="w-full h-full"
+              allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+              allowFullScreen={true}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

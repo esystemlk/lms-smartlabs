@@ -55,9 +55,12 @@ export default function MyRecordingsPage() {
       
       if (userData.role === 'student') {
         const activeEnrollments = enrollments.filter((e: Enrollment) => e.status === 'active' || e.status === 'completed');
-        const userBatches = userData.enrolledBatches || [];
+        // Extract all unique batch IDs the student is enrolled in
+        const enrollmentBatchIds = activeEnrollments.map((e: Enrollment) => e.batchId).filter(Boolean);
+        const userDataBatchIds = userData.enrolledBatches || [];
+        const userBatches = Array.from(new Set([...enrollmentBatchIds, ...userDataBatchIds])) as string[];
         
-        if (userBatches.length === 0) {
+        if (userBatches.length === 0 && userData.role === 'student') {
             filtered = [];
         } else {
             // Map batchId -> timeSlotId for quick lookup
