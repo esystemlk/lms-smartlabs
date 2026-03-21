@@ -41,10 +41,10 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
   ]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && userData) {
       fetchCourses();
     }
-  }, [isOpen]);
+  }, [isOpen, userData?.uid, userData?.role]);
 
   const fetchCourses = async () => {
     try {
@@ -67,37 +67,46 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
   };
 
   const fetchBatchesForSelection = async (index: number, courseId: string) => {
-    const newSelections = [...selections];
-    newSelections[index].fetchingBatches = true;
-    setSelections(newSelections);
+    setSelections(prev => {
+        const updated = [...prev];
+        updated[index] = { ...updated[index], fetchingBatches: true };
+        return updated;
+    });
 
     try {
       const data = await courseService.getBatches(courseId);
       setSelections(prev => {
         const updated = [...prev];
-        updated[index] = { ...updated[index], batches: data, fetchingBatches: false };
+        if (updated[index]) {
+            updated[index] = { ...updated[index], batches: data, fetchingBatches: false };
+        }
         return updated;
       });
     } catch (error) {
       console.error("Error fetching batches:", error);
       setSelections(prev => {
         const updated = [...prev];
-        updated[index].fetchingBatches = false;
+        if (updated[index]) {
+            updated[index] = { ...updated[index], fetchingBatches: false };
+        }
         return updated;
       });
     }
   };
 
   const handleCourseChange = (index: number, courseId: string) => {
-    const newSelections = [...selections];
-    newSelections[index] = { 
-        ...newSelections[index], 
-        courseId, 
-        batchIds: [], 
-        timeSlotId: "", 
-        batches: [] 
-    };
-    setSelections(newSelections);
+    setSelections(prev => {
+        const updated = [...prev];
+        updated[index] = { 
+            ...updated[index], 
+            courseId, 
+            batchIds: [], 
+            timeSlotId: "", 
+            batches: [],
+            fetchingBatches: false
+        };
+        return updated;
+    });
 
     if (courseId) {
       fetchBatchesForSelection(index, courseId);
@@ -107,36 +116,37 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
   const toggleBatch = (selectionIndex: number, batchId: string) => {
     setSelections(prev => {
       const updated = [...prev];
-      // IMPORTANT: Spread the object at this index to trigger a re-render
+      if (!updated[selectionIndex]) return prev;
+
       updated[selectionIndex] = { ...updated[selectionIndex] }; 
-      
       const sel = updated[selectionIndex];
-      const exists = sel.batchIds.includes(batchId);
+      const exists = (sel.batchIds || []).includes(batchId);
       
       if (exists) {
         sel.batchIds = sel.batchIds.filter(id => id !== batchId);
       } else {
-        sel.batchIds = [...sel.batchIds, batchId];
+        sel.batchIds = [...(sel.batchIds || []), batchId];
       }
       return updated;
     });
   };
 
   const addSelection = () => {
-    setSelections([...selections, { courseId: "", batchIds: [], batches: [], fetchingBatches: false }]);
+    setSelections(prev => [...prev, { courseId: "", batchIds: [], batches: [], fetchingBatches: false }]);
   };
 
   const removeSelection = (index: number) => {
-    if (selections.length > 1) {
-      setSelections(selections.filter((_, i) => i !== index));
-    }
+    setSelections(prev => {
+        if (prev.length <= 1) return prev;
+        return prev.filter((_, i) => i !== index);
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate
-    const validSelections = selections.filter(s => s.courseId && s.batchIds.length > 0);
+    const validSelections = selections.filter(s => s.courseId && s.batchIds?.length > 0);
     if (validSelections.length === 0) {
         toast("Please select at least one course and batch.", "error");
         return;
@@ -284,14 +294,14 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
                     <div className="space-y-3">
                       <label className="block text-xs font-bold text-gray-500">Pick Course {idx + 1}</label>
                       <select
-                        className="w-full h-11 px-4 rounded-xl border border-gray-200 bg-white focus:ring-2 focus:ring-brand-blue/20 outline-none transition-all cursor-pointer"
+                        className="w-full h-11 px-4 rounded-xl border border-gray-200 bg-white text-gray-900 focus:ring-2 focus:ring-brand-blue/20 outline-none transition-all cursor-pointer"
                         value={sel.courseId}
                         onChange={e => handleCourseChange(idx, e.target.value)}
                         required
                       >
-                        <option value="">-- Choose Course --</option>
+                        <option value="" className="text-gray-500">-- Choose Course --</option>
                         {courses.map(c => (
-                          <option key={c.id} value={c.id}>{c.title}</option>
+                          <option key={c.id} value={c.id} className="text-gray-900">{c.title}</option>
                         ))}
                       </select>
                     </div>
