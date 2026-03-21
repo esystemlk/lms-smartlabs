@@ -1,179 +1,125 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/firebase';
-import { collectionGroup, query, where, getDocs, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { collectionGroup, query, where, getDocs, doc, getDoc, updateDoc, writeBatch } from 'firebase/firestore';
 import { rateLimit } from '@/lib/rateLimit';
 
-export const dynamic = 'force-dynamic'; // Prevent caching
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
   try {
-    const rl = rateLimit(req, 'api/cron/process-recordings', 2, 60_000);
-    if (!rl.allowed) {
-      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
-    }
+    const rl = rateLimit(req, 'api/cron/process-recordings', 5, 60_000);
+    if (!rl.allowed) return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+
     const secret = process.env.CRON_SECRET;
     const head = req.headers.get("x-cron-secret");
-    if (!secret || head !== secret) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-    // 1. Get Settings (Bunny.net credentials)
+    if (!secret || head !== secret) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
     const settingsRef = doc(db, "settings", "general");
     const settingsSnap = await getDoc(settingsRef);
+    if (!settingsSnap.exists()) return NextResponse.json({ message: "No settings found" }, { status: 500 });
 
-    if (!settingsSnap.exists()) {
-      return NextResponse.json({ message: "No settings found" }, { status: 500 });
-    }
+    const { bunnyLibraryId, bunnyApiKey } = settingsSnap.data();
+    if (!bunnyLibraryId || !bunnyApiKey) return NextResponse.json({ message: "Bunny.net credentials missing" }, { status: 500 });
 
-    const settings = settingsSnap.data();
-    const { bunnyLibraryId, bunnyApiKey } = settings;
-
-    if (!bunnyLibraryId || !bunnyApiKey) {
-      return NextResponse.json({ message: "Bunny.net credentials missing" }, { status: 500 });
-    }
-
-    // 2. Get Zoom Access Token (Server-to-Server OAuth)
     const ZOOM_ACCOUNT_ID = process.env.ZOOM_ACCOUNT_ID;
     const ZOOM_CLIENT_ID = process.env.ZOOM_API_CLIENT_ID || process.env.ZOOM_CLIENT_ID;
     const ZOOM_CLIENT_SECRET = process.env.ZOOM_API_CLIENT_SECRET || process.env.ZOOM_CLIENT_SECRET;
 
-    if (!ZOOM_ACCOUNT_ID || !ZOOM_CLIENT_ID || !ZOOM_CLIENT_SECRET) {
-      return NextResponse.json({ message: "Zoom credentials missing" }, { status: 500 });
-    }
+    if (!ZOOM_ACCOUNT_ID || !ZOOM_CLIENT_ID || !ZOOM_CLIENT_SECRET) return NextResponse.json({ message: "Zoom credentials missing" }, { status: 500 });
 
     const tokenResponse = await fetch(`https://zoom.us/oauth/token?grant_type=account_credentials&account_id=${ZOOM_ACCOUNT_ID}`, {
       method: 'POST',
-      headers: {
-        'Authorization': `Basic ${Buffer.from(`${ZOOM_CLIENT_ID}:${ZOOM_CLIENT_SECRET}`).toString('base64')}`
+      headers: { 'Authorization': `Basic ${Buffer.from(`${ZOOM_CLIENT_ID}:${ZOOM_CLIENT_SECRET}`).toString('base64')}` }
+    });
+    const { access_token: zoomAccessToken } = await tokenResponse.json();
+    if (!zoomAccessToken) return NextResponse.json({ message: "Failed to get Zoom token" }, { status: 500 });
+
+    // 3. Find Pending Lessons
+    // We look for lessons of type live_class that don't have a recordingId yet.
+    // We filter by date in memory to get lessons from the last 7 days.
+    const lookbackDate = new Date();
+    lookbackDate.setDate(lookbackDate.getDate() - 7);
+
+    const q = query(collectionGroup(db, "lessons"), where("type", "==", "live_class"));
+    const snapshot = await getDocs(q);
+    
+    // Group lessons by zoomMeetingId
+    const lessonsByMeeting: Record<string, any[]> = {};
+    snapshot.docs.forEach(doc => {
+      const data = doc.data();
+      const startTime = data.startTime ? new Date(data.startTime) : null;
+      if (startTime && startTime > lookbackDate && startTime < new Date() && (!data.recordingStatus || data.recordingStatus === 'pending') && data.zoomMeetingId) {
+        if (!lessonsByMeeting[data.zoomMeetingId]) lessonsByMeeting[data.zoomMeetingId] = [];
+        lessonsByMeeting[data.zoomMeetingId].push({ id: doc.id, ref: doc.ref, data });
       }
     });
 
-    const tokenData = await tokenResponse.json();
-    const zoomAccessToken = tokenData.access_token;
-
-    if (!zoomAccessToken) {
-      return NextResponse.json({ message: "Failed to get Zoom token" }, { status: 500 });
-    }
-
-    // 3. Find Pending Lessons (Past 24 hours, live_class, no recording)
-    const now = new Date();
-    const yesterday = new Date(now);
-    yesterday.setHours(yesterday.getHours() - 24);
-
-    const q = query(
-      collectionGroup(db, "lessons"),
-      where("type", "==", "live_class")
-      // Note: Firestore limitation prevents complex inequality filters on different fields.
-      // We will fetch recent classes and filter in memory.
-    );
-
-    const snapshot = await getDocs(q);
-    const pendingLessons = snapshot.docs.filter(doc => {
-      const data = doc.data();
-      const startTime = data.startTime ? new Date(data.startTime) : null;
-      
-      // Filter: Started in last 24 hours AND ended (assuming 2 hours max duration for safety, or just started < now)
-      // And recordingStatus is NOT 'processed' or 'processing' (or explicitly 'pending' or missing)
-      const isRecent = startTime && startTime > yesterday && startTime < now;
-      const needsRecording = !data.recordingStatus || data.recordingStatus === 'pending';
-      const hasZoomId = !!data.zoomMeetingId;
-
-      return isRecent && needsRecording && hasZoomId;
-    });
-
+    const meetingIds = Object.keys(lessonsByMeeting);
     const results = [];
 
-    // 4. Process Each Lesson
-    for (const lessonDoc of pendingLessons) {
-      const lessonData = lessonDoc.data();
-      const meetingId = lessonData.zoomMeetingId;
+    for (const meetingId of meetingIds) {
+      const lessons = lessonsByMeeting[meetingId];
+      const primaryLesson = lessons[0].data;
 
       try {
-        // A. Check Zoom for Recordings
-        const zoomRecResponse = await fetch(`https://api.zoom.us/v2/meetings/${meetingId}/recordings`, {
+        // A. Check Zoom
+        const zoomRecRes = await fetch(`https://api.zoom.us/v2/meetings/${meetingId}/recordings`, {
           headers: { 'Authorization': `Bearer ${zoomAccessToken}` }
         });
 
-        if (!zoomRecResponse.ok) {
-          results.push({ id: lessonDoc.id, status: 'zoom_check_failed', error: await zoomRecResponse.text() });
+        if (!zoomRecRes.ok) {
+          results.push({ meetingId, status: 'zoom_failed', error: await zoomRecRes.text() });
           continue;
         }
 
-        const recData = await zoomRecResponse.json();
-        const recordingFiles = recData.recording_files || [];
-
-        // Find best MP4 file (largest or specific type)
-        const videoFile = recordingFiles
+        const recData = await zoomRecRes.json();
+        const videoFile = (recData.recording_files || [])
           .filter((f: any) => f.file_type === 'MP4')
           .sort((a: any, b: any) => (b.file_size || 0) - (a.file_size || 0))[0];
 
         if (!videoFile) {
-          results.push({ id: lessonDoc.id, status: 'no_recording_found' });
+          results.push({ meetingId, status: 'no_recording' });
           continue;
         }
 
-        // B. Create Video in Bunny.net
-        const createVideoRes = await fetch(`https://video.bunnycdn.com/library/${bunnyLibraryId}/videos`, {
+        // B. Create & Fetch in Bunny.net
+        const createRes = await fetch(`https://video.bunnycdn.com/library/${bunnyLibraryId}/videos`, {
           method: "POST",
-          headers: {
-            "AccessKey": bunnyApiKey,
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          },
-          body: JSON.stringify({ title: lessonData.title || `Class ${meetingId}` }),
+          headers: { "AccessKey": bunnyApiKey, "Content-Type": "application/json" },
+          body: JSON.stringify({ title: primaryLesson.title || `Class ${meetingId}` }),
         });
+        const { guid: videoId } = await createRes.json();
 
-        if (!createVideoRes.ok) {
-          results.push({ id: lessonDoc.id, status: 'bunny_create_failed' });
-          continue;
-        }
-
-        const videoObj = await createVideoRes.json();
-        const videoId = videoObj.guid;
-
-        // C. Trigger Fetch in Bunny.net
-        // Append access_token to download_url
         const downloadUrl = `${videoFile.download_url}?access_token=${zoomAccessToken}`;
-        
-        const fetchRes = await fetch(`https://video.bunnycdn.com/library/${bunnyLibraryId}/videos/${videoId}/fetch`, {
+        await fetch(`https://video.bunnycdn.com/library/${bunnyLibraryId}/videos/${videoId}/fetch`, {
           method: "POST",
-          headers: {
-            "AccessKey": bunnyApiKey,
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          },
+          headers: { "AccessKey": bunnyApiKey, "Content-Type": "application/json" },
           body: JSON.stringify({ url: downloadUrl }),
         });
 
-        if (!fetchRes.ok) {
-           // Rollback? Or just log error.
-           results.push({ id: lessonDoc.id, status: 'bunny_fetch_failed', error: await fetchRes.text() });
-           continue;
-        }
-
-        // D. Update Firestore
-        await updateDoc(lessonDoc.ref, {
-          recordingStatus: 'processing',
-          bunnyVideoId: videoId,
-          recordingUrl: videoId, // Use ID as URL/Ref
-          zoomRecordingId: videoFile.id
+        // C. Update ALL binded lessons
+        const batch = writeBatch(db);
+        lessons.forEach(l => {
+          batch.update(l.ref, {
+            recordingStatus: 'processing',
+            bunnyVideoId: videoId,
+            recordingUrl: videoId,
+            zoomRecordingId: videoFile.id,
+            updatedAt: new Date().toISOString()
+          });
         });
+        await batch.commit();
 
-        results.push({ id: lessonDoc.id, status: 'initiated', videoId });
+        results.push({ meetingId, status: 'initiated', lessonsCount: lessons.length, videoId });
 
       } catch (err: any) {
-        console.error(`Error processing lesson ${lessonDoc.id}:`, err);
-        results.push({ id: lessonDoc.id, status: 'error', message: err.message });
+        results.push({ meetingId, status: 'error', message: err.message });
       }
     }
 
-    return NextResponse.json({
-      message: "Sync complete",
-      processed: results.length,
-      details: results
-    });
+    return NextResponse.json({ message: "Sync complete", processedMeetings: meetingIds.length, details: results });
 
   } catch (error: any) {
-    console.error("Process recordings error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -35,7 +35,7 @@ import { enrollmentService } from "@/services/enrollmentService";
 import { userService } from "@/services/userService";
 import { Course, Enrollment, UserData } from "@/lib/types";
 
-type ManagementTab = 'dashboard' | 'courses' | 'recordings' | 'resources' | 'users' | 'settings' | 'analytics' | 'enrollments' | 'attendance' | 'support' | 'students';
+type ManagementTab = 'dashboard' | 'courses' | 'recordings' | 'class-recordings' | 'resources' | 'users' | 'settings' | 'analytics' | 'enrollments' | 'attendance' | 'support' | 'students';
 
 export default function ManagementPortalPage() {
     const { userData, loading: authLoading } = useAuth();
@@ -154,7 +154,13 @@ export default function ManagementPortalPage() {
                         active={activeTab === 'recordings'}
                         onClick={() => handleTabChange('recordings')}
                         icon={PlayCircle}
-                        label="Recordings"
+                        label="Recorded Library"
+                    />
+                    <TabButton
+                        active={activeTab === 'class-recordings'}
+                        onClick={() => handleTabChange('class-recordings')}
+                        icon={Video}
+                        label="Live Recordings"
                     />
                     <TabButton
                         active={activeTab === 'resources'}
@@ -239,11 +245,31 @@ export default function ManagementPortalPage() {
                                 onClick={() => router.push('/admin/recordings/upload')}
                                 className="flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-xl font-bold hover:bg-violet-700 transition-all shadow-md active:scale-95"
                             >
-                                <Video size={18} />
+                                <PlayCircle size={18} />
                                 Manual Upload
                             </button>
                         </div>
                         <RecordingsTab />
+                    </div>
+                )}
+                {activeTab === 'class-recordings' && (
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl p-8 border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col items-center text-center space-y-6">
+                        <div className="w-20 h-20 bg-blue-50 dark:bg-blue-900/20 rounded-full flex items-center justify-center text-brand-blue">
+                             <Video size={40} />
+                        </div>
+                        <div>
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Live Class Recording Manager</h2>
+                            <p className="text-gray-500 max-w-md mx-auto mt-2">
+                                Sync Zoom recordings, manage binded classes, and link videos to multiple course batches.
+                            </p>
+                        </div>
+                        <button
+                            onClick={() => router.push('/management/recordings-manager')}
+                            className="bg-brand-blue text-white px-8 py-3 rounded-2xl font-bold shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition-all active:scale-95 flex items-center gap-2"
+                        >
+                            Open Recording Manager
+                            <Video size={18} />
+                        </button>
                     </div>
                 )}
                 {activeTab === 'resources' && (
