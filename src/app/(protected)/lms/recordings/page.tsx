@@ -33,10 +33,18 @@ export default function RecordingsPage() {
 
   const fetchRecordings = async () => {
     try {
-      const data = await courseService.getPastLiveClasses();
+      const [data, batchRecs] = await Promise.all([
+        courseService.getPastLiveClasses(),
+        courseService.getAllBatchRecordings()
+      ]);
       
+      const combined = [...data, ...batchRecs];
+
       // Filter by enrolled batches and recording status
-      let filtered = data.filter(l => l.recordingStatus === 'processed' && l.bunnyVideoId);
+      let filtered = combined.filter(l => 
+        (l.recordingStatus === 'processed' || (l as any).isAttached) && 
+        (l.bunnyVideoId || l.recordingUrl)
+      );
       
       if (userData && userData.role === 'student') {
         const userBatches = userData.enrolledBatches || [];
@@ -90,7 +98,7 @@ export default function RecordingsPage() {
               <div 
                 key={rec.id} 
                 className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all overflow-hidden group cursor-pointer"
-                onClick={() => setSelectedVideo({ videoId: rec.bunnyVideoId!, title: rec.title })}
+                onClick={() => setSelectedVideo({ videoId: rec.bunnyVideoId || rec.recordingUrl || "", title: rec.title })}
               >
                 {/* Thumbnail / Placeholder */}
                 <div className="aspect-video bg-gray-900 relative flex items-center justify-center overflow-hidden">
@@ -102,15 +110,21 @@ export default function RecordingsPage() {
                   />
                   
                   {/* Dynamic Thumbnail from Bunny (if available) */}
-                  <img 
-                    src={`https://vz-${libraryId}.b-cdn.net/${rec.bunnyVideoId}/thumbnail.jpg`} 
-                    alt={rec.title}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    onError={(e) => (e.currentTarget.style.display = 'none')}
-                  />
+                  {libraryId && rec.bunnyVideoId ? (
+                    <img 
+                      src={`https://vz-${libraryId}.b-cdn.net/${rec.bunnyVideoId}/thumbnail.jpg`} 
+                      alt={rec.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      onError={(e) => (e.currentTarget.style.display = 'none')}
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-800/20">
+                      <Video className="text-white/20" size={48} />
+                    </div>
+                  )}
                   
-                  <div className="absolute bottom-3 right-3 z-20 bg-black/70 text-white text-xs px-2 py-1 rounded">
-                    {rec.duration}m
+                  <div className="absolute bottom-3 right-3 z-20 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">
+                    {rec.duration || rec.durationMinutes}m
                   </div>
                 </div>
 
@@ -151,7 +165,10 @@ export default function RecordingsPage() {
             
             <div className="aspect-video w-full">
               <iframe 
-                src={`https://iframe.mediadelivery.net/embed/${libraryId}/${selectedVideo.videoId}?autoplay=true`}
+                src={selectedVideo.videoId.startsWith('http') 
+                  ? selectedVideo.videoId 
+                  : `https://iframe.mediadelivery.net/embed/${libraryId}/${selectedVideo.videoId}?autoplay=true`
+                }
                 loading="lazy"
                 className="w-full h-full border-0"
                 allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 

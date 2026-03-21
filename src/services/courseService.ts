@@ -306,6 +306,43 @@ export const courseService = {
     });
   },
 
+  async getBatchRecordings(courseId: string, batchId: string) {
+    const batch = await this.getBatch(courseId, batchId);
+    return batch?.recordedClasses || [];
+  },
+
+  async getAllBatchRecordings() {
+    try {
+      const q = query(collectionGroup(db, BATCHES_COLLECTION));
+      const snapshot = await getDocs(q);
+      let allRecordings: any[] = [];
+      snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          if (data.recordedClasses && data.recordedClasses.length > 0) {
+              const courseId = data.courseId || docSnap.ref.parent.parent?.id;
+              const batchRecordings = (data.recordedClasses as RecordedClass[]).map(r => ({
+                  ...r,
+                  id: r.id || `${docSnap.id}_${Math.random().toString(36).substr(2, 9)}`,
+                  courseId,
+                  batchIds: [docSnap.id],
+                  isAttached: true,
+                  // Map RecordedClass fields to Lesson fields for UI consistency
+                  bunnyVideoId: r.videoUrl.includes('http') ? "" : r.videoUrl,
+                  recordingUrl: r.videoUrl.includes('http') ? r.videoUrl : "",
+                  startTime: r.date,
+                  duration: r.durationMinutes || 60,
+                  recordingStatus: 'processed'
+              }));
+              allRecordings = [...allRecordings, ...batchRecordings];
+          }
+      });
+      return allRecordings;
+    } catch (error) {
+      console.error("Error fetching all batch recordings:", error);
+      return [];
+    }
+  },
+
   async removeRecordedClassFromBatch(courseId: string, batchId: string, recordingId: string) {
     // Note: arrayRemove requires the exact object. 
     // If that's tricky, we might need to fetch, filter, and update.

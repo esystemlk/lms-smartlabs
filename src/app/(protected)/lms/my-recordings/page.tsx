@@ -37,13 +37,21 @@ export default function MyRecordingsPage() {
     try {
       if (!userData) return;
 
-      const [data, enrollments] = await Promise.all([
+      const [data, batchRecs, enrollments] = await Promise.all([
         courseService.getPastLiveClasses(),
+        courseService.getAllBatchRecordings(),
         userData.role === 'student' ? enrollmentService.getUserEnrollments(userData.uid) : Promise.resolve([] as Enrollment[])
       ]);
       
-      // Filter by recording status and video ID presence
-      let filtered = data.filter(l => l.recordingStatus === 'processed' && l.bunnyVideoId);
+      // Combine regular live classes and recordings attached to batches
+      const combined = [...data, ...batchRecs];
+
+      // Filter by recording status and video presence
+      // Regular lessons have bunnyVideoId, attached ones have videoUrl mapped to bunnyVideoId or recordingUrl
+      let filtered = combined.filter(l => 
+        (l.recordingStatus === 'processed' || (l as any).isAttached) && 
+        (l.bunnyVideoId || l.recordingUrl)
+      );
       
       if (userData.role === 'student') {
         const activeEnrollments = enrollments.filter(e => e.status === 'active' || e.status === 'completed');
@@ -135,13 +143,17 @@ export default function MyRecordingsPage() {
                   />
                   
                   {/* Dynamic Thumbnail from Bunny (if available) */}
-                  {libraryId && rec.bunnyVideoId && (
+                  {libraryId && rec.bunnyVideoId ? (
                     <img 
                       src={`https://vz-${libraryId}.b-cdn.net/${rec.bunnyVideoId}/thumbnail.jpg`} 
                       alt={rec.title}
                       className="absolute inset-0 w-full h-full object-cover"
                       onError={(e) => (e.currentTarget.style.display = 'none')}
                     />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-800/20">
+                      <Video className="text-white/20" size={48} />
+                    </div>
                   )}
                 </div>
 
@@ -187,7 +199,10 @@ export default function MyRecordingsPage() {
             
             <div className="relative pt-[56.25%] bg-black">
               <iframe 
-                src={`https://iframe.mediadelivery.net/embed/${libraryId}/${selectedVideo.videoId}?autoplay=true`}
+                src={selectedVideo.videoId.startsWith('http') 
+                  ? selectedVideo.videoId 
+                  : `https://iframe.mediadelivery.net/embed/${libraryId}/${selectedVideo.videoId}?autoplay=true`
+                }
                 loading="lazy"
                 className="absolute top-0 left-0 w-full h-full border-0"
                 allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
