@@ -69,7 +69,9 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
   const fetchBatchesForSelection = async (index: number, courseId: string) => {
     setSelections(prev => {
         const updated = [...prev];
-        updated[index] = { ...updated[index], fetchingBatches: true };
+        if (updated[index]) {
+            updated[index] = { ...updated[index], fetchingBatches: true };
+        }
         return updated;
     });
 
@@ -77,7 +79,8 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
       const data = await courseService.getBatches(courseId);
       setSelections(prev => {
         const updated = [...prev];
-        if (updated[index]) {
+        // ONLY update if this selection still exists and has the same courseId!
+        if (updated[index] && updated[index].courseId === courseId) {
             updated[index] = { ...updated[index], batches: data, fetchingBatches: false };
         }
         return updated;
@@ -86,7 +89,7 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
       console.error("Error fetching batches:", error);
       setSelections(prev => {
         const updated = [...prev];
-        if (updated[index]) {
+        if (updated[index] && updated[index].courseId === courseId) {
             updated[index] = { ...updated[index], fetchingBatches: false };
         }
         return updated;

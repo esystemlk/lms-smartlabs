@@ -248,11 +248,18 @@ export const courseService = {
   // Batch Operations
   async getBatches(courseId: string) {
     const q = query(
-      collection(db, COURSES_COLLECTION, courseId, BATCHES_COLLECTION),
-      orderBy("startDate", "desc")
+      collection(db, COURSES_COLLECTION, courseId, BATCHES_COLLECTION)
+      // Removing orderBy to avoid index requirement for new users
     );
     const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Batch));
+    const batches = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Batch));
+    
+    // Sort in memory by startDate desc
+    return batches.sort((a, b) => {
+        const dateA = a.startDate || "";
+        const dateB = b.startDate || "";
+        return dateB.localeCompare(dateA);
+    });
   },
 
   async getBatch(courseId: string, batchId: string) {
