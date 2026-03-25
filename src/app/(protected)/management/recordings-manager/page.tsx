@@ -41,6 +41,7 @@ export default function RecordingManagerPage() {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
     const [filterCourseId, setFilterCourseId] = useState("");
+    const [statusFilter, setStatusFilter] = useState<"all" | "upcoming" | "ended">("ended"); // Default to ended as it's most common
     const [syncing, setSyncing] = useState(false);
     const [bunnyLibraryId, setBunnyLibraryId] = useState("");
 
@@ -63,8 +64,9 @@ export default function RecordingManagerPage() {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [allPastClasses, allCourses, allBatchRecs] = await Promise.all([
+            const [allPastClasses, allUpcomingClasses, allCourses, allBatchRecs] = await Promise.all([
                 courseService.getPastLiveClasses(),
+                courseService.getUpcomingLiveClasses(),
                 courseService.getAllCourses(),
                 courseService.getAllBatchRecordings()
             ]);
@@ -80,6 +82,7 @@ export default function RecordingManagerPage() {
 
             // Standardize all recordings for display
             const lessonsWithRecs = (allPastClasses as Lesson[]).filter((cls: Lesson) => !!cls.bunnyVideoId || !!cls.recordingUrl);
+            const upcomingLessons = (allUpcomingClasses as Lesson[]);
             
             // Map batch recordings to look like lessons for the table
             const mappedBatchRecs = (allBatchRecs || []).map((r: any) => ({
@@ -95,7 +98,7 @@ export default function RecordingManagerPage() {
             }));
 
             // Combine both sources
-            const combined = [...lessonsWithRecs, ...mappedBatchRecs].sort((a, b) => 
+            const combined = [...lessonsWithRecs, ...upcomingLessons, ...mappedBatchRecs].sort((a, b) => 
                 new Date(b.startTime || b.date || 0).getTime() - new Date(a.startTime || a.date || 0).getTime()
             );
 
@@ -223,7 +226,18 @@ export default function RecordingManagerPage() {
     const filteredRecordings = recordings.filter((rec: ManagerRecording) => {
         const matchSearch = rec.title?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchCourse = !filterCourseId || rec.courseId === filterCourseId;
-        return matchSearch && matchCourse;
+        
+        // Status filter logic
+        const now = new Date();
+        const startTime = new Date(rec.startTime || (rec as any).date || 0);
+        const isUpcoming = startTime > now;
+        
+        const matchStatus = 
+            statusFilter === "all" || 
+            (statusFilter === "upcoming" && isUpcoming) || 
+            (statusFilter === "ended" && !isUpcoming);
+
+        return matchSearch && matchCourse && matchStatus;
     });
 
     if (loading) {
@@ -285,6 +299,27 @@ export default function RecordingManagerPage() {
                         ))}
                     </select>
                 </div>
+                
+                <div className="flex bg-gray-50/50 p-1 rounded-xl items-center border border-gray-100">
+                    <button 
+                        onClick={() => setStatusFilter("all")}
+                        className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${statusFilter === 'all' ? 'bg-white shadow text-brand-blue' : 'text-gray-500 hover:text-gray-700'}`}
+                    >
+                        All
+                    </button>
+                    <button 
+                        onClick={() => setStatusFilter("upcoming")}
+                        className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${statusFilter === 'upcoming' ? 'bg-white shadow text-green-600' : 'text-gray-500 hover:text-gray-700'}`}
+                    >
+                        Upcoming
+                    </button>
+                    <button 
+                        onClick={() => setStatusFilter("ended")}
+                        className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${statusFilter === 'ended' ? 'bg-white shadow text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+                    >
+                        Ended
+                    </button>
+                </div>
             </div>
 
             {/* Content List */}
@@ -315,19 +350,33 @@ export default function RecordingManagerPage() {
                                         <td className="px-6 py-5">
                                             <div className="flex items-start gap-4">
                                                 <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 shrink-0">
-                                                    <Play size={20} fill="currentColor" />
+                                                     <Play size={20} fill="currentColor" />
                                                 </div>
                                                 <div>
                                                     <h3 className="font-bold text-gray-900 group-hover:text-brand-blue transition-colors line-clamp-1">
                                                         {rec.title}
                                                     </h3>
                                                     <div className="flex flex-wrap items-center gap-3 mt-1">
+                                                        {new Date(rec.startTime || (rec as any).date || 0) > new Date() ? (
+                                                            <span className="text-xs text-green-600 font-bold flex items-center gap-1 bg-green-50 px-2 py-0.5 rounded">
+                                                                <RefreshCw size={12} className="animate-spin-slow" />
+                                                                Upcoming
+                                                            </span>
+                                                        ) : (
+                                                            <span className="text-xs text-gray-400 flex items-center gap-1 bg-gray-100 px-2 py-0.5 rounded">
+                                                                Ended
+                                                            </span>
+                                                        )}
                                                         <span className="text-xs text-gray-500 flex items-center gap-1">
-                                                            <CheckCircle size={12} className="text-green-500" />
-                                                            Recorded
+                                                            {(rec.bunnyVideoId || rec.recordingUrl) ? (
+                                                                <CheckCircle size={12} className="text-green-500" />
+                                                            ) : (
+                                                                <X size={12} className="text-amber-500" />
+                                                            )}
+                                                            {(rec.bunnyVideoId || rec.recordingUrl) ? 'Recorded' : 'No Recording'}
                                                         </span>
-                                                        <span className="text-xs text-gray-400">
-                                                            {rec.startTime ? new Date(rec.startTime).toLocaleDateString() : '-'}
+                                                        <span className="text-xs text-gray-400 font-medium">
+                                                            {rec.startTime || (rec as any).date ? new Date(rec.startTime || (rec as any).date).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }) : '-'}
                                                         </span>
                                                         {rec.bunnyVideoId && (
                                                             <span className="px-2 py-0.5 bg-purple-50 text-purple-600 rounded text-[10px] font-bold tracking-tight">
@@ -335,8 +384,8 @@ export default function RecordingManagerPage() {
                                                             </span>
                                                         )}
                                                         {rec.isAttached && (
-                                                            <span className="text-[10px] text-brand-blue font-bold uppercase tracking-wider flex items-center gap-1">
-                                                                <LinkIcon size={10} /> Manually Attached
+                                                            <span className="text-[10px] text-brand-blue font-bold uppercase tracking-wider flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded">
+                                                                <LinkIcon size={10} /> Attached
                                                             </span>
                                                         )}
                                                     </div>
@@ -364,10 +413,23 @@ export default function RecordingManagerPage() {
                                                     variant="outline" 
                                                     className="gap-2 border-gray-200 hover:border-brand-blue hover:text-brand-blue hover:bg-blue-50 transition-all rounded-lg"
                                                     onClick={() => openAttachModal(rec)}
+                                                    disabled={!(rec.bunnyVideoId || rec.recordingUrl)}
                                                 >
                                                     <LinkIcon size={14} />
-                                                    Attach to Batch
+                                                    Attach
                                                 </Button>
+
+                                                {(rec.bunnyVideoId || rec.recordingUrl) && (
+                                                    <Button 
+                                                        size="sm" 
+                                                        variant="ghost" 
+                                                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                                        onClick={() => handleDeleteRecording(rec)}
+                                                        title="Delete recording linkage"
+                                                    >
+                                                        <Trash2 size={16} />
+                                                    </Button>
+                                                )}
 
                                                 <Menu as="div" className="relative inline-block text-left">
                                                     <Menu.Button className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-400 hover:text-gray-600">
