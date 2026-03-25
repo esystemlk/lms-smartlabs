@@ -333,12 +333,21 @@ export function ResourceViewerModal({ resource, onClose }: ResourceViewerModalPr
           <h3 className="font-bold text-lg text-gray-900 dark:text-white truncate pr-4">
             {resource.title}
           </h3>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors text-gray-500"
-          >
-            <X size={24} />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => window.open(resource.url, '_blank')}
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors text-brand-blue"
+              title="Download / Open Original"
+            >
+              <Download size={20} />
+            </button>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors text-gray-500"
+            >
+              <X size={24} />
+            </button>
+          </div>
         </div>
 
         {/* Content */}

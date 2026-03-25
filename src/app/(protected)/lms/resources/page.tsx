@@ -6,7 +6,7 @@ import { resourceService } from "@/services/resourceService";
 import { courseService } from "@/services/courseService";
 import { enrollmentService } from "@/services/enrollmentService";
 import { Resource, ResourceFolder, Course } from "@/lib/types";
-import { Loader2, FileText, Video, Folder, Music, Image as ImageIcon, ChevronRight, BookOpen } from "lucide-react";
+import { Loader2, FileText, Video, Folder, Music, Image as ImageIcon, ChevronRight, BookOpen, Download } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { ResourceViewerModal } from "@/components/lms/ResourceViewerModal";
 
@@ -246,10 +246,20 @@ export default function ResourcesPage() {
                         <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                           {getFileIcon(resource.type)}
                         </div>
-                        <div className="overflow-hidden">
+                        <div className="overflow-hidden flex-1">
                           <h4 className="font-medium text-gray-900 truncate group-hover:text-brand-blue transition-colors" title={resource.title}>{resource.title}</h4>
                           <p className="text-xs text-gray-500 uppercase">{resource.type}</p>
                         </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(resource.url, '_blank');
+                          }}
+                          className="p-2 hover:bg-brand-blue/10 text-gray-400 hover:text-brand-blue rounded-lg transition-all"
+                          title="Download"
+                        >
+                          <Download size={18} />
+                        </button>
                       </div>
                     ))}
                   </div>

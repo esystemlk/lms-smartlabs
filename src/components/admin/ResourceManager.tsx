@@ -20,9 +20,12 @@ import {
   ChevronRight,
   Home,
   Loader2,
-  ArrowLeft
+  ArrowLeft,
+  Download,
+  Eye
 } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
+import { ResourceViewerModal } from "@/components/lms/ResourceViewerModal";
 
 // Helper to get icon by type
 const getFileIcon = (type: string) => {
@@ -66,6 +69,7 @@ export function ResourceManager() {
   const [bulkFiles, setBulkFiles] = useState<FileList | null>(null);
   const [bulkUploading, setBulkUploading] = useState(false);
   const bulkInputRef = useRef<HTMLInputElement | null>(null);
+  const [viewingResource, setViewingResource] = useState<Resource | null>(null);
 
   useEffect(() => {
     if (isBulkUpload && bulkInputRef.current) {
@@ -315,18 +319,38 @@ export function ResourceManager() {
 
           {/* Resources */}
           {currentResources.map(resource => (
-            <div key={resource.id} className="group relative p-4 bg-white border border-gray-100 rounded-xl hover:border-gray-300 hover:shadow-sm transition-all">
+            <div 
+              key={resource.id} 
+              className="group relative p-4 bg-white border border-gray-100 rounded-xl hover:border-brand-blue/30 hover:shadow-sm transition-all cursor-pointer"
+              onClick={() => setViewingResource(resource)}
+            >
               <div className="flex items-start justify-between">
                 {getFileIcon(resource.type)}
-                <button
-                  onClick={() => handleDeleteResource(resource.id)}
-                  className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-100 text-red-500 rounded transition-all"
-                >
-                  <Trash2 size={14} />
-                </button>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(resource.url, '_blank');
+                    }}
+                    className="opacity-0 group-hover:opacity-100 p-1 hover:bg-brand-blue/10 text-brand-blue rounded transition-all"
+                    title="Download"
+                  >
+                    <Download size={14} />
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleDeleteResource(resource.id); }}
+                    className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-100 text-red-500 rounded transition-all"
+                    title="Delete"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
               </div>
               <h3 className="font-medium text-gray-900 mt-3 truncate" title={resource.title}>{resource.title}</h3>
-              <p className="text-xs text-gray-500 uppercase mt-1">{resource.type}</p>
+              <p className="text-xs text-gray-500 uppercase mt-1 flex items-center gap-1">
+                {resource.type}
+                <Eye size={10} className="ml-auto opacity-0 group-hover:opacity-100 text-gray-400" />
+              </p>
             </div>
           ))}
 
@@ -338,6 +362,15 @@ export function ResourceManager() {
           )}
         </div>
       )}
+      
+      {viewingResource && (
+        <ResourceViewerModal
+          resource={viewingResource}
+          onClose={() => setViewingResource(null)}
+        />
+      )}
+    </div>
+  );
 
       {/* Create Folder Modal */}
       {isCreatingFolder && (
@@ -611,6 +644,14 @@ export function ResourceManager() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Viewer Modal */}
+      {viewingResource && (
+        <ResourceViewerModal
+          resource={viewingResource}
+          onClose={() => setViewingResource(null)}
+        />
       )}
     </div>
   );
