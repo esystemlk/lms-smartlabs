@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { Resource } from "@/lib/types";
-import { X, FileText, AlertCircle, Loader2, RefreshCw, ExternalLink } from "lucide-react";
+import { X, FileText, AlertCircle, Loader2, RefreshCw, ExternalLink, Download } from "lucide-react";
 
 interface ResourceViewerModalProps {
   resource: Resource | null;
