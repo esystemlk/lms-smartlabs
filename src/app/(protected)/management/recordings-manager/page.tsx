@@ -423,11 +423,18 @@ export default function RecordingManagerPage() {
                                                     <Button 
                                                         size="sm" 
                                                         variant="ghost" 
-                                                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                                        className={`p-2 transition-all rounded-lg ${rec.isAttached ? "text-red-500 hover:bg-red-50" : "text-gray-400 hover:text-red-500 hover:bg-red-50"}`}
                                                         onClick={() => handleDeleteRecording(rec)}
-                                                        title="Delete recording linkage"
+                                                        title={rec.isAttached ? "Detach from this batch" : "Delete recording linkage"}
                                                     >
-                                                        <Trash2 size={16} />
+                                                        {rec.isAttached ? (
+                                                            <div className="flex items-center gap-1">
+                                                                <X size={16} />
+                                                                <span className="text-xs font-bold">Remove</span>
+                                                            </div>
+                                                        ) : (
+                                                            <Trash2 size={16} />
+                                                        )}
                                                     </Button>
                                                 )}
 

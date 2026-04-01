@@ -31,14 +31,23 @@ export default function RecordingUploadPage() {
 
     // Form State
     const [formData, setFormData] = useState({
-        courseId: "",
-        batchId: "",
-        timeSlotId: "",
         title: "",
         date: new Date().toISOString().split('T')[0],
         duration: "60",
         order: "0" // For alignment
     });
+
+    interface CourseSelection {
+        courseId: string;
+        batchId: string;
+        timeSlotId: string;
+        batches: Batch[];
+        fetchingBatches: boolean;
+    }
+
+    const [selections, setSelections] = useState<CourseSelection[]>([
+        { courseId: "", batchId: "", timeSlotId: "", batches: [], fetchingBatches: false }
+    ]);
 
     const [videoFile, setVideoFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false);
@@ -67,17 +76,72 @@ export default function RecordingUploadPage() {
         }
     };
 
-    useEffect(() => {
-        if (formData.courseId) {
-            setBatches([]);
-            courseService.getBatches(formData.courseId).then(setBatches);
+    const fetchBatchesForSelection = async (index: number, courseId: string) => {
+        if (!courseId) return;
+
+        setSelections((prev: CourseSelection[]) => {
+            const updated = [...prev];
+            if (updated[index]) {
+                updated[index] = { ...updated[index], fetchingBatches: true };
+            }
+            return updated;
+        });
+
+        try {
+            const batches = await courseService.getBatches(courseId);
+            setSelections((prev: CourseSelection[]) => {
+                const updated = [...prev];
+                if (updated[index] && updated[index].courseId === courseId) {
+                    updated[index] = { ...updated[index], batches: batches, fetchingBatches: false };
+                }
+                return updated;
+            });
+        } catch (error) {
+            console.error("Error fetching batches:", error);
+            setSelections((prev: CourseSelection[]) => {
+                const updated = [...prev];
+                if (updated[index] && updated[index].courseId === courseId) {
+                    updated[index] = { ...updated[index], fetchingBatches: false };
+                }
+                return updated;
+            });
         }
-    }, [formData.courseId]);
+    };
+
+    const updateCourseSelection = (index: number, courseId: string) => {
+        setSelections((prev: CourseSelection[]) => {
+            const updated = [...prev];
+            updated[index] = {
+                ...updated[index],
+                courseId,
+                batchId: "",
+                batches: [],
+                timeSlotId: ""
+            };
+            return updated;
+        });
+        if (courseId) {
+            fetchBatchesForSelection(index, courseId);
+        }
+    };
+
+    const addSelection = () => {
+        setSelections((prev: CourseSelection[]) => [...prev, { courseId: "", batchId: "", timeSlotId: "", batches: [], fetchingBatches: false }]);
+    };
+
+    const removeSelection = (index: number) => {
+        setSelections((prev: CourseSelection[]) => {
+            if (prev.length <= 1) return prev;
+            return prev.filter((_: CourseSelection, i: number) => i !== index);
+        });
+    };
 
     const handleUpload = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!videoFile || !formData.courseId || !formData.batchId || !formData.title) {
-            setError("Please fill all required fields and select a video.");
+        const validSelections = selections.filter(s => s.courseId && s.batchId);
+        
+        if (!videoFile || validSelections.length === 0 || !formData.title) {
+            setError("Please fill all required fields and select at least one course/batch.");
             return;
         }
 
@@ -94,21 +158,25 @@ export default function RecordingUploadPage() {
             // 2. Upload Video File
             await bunnyService.uploadVideo(videoFile, videoId, (p) => setProgress(p));
 
-            // 3. Save to Firestore
-            const recording: any = {
-                id: videoId,
-                title: formData.title,
-                videoUrl: videoId, // Bunny ID
-                date: formData.date,
-                durationMinutes: parseInt(formData.duration) || 0,
-                order: parseInt(formData.order) || 0,
-            };
+            // 3. Save to Firestore for ALL selections
+            const promises = validSelections.map((s, index) => {
+                const recording: any = {
+                    id: videoId + "_" + Date.now() + "_" + index,
+                    title: formData.title,
+                    videoUrl: videoId, // Bunny ID
+                    date: formData.date,
+                    durationMinutes: parseInt(formData.duration) || 0,
+                    order: parseInt(formData.order) || 0,
+                };
 
-            if (formData.timeSlotId) {
-                recording.timeSlotId = formData.timeSlotId;
-            }
+                if (s.timeSlotId) {
+                    recording.timeSlotId = s.timeSlotId;
+                }
 
-            await courseService.addRecording(formData.courseId, formData.batchId, recording);
+                return courseService.addRecording(s.courseId, s.batchId, recording);
+            });
+
+            await Promise.all(promises);
 
             setSuccess(true);
             setVideoFile(null);
@@ -146,95 +214,147 @@ export default function RecordingUploadPage() {
 
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                 <form onSubmit={handleUpload} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* Selection */}
-                        <div className="space-y-4">
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">Select Course</label>
-                                <select
-                                    className="w-full rounded-xl border-gray-200 focus:ring-brand-blue focus:border-brand-blue"
-                                    value={formData.courseId}
-                                    onChange={e => setFormData({ ...formData, courseId: e.target.value, batchId: "", timeSlotId: "" })}
-                                    required
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Selections Section */}
+                        <div className="space-y-6">
+                            <div className="flex items-center justify-between">
+                                <label className="text-sm font-bold text-gray-900 flex items-center gap-2">
+                                    <Video className="w-4 h-4 text-brand-blue" />
+                                    Target Courses & Batches
+                                </label>
+                                <Button 
+                                    type="button" 
+                                    variant="outline" 
+                                    size="sm" 
+                                    onClick={addSelection}
+                                    className="h-8 text-xs border-dashed"
                                 >
-                                    <option value="">Select Course</option>
-                                    {courses.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
-                                </select>
+                                    Add Another
+                                </Button>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">Select Batch</label>
-                                <select
-                                    className="w-full rounded-xl border-gray-200 focus:ring-brand-blue focus:border-brand-blue disabled:bg-gray-50"
-                                    value={formData.batchId}
-                                    onChange={e => setFormData({ ...formData, batchId: e.target.value, timeSlotId: "" })}
-                                    required
-                                    disabled={!formData.courseId}
-                                >
-                                    <option value="">Select Batch</option>
-                                    {batches.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
-                                </select>
-                            </div>
+                            <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                                {selections.map((sel, idx) => (
+                                    <div key={idx} className="p-4 bg-gray-50 rounded-xl border border-gray-100 relative space-y-3">
+                                        {selections.length > 1 && (
+                                            <button 
+                                                type="button"
+                                                onClick={() => removeSelection(idx)}
+                                                className="absolute top-2 right-2 p-1 text-red-400 hover:text-red-500 hover:bg-red-50 rounded"
+                                            >
+                                                <X size={14} />
+                                            </button>
+                                        )}
 
-                            {formData.batchId && batches.find(b => b.id === formData.batchId)?.timeSlots && (
-                                <div className="space-y-2">
-                                    <label className="text-sm font-medium">Specific Time Slot (Optional)</label>
-                                    <select
-                                        className="w-full rounded-xl border-gray-200 focus:ring-brand-blue focus:border-brand-blue"
-                                        value={formData.timeSlotId}
-                                        onChange={e => setFormData({ ...formData, timeSlotId: e.target.value })}
-                                    >
-                                        <option value="">All Students (Default)</option>
-                                        {batches.find(b => b.id === formData.batchId)?.timeSlots?.map(s => (
-                                            <option key={s.id} value={s.id}>{s.label}</option>
-                                        ))}
-                                    </select>
-                                    <p className="text-xs text-gray-500">If selected, only students in this slot can view the recording.</p>
-                                </div>
-                            )}
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Course</label>
+                                            <select
+                                                className="w-full h-9 text-sm rounded-lg border-gray-200 focus:ring-brand-blue focus:border-brand-blue bg-white"
+                                                value={sel.courseId}
+                                                onChange={e => updateCourseSelection(idx, e.target.value)}
+                                                required
+                                            >
+                                                <option value="">Select Course</option>
+                                                {courses.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
+                                            </select>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Batch</label>
+                                                <select
+                                                    className="w-full h-9 text-sm rounded-lg border-gray-200 focus:ring-brand-blue focus:border-brand-blue bg-white disabled:bg-gray-100"
+                                                    value={sel.batchId}
+                                                    onChange={e => {
+                                                        const updated = [...selections];
+                                                        updated[idx].batchId = e.target.value;
+                                                        updated[idx].timeSlotId = "";
+                                                        setSelections(updated);
+                                                    }}
+                                                    required
+                                                    disabled={!sel.courseId}
+                                                >
+                                                    <option value="">Select Batch</option>
+                                                    {sel.batches.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                                                </select>
+                                            </div>
+
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Slot (Optional)</label>
+                                                <select
+                                                    className="w-full h-9 text-sm rounded-lg border-gray-200 focus:ring-brand-blue focus:border-brand-blue bg-white disabled:bg-gray-100"
+                                                    value={sel.timeSlotId}
+                                                    onChange={e => {
+                                                        const updated = [...selections];
+                                                        updated[idx].timeSlotId = e.target.value;
+                                                        setSelections(updated);
+                                                    }}
+                                                    disabled={!sel.batchId}
+                                                >
+                                                    <option value="">All Slots</option>
+                                                    {sel.batches.find(b => b.id === sel.batchId)?.timeSlots?.map(s => (
+                                                        <option key={s.id} value={s.id}>{s.label}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
-                        {/* details */}
-                        <div className="space-y-4">
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">Recording Title</label>
-                                <Input
-                                    placeholder="e.g. Lesson 05: Grammar Basics"
-                                    value={formData.title}
-                                    onChange={e => setFormData({ ...formData, title: e.target.value })}
-                                    required
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
+                        {/* Recording details */}
+                        <div className="space-y-6">
+                            <label className="text-sm font-bold text-gray-900 flex items-center gap-2">
+                                <Play className="w-4 h-4 text-brand-blue" />
+                                Recording Info
+                            </label>
+                            
+                            <div className="space-y-4">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium text-gray-700 font-bold">Date of Class</label>
+                                    <label className="text-sm font-medium">Recording Title</label>
                                     <Input
-                                        type="date"
-                                        value={formData.date}
-                                        onChange={e => setFormData({ ...formData, date: e.target.value })}
+                                        placeholder="e.g. Lesson 05: Grammar Basics"
+                                        value={formData.title}
+                                        onChange={e => setFormData({ ...formData, title: e.target.value })}
                                         required
+                                        className="h-11 rounded-xl"
                                     />
                                 </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium">Date of Class</label>
+                                        <Input
+                                            type="date"
+                                            value={formData.date}
+                                            onChange={e => setFormData({ ...formData, date: e.target.value })}
+                                            required
+                                            className="h-11 rounded-xl"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium">Duration (mins)</label>
+                                        <Input
+                                            type="number"
+                                            value={formData.duration}
+                                            onChange={e => setFormData({ ...formData, duration: e.target.value })}
+                                            className="h-11 rounded-xl"
+                                        />
+                                    </div>
+                                </div>
+
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Duration (mins)</label>
+                                    <label className="text-sm font-medium">Ordering (0 = Last, 1+ = Custom)</label>
                                     <Input
                                         type="number"
-                                        value={formData.duration}
-                                        onChange={e => setFormData({ ...formData, duration: e.target.value })}
+                                        placeholder="0"
+                                        value={formData.order}
+                                        onChange={e => setFormData({ ...formData, order: e.target.value })}
+                                        className="h-11 rounded-xl"
                                     />
+                                    <p className="text-xs text-gray-500">Higher numbers show first in the student portal.</p>
                                 </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">Ordering (0 = Last, 1+ = Custom)</label>
-                                <Input
-                                    type="number"
-                                    placeholder="0"
-                                    value={formData.order}
-                                    onChange={e => setFormData({ ...formData, order: e.target.value })}
-                                />
-                                <p className="text-xs text-gray-500">Use higher numbers to show first.</p>
                             </div>
                         </div>
                     </div>

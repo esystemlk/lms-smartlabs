@@ -52,19 +52,55 @@ export default function ManualUploadModal({ isOpen, lessonId, courseId, onClose,
         setProgress(Math.round(percent));
       });
 
-      // 3. Update Firestore Lesson with Recording URL (using videoId)
-      // Note: We'll store just the videoId or the full embed URL?
-      // For now, let's store the videoId, but to be compatible with existing players, 
-      // we might need a full URL. Let's assume the player knows how to handle Bunny IDs 
-      // or we construct a URL.
-      // Actually, let's just store the videoId in a new field `bunnyVideoId` 
-      // and also `recordingUrl` for compatibility if needed.
+      // 3. Update Firestore Lesson(s) with Recording URL
+      // Check if this lesson is part of a binded class (via zoomMeetingId)
+      const currentLesson = await courseService.getLesson(courseId, lessonId);
       
-      await courseService.updateLesson(courseId, lessonId, {
-        recordingUrl: videoId, // Or construct full URL if needed
-        bunnyVideoId: videoId,
-        recordingStatus: "processed"
-      });
+      if (currentLesson?.zoomMeetingId) {
+        // Find ALL lessons with this meeting ID using the collectionGroup logic
+        // We'll use a helper or just do it here if possible. 
+        // For simplicity, let's update the current one and then try to find others.
+        
+        // Actually, let's just update the current one first
+        await courseService.updateLesson(courseId, lessonId, {
+          recordingUrl: videoId,
+          bunnyVideoId: videoId,
+          recordingStatus: "processed"
+        });
+
+        // Now find others with same zoomMeetingId
+        try {
+          const { collectionGroup, query, where, getDocs, updateDoc } = await import('firebase/firestore');
+          const { db } = await import('@/lib/firebase');
+          
+          const q = query(
+            collectionGroup(db, 'lessons'),
+            where('zoomMeetingId', '==', currentLesson.zoomMeetingId)
+          );
+          const snap = await getDocs(q);
+          
+          const updatePromises = snap.docs
+            .filter(doc => doc.id !== lessonId) // Skip the one we already updated
+            .map(doc => updateDoc(doc.ref, {
+              recordingUrl: videoId,
+              bunnyVideoId: videoId,
+              recordingStatus: "processed",
+              updatedAt: new Date()
+            }));
+            
+          await Promise.all(updatePromises);
+        } catch (err) {
+          console.error("Failed to update linked lessons:", err);
+          // Don't fail the whole upload if just the linking fails
+        }
+      } else {
+        // Regular single lesson update
+        await courseService.updateLesson(courseId, lessonId, {
+          recordingUrl: videoId,
+          bunnyVideoId: videoId,
+          recordingStatus: "processed"
+        });
+      }
 
       setStep("success");
       setTimeout(() => {
