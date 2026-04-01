@@ -17,7 +17,8 @@ import {
     Video,
     Calendar,
     Clock,
-    Play
+    Play,
+    X
 } from "lucide-react";
 import Link from "next/link";
 
