@@ -147,7 +147,15 @@ export default function RecordingManagerPage() {
     };
 
     const handleDeleteRecording = async (recording: ManagerRecording) => {
-        if (!confirm("Are you sure you want to remove this recording? This won't delete the video from Bunny.net.")) return;
+        let confirmMessage = "Are you sure you want to remove this recording link? This won't delete the video file itself.";
+
+        if (recording.isAttached) {
+            confirmMessage = "Are you sure you want to detach this recording from this batch? The original recording will not be affected.";
+        } else {
+            confirmMessage = "Are you sure you want to remove the recording from this original lesson? This will unlink the video, but other manually attached copies in other batches will remain.";
+        }
+
+        if (!confirm(confirmMessage)) return;
         
         try {
             if (recording.isAttached && recording.originalBatchId) {
