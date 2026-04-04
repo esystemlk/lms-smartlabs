@@ -64,16 +64,27 @@ export default function LMSPage() {
             });
 
             filtered = upcoming.filter(cls => {
-                // Must have batchIds
-                if (!cls.batchIds || cls.batchIds.length === 0) return false;
+                // 1. Check Course Access
+                const userCourseIds = activeEnrollments.map(e => e.courseId);
+                const hasPrimaryDbAccess = cls.courseId && userCourseIds.includes(cls.courseId);
+                const hasBindedDbAccess = cls.bindedCourseIds && cls.bindedCourseIds.some(id => userCourseIds.includes(id));
+                
+                if (!hasPrimaryDbAccess && !hasBindedDbAccess) {
+                    return false;
+                }
 
-                // Check if student is in any of the batches assigned to this class
+                // 2. Check if student is in any of the batches assigned to this class
+                if (!cls.batchIds || cls.batchIds.length === 0) return false;
                 const matchingBatchIds = cls.batchIds.filter(id => userBatches.includes(id));
                 if (matchingBatchIds.length === 0) return false;
 
                 // If class has a time slot restriction
-                if (cls.timeSlotId) {
-                  return matchingBatchIds.some(bid => batchTimeSlots.get(bid) === cls.timeSlotId);
+                if (cls.timeSlotId || (cls.bindedTimeSlotIds && cls.bindedTimeSlotIds.length > 0)) {
+                  return matchingBatchIds.some(bid => {
+                      const studentTId = batchTimeSlots.get(bid);
+                      if (!studentTId) return false;
+                      return studentTId === cls.timeSlotId || (cls.bindedTimeSlotIds && cls.bindedTimeSlotIds.includes(studentTId));
+                  });
                 }
 
                 return true;

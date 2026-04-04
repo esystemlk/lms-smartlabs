@@ -55,10 +55,11 @@ export default function LiveClassesPage() {
             if (matchingBatchIds.length === 0) return false;
 
             // 3. Check Time Slot Access (if specified in class)
-            if (cls.timeSlotId) {
+            if (cls.timeSlotId || (cls.bindedTimeSlotIds && cls.bindedTimeSlotIds.length > 0)) {
               const hasMatchingTimeSlot = matchingBatchIds.some((bid: string) => {
                  const matchingEnrollment = activeEnrollments.find(e => e.batchId === bid);
-                 return matchingEnrollment?.timeSlotId === cls.timeSlotId;
+                 if (!matchingEnrollment?.timeSlotId) return false;
+                 return matchingEnrollment.timeSlotId === cls.timeSlotId || (cls.bindedTimeSlotIds && cls.bindedTimeSlotIds.includes(matchingEnrollment.timeSlotId));
               });
               if (!hasMatchingTimeSlot) return false;
             }

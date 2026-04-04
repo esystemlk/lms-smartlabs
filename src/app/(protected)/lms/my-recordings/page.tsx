@@ -72,7 +72,16 @@ export default function MyRecordingsPage() {
             });
 
             filtered = filtered.filter((cls: any) => {
-                // Must have batchIds
+                // 1. Check Course Access
+                const userCourseIds = activeEnrollments.map((e: Enrollment) => e.courseId);
+                const hasPrimaryDbAccess = cls.courseId && userCourseIds.includes(cls.courseId);
+                const hasBindedDbAccess = cls.bindedCourseIds && cls.bindedCourseIds.some((id: string) => userCourseIds.includes(id));
+                
+                if (!hasPrimaryDbAccess && !hasBindedDbAccess) {
+                    return false;
+                }
+
+                // 2. Check if student is in any of the batches assigned to this class
                 if (!cls.batchIds || cls.batchIds.length === 0) return false;
 
                 // Check if student is in any of the batches assigned to this class
@@ -80,9 +89,13 @@ export default function MyRecordingsPage() {
                 if (matchingBatchIds.length === 0) return false;
 
                 // If class has a time slot restriction
-                if (cls.timeSlotId) {
-                  // Only show if student is in the EXACT same time slot
-                  return matchingBatchIds.some((bid: string) => batchTimeSlots.get(bid) === cls.timeSlotId);
+                if (cls.timeSlotId || (cls.bindedTimeSlotIds && cls.bindedTimeSlotIds.length > 0)) {
+                  // Only show if student is in the EXACT same time slot OR one of the binded time slots
+                  return matchingBatchIds.some((bid: string) => {
+                      const studentTId = batchTimeSlots.get(bid);
+                      if (!studentTId) return false;
+                      return studentTId === cls.timeSlotId || (cls.bindedTimeSlotIds && cls.bindedTimeSlotIds.includes(studentTId));
+                  });
                 }
 
                 // If no time slot restriction on the class, any student in the matching batch can see it

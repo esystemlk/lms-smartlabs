@@ -21,15 +21,44 @@ export default function TimetablePage() {
           // Get all upcoming live classes
           const upcoming = await courseService.getUpcomingLiveClasses();
           
-          // Filter for user's batches
           let filtered = upcoming;
           if (userData.role === 'student') {
-            const userBatches = userData.enrolledBatches || [];
-            if (userBatches.length > 0) {
-              filtered = filtered.filter(cls => {
-                  return !cls.batchIds || cls.batchIds.length === 0 || cls.batchIds.some(id => userBatches.includes(id));
-              });
-            }
+            const { enrollmentService } = await import('@/services/enrollmentService');
+            const userEnrollments = await enrollmentService.getUserEnrollments(userData.uid);
+            const activeEnrollments = userEnrollments.filter(e => e.status === 'active' || e.status === 'completed');
+            
+            const enrollmentBatchIds = activeEnrollments.map(e => e.batchId).filter(Boolean);
+            const userDataBatchIds = userData.enrolledBatches || [];
+            const userBatches = Array.from(new Set([...enrollmentBatchIds, ...userDataBatchIds])) as string[];
+
+            filtered = upcoming.filter(cls => {
+                // 1. Check Course Access
+                const userCourseIds = activeEnrollments.map(e => e.courseId);
+                const hasPrimaryDbAccess = cls.courseId && userCourseIds.includes(cls.courseId);
+                const hasBindedDbAccess = cls.bindedCourseIds && cls.bindedCourseIds.some((id: string) => userCourseIds.includes(id));
+                
+                if (!hasPrimaryDbAccess && !hasBindedDbAccess) {
+                    return false;
+                }
+
+                // 2. Check Batch Access
+                if (cls.batchIds && cls.batchIds.length > 0) {
+                    const matchingBatchIds = cls.batchIds.filter((id: string) => userBatches.includes(id));
+                    if (matchingBatchIds.length === 0) return false;
+
+                    // 3. Check Time Slot Access
+                    if (cls.timeSlotId || (cls.bindedTimeSlotIds && cls.bindedTimeSlotIds.length > 0)) {
+                        const hasMatchingTimeSlot = matchingBatchIds.some((bid: string) => {
+                            const matchingEnrollment = activeEnrollments.find(e => e.batchId === bid);
+                            if (!matchingEnrollment?.timeSlotId) return false;
+                            return matchingEnrollment.timeSlotId === cls.timeSlotId || (cls.bindedTimeSlotIds && cls.bindedTimeSlotIds.includes(matchingEnrollment.timeSlotId));
+                        });
+                        if (!hasMatchingTimeSlot) return false;
+                    }
+                }
+
+                return true;
+            });
           }
           setClasses(filtered);
         } catch (error) {

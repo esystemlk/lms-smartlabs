@@ -188,6 +188,8 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
       const uniqueBatchIds = Array.from(new Set(allBatchIds));
       const allCourseIds = validSelections.map((s: CourseSelection) => s.courseId);
       const uniqueCourseIds = Array.from(new Set(allCourseIds));
+      const allTimeSlotIds = validSelections.map((s: CourseSelection) => s.timeSlotId).filter(Boolean);
+      const uniqueTimeSlotIds = Array.from(new Set(allTimeSlotIds)) as string[];
 
       await courseService.addLesson(primaryCourseId, {
           title: formData.title,
@@ -200,6 +202,7 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
           zoomJoinUrl: zoomData.join_url,
           batchIds: uniqueBatchIds,
           bindedCourseIds: uniqueCourseIds,
+          bindedTimeSlotIds: uniqueTimeSlotIds,
           ...(validSelections[0].timeSlotId ? { timeSlotId: validSelections[0].timeSlotId } : {}),
           order: 999,
           published: true
