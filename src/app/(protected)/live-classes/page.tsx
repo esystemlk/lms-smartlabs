@@ -58,9 +58,11 @@ export default function LiveClassManagementPage() {
             const courseName = courses.find((c: Course) => c.id === cid)?.title || "Unknown Course";
             const batchesList = await courseService.getBatches(cid);
             
+            let foundAnyBatch = false;
             for (const bid of selectedScheduleDetails.batchIds || []) {
               const batch = batchesList.find((b: any) => b.id === bid);
               if (batch) {
+                foundAnyBatch = true;
                 let timeSlotLabel = "Any Time Slot";
                 if (selectedScheduleDetails.timeSlotId && batch.timeSlots) {
                   const ts = batch.timeSlots.find((t: any) => t.id === selectedScheduleDetails.timeSlotId);
@@ -68,6 +70,11 @@ export default function LiveClassManagementPage() {
                 }
                 results.push({ courseName, batchName: batch.name || `Batch ${bid}`, timeSlotLabel });
               }
+            }
+            
+            if (!foundAnyBatch && cid !== selectedScheduleDetails.courseId) {
+                // If it's a binded course but no matching batches were found directly, still display it
+                results.push({ courseName, batchName: "All Scheduled Batches", timeSlotLabel: "Any Time Slot" });
             }
           }
           setScheduleBatchesData(results);

@@ -31,30 +31,36 @@ export default function LiveClassesPage() {
       // Filter by enrolled batches if user is a student
       let filteredClasses = data;
       if (userData && userData.role === 'student') {
-        const userBatches = userData.enrolledBatches || [];
-
-        // Fetch user enrollments to check for time slots
+        // Fetch user enrollments to check for time slots and batch allocations
         const userEnrollments = await enrollmentService.getUserEnrollments(userData.uid);
         const activeEnrollments = userEnrollments.filter(e => e.status === 'active' || e.status === 'completed');
+        
+        const enrollmentBatchIds = activeEnrollments.map(e => e.batchId).filter(Boolean);
+        const userDataBatchIds = userData.enrolledBatches || [];
+        const userBatches = Array.from(new Set([...enrollmentBatchIds, ...userDataBatchIds])) as string[];
 
         filteredClasses = data.filter(cls => {
           // 1. Check Course Access
           const userCourseIds = activeEnrollments.map(e => e.courseId);
-          if (cls.courseId && !userCourseIds.includes(cls.courseId)) {
+          const hasPrimaryDbAccess = cls.courseId && userCourseIds.includes(cls.courseId);
+          const hasBindedDbAccess = cls.bindedCourseIds && cls.bindedCourseIds.some((id: string) => userCourseIds.includes(id));
+          
+          if (!hasPrimaryDbAccess && !hasBindedDbAccess) {
             return false;
           }
 
           // 2. Check Batch Access
           if (cls.batchIds && cls.batchIds.length > 0) {
-            const hasBatchMatch = cls.batchIds.some(id => userBatches.includes(id));
-            if (!hasBatchMatch) return false;
+            const matchingBatchIds = cls.batchIds.filter((id: string) => userBatches.includes(id));
+            if (matchingBatchIds.length === 0) return false;
 
             // 3. Check Time Slot Access (if specified in class)
             if (cls.timeSlotId) {
-              const matchingEnrollment = activeEnrollments.find(e =>
-                cls.batchIds?.includes(e.batchId) && e.timeSlotId === cls.timeSlotId
-              );
-              if (!matchingEnrollment) return false;
+              const hasMatchingTimeSlot = matchingBatchIds.some((bid: string) => {
+                 const matchingEnrollment = activeEnrollments.find(e => e.batchId === bid);
+                 return matchingEnrollment?.timeSlotId === cls.timeSlotId;
+              });
+              if (!hasMatchingTimeSlot) return false;
             }
           }
 
@@ -120,7 +126,7 @@ export default function LiveClassesPage() {
       {(() => {
         const filtered = classes.filter(cls => {
           const matchSearch = cls.title?.toLowerCase().includes(searchTerm.toLowerCase());
-          const matchCourse = !filterCourseId || cls.courseId === filterCourseId;
+          const matchCourse = !filterCourseId || cls.courseId === filterCourseId || (cls.bindedCourseIds && cls.bindedCourseIds.includes(filterCourseId));
           return matchSearch && matchCourse;
         });
 

@@ -76,14 +76,13 @@ export default function MyRecordingsPage() {
                 if (!cls.batchIds || cls.batchIds.length === 0) return false;
 
                 // Check if student is in any of the batches assigned to this class
-                const matchingBatchId = cls.batchIds.find((id: string) => userBatches.includes(id));
-                if (!matchingBatchId) return false;
+                const matchingBatchIds = cls.batchIds.filter((id: string) => userBatches.includes(id));
+                if (matchingBatchIds.length === 0) return false;
 
                 // If class has a time slot restriction
                 if (cls.timeSlotId) {
-                  const studentTimeSlotId = batchTimeSlots.get(matchingBatchId);
                   // Only show if student is in the EXACT same time slot
-                  return studentTimeSlotId === cls.timeSlotId;
+                  return matchingBatchIds.some((bid: string) => batchTimeSlots.get(bid) === cls.timeSlotId);
                 }
 
                 // If no time slot restriction on the class, any student in the matching batch can see it

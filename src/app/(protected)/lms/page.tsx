@@ -48,7 +48,9 @@ export default function LMSPage() {
         // Filter for student's enrolled batches and time slots
         if (userData && userData.role === 'student') {
           const activeEnrollments = enrollments.filter(e => e.status === 'active' || e.status === 'completed');
-          const userBatches = userData.enrolledBatches || [];
+          const enrollmentBatchIds = activeEnrollments.map(e => e.batchId).filter(Boolean);
+          const userDataBatchIds = userData.enrolledBatches || [];
+          const userBatches = Array.from(new Set([...enrollmentBatchIds, ...userDataBatchIds])) as string[];
           
           if (userBatches.length === 0) {
             filtered = [];
@@ -66,13 +68,12 @@ export default function LMSPage() {
                 if (!cls.batchIds || cls.batchIds.length === 0) return false;
 
                 // Check if student is in any of the batches assigned to this class
-                const matchingBatchId = cls.batchIds.find(id => userBatches.includes(id));
-                if (!matchingBatchId) return false;
+                const matchingBatchIds = cls.batchIds.filter(id => userBatches.includes(id));
+                if (matchingBatchIds.length === 0) return false;
 
                 // If class has a time slot restriction
                 if (cls.timeSlotId) {
-                  const studentTimeSlotId = batchTimeSlots.get(matchingBatchId);
-                  return studentTimeSlotId === cls.timeSlotId;
+                  return matchingBatchIds.some(bid => batchTimeSlots.get(bid) === cls.timeSlotId);
                 }
 
                 return true;
