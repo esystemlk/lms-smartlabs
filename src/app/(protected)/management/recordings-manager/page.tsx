@@ -233,7 +233,7 @@ export default function RecordingManagerPage() {
 
     const filteredRecordings = recordings.filter((rec: ManagerRecording) => {
         const matchSearch = rec.title?.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchCourse = !filterCourseId || rec.courseId === filterCourseId;
+        const matchCourse = !filterCourseId || rec.courseId === filterCourseId || ((rec as any).bindedCourseIds && (rec as any).bindedCourseIds.includes(filterCourseId));
         
         // Status filter logic
         const now = new Date();

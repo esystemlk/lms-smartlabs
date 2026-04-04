@@ -182,25 +182,28 @@ export default function ScheduleClassModal({ isOpen, onClose, onSuccess }: Sched
       const zoomData = await zoomRes.json();
       if (!zoomRes.ok) throw new Error(zoomData.error || "Failed to create Zoom meeting");
 
-      // 2. Create Lessons in EACH course
-      const promises = validSelections.map((s: CourseSelection) => 
-        courseService.addLesson(s.courseId, {
-            title: formData.title,
-            type: "live_class",
-            content: "Live Zoom Class (Binded)",
-            duration: formData.duration,
-            startTime,
-            zoomMeetingId: zoomData.id,
-            zoomStartUrl: zoomData.start_url,
-            zoomJoinUrl: zoomData.join_url,
-            batchIds: s.batchIds,
-            ...(s.timeSlotId ? { timeSlotId: s.timeSlotId } : {}),
-            order: 999,
-            published: true
-        })
-      );
+      // 2. Create ONE Lesson in the primary course, binding all selected batches and courses
+      const primaryCourseId = validSelections[0].courseId;
+      const allBatchIds = validSelections.flatMap((s: CourseSelection) => s.batchIds);
+      const uniqueBatchIds = Array.from(new Set(allBatchIds));
+      const allCourseIds = validSelections.map((s: CourseSelection) => s.courseId);
+      const uniqueCourseIds = Array.from(new Set(allCourseIds));
 
-      await Promise.all(promises);
+      await courseService.addLesson(primaryCourseId, {
+          title: formData.title,
+          type: "live_class",
+          content: "Live Zoom Class (Binded)",
+          duration: formData.duration,
+          startTime,
+          zoomMeetingId: zoomData.id,
+          zoomStartUrl: zoomData.start_url,
+          zoomJoinUrl: zoomData.join_url,
+          batchIds: uniqueBatchIds,
+          bindedCourseIds: uniqueCourseIds,
+          ...(validSelections[0].timeSlotId ? { timeSlotId: validSelections[0].timeSlotId } : {}),
+          order: 999,
+          published: true
+      });
 
       toast("Class scheduled successfully for all courses", "success");
       onSuccess();

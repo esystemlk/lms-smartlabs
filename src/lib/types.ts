@@ -146,6 +146,7 @@ export interface Lesson {
   startTime?: string; // ISO string
   duration?: number; // minutes
   batchIds?: string[]; // IDs of batches this live class is scheduled for
+  bindedCourseIds?: string[]; // IDs of courses this live class is binded to
   timeSlotId?: string; // Optional: ID of the specific time slot
   status?: 'scheduled' | 'completed' | 'cancelled';
 

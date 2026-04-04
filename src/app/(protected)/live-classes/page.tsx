@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { courseService } from "@/services/courseService";
 import { Lesson, Course } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
-import { Loader2, Video, Calendar, Clock, Play, ExternalLink, Plus, Settings, Users, Zap, X, CloudUpload, RefreshCw, MoreVertical, Trash2, CheckCircle } from "lucide-react";
+import { Loader2, Video, Calendar, Clock, Play, ExternalLink, Plus, Settings, Users, Zap, X, CloudUpload, RefreshCw, MoreVertical, Trash2, CheckCircle, BookOpen } from "lucide-react";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { Input } from "@/components/ui/Input";
@@ -40,6 +40,49 @@ export default function LiveClassManagementPage() {
   const [syncing, setSyncing] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCourseId, setFilterCourseId] = useState("");
+
+  // Schedule Details Modal State
+  const [selectedScheduleDetails, setSelectedScheduleDetails] = useState<Lesson | null>(null);
+  const [scheduleDetailsLoading, setScheduleDetailsLoading] = useState(false);
+  const [scheduleBatchesData, setScheduleBatchesData] = useState<{ courseName: string, batchName: string, timeSlotLabel: string }[]>([]);
+
+  useEffect(() => {
+    if (selectedScheduleDetails) {
+      const fetchDetails = async () => {
+        setScheduleDetailsLoading(true);
+        try {
+          const results = [];
+          const courseIds = Array.from(new Set([selectedScheduleDetails.courseId, ...(selectedScheduleDetails.bindedCourseIds || [])]));
+          
+          for (const cid of courseIds) {
+            const courseName = courses.find((c: Course) => c.id === cid)?.title || "Unknown Course";
+            const batchesList = await courseService.getBatches(cid);
+            
+            for (const bid of selectedScheduleDetails.batchIds || []) {
+              const batch = batchesList.find((b: any) => b.id === bid);
+              if (batch) {
+                let timeSlotLabel = "Any Time Slot";
+                if (selectedScheduleDetails.timeSlotId && batch.timeSlots) {
+                  const ts = batch.timeSlots.find((t: any) => t.id === selectedScheduleDetails.timeSlotId);
+                  if (ts) timeSlotLabel = ts.label;
+                }
+                results.push({ courseName, batchName: batch.name || `Batch ${bid}`, timeSlotLabel });
+              }
+            }
+          }
+          setScheduleBatchesData(results);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setScheduleDetailsLoading(false);
+        }
+      };
+      // Prevent fetching if we already have the state and courses is populated
+      if (courses.length > 0) fetchDetails();
+    } else {
+      setScheduleBatchesData([]);
+    }
+  }, [selectedScheduleDetails, courses]);
 
   const handleSyncRecordings = async () => {
     setSyncing(true);
@@ -296,7 +339,7 @@ export default function LiveClassManagementPage() {
                     {(() => {
                         const filtered = classes.filter(cls => {
                             const matchSearch = cls.title?.toLowerCase().includes(searchTerm.toLowerCase());
-                            const matchCourse = !filterCourseId || cls.courseId === filterCourseId;
+                            const matchCourse = !filterCourseId || cls.courseId === filterCourseId || (cls.bindedCourseIds && cls.bindedCourseIds.includes(filterCourseId));
                             return matchSearch && matchCourse;
                         });
                         if (filtered.length === 0) {
@@ -330,13 +373,13 @@ export default function LiveClassManagementPage() {
                                 </span>
                                 )}
                                 {cls.batchIds && cls.batchIds.length > 0 && (
-                                  <div className="mt-1 flex flex-wrap gap-1">
-                                    {cls.batchIds.map(bid => (
-                                      <span key={bid} className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-purple-100 text-purple-700">
-                                        Batch {bid}
-                                      </span>
-                                    ))}
-                                  </div>
+                                  <button 
+                                    onClick={() => setSelectedScheduleDetails(cls)}
+                                    className="mt-2 text-xs text-brand-blue hover:underline flex items-center gap-1 font-medium"
+                                  >
+                                    <ExternalLink size={12} />
+                                    View Details
+                                  </button>
                                 )}
                             </td>
                             <td className="px-6 py-4">
@@ -473,15 +516,13 @@ export default function LiveClassManagementPage() {
                             <tr key={cls.id} className="hover:bg-gray-50/50 transition-colors">
                             <td className="px-6 py-4">
                                 <div className="font-medium text-gray-900 text-base">{cls.title}</div>
-                                {cls.batchIds && cls.batchIds.length > 0 && (
-                                  <div className="mt-1 flex flex-wrap gap-1">
-                                    {cls.batchIds.map(bid => (
-                                      <span key={bid} className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-600">
-                                        Batch {bid}
-                                      </span>
-                                    ))}
-                                  </div>
-                                )}
+                                <button 
+                                    onClick={() => setSelectedScheduleDetails(cls)}
+                                    className="mt-2 text-xs text-brand-blue hover:underline flex items-center gap-1 font-medium"
+                                >
+                                    <ExternalLink size={12} />
+                                    View Details
+                                </button>
                             </td>
                             <td className="px-6 py-4">
                                 <div className="flex flex-col gap-1 text-gray-500">
@@ -682,6 +723,72 @@ export default function LiveClassManagementPage() {
         onClose={() => setScheduleModalOpen(false)}
         onSuccess={fetchClasses}
       />
+        {/* Schedule Details Modal */}
+        {selectedScheduleDetails && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+                <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh]">
+                    <div className="p-6 border-b border-gray-100 bg-gray-50/50">
+                        <div className="flex justify-between items-start gap-4">
+                            <div>
+                                <h3 className="text-xl font-bold text-gray-900">{selectedScheduleDetails.title}</h3>
+                                <p className="text-sm text-gray-500 mt-1">Schedule details & bound courses</p>
+                            </div>
+                            <button 
+                                onClick={() => setSelectedScheduleDetails(null)}
+                                className="text-gray-400 hover:text-gray-900 hover:bg-gray-100 p-2 rounded-full transition-colors"
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+                    </div>
+                    <div className="p-6 overflow-y-auto">
+                        {scheduleDetailsLoading ? (
+                            <div className="flex flex-col items-center justify-center py-12">
+                                <Loader2 className="w-8 h-8 animate-spin text-brand-blue mb-4" />
+                                <p className="text-gray-500 text-sm">Loading details...</p>
+                            </div>
+                        ) : scheduleBatchesData.length > 0 ? (
+                            <div className="space-y-4">
+                                {scheduleBatchesData.map((data, i) => (
+                                    <div key={i} className="p-4 bg-white border border-gray-100 rounded-xl shadow-sm hover:border-gray-200 transition-colors">
+                                        <div className="flex items-start gap-3">
+                                            <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center shrink-0">
+                                                <BookOpen size={20} />
+                                            </div>
+                                            <div className="flex-1">
+                                                <h4 className="font-semibold text-gray-900">{data.courseName}</h4>
+                                                <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-gray-600">
+                                                    <span className="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 px-2.5 py-1 rounded-md font-medium text-xs">
+                                                        <Users size={12} />
+                                                        {data.batchName}
+                                                    </span>
+                                                    <span className="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 px-2.5 py-1 rounded-md font-medium text-xs shrink-0">
+                                                        <Clock size={12} />
+                                                        {data.timeSlotLabel}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-12">
+                                <p className="text-gray-500">No bound batches found.</p>
+                            </div>
+                        )}
+                    </div>
+                    <div className="p-4 border-t border-gray-100 bg-gray-50 mt-auto flex justify-end">
+                        <Button 
+                            variant="primary" 
+                            onClick={() => setSelectedScheduleDetails(null)}
+                        >
+                            Close
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        )}
     </div>
   );
 }
