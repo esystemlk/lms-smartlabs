@@ -59,6 +59,23 @@ export default function LessonPage() {
   const isCompleted = completedLessonIds.includes(lessonId);
   const [markingComplete, setMarkingComplete] = useState(false);
 
+  // Bunny Library ID
+  const [bunnyLibraryId, setBunnyLibraryId] = useState<string>("");
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const settings = await courseService.getGlobalSettings();
+        if (settings?.bunny?.libraryId) {
+          setBunnyLibraryId(settings.bunny.libraryId);
+        }
+      } catch (error) {
+        console.error("Error fetching settings:", error);
+      }
+    };
+    fetchSettings();
+  }, []);
+
   // Personal Notes
   const [myNote, setMyNote] = useState("");
   const [isSavingNote, setIsSavingNote] = useState(false);
@@ -246,16 +263,25 @@ export default function LessonPage() {
                 </div>
               </div>
             ) : currentLesson.videoUrl ? (
-              // In a real app, use a proper video player component here
-              <video 
-                ref={videoRef}
-                src={currentLesson.videoUrl} 
-                controls 
-                className="w-full h-full object-contain"
-                poster="/placeholder-video-poster.jpg" // You might want a poster image
-              >
-                Your browser does not support the video tag.
-              </video>
+              // Use Bunny.net player if it's a Bunny ID, otherwise fallback to standard video tag
+              !currentLesson.videoUrl.includes('http') && bunnyLibraryId ? (
+                <iframe
+                  src={`https://iframe.mediadelivery.net/embed/${bunnyLibraryId}/${currentLesson.videoUrl}?autoplay=false&loop=false&muted=false&preload=true`}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+                  allowFullScreen={true}
+                />
+              ) : (
+                <video 
+                  ref={videoRef}
+                  src={currentLesson.videoUrl} 
+                  controls 
+                  className="w-full h-full object-contain"
+                  poster="/placeholder-video-poster.jpg"
+                >
+                  Your browser does not support the video tag.
+                </video>
+              )
             ) : (
               <div className="text-white text-center p-8">
                 <PlayCircle size={48} className="mx-auto mb-4 opacity-50 md:w-16 md:h-16" />
