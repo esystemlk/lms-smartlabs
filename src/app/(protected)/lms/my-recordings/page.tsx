@@ -18,6 +18,7 @@ export default function MyRecordingsPage() {
   const [loading, setLoading] = useState(true);
   const [selectedVideo, setSelectedVideo] = useState<{ videoId: string; title: string } | null>(null);
   const [libraryId, setLibraryId] = useState<string>("");
+  const [failedThumbnails, setFailedThumbnails] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetchRecordings();
@@ -158,12 +159,15 @@ export default function MyRecordingsPage() {
                   />
                   
                   {/* Dynamic Thumbnail from Bunny (if available) */}
-                  {libraryId && rec.bunnyVideoId ? (
+                  {libraryId && rec.bunnyVideoId && !failedThumbnails.has(rec.id) ? (
                     <img 
                       src={`https://vz-${libraryId}.b-cdn.net/${rec.bunnyVideoId}/thumbnail.jpg`} 
                       alt={rec.title}
                       className="absolute inset-0 w-full h-full object-cover"
-                      onError={(e) => (e.currentTarget.style.display = 'none')}
+                      onError={(e) => {
+                        setFailedThumbnails(prev => new Set(prev).add(rec.id));
+                        e.currentTarget.style.display = 'none';
+                      }}
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center bg-gray-800/20">
