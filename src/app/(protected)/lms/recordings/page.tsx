@@ -16,7 +16,6 @@ export default function RecordingsPage() {
   const [loading, setLoading] = useState(true);
   const [selectedVideo, setSelectedVideo] = useState<{ videoId: string; title: string } | null>(null);
   const [libraryId, setLibraryId] = useState<string>("");
-  const [failedThumbnails, setFailedThumbnails] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetchRecordings();
@@ -110,22 +109,10 @@ export default function RecordingsPage() {
                     strokeWidth={1.5}
                   />
                   
-                  {/* Dynamic Thumbnail from Bunny (if available) */}
-                  {libraryId && rec.bunnyVideoId && !failedThumbnails.has(rec.id) ? (
-                    <img 
-                      src={`https://vz-${libraryId}.b-cdn.net/${rec.bunnyVideoId}/thumbnail.jpg`} 
-                      alt={rec.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                      onError={(e) => {
-                        setFailedThumbnails(prev => new Set(prev).add(rec.id));
-                        e.currentTarget.style.display = 'none';
-                      }}
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-800/20">
-                      <Video className="text-white/20" size={48} />
-                    </div>
-                  )}
+                  {/* Thumbnail placeholder */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-800/20">
+                    <Video className="text-white/20" size={48} />
+                  </div>
                   
                   <div className="absolute bottom-3 right-3 z-20 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded">
                     {rec.duration || rec.durationMinutes}m
