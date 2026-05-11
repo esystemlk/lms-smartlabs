@@ -266,7 +266,7 @@ export default function LessonPage() {
               // Use Bunny.net player if it's a Bunny ID, otherwise fallback to standard video tag
               !currentLesson.videoUrl.includes('http') && bunnyLibraryId ? (
                 <iframe
-                  src={`https://iframe.mediadelivery.net/embed/${bunnyLibraryId}/${currentLesson.videoUrl}?autoplay=false&loop=false&muted=false&preload=true`}
+                  src={`https://player.mediadelivery.net/embed/${bunnyLibraryId}/${currentLesson.videoUrl}?autoplay=false&loop=false&muted=false&preload=true&playsinline=true`}
                   className="w-full h-full border-0"
                   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
                   allowFullScreen={true}

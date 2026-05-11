@@ -459,7 +459,7 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
             {activeClass && libraryId ? (
               <div className="w-full h-full relative group">
                 <iframe 
-                  src={`https://iframe.mediadelivery.net/embed/${libraryId}/${activeClass.bunnyVideoId}?autoplay=false&loop=false&muted=false&preload=true&responsive=true`}
+                  src={`https://player.mediadelivery.net/embed/${libraryId}/${activeClass.bunnyVideoId}?autoplay=false&loop=false&muted=false&preload=true&playsinline=true`}
                   className="w-full h-full"
                   allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
                   allowFullScreen={true}

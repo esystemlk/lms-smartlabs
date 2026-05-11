@@ -464,7 +464,7 @@ export default function RecordingManagerPage() {
                                                                  <Menu.Item>
                                                                     {({ active }: { active: boolean }) => (
                                                                         <a 
-                                                                            href={`https://iframe.mediadelivery.net/play/${bunnyLibraryId || '301323'}/${rec.bunnyVideoId}`} 
+                                                                            href={`https://player.mediadelivery.net/play/${bunnyLibraryId || '301323'}/${rec.bunnyVideoId}`} 
                                                                             target="_blank"
                                                                             className={`${active ? 'bg-blue-50 text-blue-700' : 'text-gray-700'} group flex rounded-lg items-center w-full px-3 py-2 text-sm transition-colors`}
                                                                         >
