@@ -270,7 +270,6 @@ export default function LessonPage() {
                   className="w-full h-full border-0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; screen-wake-lock"
                   allowFullScreen={true}
-                  allowpaymentrequest={false}
                 />
               ) : (
                 <video 

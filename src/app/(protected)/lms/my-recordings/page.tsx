@@ -213,7 +213,6 @@ export default function MyRecordingsPage() {
                 loading="lazy"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; screen-wake-lock" 
                 allowFullScreen={true}
-                allowpaymentrequest={false}
               />
             </div>
           </div>

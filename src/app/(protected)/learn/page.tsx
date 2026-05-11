@@ -463,7 +463,6 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
                   className="w-full h-full"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; screen-wake-lock" 
                   allowFullScreen={true}
-                  allowpaymentrequest={false}
                 />
               </div>
             ) : (
