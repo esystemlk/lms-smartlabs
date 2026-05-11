@@ -546,7 +546,7 @@ export default function CourseDetailsPage() {
               <FileText className="w-6 h-6 rotate-45" /> {/* Using as an X Close button alternative if X is not imported */}
             </button>
             <iframe
-              src={`https://player.mediadelivery.net/embed/${activeLibraryId}/${activeVideoId}?autoplay=false&loop=false&muted=false&preload=true&playsinline=true&disableIosPlayer=false`}
+              src={`https://player.mediadelivery.net/embed/${activeLibraryId}/${activeVideoId}?autoplay=false&loop=false&muted=false&preload=true&playsinline=true`}
               className="w-full h-full"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; screen-wake-lock"
               allowFullScreen={true}

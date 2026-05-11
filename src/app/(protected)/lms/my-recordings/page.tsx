@@ -207,7 +207,7 @@ export default function MyRecordingsPage() {
               <iframe 
                 src={selectedVideo.videoId.startsWith('http') 
                   ? selectedVideo.videoId 
-                  : `https://player.mediadelivery.net/embed/${libraryId}/${selectedVideo.videoId}?autoplay=false&preload=true&playsinline=true&disableIosPlayer=false`
+                  : `https://player.mediadelivery.net/embed/${libraryId}/${selectedVideo.videoId}?autoplay=false&preload=true&playsinline=true`
                 }
                 className="absolute top-0 left-0 w-full h-full border-0"
                 loading="lazy"
