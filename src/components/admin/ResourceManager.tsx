@@ -57,6 +57,7 @@ export function ResourceManager() {
   const [isCreatingFolder, setIsCreatingFolder] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadSaving, setUploadSaving] = useState(false);
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [uploadTitle, setUploadTitle] = useState("");
   const [uploadType, setUploadType] = useState<Resource['type']>('other');
@@ -157,9 +158,10 @@ export function ResourceManager() {
   };
 
   const handleUpload = async () => {
-    if (!selectedCourseId || !uploadFile || !uploadTitle) return;
+    // Guard against missing data and double-submission
+    if (!selectedCourseId || !uploadFile || !uploadTitle || uploadSaving) return;
 
-    setIsUploading(true);
+    setUploadSaving(true);
     try {
       const path = `resources/${selectedCourseId}/${Date.now()}_${uploadFile.name}`;
       const url = await resourceService.uploadFile(uploadFile, path);
@@ -174,12 +176,14 @@ export function ResourceManager() {
       toast("Resource added successfully", "success");
       setUploadFile(null);
       setUploadTitle("");
-      setIsUploading(false);
+      setIsUploading(false); // Close modal only on success
       loadCourseData(selectedCourseId);
     } catch (error) {
       console.error("Upload failed:", error);
       toast("Failed to add resource", "error");
-      setIsUploading(false);
+      // Keep the modal open so the user can retry without re-selecting the file
+    } finally {
+      setUploadSaving(false);
     }
   };
 
@@ -313,7 +317,9 @@ export function ResourceManager() {
                 </button>
               </div>
               <h3 className="font-medium text-gray-900 truncate">{folder.name}</h3>
-              <p className="text-xs text-gray-500">{new Date(folder.createdAt?.seconds * 1000).toLocaleDateString()}</p>
+              <p className="text-xs text-gray-500">
+                {folder.createdAt?.seconds ? new Date(folder.createdAt.seconds * 1000).toLocaleDateString() : ""}
+              </p>
             </div>
           ))}
 
@@ -453,8 +459,17 @@ export function ResourceManager() {
             </div>
 
             <div className="flex justify-end gap-2 mt-6">
-              <Button variant="ghost" onClick={() => setIsUploading(false)}>Cancel</Button>
-              <Button onClick={handleUpload} disabled={!uploadFile || !uploadTitle}>Upload</Button>
+              <Button variant="ghost" onClick={() => setIsUploading(false)} disabled={uploadSaving}>Cancel</Button>
+              <Button onClick={handleUpload} disabled={!uploadFile || !uploadTitle || uploadSaving}>
+                {uploadSaving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Uploading...
+                  </>
+                ) : (
+                  "Upload"
+                )}
+              </Button>
             </div>
           </div>
         </div>
