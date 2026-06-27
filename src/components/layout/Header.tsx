@@ -14,6 +14,7 @@ import { usePWAInstall } from "@/hooks/usePWAInstall";
 import { useCurrency } from "@/context/CurrencyContext";
 import { InstallPrompt } from "@/components/features/InstallPrompt";
 import { courseService } from "@/services/courseService";
+import { getStudentId } from "@/lib/utils";
 import {
   User,
   Settings,
@@ -31,7 +32,10 @@ import {
   Moon,
   Monitor,
   DollarSign,
-  BookOpen
+  BookOpen,
+  IdCard,
+  Copy,
+  Check
 } from "lucide-react";
 import { clsx } from "clsx";
 
@@ -50,6 +54,19 @@ export function Header({ onMenuClick }: HeaderProps) {
 
   const { isInstallable, promptInstall } = usePWAInstall();
   const [showIOSPrompt, setShowIOSPrompt] = useState(false);
+  const [idCopied, setIdCopied] = useState(false);
+  const studentId = getStudentId(userData);
+  const showStudentId = userData?.role === "student";
+
+  const handleCopyStudentId = async () => {
+    try {
+      await navigator.clipboard.writeText(studentId);
+      setIdCopied(true);
+      setTimeout(() => setIdCopied(false), 1500);
+    } catch {
+      // clipboard not available; ignore
+    }
+  };
   const [enrolledList, setEnrolledList] = useState<Array<{ id: string; title: string }>>([]);
   const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
 
@@ -271,7 +288,32 @@ export function Header({ onMenuClick }: HeaderProps) {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 z-50">
+            <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-xl bg-white dark:bg-gray-900 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 dark:divide-gray-800 z-50">
+              {/* Student ID (derived from account uid) */}
+              {showStudentId && (
+                <div className="p-1">
+                  <div className="flex items-center justify-between gap-2 rounded-lg px-2 py-2">
+                    <div className="flex items-center min-w-0">
+                      <IdCard className="mr-2 h-4 w-4 text-brand-blue shrink-0" />
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-400 leading-none">
+                          Student ID
+                        </span>
+                        <span className="text-sm font-bold text-gray-900 dark:text-white leading-tight truncate">
+                          {studentId}
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={handleCopyStudentId}
+                      className="p-1.5 rounded-md text-gray-400 hover:text-brand-blue hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors shrink-0"
+                      title="Copy Student ID"
+                    >
+                      {idCopied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+              )}
               <div className="p-1">
                 <Menu.Item>
                   {({ active }) => (

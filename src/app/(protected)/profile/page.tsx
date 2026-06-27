@@ -9,7 +9,8 @@ import { auth } from "@/lib/firebase";
 import { signOut, updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Camera, Loader2, LogOut, Smile, Save, Award, Download, BookOpen, Clock, CheckCircle, ChevronDown, Trophy } from "lucide-react";
+import { Camera, Loader2, LogOut, Smile, Save, Award, Download, BookOpen, Clock, CheckCircle, ChevronDown, Trophy, IdCard, Copy, Check } from "lucide-react";
+import { getStudentId } from "@/lib/utils";
 import { userService } from "@/services/userService";
 import { MemojiSelector } from "@/components/features/MemojiSelector";
 import { countries } from "@/data/countries";
@@ -30,6 +31,20 @@ export default function ProfilePage() {
   const [activeCourseId, setActiveCourseId] = useState<string | null>(null);
   const [badges, setBadges] = useState<Array<{ id: string; name: string; description: string; imageUrl: string }>>([]);
   const [badgesLoading, setBadgesLoading] = useState(false);
+  const [idCopied, setIdCopied] = useState(false);
+
+  const studentId = getStudentId(userData);
+  const showStudentId = userData?.role === "student";
+
+  const handleCopyStudentId = async () => {
+    try {
+      await navigator.clipboard.writeText(studentId);
+      setIdCopied(true);
+      setTimeout(() => setIdCopied(false), 1500);
+    } catch {
+      // clipboard not available; ignore
+    }
+  };
 
   // Mock Certificates (In real app, fetch from collection)
   const certificates: { id: number; title: string; date: string; url: string }[] = [
@@ -234,6 +249,28 @@ export default function ProfilePage() {
           <span className="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] md:text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
             {userData?.role || "Student"}
           </span>
+
+          {/* Student ID (derived from account uid) */}
+          {showStudentId && (
+            <button
+              onClick={handleCopyStudentId}
+              title="Tap to copy your Student ID"
+              className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <IdCard className="w-4 h-4 text-brand-blue shrink-0" />
+              <span className="text-[10px] md:text-xs uppercase tracking-wider font-semibold text-gray-400">
+                Student ID
+              </span>
+              <span className="text-xs md:text-sm font-bold text-gray-900 dark:text-white tracking-wide">
+                {studentId}
+              </span>
+              {idCopied ? (
+                <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+              ) : (
+                <Copy className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+              )}
+            </button>
+          )}
           {myCourses.length >= 2 && (
             <div className="mt-4">
               <div className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">

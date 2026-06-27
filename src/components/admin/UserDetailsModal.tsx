@@ -1,9 +1,10 @@
 "use client";
 
 import { UserData } from "@/lib/types";
-import { X, Mail, Phone, MapPin, Calendar, Shield } from "lucide-react";
+import { X, Mail, Phone, MapPin, Calendar, Shield, IdCard } from "lucide-react";
 import { UserAttendanceHistory } from "./UserAttendanceHistory";
 import { format } from "date-fns";
+import { getStudentId } from "@/lib/utils";
 
 interface UserDetailsModalProps {
   user: UserData;
@@ -51,6 +52,13 @@ export function UserDetailsModal({ user, onClose }: UserDetailsModalProps) {
                     Joined {user.createdAt?.seconds ? format(new Date(user.createdAt.seconds * 1000), "MMM d, yyyy") : "Unknown"}
                   </span>
                 </div>
+                {user.role === "student" && (
+                  <div className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-700">
+                    <IdCard size={14} className="text-brand-blue" />
+                    <span className="text-[10px] uppercase tracking-wider font-semibold text-gray-400">Student ID</span>
+                    <span className="text-xs font-bold text-gray-900 dark:text-white tracking-wide">{getStudentId(user)}</span>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-600 dark:text-gray-300">

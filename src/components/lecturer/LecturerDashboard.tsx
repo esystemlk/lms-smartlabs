@@ -120,28 +120,28 @@ export function LecturerDashboard() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Lecturer Dashboard</h1>
           <p className="text-gray-500 dark:text-gray-400">Manage your courses, live sessions and resources</p>
         </div>
-        <div id="t-quick-actions" className="flex items-center gap-2">
-          <Link href="/management?tab=courses">
-            <Button variant="outline" className="rounded-full px-5">Create Course</Button>
+        <div id="t-quick-actions" className="flex flex-wrap items-center gap-2">
+          <Link href="/management?tab=courses" className="flex-1 sm:flex-none min-w-0">
+            <Button variant="outline" className="rounded-full px-5 w-full sm:w-auto">Create Course</Button>
           </Link>
-          <Link href="/lms">
-            <Button variant="outline" className="rounded-full px-5 border-brand-blue text-brand-blue hover:bg-blue-50 flex items-center gap-2">
+          <Link href="/lms" className="flex-1 sm:flex-none min-w-0">
+            <Button variant="outline" className="rounded-full px-5 w-full sm:w-auto border-brand-blue text-brand-blue hover:bg-blue-50 flex items-center justify-center gap-2">
               <LayoutGrid size={16} />
               LMS Dashboard
             </Button>
           </Link>
-          <Link href="/lms/live">
-            <Button className="rounded-full px-5">Manage Live Classes</Button>
+          <Link href="/lms/live" className="flex-1 sm:flex-none min-w-0">
+            <Button className="rounded-full px-5 w-full sm:w-auto">Manage Live Classes</Button>
           </Link>
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             onClick={handleStartTour}
-            className="rounded-full p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-all"
+            className="rounded-full p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-all shrink-0"
             title="Take a Tour"
           >
             <HelpCircle size={24} />

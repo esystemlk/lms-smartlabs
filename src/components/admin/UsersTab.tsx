@@ -4,6 +4,7 @@ import { useState } from "react";
 import { UserData, UserRole } from "@/lib/types";
 import { Search, Filter, Shield, MoreVertical, Check, X, UserPlus, Eye } from "lucide-react";
 import { userService } from "@/services/userService";
+import { getStudentId } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { AddUserModal } from "./AddUserModal";
 import { BulkEnrollmentModal } from "./BulkEnrollmentModal";
@@ -151,6 +152,11 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
                       <div>
                         <div className="font-medium text-gray-900 text-sm md:text-base">{user.name}</div>
                         <div className="text-xs md:text-sm text-gray-500">{user.email}</div>
+                        {user.role === "student" && (
+                          <div className="text-[10px] md:text-xs font-semibold text-brand-blue tracking-wide mt-0.5">
+                            {getStudentId(user)}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </td>
