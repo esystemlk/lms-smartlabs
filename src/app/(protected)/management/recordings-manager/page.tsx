@@ -20,7 +20,8 @@ import {
     ExternalLink,
     RefreshCw,
     X,
-    Layout
+    Layout,
+    Download
 } from "lucide-react";
 import { Menu, Transition } from "@headlessui/react";
 import { Input } from "@/components/ui/Input";
@@ -41,6 +42,8 @@ export default function RecordingManagerPage() {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
     const [filterCourseId, setFilterCourseId] = useState("");
+    const [filterBatchId, setFilterBatchId] = useState("");
+    const [filterBatches, setFilterBatches] = useState<Batch[]>([]);
     const [statusFilter, setStatusFilter] = useState<"all" | "upcoming" | "ended">("ended"); // Default to ended as it's most common
     const [syncing, setSyncing] = useState(false);
     const [bunnyLibraryId, setBunnyLibraryId] = useState("");
@@ -146,6 +149,49 @@ export default function RecordingManagerPage() {
         }
     };
 
+    const handleExportLinks = () => {
+        let csvContent = "Title,URL,Course,Batch\n";
+        
+        filteredRecordings.forEach(rec => {
+            if (!rec.bunnyVideoId && !rec.recordingUrl) return;
+            
+            const title = (rec.title || "").replace(/"/g, '""');
+            const course = (courses.find(c => c.id === rec.courseId)?.title || "Unknown").replace(/"/g, '""');
+            const batch = (rec.batchIds?.join(" | ") || "").replace(/"/g, '""');
+            
+            let url = rec.recordingUrl || "";
+            if (rec.bunnyVideoId) {
+                url = `https://iframe.mediadelivery.net/play/${bunnyLibraryId || '301323'}/${rec.bunnyVideoId}`;
+            }
+            
+            csvContent += `"${title}","${url}","${course}","${batch}"\n`;
+        });
+        
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        
+        let filename = 'class_recordings';
+        if (filterCourseId) {
+            const courseName = courses.find(c => c.id === filterCourseId)?.title?.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            if (courseName) filename += `_${courseName}`;
+        }
+        if (filterBatchId) {
+             const batchName = filterBatches.find(b => b.id === filterBatchId)?.name?.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+             if (batchName) filename += `_${batchName}`;
+        }
+        
+        a.download = `${filename}_${new Date().toISOString().split('T')[0]}.csv`;
+        
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(downloadUrl);
+        
+        toast("Links exported successfully", "success");
+    };
+
     const handleDeleteRecording = async (recording: ManagerRecording) => {
         let confirmMessage = "Are you sure you want to remove this recording link? This won't delete the video file itself.";
 
@@ -234,6 +280,7 @@ export default function RecordingManagerPage() {
     const filteredRecordings = recordings.filter((rec: ManagerRecording) => {
         const matchSearch = rec.title?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchCourse = !filterCourseId || rec.courseId === filterCourseId || ((rec as any).bindedCourseIds && (rec as any).bindedCourseIds.includes(filterCourseId));
+        const matchBatch = !filterBatchId || (rec.batchIds && rec.batchIds.includes(filterBatchId));
         
         // Status filter logic
         const now = new Date();
@@ -245,7 +292,7 @@ export default function RecordingManagerPage() {
             (statusFilter === "upcoming" && isUpcoming) || 
             (statusFilter === "ended" && !isUpcoming);
 
-        return matchSearch && matchCourse && matchStatus;
+        return matchSearch && matchCourse && matchBatch && matchStatus;
     });
 
     if (loading) {
@@ -274,6 +321,14 @@ export default function RecordingManagerPage() {
                         {syncing ? <Loader2 className="animate-spin" size={16} /> : <RefreshCw size={16} />}
                         Sync Zoom
                     </Button>
+                    <Button 
+                        variant="outline" 
+                        onClick={handleExportLinks} 
+                        className="gap-2 border-gray-200 hover:bg-gray-50"
+                    >
+                        <Download size={16} />
+                        Export Links
+                    </Button>
                     <Link href="/management?tab=class-recordings">
                         <Button className="gap-2 shadow-lg shadow-blue-500/20">
                             <Layout size={16} />
@@ -298,7 +353,22 @@ export default function RecordingManagerPage() {
                     <Filter size={18} className="text-gray-400" />
                     <select 
                         value={filterCourseId}
-                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterCourseId(e.target.value)}
+                        onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
+                            const cid = e.target.value;
+                            setFilterCourseId(cid);
+                            setFilterBatchId("");
+                            if (cid) {
+                                try {
+                                    const batches = await courseService.getBatches(cid);
+                                    setFilterBatches(batches);
+                                } catch (err) {
+                                    console.error(err);
+                                    setFilterBatches([]);
+                                }
+                            } else {
+                                setFilterBatches([]);
+                            }
+                        }}
                         className="h-11 px-4 pr-10 rounded-xl border-gray-100 bg-gray-50/50 text-sm focus:ring-brand-blue/20 outline-none cursor-pointer hover:bg-white transition-colors"
                     >
                         <option value="">All Courses</option>
@@ -306,6 +376,19 @@ export default function RecordingManagerPage() {
                             <option key={c.id} value={c.id}>{c.title}</option>
                         ))}
                     </select>
+                    
+                    {filterCourseId && (
+                        <select 
+                            value={filterBatchId}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFilterBatchId(e.target.value)}
+                            className="h-11 px-4 pr-10 rounded-xl border-gray-100 bg-gray-50/50 text-sm focus:ring-brand-blue/20 outline-none cursor-pointer hover:bg-white transition-colors"
+                        >
+                            <option value="">All Batches</option>
+                            {filterBatches.map((b: Batch) => (
+                                <option key={b.id} value={b.id}>{b.name}</option>
+                            ))}
+                        </select>
+                    )}
                 </div>
                 
                 <div className="flex bg-gray-50/50 p-1 rounded-xl items-center border border-gray-100">

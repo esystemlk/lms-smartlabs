@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { recordedClassService, RecordedClass, RecordedPackage, BankTransferRequest, RecordedEnrollment } from "@/services/recordedClassService";
 import { bunnyService } from "@/services/bunnyService";
-import { Loader2, Plus, Play, Check, X, RefreshCw, DollarSign, Users, Clock, FileText, Edit, Trash2, Video, Link as LinkIcon, Image as ImageIcon } from "lucide-react";
+import { Loader2, Plus, Play, Check, X, RefreshCw, DollarSign, Users, Clock, FileText, Edit, Trash2, Video, Link as LinkIcon, Image as ImageIcon, Download } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -122,6 +122,35 @@ function ClassesTab() {
     const [uploadingRes, setUploadingRes] = useState(false);
     const [newResName, setNewResName] = useState("");
     const [newResFile, setNewResFile] = useState<File | null>(null);
+
+    const handleExportLinks = async () => {
+        try {
+            const settings = await bunnyService.getSettings();
+            const libId = settings.bunnyLibraryId;
+            
+            let csvContent = "Title,URL\n";
+            bunnyVideos.forEach(v => {
+                const url = `https://iframe.mediadelivery.net/play/${libId}/${v.guid}`;
+                // Escape quotes in title
+                const safeTitle = v.title.replace(/"/g, '""');
+                csvContent += `"${safeTitle}","${url}"\n`;
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = `bunny_video_links_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(downloadUrl);
+            
+            toast("Links exported successfully", "success");
+        } catch (e) {
+            toast("Failed to export links", "error");
+        }
+    };
 
     useEffect(() => {
         loadData();
@@ -419,7 +448,14 @@ function ClassesTab() {
             <div className="space-y-4 pt-8 border-t dark:border-gray-800">
                 <div className="flex items-center justify-between">
                     <h3 className="font-bold text-lg">Available in Bunny.net ({bunnyVideos.length})</h3>
-                    <Button variant="outline" size="sm" onClick={loadData}><RefreshCw size={14} className="mr-2" /> Refresh</Button>
+                    <div className="flex gap-2">
+                        <Button variant="outline" size="sm" onClick={handleExportLinks}>
+                            <Download size={14} className="mr-2" /> Export Links
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={loadData}>
+                            <RefreshCw size={14} className="mr-2" /> Refresh
+                        </Button>
+                    </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto">
                     {bunnyVideos.map((video) => {
