@@ -28,6 +28,24 @@ const withPWA = require("@ducanh2912/next-pwa").default({
           cacheName: "ignore-firebase",
         },
       },
+      // Navigations (HTML documents): network-first so SSR/auth pages stay fresh,
+      // with cache as an offline fallback. StaleWhileRevalidate must NOT handle these
+      // — a cache miss + failed network throws `no-response` and the navigation dies.
+      {
+        urlPattern: ({ request }: { request: Request }) => request.mode === "navigate",
+        handler: "NetworkFirst",
+        options: {
+          cacheName: "pages",
+          networkTimeoutSeconds: 10,
+          cacheableResponse: {
+            statuses: [200],
+          },
+          expiration: {
+            maxEntries: 50,
+            maxAgeSeconds: 60 * 60 * 24, // 1 day
+          },
+        },
+      },
       // Same-origin assets: standard SWR
       {
         urlPattern: ({ url }: { url: URL }) => url.origin === self.location.origin,
