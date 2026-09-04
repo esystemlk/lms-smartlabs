@@ -181,19 +181,19 @@ export default function DashboardPage() {
           style={{ backgroundImage: "radial-gradient(#fff 1px, transparent 1px)", backgroundSize: "26px 26px" }}
         />
 
-        <div className="relative z-10 p-6 md:p-9">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div>
-              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-200/80">
+        <div className="relative z-10 p-5 sm:p-6 md:p-9">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 md:gap-6">
+            <div className="min-w-0">
+              <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold uppercase tracking-widest text-blue-200/80">
                 <greeting.Icon size={15} /> {dateStr}
               </div>
-              <h1 className="text-3xl md:text-[2.6rem] font-black leading-tight mt-2">
+              <h1 className="text-[1.7rem] sm:text-3xl md:text-[2.6rem] font-black leading-tight mt-2 break-words">
                 {greeting.text}, <span className="text-blue-300">{firstName}</span>
               </h1>
-              <p className="text-blue-100/70 mt-1.5 font-medium">Ready to continue your learning journey?</p>
+              <p className="text-blue-100/70 mt-1.5 font-medium text-sm sm:text-base">Ready to continue your learning journey?</p>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <Link id="t-enter-lms" href="/lms">
                 <Button className="bg-white text-blue-800 hover:bg-blue-50 rounded-2xl px-6 h-12 font-bold shadow-lg flex items-center gap-2 group">
                   <LayoutGrid size={20} className="group-hover:rotate-12 transition-transform" />

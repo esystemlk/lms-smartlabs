@@ -153,7 +153,7 @@ export default function LMSPage() {
 
     return (
       <div className="relative">
-        <h1 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight leading-tight">
+        <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight leading-tight">
           {greeting}, <br className="md:hidden" />
           <span className="text-brand-blue">{userData?.name?.split(' ')[0] || 'Student'}</span>
         </h1>
@@ -184,7 +184,7 @@ export default function LMSPage() {
       {/* Hero Grid */}
       <motion.div variants={item} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Next Class Hero */}
-        <div className="lg:col-span-2 bg-gradient-to-br from-indigo-700 via-blue-700 to-blue-600 rounded-[2.5rem] p-6 md:p-10 text-white shadow-2xl relative overflow-hidden group">
+        <div className="lg:col-span-2 bg-gradient-to-br from-indigo-700 via-blue-700 to-blue-600 rounded-3xl md:rounded-[2.5rem] p-5 sm:p-6 md:p-10 text-white shadow-2xl relative overflow-hidden group">
           {/* Decorative Background */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-[80px] -ml-20 -mb-20 pointer-events-none" />
@@ -198,7 +198,7 @@ export default function LMSPage() {
 
               {nextClass ? (
                 <div className="space-y-4">
-                  <h3 className="text-3xl md:text-4xl font-black leading-tight tracking-tight">{nextClass.title}</h3>
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-black leading-tight tracking-tight break-words">{nextClass.title}</h3>
                   <div className="flex flex-wrap items-center gap-5 text-blue-50/80">
                     <div className="flex items-center gap-2 font-bold bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
                       <Clock size={16} />
@@ -210,10 +210,10 @@ export default function LMSPage() {
                     </div>
                   </div>
                   <div className="pt-4">
-                    <Button 
+                    <Button
                       onClick={() => handleJoinClass(nextClass)}
                       disabled={joiningId === nextClass.id}
-                      className="bg-white text-blue-700 hover:bg-blue-50 border-none font-black px-8 py-6 h-auto rounded-2xl shadow-2xl shadow-blue-950/20 active:scale-95 transition-all text-lg flex items-center gap-3 disabled:opacity-80"
+                      className="bg-white text-blue-700 hover:bg-blue-50 border-none font-black px-6 py-4 md:px-8 md:py-6 h-auto rounded-2xl shadow-2xl shadow-blue-950/20 active:scale-95 transition-all text-base md:text-lg flex items-center gap-3 disabled:opacity-80 w-full sm:w-auto justify-center"
                     >
                       {joiningId === nextClass.id ? 'Connecting...' : 'Join Classroom'} 
                       {!joiningId && <Video size={20} className="ml-1" />}
@@ -222,7 +222,7 @@ export default function LMSPage() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <h3 className="text-3xl font-black">All Caught Up!</h3>
+                  <h3 className="text-2xl sm:text-3xl font-black">All Caught Up!</h3>
                   <p className="text-blue-100/80 font-medium max-w-sm">No live sessions scheduled for your batches right now. Time to review your recordings?</p>
                   <div className="pt-4">
                     <Link href="/lms/live">
@@ -244,25 +244,25 @@ export default function LMSPage() {
         {/* Quick Access Side */}
         <div className="grid grid-cols-2 lg:grid-cols-1 gap-4">
           <Link href="/lms/assignments" className="group h-full">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-[2rem] shadow-xl shadow-orange-500/5 border border-gray-100 dark:border-gray-700 hover:shadow-orange-500/10 hover:-translate-y-1 transition-all flex flex-col h-full justify-between">
-              <div className="w-12 h-12 bg-orange-50 dark:bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform">
-                <FileText size={24} />
+            <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-3xl md:rounded-[2rem] shadow-lg shadow-orange-500/5 border border-gray-100 dark:border-gray-700 hover:shadow-orange-500/10 hover:-translate-y-1 transition-all flex flex-col h-full justify-between gap-4">
+              <div className="w-11 h-11 md:w-12 md:h-12 bg-orange-50 dark:bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform">
+                <FileText className="w-5 h-5 md:w-6 md:h-6" />
               </div>
               <div>
-                <p className="text-xs text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest mb-1">Assignments</p>
-                <h4 className="text-lg font-bold text-gray-900 dark:text-white">Track Progress</h4>
+                <p className="text-[10px] md:text-xs text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest mb-1">Assignments</p>
+                <h4 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">Track Progress</h4>
               </div>
             </div>
           </Link>
-          
+
           <Link href="/lms/my-recordings" className="group h-full">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-[2rem] shadow-xl shadow-pink-500/5 border border-gray-100 dark:border-gray-700 hover:shadow-pink-500/10 hover:-translate-y-1 transition-all flex flex-col h-full justify-between">
-              <div className="w-12 h-12 bg-pink-50 dark:bg-pink-500/10 rounded-2xl flex items-center justify-center text-pink-500 group-hover:scale-110 transition-transform">
-                <Video size={24} />
+            <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-3xl md:rounded-[2rem] shadow-lg shadow-pink-500/5 border border-gray-100 dark:border-gray-700 hover:shadow-pink-500/10 hover:-translate-y-1 transition-all flex flex-col h-full justify-between gap-4">
+              <div className="w-11 h-11 md:w-12 md:h-12 bg-pink-50 dark:bg-pink-500/10 rounded-2xl flex items-center justify-center text-pink-500 group-hover:scale-110 transition-transform">
+                <Video className="w-5 h-5 md:w-6 md:h-6" />
               </div>
               <div>
-                <p className="text-xs text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest mb-1">Recordings</p>
-                <h4 className="text-lg font-bold text-gray-900 dark:text-white">Watch Replays</h4>
+                <p className="text-[10px] md:text-xs text-gray-400 dark:text-gray-500 font-black uppercase tracking-widest mb-1">Recordings</p>
+                <h4 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">Watch Replays</h4>
               </div>
             </div>
           </Link>
@@ -278,20 +278,20 @@ export default function LMSPage() {
         
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-5">
           {[
-            { href: "/lms/live", icon: PlayCircle, label: "Live Classes", sub: "Join sessions", color: "blue" },
-            { href: "/lms/my-recordings", icon: Video, label: "Recordings", sub: "View past", color: "pink" },
-            { href: "/lms/assignments", icon: FileText, label: "Assignments", sub: "Submit work", color: "orange" },
-            { href: "/lms/resources", icon: Download, label: "Resources", sub: "Study materials", color: "purple" },
-            { href: "/lms/exams", icon: BookOpen, label: "Exams", sub: "Take tests", color: "red" },
-            { href: "/lms/timetable", icon: Calendar, label: "Timetable", sub: "Your schedule", color: "green" },
+            { href: "/lms/live", icon: PlayCircle, label: "Live Classes", sub: "Join sessions", tint: "bg-blue-50 dark:bg-blue-500/10 text-blue-500" },
+            { href: "/lms/my-recordings", icon: Video, label: "Recordings", sub: "View past", tint: "bg-pink-50 dark:bg-pink-500/10 text-pink-500" },
+            { href: "/lms/assignments", icon: FileText, label: "Assignments", sub: "Submit work", tint: "bg-orange-50 dark:bg-orange-500/10 text-orange-500" },
+            { href: "/lms/resources", icon: Download, label: "Resources", sub: "Study materials", tint: "bg-purple-50 dark:bg-purple-500/10 text-purple-500" },
+            { href: "/lms/exams", icon: BookOpen, label: "Exams", sub: "Take tests", tint: "bg-red-50 dark:bg-red-500/10 text-red-500" },
+            { href: "/lms/timetable", icon: Calendar, label: "Timetable", sub: "Your schedule", tint: "bg-green-50 dark:bg-green-500/10 text-green-500" },
           ].map((nav, i) => (
             <Link key={i} href={nav.href} className="group">
-              <div className="bg-white dark:bg-gray-800 p-5 md:p-6 rounded-[2rem] shadow-xl shadow-blue-500/5 border border-gray-100 dark:border-gray-700 hover:shadow-2xl hover:shadow-brand-blue/10 hover:-translate-y-2 transition-all h-full text-center sm:text-left">
+              <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-3xl md:rounded-[2rem] shadow-lg shadow-blue-500/5 border border-gray-100 dark:border-gray-700 hover:shadow-2xl hover:shadow-brand-blue/10 hover:-translate-y-1 md:hover:-translate-y-2 transition-all h-full text-center sm:text-left">
                 <div className={clsx(
-                  "w-12 h-12 mx-auto sm:mx-0 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform",
-                  `bg-${nav.color}-50 dark:bg-${nav.color}-500/10 text-${nav.color}-500`
+                  "w-11 h-11 md:w-12 md:h-12 mx-auto sm:mx-0 rounded-2xl flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform",
+                  nav.tint
                 )}>
-                  <nav.icon size={24} />
+                  <nav.icon className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
                 <h3 className="font-bold text-gray-900 dark:text-white mb-0.5 text-sm md:text-base">{nav.label}</h3>
                 <p className="text-[10px] md:text-xs text-gray-400 dark:text-gray-500 font-medium">{nav.sub}</p>
