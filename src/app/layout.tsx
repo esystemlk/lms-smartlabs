@@ -69,18 +69,21 @@ export default function RootLayout({
             </CurrencyProvider>
           </ThemeProvider>
         </AuthProvider>
+
+        {/* Scripts must live inside <body>, not as direct children of <html>
+            (that causes a hydration error). */}
+        <Script id="chunk-error-handler" strategy="afterInteractive">
+          {`
+            window.addEventListener('error', (event) => {
+              if (event.message && (event.message.includes('ChunkLoadError') || event.message.includes('Loading chunk'))) {
+                console.warn('Chunk loading failed, reloading page...', event);
+                window.location.reload();
+              }
+            }, true);
+          `}
+        </Script>
+        <Script src="https://www.payhere.lk/lib/payhere.js" strategy="lazyOnload" />
       </body>
-      <Script id="chunk-error-handler" strategy="beforeInteractive">
-        {`
-          window.addEventListener('error', (event) => {
-            if (event.message && (event.message.includes('ChunkLoadError') || event.message.includes('Loading chunk'))) {
-              console.warn('Chunk loading failed, reloading page...', event);
-              window.location.reload();
-            }
-          }, true);
-        `}
-      </Script>
-      <Script src="https://www.payhere.lk/lib/payhere.js" strategy="lazyOnload" />
     </html>
   );
 }

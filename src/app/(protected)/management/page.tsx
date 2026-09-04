@@ -17,8 +17,11 @@ import {
     BarChart2,
     CreditCard,
     CalendarCheck,
-    MessageSquare
+    MessageSquare,
+    Megaphone,
+    ChevronDown
 } from "lucide-react";
+import { clsx } from "clsx";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { CoursesTab } from "@/components/admin/CoursesTab";
 import { RecordingsTab } from "@/components/admin/RecordingsTab";
@@ -30,12 +33,13 @@ import { EnrollmentsTab } from "@/components/admin/EnrollmentsTab";
 import { AttendanceTab } from "@/components/admin/AttendanceTab";
 import { SupportTab } from "@/components/admin/SupportTab";
 import { StudentManagementTab } from "@/components/admin/StudentManagementTab";
+import { NotificationManager } from "@/components/developer/NotificationManager";
 import { courseService } from "@/services/courseService";
 import { enrollmentService } from "@/services/enrollmentService";
 import { userService } from "@/services/userService";
 import { Course, Enrollment, UserData } from "@/lib/types";
 
-type ManagementTab = 'dashboard' | 'courses' | 'recordings' | 'class-recordings' | 'resources' | 'users' | 'settings' | 'analytics' | 'enrollments' | 'attendance' | 'support' | 'students';
+type ManagementTab = 'dashboard' | 'courses' | 'recordings' | 'class-recordings' | 'resources' | 'users' | 'settings' | 'analytics' | 'enrollments' | 'attendance' | 'support' | 'students' | 'announcements';
 
 export default function ManagementPortalPage() {
     const { userData, loading: authLoading } = useAuth();
@@ -44,6 +48,7 @@ export default function ManagementPortalPage() {
     const initialTab = (searchParams.get('tab') as ManagementTab) || 'dashboard';
 
     const [activeTab, setActiveTab] = useState<ManagementTab>(initialTab);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
         const tab = searchParams.get('tab') as ManagementTab;
@@ -127,93 +132,90 @@ export default function ManagementPortalPage() {
 
     const isAdmin = ["admin", "superadmin", "developer"].includes(userData.role || '');
 
+    const tabs: { id: ManagementTab; label: string; icon: any }[] = [
+        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { id: 'courses', label: 'Courses', icon: BookOpen },
+        { id: 'recordings', label: 'Recorded Library', icon: PlayCircle },
+        { id: 'class-recordings', label: 'Live Recordings', icon: Video },
+        { id: 'resources', label: 'Resources', icon: FolderOpen },
+        ...(isAdmin ? [
+            { id: 'enrollments' as ManagementTab, label: 'Enrollments', icon: CreditCard },
+            { id: 'attendance' as ManagementTab, label: 'Attendance', icon: CalendarCheck },
+            { id: 'users' as ManagementTab, label: 'Users', icon: Users },
+            { id: 'students' as ManagementTab, label: 'Students', icon: GraduationCap },
+            { id: 'announcements' as ManagementTab, label: 'Announcements', icon: Megaphone },
+            { id: 'support' as ManagementTab, label: 'Support', icon: MessageSquare },
+            { id: 'analytics' as ManagementTab, label: 'Analytics', icon: BarChart2 },
+            { id: 'settings' as ManagementTab, label: 'Settings', icon: Settings },
+        ] : []),
+    ];
+
+    const activeTabMeta = tabs.find(t => t.id === activeTab) || tabs[0];
+
     return (
         <div className="space-y-6 pb-20 animate-in fade-in duration-500">
             {/* Portal Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-gray-800 p-6 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-gray-800 p-4 md:p-6 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm">
                 <div>
                     <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Management Portal</h1>
-                    <p className="text-gray-500 dark:text-gray-400 mt-1">
+                    <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mt-1">
                         Centralized control for courses, resources, and students.
                     </p>
                 </div>
-                <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
-                    <TabButton
-                        active={activeTab === 'dashboard'}
-                        onClick={() => handleTabChange('dashboard')}
-                        icon={LayoutDashboard}
-                        label="Dashboard"
-                    />
-                    <TabButton
-                        active={activeTab === 'courses'}
-                        onClick={() => handleTabChange('courses')}
-                        icon={BookOpen}
-                        label="Courses"
-                    />
-                    <TabButton
-                        active={activeTab === 'recordings'}
-                        onClick={() => handleTabChange('recordings')}
-                        icon={PlayCircle}
-                        label="Recorded Library"
-                    />
-                    <TabButton
-                        active={activeTab === 'class-recordings'}
-                        onClick={() => handleTabChange('class-recordings')}
-                        icon={Video}
-                        label="Live Recordings"
-                    />
-                    <TabButton
-                        active={activeTab === 'resources'}
-                        onClick={() => handleTabChange('resources')}
-                        icon={FolderOpen}
-                        label="Resources"
-                    />
-                    {isAdmin && (
+                {/* Mobile: dropdown menu that opens a 2x2 grid of links */}
+                <div className="md:hidden relative w-full">
+                    <button
+                        onClick={() => setMenuOpen(o => !o)}
+                        className="w-full flex items-center justify-between gap-2 px-4 py-3 rounded-2xl bg-brand-blue text-white font-bold shadow-md active:scale-[0.99] transition-transform"
+                        aria-expanded={menuOpen}
+                    >
+                        <span className="flex items-center gap-2 min-w-0">
+                            <activeTabMeta.icon size={18} className="shrink-0" />
+                            <span className="truncate">{activeTabMeta.label}</span>
+                        </span>
+                        <ChevronDown size={18} className={clsx("shrink-0 transition-transform", menuOpen && "rotate-180")} />
+                    </button>
+
+                    {menuOpen && (
                         <>
-                            <TabButton
-                                active={activeTab === 'enrollments'}
-                                onClick={() => handleTabChange('enrollments')}
-                                icon={CreditCard}
-                                label="Enrollments"
-                            />
-                            <TabButton
-                                active={activeTab === 'attendance'}
-                                onClick={() => handleTabChange('attendance')}
-                                icon={CalendarCheck}
-                                label="Attendance"
-                            />
-                            <TabButton
-                                active={activeTab === 'users'}
-                                onClick={() => handleTabChange('users')}
-                                icon={Users}
-                                label="Users"
-                            />
-                            <TabButton
-                                active={activeTab === 'students'}
-                                onClick={() => handleTabChange('students')}
-                                icon={GraduationCap}
-                                label="Students"
-                            />
-                            <TabButton
-                                active={activeTab === 'support'}
-                                onClick={() => handleTabChange('support')}
-                                icon={MessageSquare}
-                                label="Support"
-                            />
-                            <TabButton
-                                active={activeTab === 'analytics'}
-                                onClick={() => handleTabChange('analytics')}
-                                icon={BarChart2}
-                                label="Analytics"
-                            />
-                            <TabButton
-                                active={activeTab === 'settings'}
-                                onClick={() => handleTabChange('settings')}
-                                icon={Settings}
-                                label="Settings"
-                            />
+                            {/* click-away backdrop */}
+                            <div className="fixed inset-0 z-20" onClick={() => setMenuOpen(false)} />
+                            <div className="absolute z-30 mt-2 left-0 right-0 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl shadow-2xl p-2 grid grid-cols-2 gap-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                                {tabs.map(t => {
+                                    const Icon = t.icon;
+                                    const active = activeTab === t.id;
+                                    return (
+                                        <button
+                                            key={t.id}
+                                            onClick={() => { handleTabChange(t.id); setMenuOpen(false); }}
+                                            className={clsx(
+                                                "flex items-center gap-2 px-3 py-3 rounded-xl text-sm font-semibold text-left transition-colors",
+                                                active
+                                                    ? "bg-brand-blue text-white shadow-sm"
+                                                    : "bg-gray-50 dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            )}
+                                        >
+                                            <Icon size={16} className="shrink-0" />
+                                            <span className="truncate">{t.label}</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </>
                     )}
+                </div>
+
+                {/* Desktop: wrapping tab row */}
+                <div className="hidden md:flex items-center gap-2 flex-wrap justify-end">
+                    {tabs.map(t => (
+                        <TabButton
+                            key={t.id}
+                            active={activeTab === t.id}
+                            onClick={() => handleTabChange(t.id)}
+                            icon={t.icon}
+                            label={t.label}
+                        />
+                    ))}
                 </div>
             </div>
 
@@ -299,6 +301,15 @@ export default function ManagementPortalPage() {
                 {activeTab === 'students' && isAdmin && (
                     <div className="animate-in fade-in slide-in-from-bottom-4">
                         <StudentManagementTab />
+                    </div>
+                )}
+                {activeTab === 'announcements' && isAdmin && (
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm animate-in fade-in slide-in-from-bottom-4">
+                        <div className="mb-6">
+                            <h2 className="text-xl font-bold">Announcements & Notices</h2>
+                            <p className="text-gray-500 text-sm">Publish notices to the student Notice Board and pinned banners.</p>
+                        </div>
+                        <NotificationManager />
                     </div>
                 )}
                 {activeTab === 'support' && isAdmin && (

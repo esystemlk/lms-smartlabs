@@ -21,6 +21,7 @@ import { ProfileCompletionModal } from "@/components/features/ProfileCompletionM
 import { settingsService } from "@/services/settingsService";
 import { TutorialProvider } from "@/context/TutorialContext";
 import { TutorialTour } from "@/components/features/TutorialTour";
+import { AnnouncementBanners } from "@/components/features/AnnouncementBanners";
 
 export default function ProtectedLayout({
   children,
@@ -142,6 +143,8 @@ export default function ProtectedLayout({
             )}
 
             <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
+            {/* Role-targeted, dismissible announcement banners (from notifications collection) */}
+            <AnnouncementBanners />
             {!hideBanner && (announcement || (!isAdmin && maintenanceMode)) && (
               <div className="max-w-7xl mx-auto w-full px-4 md:px-8 mt-2">
                 {announcement && (

@@ -149,10 +149,12 @@ export const chatService = {
 
   // Subscribe to USER'S chats (Student view)
   subscribeToUserChats: (userId: string, callback: (chats: SupportChat[]) => void) => {
+    // Note: we intentionally do NOT combine where() + orderBy() here, as that
+    // requires a composite Firestore index. A user has only a few chats, so we
+    // sort client-side instead (avoids the failed-precondition index error).
     const q = query(
       collection(db, SUPPORT_CHATS_COLLECTION),
-      where("userId", "==", userId),
-      orderBy("lastMessageAt", "desc")
+      where("userId", "==", userId)
     );
 
     return onSnapshot(q, (snapshot) => {
@@ -160,6 +162,10 @@ export const chatService = {
         id: doc.id,
         ...doc.data()
       })) as SupportChat[];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const toMillis = (t: any) => t?.toMillis?.() ?? (t?.seconds ? t.seconds * 1000 : 0);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      chats.sort((a, b) => toMillis((b as any).lastMessageAt) - toMillis((a as any).lastMessageAt));
       callback(chats);
     });
   },

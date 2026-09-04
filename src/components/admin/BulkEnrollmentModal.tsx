@@ -197,7 +197,8 @@ export function BulkEnrollmentModal({ onClose, onSuccess }: BulkEnrollmentModalP
               </div>
               
               <div className="border border-gray-200 rounded-xl overflow-hidden">
-                <table className="w-full text-sm">
+                <div className="overflow-x-auto">
+                <table className="w-full text-sm min-w-[420px]">
                   <thead className="bg-gray-50 text-left">
                     <tr>
                       <th className="px-4 py-2 font-medium text-gray-500">Email</th>
@@ -225,6 +226,7 @@ export function BulkEnrollmentModal({ onClose, onSuccess }: BulkEnrollmentModalP
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
             </div>
           )}

@@ -76,7 +76,7 @@ export function MobileNav({ onMenuClick }: MobileNavProps) {
               key={item.href}
               href={item.href}
               className={clsx(
-                "flex flex-col items-center gap-1 min-w-[64px] transition-all duration-300",
+                "flex flex-col items-center gap-1 flex-1 min-w-0 transition-all duration-300",
                 isActive
                   ? "text-brand-blue scale-110"
                   : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
@@ -89,7 +89,7 @@ export function MobileNav({ onMenuClick }: MobileNavProps) {
                 <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
               </div>
               <span className={clsx(
-                "text-[10px] font-bold transition-all",
+                "text-[10px] font-bold transition-all max-w-full truncate px-0.5",
                 isActive ? "opacity-100" : "opacity-70"
               )}>{item.label}</span>
             </Link>
@@ -99,7 +99,7 @@ export function MobileNav({ onMenuClick }: MobileNavProps) {
         {/* Menu Trigger */}
         <button
           onClick={onMenuClick}
-          className="flex flex-col items-center gap-1 min-w-[64px] text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
+          className="flex flex-col items-center gap-1 flex-1 min-w-0 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
         >
           <div className="p-1.5 rounded-xl">
             <Menu size={22} strokeWidth={2} />

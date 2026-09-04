@@ -7,6 +7,7 @@ export type TutorialStep = {
   target: string; // CSS selector
   title: string;
   content: string;
+  list?: string[]; // Optional numbered how-to steps shown under the content
   position?: "top" | "bottom" | "left" | "right" | "center";
 };
 

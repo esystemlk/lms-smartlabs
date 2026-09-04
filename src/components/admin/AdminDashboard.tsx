@@ -146,43 +146,53 @@ export function AdminDashboard() {
   };
 
   return (
-    <div className="space-y-8 pb-20">
-      {/* Header Section */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-            Dashboard
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
-            Welcome back, {userData?.name?.split(' ')[0] || 'Admin'}
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full border border-gray-100 dark:border-gray-700 shadow-sm text-sm text-gray-600 dark:text-gray-300">
-            <Calendar className="w-4 h-4 text-brand-blue" />
-            {format(new Date(), "MMMM d, yyyy")}
+    <div className="space-y-6 md:space-y-8 pb-24">
+      {/* Premium Hero Header */}
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white shadow-2xl">
+        <div className="absolute -top-24 -right-16 w-80 h-80 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute -bottom-20 -left-10 w-72 h-72 bg-indigo-500/20 rounded-full blur-[100px] pointer-events-none" />
+        <div
+          className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          style={{ backgroundImage: "radial-gradient(#fff 1px, transparent 1px)", backgroundSize: "26px 26px" }}
+        />
+        <div className="relative z-10 p-6 md:p-9">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+            <div>
+              <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-200/80">
+                <Calendar size={14} /> {format(new Date(), "EEEE, MMMM d")}
+              </div>
+              <h1 className="text-2xl md:text-[2.4rem] font-black leading-tight mt-2">
+                Welcome back, <span className="text-blue-300">{userData?.name?.split(' ')[0] || 'Admin'}</span>
+              </h1>
+              <p className="text-blue-100/70 mt-1.5 font-medium text-sm md:text-base">
+                Here&apos;s what&apos;s happening across your institute today.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <Link href="/lms">
+                <Button className="bg-white text-blue-800 hover:bg-blue-50 rounded-2xl px-5 h-11 font-bold shadow-lg flex items-center gap-2">
+                  <LayoutGrid size={18} />
+                  LMS Dashboard
+                </Button>
+              </Link>
+              <Link
+                href="/management?tab=settings"
+                className="h-11 w-11 rounded-2xl border border-white/20 bg-white/10 backdrop-blur text-white flex items-center justify-center hover:bg-white/20 transition-all"
+                title="Settings"
+              >
+                <Settings size={20} />
+              </Link>
+              <button
+                onClick={handleStartTour}
+                className="h-11 w-11 rounded-2xl border border-white/20 bg-white/10 backdrop-blur text-white flex items-center justify-center hover:bg-white/20 transition-all"
+                title="Take a tour"
+              >
+                <HelpCircle size={20} />
+              </button>
+            </div>
           </div>
-          <Link href="/lms">
-            <Button className="rounded-full px-5 bg-brand-blue hover:bg-blue-600 flex items-center gap-2">
-              <LayoutGrid size={16} />
-              LMS Dashboard
-            </Button>
-          </Link>
-          <Link href="/management?tab=settings">
-            <Button variant="outline" className="rounded-full w-10 h-10 p-0">
-              <Settings className="w-4 h-4" />
-            </Button>
-          </Link>
-          <Button 
-            variant="ghost" 
-            onClick={handleStartTour}
-            className="rounded-full p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-all h-10 w-10 flex items-center justify-center"
-            title="Take a Tour"
-          >
-            <HelpCircle size={24} />
-          </Button>
         </div>
-      </div>
+      </section>
 
       {/* Stats Grid */}
       <motion.div
@@ -190,7 +200,7 @@ export function AdminDashboard() {
         variants={container}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
+        className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6"
       >
         <StatCard
           title={isAdmin ? "Total Students" : "My Students"}
@@ -490,13 +500,13 @@ function StatCard({ title, value, label, icon: Icon, trend, trendUp, color, load
   };
 
   return (
-    <motion.div variants={item} className="bg-white dark:bg-gray-800 p-6 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex justify-between items-start mb-4">
-        <div className={`p-3 rounded-2xl ${colors[color]}`}>
-          <Icon className="w-6 h-6" />
+    <motion.div variants={item} className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
+      <div className="flex justify-between items-start mb-3 md:mb-4">
+        <div className={`p-2.5 md:p-3 rounded-xl md:rounded-2xl ${colors[color]}`}>
+          <Icon className="w-5 h-5 md:w-6 md:h-6" />
         </div>
         {trend && (
-          <span className={`text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1
+          <span className={`text-[10px] md:text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 whitespace-nowrap
             ${trendUp ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700'}`}>
             {trendUp ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
             {trend}
@@ -504,11 +514,11 @@ function StatCard({ title, value, label, icon: Icon, trend, trendUp, color, load
         )}
       </div>
       <div>
-        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</p>
+        <p className="text-xs md:text-sm font-medium text-gray-500 dark:text-gray-400 truncate">{title}</p>
         {loading ? (
-          <div className="h-8 w-24 bg-gray-100 dark:bg-gray-700 rounded-lg animate-pulse mt-1" />
+          <div className="h-7 w-20 bg-gray-100 dark:bg-gray-700 rounded-lg animate-pulse mt-1" />
         ) : (
-          <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
+          <h3 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white tracking-tight truncate">
             {typeof value === 'number' ? value.toLocaleString() : value}
             {label && <span className="text-sm font-medium text-gray-400 ml-1">{label}</span>}
           </h3>
