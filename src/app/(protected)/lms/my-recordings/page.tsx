@@ -124,18 +124,18 @@ export default function MyRecordingsPage() {
     <div className="space-y-6 animate-in fade-in duration-500 pb-20 pt-4 px-4 md:px-0 max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Class Recordings</h1>
-          <p className="text-gray-500">Watch past sessions from your enrolled batches</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">My Class Recordings</h1>
+          <p className="text-gray-500 dark:text-gray-400">Watch past sessions from your enrolled batches</p>
         </div>
       </div>
 
       {recordings.length === 0 ? (
-        <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-gray-200">
-          <div className="w-16 h-16 bg-gray-50 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl border border-dashed border-gray-200 dark:border-gray-700">
+          <div className="w-16 h-16 bg-gray-50 dark:bg-gray-900 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-4">
             <Video size={32} />
           </div>
-          <h3 className="text-lg font-medium text-gray-900">No Recordings Found</h3>
-          <p className="text-gray-500 mt-1">You don't have any class recordings available for your batches.</p>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">No Recordings Found</h3>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">You don't have any class recordings available for your batches.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -145,7 +145,7 @@ export default function MyRecordingsPage() {
             return (
               <div 
                 key={rec.id} 
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow overflow-hidden group cursor-pointer"
+                className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow overflow-hidden group cursor-pointer"
                 onClick={() => setSelectedVideo({ videoId: (rec.bunnyVideoId || rec.recordingUrl)!, title: rec.title })}
               >
                 {/* Thumbnail / Placeholder */}
@@ -165,10 +165,10 @@ export default function MyRecordingsPage() {
 
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="font-semibold text-gray-900 line-clamp-2">{rec.title}</h3>
+                    <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2">{rec.title}</h3>
                   </div>
-                  
-                  <div className="flex items-center gap-4 text-sm text-gray-500">
+
+                  <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
                     {date && (
                       <div className="flex items-center gap-1.5">
                         <Calendar size={14} />

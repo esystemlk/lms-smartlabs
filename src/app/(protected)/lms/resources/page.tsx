@@ -150,12 +150,12 @@ export default function ResourcesPage() {
 
   if (courses.length === 0) {
     return (
-      <div className="max-w-5xl mx-auto pb-12 text-center pt-20">
-        <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+      <div className="max-w-5xl mx-auto pb-12 text-center pt-20 px-4">
+        <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
           <Folder size={40} className="text-gray-400" />
         </div>
-        <h2 className="text-xl font-bold text-gray-900">No Resources Available</h2>
-        <p className="text-gray-500 mt-2">You haven't enrolled in any courses yet.</p>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">No Resources Available</h2>
+        <p className="text-gray-500 dark:text-gray-400 mt-2">You haven't enrolled in any courses yet.</p>
         <Button className="mt-6" onClick={() => window.location.href = '/courses'}>Browse Courses</Button>
       </div>
     );
@@ -164,14 +164,14 @@ export default function ResourcesPage() {
   return (
     <div className="max-w-7xl mx-auto pb-12 px-4 md:px-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Learning Resources</h1>
-        <p className="text-gray-500">Study materials, references, and inline previews.</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Learning Resources</h1>
+        <p className="text-gray-500 dark:text-gray-400">Study materials, references, and inline previews.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Sidebar: Course Selector */}
         <div className="lg:col-span-1 space-y-4">
-          <h3 className="font-semibold text-gray-900 px-2">Your Courses</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-white px-2">Your Courses</h3>
           <div className="space-y-2">
             {courses.map(course => (
               <button

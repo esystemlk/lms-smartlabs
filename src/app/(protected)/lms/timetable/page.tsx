@@ -94,34 +94,34 @@ export default function TimetablePage() {
   return (
     <div className="max-w-4xl mx-auto pb-12">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Class Timetable</h1>
-        <p className="text-gray-500">Your upcoming live sessions schedule.</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Class Timetable</h1>
+        <p className="text-gray-500 dark:text-gray-400">Your upcoming live sessions schedule.</p>
       </div>
 
       {sortedDates.length === 0 ? (
-        <div className="text-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
-          <Calendar className="mx-auto h-16 w-16 text-gray-300 mb-4" />
-          <h3 className="text-lg font-medium text-gray-900">No Classes Scheduled</h3>
-          <p className="text-gray-500">Enjoy your free time!</p>
+        <div className="text-center py-20 bg-gray-50 dark:bg-gray-800/50 rounded-3xl border border-dashed border-gray-200 dark:border-gray-700">
+          <Calendar className="mx-auto h-16 w-16 text-gray-300 dark:text-gray-600 mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">No Classes Scheduled</h3>
+          <p className="text-gray-500 dark:text-gray-400">Enjoy your free time!</p>
         </div>
       ) : (
         <div className="space-y-8">
           {sortedDates.map((date) => (
             <div key={date}>
-              <h3 className="text-lg font-bold text-gray-900 mb-4 sticky top-20 bg-gray-50/90 backdrop-blur-sm py-2 z-10">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 sticky top-20 bg-gray-50/90 dark:bg-slate-900/90 backdrop-blur-sm py-2 z-10">
                 {format(new Date(date), "EEEE, MMMM do")}
               </h3>
               <div className="space-y-3">
                 {groupedClasses[date].map((cls) => (
-                  <div key={cls.id} className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-md transition-all">
+                  <div key={cls.id} className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-md transition-all">
                     <div className="flex items-center gap-4">
-                      <div className="w-14 h-14 bg-green-50 text-green-600 rounded-2xl flex flex-col items-center justify-center flex-shrink-0">
+                      <div className="w-14 h-14 bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 rounded-2xl flex flex-col items-center justify-center flex-shrink-0">
                         <span className="text-xs font-bold uppercase">{format(new Date(cls.startTime!), "MMM")}</span>
                         <span className="text-lg font-bold leading-none">{format(new Date(cls.startTime!), "d")}</span>
                       </div>
                       <div>
-                        <h4 className="font-bold text-gray-900 text-lg">{cls.title}</h4>
-                        <div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
+                        <h4 className="font-bold text-gray-900 dark:text-white text-lg">{cls.title}</h4>
+                        <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mt-1">
                           <span className="flex items-center gap-1">
                             <Clock size={14} />
                             {format(new Date(cls.startTime!), "h:mm a")} - {cls.duration} min

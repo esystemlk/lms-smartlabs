@@ -93,8 +93,8 @@ export default function LiveClassesPage() {
     <div className="space-y-6 animate-in fade-in duration-500 pb-20 pt-4 px-4 md:px-0 max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Live Classes</h1>
-            <p className="text-gray-500">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Live Classes</h1>
+            <p className="text-gray-500 dark:text-gray-400">
               {userData?.role === 'student' ? 'Join your scheduled sessions' : 'View and start any scheduled session'}
             </p>
           </div>
@@ -133,12 +133,12 @@ export default function LiveClassesPage() {
 
         if (filtered.length === 0) {
           return (
-            <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-200">
-              <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-2xl border border-dashed border-gray-200 dark:border-gray-700">
+              <div className="w-16 h-16 bg-blue-50 dark:bg-blue-500/10 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Video size={32} />
               </div>
-              <h3 className="text-lg font-medium text-gray-900">No Upcoming Classes</h3>
-              <p className="text-gray-500 mt-1">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white">No Upcoming Classes</h3>
+              <p className="text-gray-500 dark:text-gray-400 mt-1">
                 {searchTerm || filterCourseId ? "No matching classes found." : "Check back later for scheduled sessions."}
               </p>
             </div>
