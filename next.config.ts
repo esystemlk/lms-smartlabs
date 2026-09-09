@@ -44,6 +44,24 @@ const withPWA = require("@ducanh2912/next-pwa").default({
             maxEntries: 50,
             maxAgeSeconds: 60 * 60 * 24, // 1 day
           },
+          plugins: [
+            {
+              // A failed document navigation (slow/flaky network, or a cache miss on a
+              // ?query URL) must NOT reject with `no-response` — that kills the page.
+              // Serve the cached page (exact, then ignoring the query as an app-shell
+              // fallback); as a last resort return a lightweight, non-looping retry page.
+              handlerDidError: async ({ request }: { request: Request }) => {
+                const exact = await caches.match(request);
+                if (exact) return exact;
+                const shell = await caches.match(request, { ignoreSearch: true });
+                if (shell) return shell;
+                return new Response(
+                  '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SmartLabs</title></head><body style="font-family:system-ui,-apple-system,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;color:#0f172a"><div style="text-align:center;padding:2rem"><p style="color:#64748b">Connection issue — please check your network.</p><button onclick="location.reload()" style="padding:.7rem 1.4rem;border-radius:10px;border:0;background:#2563eb;color:#fff;font-weight:600;cursor:pointer">Reload</button></div></body></html>',
+                  { headers: { "Content-Type": "text/html; charset=utf-8" }, status: 200 }
+                );
+              },
+            },
+          ],
         },
       },
       // Same-origin assets: standard SWR
