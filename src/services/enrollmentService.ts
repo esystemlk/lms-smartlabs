@@ -549,11 +549,16 @@ export const enrollmentService = {
         });
       }
 
-      // 2. Decrement Batch Count
+      // 2. Decrement Batch Count — ONLY if the batch still exists. A missing
+      // batch doc (deleted batch) would otherwise abort the whole writeBatch
+      // and block the deletion.
       const batchRef = doc(db, COURSES_COLLECTION, data.courseId, BATCHES_COLLECTION, data.batchId);
-      batchOp.update(batchRef, {
-        enrolledCount: increment(-1)
-      });
+      const batchSnap = await getDoc(batchRef);
+      if (batchSnap.exists()) {
+        batchOp.update(batchRef, {
+          enrolledCount: increment(-1)
+        });
+      }
     }
 
     // 3. Delete the enrollment document
@@ -593,13 +598,21 @@ export const enrollmentService = {
         batchOp.update(userRef, { enrolledCourses, enrolledBatches });
       }
 
-      // Decrement old batch
+      // Decrement old batch — ONLY if it still exists. Older enrollments can
+      // reference a batch that was deleted; update() on a missing doc would
+      // abort the whole writeBatch and block the transfer.
       const oldBatchRef = doc(db, COURSES_COLLECTION, oldData.courseId, BATCHES_COLLECTION, oldData.batchId);
-      batchOp.update(oldBatchRef, { enrolledCount: increment(-1) });
+      const oldBatchSnap = await getDoc(oldBatchRef);
+      if (oldBatchSnap.exists()) {
+        batchOp.update(oldBatchRef, { enrolledCount: increment(-1) });
+      }
 
-      // Increment new batch
+      // Increment new batch — ONLY if it exists.
       const newBatchRef = doc(db, COURSES_COLLECTION, newCourse.id, BATCHES_COLLECTION, newBatch.id);
-      batchOp.update(newBatchRef, { enrolledCount: increment(1) });
+      const newBatchSnap = await getDoc(newBatchRef);
+      if (newBatchSnap.exists()) {
+        batchOp.update(newBatchRef, { enrolledCount: increment(1) });
+      }
     }
 
     // 2. Update Enrollment Doc
@@ -637,7 +650,10 @@ export const enrollmentService = {
       }
 
       const batchRef = doc(db, COURSES_COLLECTION, data.courseId, BATCHES_COLLECTION, data.batchId);
-      batchOp.update(batchRef, { enrolledCount: increment(-1) });
+      const batchSnap = await getDoc(batchRef);
+      if (batchSnap.exists()) {
+        batchOp.update(batchRef, { enrolledCount: increment(-1) });
+      }
     }
     // If moving TO active/completed FROM something else
     else if (!['active', 'completed'].includes(data.status) && (newStatus === 'active' || newStatus === 'completed')) {
@@ -647,7 +663,10 @@ export const enrollmentService = {
       });
 
       const batchRef = doc(db, COURSES_COLLECTION, data.courseId, BATCHES_COLLECTION, data.batchId);
-      batchOp.update(batchRef, { enrolledCount: increment(1) });
+      const batchSnap = await getDoc(batchRef);
+      if (batchSnap.exists()) {
+        batchOp.update(batchRef, { enrolledCount: increment(1) });
+      }
     }
 
     batchOp.update(enrollmentRef, {
