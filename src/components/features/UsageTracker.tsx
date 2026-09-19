@@ -5,34 +5,33 @@ import { useAuth } from "@/context/AuthContext";
 import { usageService } from "@/services/usageService";
 
 /**
- * Invisible component that measures how long a student is actively using the
- * LMS and periodically flushes it to `user_usage/{uid}`.
+ * Invisible component that measures how long a signed-in user is actively using
+ * the LMS and periodically flushes it to `user_usage/{uid}`.
  *
- * "Active" means the tab is visible AND focused, so background/idle tabs are
- * not counted. Flushes every 30s and again whenever the tab is hidden or the
- * page is being unloaded, so time is not lost on navigation/close.
+ * "Active" = the tab is visible. (We intentionally do NOT require
+ * document.hasFocus(), because focus moves into the video iframe while watching
+ * and would otherwise stop the counter.) Flushes every 30s and again whenever
+ * the tab is hidden or the page is unloaded, so time isn't lost on navigation.
  *
- * Admin-only metric — rendered for students only so staff activity does not
- * inflate the numbers.
+ * Tracked for every role so it can be verified with any account; the admin UI
+ * only surfaces it for students.
  */
 export function UsageTracker() {
   const { userData } = useAuth();
   const pendingRef = useRef(0);
 
-  const isStudent = userData?.role === "student";
+  const uid = userData?.uid;
 
   useEffect(() => {
-    if (!isStudent || !userData?.uid) return;
+    if (!uid) return;
 
-    const uid = userData.uid;
-    const profile = { name: userData.name, email: userData.email };
+    const profile = { name: userData?.name, email: userData?.email };
 
     const isActive = () =>
       typeof document !== "undefined" &&
-      document.visibilityState === "visible" &&
-      document.hasFocus();
+      document.visibilityState === "visible";
 
-    // Count one second of activity each tick when the user is actually here.
+    // Count one second of activity each tick when the tab is in the foreground.
     const tick = window.setInterval(() => {
       if (isActive()) pendingRef.current += 1;
     }, 1000);
@@ -63,7 +62,7 @@ export function UsageTracker() {
       window.removeEventListener("beforeunload", flush);
       flush();
     };
-  }, [isStudent, userData?.uid, userData?.name, userData?.email]);
+  }, [uid, userData?.name, userData?.email]);
 
   return null;
 }
