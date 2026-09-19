@@ -19,7 +19,9 @@ import {
     CalendarCheck,
     MessageSquare,
     Megaphone,
-    ChevronDown
+    ChevronDown,
+    Download,
+    BookText
 } from "lucide-react";
 import { clsx } from "clsx";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
@@ -33,13 +35,15 @@ import { EnrollmentsTab } from "@/components/admin/EnrollmentsTab";
 import { AttendanceTab } from "@/components/admin/AttendanceTab";
 import { SupportTab } from "@/components/admin/SupportTab";
 import { StudentManagementTab } from "@/components/admin/StudentManagementTab";
+import { VideoLibraryTab } from "@/components/admin/VideoLibraryTab";
+import { GrammarManagerTab } from "@/components/admin/GrammarManagerTab";
 import { NotificationManager } from "@/components/developer/NotificationManager";
 import { courseService } from "@/services/courseService";
 import { enrollmentService } from "@/services/enrollmentService";
 import { userService } from "@/services/userService";
 import { Course, Enrollment, UserData } from "@/lib/types";
 
-type ManagementTab = 'dashboard' | 'courses' | 'recordings' | 'class-recordings' | 'resources' | 'users' | 'settings' | 'analytics' | 'enrollments' | 'attendance' | 'support' | 'students' | 'announcements';
+type ManagementTab = 'dashboard' | 'courses' | 'recordings' | 'class-recordings' | 'video-library' | 'grammar' | 'resources' | 'users' | 'settings' | 'analytics' | 'enrollments' | 'attendance' | 'support' | 'students' | 'announcements';
 
 export default function ManagementPortalPage() {
     const { userData, loading: authLoading } = useAuth();
@@ -137,6 +141,8 @@ export default function ManagementPortalPage() {
         { id: 'courses', label: 'Courses', icon: BookOpen },
         { id: 'recordings', label: 'Recorded Library', icon: PlayCircle },
         { id: 'class-recordings', label: 'Live Recordings', icon: Video },
+        { id: 'video-library', label: 'Video Library', icon: Download },
+        { id: 'grammar', label: 'Grammar', icon: BookText },
         { id: 'resources', label: 'Resources', icon: FolderOpen },
         ...(isAdmin ? [
             { id: 'enrollments' as ManagementTab, label: 'Enrollments', icon: CreditCard },
@@ -272,6 +278,24 @@ export default function ManagementPortalPage() {
                             Open Recording Manager
                             <Video size={18} />
                         </button>
+                    </div>
+                )}
+                {activeTab === 'video-library' && (
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+                        <div className="mb-6">
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Video Library</h2>
+                            <p className="text-gray-500 text-sm mt-1">All course, batch and binded recordings. Download individually or in bulk (admins only).</p>
+                        </div>
+                        <VideoLibraryTab />
+                    </div>
+                )}
+                {activeTab === 'grammar' && (
+                    <div className="bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+                        <div className="mb-6">
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Grammar Classes</h2>
+                            <p className="text-gray-500 text-sm mt-1">Upload and manage grammar lesson videos shown to students on the Grammar page.</p>
+                        </div>
+                        <GrammarManagerTab />
                     </div>
                 )}
                 {activeTab === 'resources' && (

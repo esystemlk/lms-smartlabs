@@ -14,7 +14,8 @@ import {
   Clock, 
   ArrowRight, 
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  BookText
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { courseService } from "@/services/courseService";
@@ -280,6 +281,7 @@ export default function LMSPage() {
           {[
             { href: "/lms/live", icon: PlayCircle, label: "Live Classes", sub: "Join sessions", tint: "bg-blue-50 dark:bg-blue-500/10 text-blue-500" },
             { href: "/lms/my-recordings", icon: Video, label: "Recordings", sub: "View past", tint: "bg-pink-50 dark:bg-pink-500/10 text-pink-500" },
+            { href: "/lms/grammar", icon: BookText, label: "Grammar", sub: "Grammar classes", tint: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-500" },
             { href: "/lms/assignments", icon: FileText, label: "Assignments", sub: "Submit work", tint: "bg-orange-50 dark:bg-orange-500/10 text-orange-500" },
             { href: "/lms/resources", icon: Download, label: "Resources", sub: "Study materials", tint: "bg-purple-50 dark:bg-purple-500/10 text-purple-500" },
             { href: "/lms/exams", icon: BookOpen, label: "Exams", sub: "Take tests", tint: "bg-red-50 dark:bg-red-500/10 text-red-500" },

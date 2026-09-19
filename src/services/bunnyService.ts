@@ -114,6 +114,20 @@ export const bunnyService = {
     return true;
   },
 
+  /**
+   * Build a direct MP4 download URL for a Bunny Stream video.
+   * Requires "MP4 Fallback" to be enabled on the library and the CDN/pull-zone
+   * hostname to be set in Settings (`bunnyCdnHostname`). If `videoId` is already
+   * a full URL (external recording), it is returned as-is.
+   */
+  getDownloadUrl(videoId: string, cdnHostname?: string, quality: string = "720p") {
+    if (!videoId) return "";
+    if (videoId.startsWith("http")) return videoId;
+    if (!cdnHostname) return "";
+    const host = cdnHostname.replace(/^https?:\/\//, "").replace(/\/+$/, "");
+    return `https://${host}/${videoId}/play_${quality}.mp4`;
+  },
+
   getVideoUrl(videoId: string, _cdnHostname?: string) {
     // If cdnHostname is provided (e.g. video.smartlabs.com), use it.
     // Otherwise construct default? Bunny usually gives a pull zone URL.

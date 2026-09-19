@@ -37,6 +37,7 @@ const navConfig = [
   { href: "/learn", label: "My Learning", icon: Play, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
   { href: "/courses", label: "Browse Courses", icon: BookOpen, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
   { href: "/lms/live", label: "Join Live Classes", icon: Video, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
+  { href: "/lms/grammar", label: "Grammar Classes", icon: BookOpen, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
 
   { href: "/live-classes", label: "Schedule Classes", icon: Calendar, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
   { href: "/management?tab=courses", label: "My Courses", icon: BookOpen, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
@@ -74,7 +75,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     const isNewStudent = userData.role === 'student' && (!userData.enrolledBatches || userData.enrolledBatches.length === 0);
 
     if (isNewStudent) {
-      const items = navConfig.filter(i => ["/help", "/lms", "/courses", "/activities", "/websites", "/community", "/learn"].includes(i.href));
+      const items = navConfig.filter(i => ["/help", "/lms", "/courses", "/activities", "/websites", "/community", "/learn", "/lms/grammar"].includes(i.href));
       return [{ label: "Menu", items }];
     }
 
