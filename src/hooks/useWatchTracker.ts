@@ -32,9 +32,10 @@ export function useWatchTracker({ iframeRef, recordingId, title, user }: WatchTr
   const playerRef = useRef<any>(null);
   const userRef = useRef(user);
 
-  recordingIdRef.current = recordingId;
-  titleRef.current = title;
   userRef.current = user;
+  // NOTE: recordingIdRef/titleRef are updated inside the effect below (after
+  // commit), not here, so the cleanup flush still attributes pending seconds to
+  // the recording being closed rather than to the next/empty one.
 
   // Load Bunny's player.js adapter once.
   useEffect(() => {
@@ -65,6 +66,8 @@ export function useWatchTracker({ iframeRef, recordingId, title, user }: WatchTr
 
   // Attach play/pause listeners each time the active recording changes.
   useEffect(() => {
+    recordingIdRef.current = recordingId;
+    titleRef.current = title;
     isPlayingRef.current = false;
     if (!recordingId) return;
 
