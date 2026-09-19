@@ -19,6 +19,7 @@ import {
   Globe, 
   Loader2,
   ChevronRight,
+  ChevronDown,
   ExternalLink,
   Monitor,
   PlayCircle
@@ -47,6 +48,8 @@ export function StudentManagementTab() {
   // keyed by userId. Sourced from user_usage so every student who has watched
   // any recording is covered, not just paid recorded-package buyers.
   const [usageMap, setUsageMap] = useState<Record<string, UserUsage>>({});
+  // Which student's per-recording watch breakdown is expanded (by userId).
+  const [expandedWatch, setExpandedWatch] = useState<string | null>(null);
 
   // Filters
   const [searchTerm, setSearchTerm] = useState("");
@@ -313,8 +316,15 @@ export function StudentManagementTab() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {displayData.map((enrollment) => (
-                <tr key={enrollment.id} className="hover:bg-gray-50/50 transition-colors">
+              {displayData.map((enrollment) => {
+                const usage = usageMap[enrollment.userId];
+                const watchEntries = Object.entries(usage?.watchByClass || {})
+                  .filter(([, secs]) => (secs || 0) > 0)
+                  .sort((a, b) => (b[1] || 0) - (a[1] || 0));
+                const isWatchOpen = expandedWatch === enrollment.userId;
+                return (
+                <Fragment key={enrollment.id}>
+                <tr className="hover:bg-gray-50/50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold">
@@ -356,8 +366,17 @@ export function StudentManagementTab() {
                       </div>
                       <div className="flex items-center gap-1.5 text-xs text-gray-500" title="Total active time on the LMS">
                         <Monitor size={14} className="text-gray-400" />
-                        {formatDuration(usageMap[enrollment.userId]?.lmsTimeSeconds || 0)}
+                        {formatDuration(usage?.lmsTimeSeconds || 0)}
                       </div>
+                      {watchEntries.length > 0 && (
+                        <button
+                          onClick={() => setExpandedWatch(isWatchOpen ? null : enrollment.userId)}
+                          className="flex items-center gap-1 text-xs text-brand-blue font-medium hover:underline"
+                        >
+                          {isWatchOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+                          {isWatchOpen ? 'Hide' : 'View'} recordings ({watchEntries.length})
+                        </button>
+                      )}
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -409,7 +428,30 @@ export function StudentManagementTab() {
                     </div>
                   </td>
                 </tr>
-              ))}
+                {isWatchOpen && watchEntries.length > 0 && (
+                  <tr className="bg-gray-50/70">
+                    <td colSpan={6} className="px-6 py-4">
+                      <p className="text-xs font-semibold text-gray-500 uppercase mb-2">
+                        Recordings watched by {enrollment.userName}
+                      </p>
+                      <div className="space-y-1.5 max-w-2xl">
+                        {watchEntries.map(([recId, secs]) => (
+                          <div key={recId} className="flex items-center justify-between gap-4 text-sm">
+                            <span className="text-gray-700 truncate">
+                              {usage?.watchTitles?.[recId] || 'Recording'}
+                            </span>
+                            <span className="font-medium text-gray-900 shrink-0 tabular-nums">
+                              {formatDuration(secs || 0)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                )}
+                </Fragment>
+                );
+              })}
             </tbody>
           </table>
         </div>

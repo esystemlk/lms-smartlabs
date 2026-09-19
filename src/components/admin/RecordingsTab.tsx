@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { recordedClassService, RecordedClass, RecordedPackage, BankTransferRequest, RecordedEnrollment } from "@/services/recordedClassService";
-import { usageService, UserUsage, formatDuration } from "@/services/usageService";
 import { bunnyService } from "@/services/bunnyService";
-import { Loader2, Plus, Play, Check, X, RefreshCw, DollarSign, Users, Clock, FileText, Edit, Trash2, Video, Link as LinkIcon, Image as ImageIcon, Download, ChevronDown, ChevronRight, Monitor } from "lucide-react";
+import { Loader2, Plus, Play, Check, X, RefreshCw, DollarSign, Users, Clock, FileText, Edit, Trash2, Video, Link as LinkIcon, Image as ImageIcon, Download } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -640,30 +639,17 @@ function TransfersTab() {
 
 function StudentsTab() {
     const [students, setStudents] = useState<RecordedEnrollment[]>([]);
-    const [classes, setClasses] = useState<RecordedClass[]>([]);
-    const [usageMap, setUsageMap] = useState<Record<string, UserUsage>>({});
     const [loading, setLoading] = useState(true);
-    const [expanded, setExpanded] = useState<string | null>(null);
 
     useEffect(() => {
         const load = async () => {
             setLoading(true);
-            const [res, cls, usage] = await Promise.all([
-                recordedClassService.getAllEnrollments(),
-                recordedClassService.getClasses(),
-                usageService.getAllUsage(),
-            ]);
+            const res = await recordedClassService.getAllEnrollments();
             setStudents(res);
-            setClasses(cls);
-            const map: Record<string, UserUsage> = {};
-            usage.forEach((u) => { map[u.uid] = u; });
-            setUsageMap(map);
             setLoading(false);
         };
         load();
     }, []);
-
-    const classTitle = (id: string) => classes.find((c) => c.id === id)?.title || "Unknown lesson";
 
     if (loading) return <Loader2 className="animate-spin mx-auto" />;
 
@@ -672,33 +658,16 @@ function StudentsTab() {
             <table className="w-full text-sm text-left">
                 <thead className="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-gray-800">
                     <tr>
-                        <th className="px-4 py-3 w-8"></th>
                         <th className="px-6 py-3">Student</th>
                         <th className="px-6 py-3">Package</th>
                         <th className="px-6 py-3">Status</th>
                         <th className="px-6 py-3">Watch Time</th>
-                        <th className="px-6 py-3">LMS Time</th>
                         <th className="px-6 py-3">Expiry</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {students.map((s) => {
-                        // Per-class breakdown: prefer enrollment map, fall back to usage doc.
-                        const breakdown = s.watchTimeByClass || usageMap[s.userId]?.watchByClass || {};
-                        const breakdownEntries = Object.entries(breakdown)
-                            .filter(([, secs]) => (secs || 0) > 0)
-                            .sort((a, b) => (b[1] || 0) - (a[1] || 0));
-                        const lmsSeconds = usageMap[s.userId]?.lmsTimeSeconds || 0;
-                        const isOpen = expanded === s.id;
-                        return (
-                        <Fragment key={s.id}>
-                        <tr
-                            className="bg-white dark:bg-gray-900 border-b dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer"
-                            onClick={() => setExpanded(isOpen ? null : s.id!)}
-                        >
-                            <td className="px-4 py-4 text-gray-400">
-                                {breakdownEntries.length > 0 ? (isOpen ? <ChevronDown size={16} /> : <ChevronRight size={16} />) : null}
-                            </td>
+                    {students.map((s) => (
+                        <tr key={s.id} className="bg-white dark:bg-gray-900 border-b dark:border-gray-800">
                             <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                 <div>{s.userName}</div>
                                 <div className="text-xs text-gray-500">{s.userEmail}</div>
@@ -709,38 +678,12 @@ function StudentsTab() {
                                     {s.status.toUpperCase()}
                                 </span>
                             </td>
-                            <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                <span className="inline-flex items-center gap-1.5"><Clock size={14} className="text-green-600" />{formatDuration(s.totalWatchTimeSeconds || 0)}</span>
-                            </td>
-                            <td className="px-6 py-4 text-gray-600 dark:text-gray-300">
-                                <span className="inline-flex items-center gap-1.5"><Monitor size={14} className="text-gray-400" />{formatDuration(lmsSeconds)}</span>
-                            </td>
+                            <td className="px-6 py-4">{Math.floor((s.totalWatchTimeSeconds || 0) / 60)} mins</td>
                             <td className="px-6 py-4">{s.expiryDate?.seconds ? new Date(s.expiryDate.seconds * 1000).toLocaleDateString() : 'N/A'}</td>
                         </tr>
-                        {isOpen && breakdownEntries.length > 0 && (
-                            <tr className="bg-gray-50/70 dark:bg-gray-800/30">
-                                <td></td>
-                                <td colSpan={6} className="px-6 py-4">
-                                    <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Watch time per recording</p>
-                                    <div className="space-y-1.5 max-w-2xl">
-                                        {breakdownEntries.map(([classId, secs]) => (
-                                            <div key={classId} className="flex items-center justify-between gap-4 text-sm">
-                                                <span className="text-gray-700 dark:text-gray-300 truncate">{usageMap[s.userId]?.watchTitles?.[classId] || classTitle(classId)}</span>
-                                                <span className="font-medium text-gray-900 dark:text-white shrink-0 tabular-nums">{formatDuration(secs || 0)}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </td>
-                            </tr>
-                        )}
-                        </Fragment>
-                        );
-                    })}
+                    ))}
                 </tbody>
             </table>
-            {students.length === 0 && (
-                <p className="text-center text-gray-500 py-12">No enrolled students yet.</p>
-            )}
         </div>
     );
 }
