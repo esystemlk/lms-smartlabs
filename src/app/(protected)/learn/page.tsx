@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { bunnyService } from "@/services/bunnyService";
 import { recordedClassService, RecordedPackage, RecordedClass, RecordedEnrollment } from "@/services/recordedClassService";
 import { settingsService } from "@/services/settingsService";
+import { usageService, formatDuration } from "@/services/usageService";
 import { 
   Loader2, Check, Lock, Play, Clock, AlertTriangle, Upload, FileText, 
   CreditCard, ChevronRight, Search, Layout, Maximize2, Minimize2, 
@@ -349,21 +350,137 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [cinemaMode, setCinemaMode] = useState(false);
 
+  // --- Watch time tracking ---
+  const [watchByClass, setWatchByClass] = useState<Record<string, number>>(
+    enrollment.watchTimeByClass || {}
+  );
+  const [totalWatchSeconds, setTotalWatchSeconds] = useState<number>(
+    enrollment.totalWatchTimeSeconds || 0
+  );
+
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const playerRef = useRef<any>(null);
+  const isPlayingRef = useRef(false);
+  // True once we've actually received a play/pause event, proving the player
+  // reports state. Until then we fall back to counting while visible + active.
+  const eventsWorkingRef = useRef(false);
+  const pendingRef = useRef(0);
+  const activeClassIdRef = useRef<string | undefined>(undefined);
+
   useEffect(() => {
     loadData();
   }, []);
 
-  // Track watch time
+  // Playlist starts collapsed on small screens (it's an overlay there).
   useEffect(() => {
-    if (!activeClass || !enrollment.id) return;
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
+  }, []);
 
-    // Update watch time every minute
-    const interval = setInterval(() => {
-      recordedClassService.updateWatchTime(enrollment.id!, 60);
-    }, 60000);
+  // Load this student's existing watch stats so we can show real progress.
+  useEffect(() => {
+    (async () => {
+      const usage = await usageService.getUsage(enrollment.userId);
+      if (usage) {
+        setTotalWatchSeconds((prev) =>
+          Math.max(prev, usage.recordingWatchSeconds || 0)
+        );
+        setWatchByClass((prev) => ({ ...(usage.watchByClass || {}), ...prev }));
+      }
+    })();
+  }, [enrollment.userId]);
 
-    return () => clearInterval(interval);
-  }, [activeClass, enrollment.id]);
+  // Flush accumulated watch seconds to Firestore and update local UI state.
+  const flushWatchTime = () => {
+    const secs = pendingRef.current;
+    const classId = activeClassIdRef.current;
+    if (secs <= 0) return;
+    pendingRef.current = 0;
+
+    if (enrollment.id) {
+      recordedClassService.updateWatchTime(enrollment.id, secs, classId);
+    }
+    usageService.addWatchTime(enrollment.userId, secs, classId, {
+      name: enrollment.userName,
+      email: enrollment.userEmail,
+    });
+
+    setTotalWatchSeconds((t) => t + secs);
+    if (classId) {
+      setWatchByClass((m) => ({ ...m, [classId]: (m[classId] || 0) + secs }));
+    }
+  };
+
+  // Load the Bunny player.js adapter so we can detect real play/pause.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if ((window as any).playerjs) return;
+    const script = document.createElement("script");
+    script.src = "https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  // Attach play/pause listeners whenever the active video changes.
+  useEffect(() => {
+    activeClassIdRef.current = activeClass?.id;
+    isPlayingRef.current = false;
+
+    let cancelled = false;
+    const attach = () => {
+      const playerjs = (window as any).playerjs;
+      if (!playerjs || !iframeRef.current) return;
+      try {
+        const player = new playerjs.Player(iframeRef.current);
+        player.on("ready", () => {
+          if (cancelled) return;
+          player.on("play", () => { eventsWorkingRef.current = true; isPlayingRef.current = true; });
+          player.on("pause", () => { eventsWorkingRef.current = true; isPlayingRef.current = false; flushWatchTime(); });
+          player.on("ended", () => { eventsWorkingRef.current = true; isPlayingRef.current = false; flushWatchTime(); });
+        });
+        playerRef.current = player;
+      } catch {
+        /* ignore — fall back to visibility-based counting */
+      }
+    };
+
+    // Give the script/iframe a moment to be present.
+    const t = setTimeout(attach, 600);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+      try { playerRef.current?.off?.("play"); playerRef.current?.off?.("pause"); } catch {}
+      playerRef.current = null;
+    };
+  }, [activeClass?.id]);
+
+  // 1s ticker + periodic flush. Counts only while the tab is visible and the
+  // video is playing (or, if player.js is unavailable, while a class is open).
+  useEffect(() => {
+    const tick = window.setInterval(() => {
+      const visible = document.visibilityState === "visible";
+      if (!visible || !activeClassIdRef.current) return;
+      const counting = eventsWorkingRef.current ? isPlayingRef.current : true;
+      if (counting) pendingRef.current += 1;
+    }, 1000);
+
+    const flushInterval = window.setInterval(flushWatchTime, 30000);
+    const onVisibility = () => { if (document.visibilityState === "hidden") flushWatchTime(); };
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("pagehide", flushWatchTime);
+    window.addEventListener("beforeunload", flushWatchTime);
+
+    return () => {
+      window.clearInterval(tick);
+      window.clearInterval(flushInterval);
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("pagehide", flushWatchTime);
+      window.removeEventListener("beforeunload", flushWatchTime);
+      flushWatchTime();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const loadData = async () => {
     try {
@@ -373,7 +490,10 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
       ]);
       const active = clsRes.filter(c => c.active);
       setClasses(active);
-      if (active.length > 0) setActiveClass(active[0]);
+      if (active.length > 0) {
+        setActiveClass(active[0]);
+        activeClassIdRef.current = active[0].id;
+      }
       setLibraryId(settings.bunnyLibraryId);
     } catch (e) {
       console.error(e);
@@ -383,9 +503,18 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
   };
 
   const handleClassSelect = (cls: RecordedClass) => {
+    // Attribute any pending seconds to the previous class before switching.
+    flushWatchTime();
     setActiveClass(cls);
+    activeClassIdRef.current = cls.id;
     recordedClassService.incrementVideoView(cls.id!);
   };
+
+  // Progress for the currently active lesson (watched / duration).
+  const activeWatched = activeClass?.id ? (watchByClass[activeClass.id] || 0) : 0;
+  const activeProgress = activeClass?.durationSeconds
+    ? Math.min(100, Math.round((activeWatched / activeClass.durationSeconds) * 100))
+    : 0;
 
   const filteredClasses = classes.filter(c => 
     c.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -405,18 +534,26 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
       
       {/* Top Navigation (Hidden in Cinema Mode) */}
       {!cinemaMode && (
-        <header className="h-16 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex items-center justify-between px-6 shrink-0 z-20">
-          <div className="flex items-center gap-4">
-            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-brand-blue">
+        <header className="h-16 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex items-center justify-between px-4 md:px-6 shrink-0 z-20 gap-2">
+          <div className="flex items-center gap-3 md:gap-4 min-w-0">
+            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg text-brand-blue shrink-0">
               <PlayCircle className="w-5 h-5" />
             </div>
-            <div>
-              <h1 className="font-bold text-gray-900 dark:text-white leading-tight">Recorded Classes</h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">My Learning Dashboard</p>
+            <div className="min-w-0">
+              <h1 className="font-bold text-gray-900 dark:text-white leading-tight truncate">Recorded Classes</h1>
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">My Learning Dashboard</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-             <Button 
+          <div className="flex items-center gap-2 md:gap-3 shrink-0">
+            <div
+              className="flex items-center gap-1.5 px-2.5 md:px-3 py-1.5 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 text-xs md:text-sm font-semibold"
+              title="Your total watch time"
+            >
+              <Clock className="w-4 h-4" />
+              <span className="tabular-nums">{formatDuration(totalWatchSeconds)}</span>
+              <span className="hidden sm:inline font-medium text-green-600/70 dark:text-green-400/70">watched</span>
+            </div>
+             <Button
               variant="outline" 
               size="sm"
               onClick={() => setCinemaMode(true)}
@@ -441,7 +578,7 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
       <div className="flex-1 flex overflow-hidden relative">
         
         {/* Left: Video & Details */}
-        <div className="flex-1 flex flex-col overflow-y-auto scrollbar-hide">
+        <div className="flex-1 flex flex-col overflow-y-auto scrollbar-hide pb-20 md:pb-0">
           
           {/* Video Player Container */}
           <div className={`w-full bg-black relative transition-all duration-500 ${cinemaMode ? 'h-full' : 'aspect-video max-h-[70vh]'}`}>
@@ -458,10 +595,12 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
 
             {activeClass && libraryId ? (
               <div className="w-full h-full relative group">
-                <iframe 
+                <iframe
+                  ref={iframeRef}
+                  key={activeClass.id}
                   src={`https://player.mediadelivery.net/embed/${libraryId}/${activeClass.bunnyVideoId}?autoplay=false&loop=false&muted=false&preload=true&playsinline=true&disableIosPlayer=true`}
                   className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; screen-wake-lock" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; screen-wake-lock"
                   allowFullScreen={true}
                 />
               </div>
@@ -477,8 +616,8 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
 
           {/* Video Metadata & Tabs (Hidden in Cinema Mode) */}
           {!cinemaMode && (
-            <div className="max-w-5xl mx-auto w-full p-6 space-y-8">
-              
+            <div className="max-w-5xl mx-auto w-full p-4 md:p-6 space-y-6 md:space-y-8">
+
               {/* Title Header */}
               <div className="flex items-start justify-between gap-4">
                 <div className="space-y-2">
@@ -561,11 +700,14 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
                          <div className="mt-3">
                            <div className="flex justify-between text-xs mb-1.5">
                              <span className="font-medium">Progress</span>
-                             <span>0%</span>
+                             <span>{activeProgress}%</span>
                            </div>
                            <div className="w-full h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                             <div className="w-0 h-full bg-brand-blue rounded-full" />
+                             <div className="h-full bg-brand-blue rounded-full transition-all duration-500" style={{ width: `${activeProgress}%` }} />
                            </div>
+                           <p className="text-xs text-gray-500 mt-2">
+                             You've watched <span className="font-semibold text-gray-700 dark:text-gray-300">{formatDuration(activeWatched)}</span> of this lesson
+                           </p>
                          </div>
                       </div>
                     </div>
@@ -627,15 +769,25 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
           )}
         </div>
 
+        {/* Mobile backdrop for the playlist overlay */}
+        {(!cinemaMode && sidebarOpen) && (
+          <div
+            className="fixed inset-0 top-16 bg-black/50 z-30 md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
         {/* Right Sidebar: Playlist */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           {(!cinemaMode && sidebarOpen) && (
-            <motion.div 
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 380, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="border-l border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex flex-col z-10 shrink-0"
+            <motion.div
+              initial={{ x: 40, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: 40, opacity: 0 }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
+              className="border-l border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex flex-col shadow-2xl md:shadow-none
+                         fixed md:relative inset-y-0 top-16 md:top-0 right-0 z-40 md:z-10
+                         w-[85vw] max-w-sm md:w-[380px] md:max-w-none shrink-0"
             >
               <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex flex-col gap-4">
                 <div className="flex items-center justify-between">
@@ -664,10 +816,13 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar">
+              <div className="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar pb-24 md:pb-2">
                 {filteredClasses.length > 0 ? (
                   filteredClasses.map((cls, index) => {
                     const isActive = activeClass?.id === cls.id;
+                    const watched = cls.id ? (watchByClass[cls.id] || 0) : 0;
+                    const pct = cls.durationSeconds ? Math.min(100, Math.round((watched / cls.durationSeconds) * 100)) : 0;
+                    const isCompleted = pct >= 90;
                     return (
                       <button
                         key={cls.id}
@@ -680,7 +835,7 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
                       >
                         {/* Thumbnail / Number */}
                         <div className={`w-16 h-10 rounded-lg flex items-center justify-center shrink-0 relative overflow-hidden ${
-                          isActive ? 'bg-brand-blue text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'
+                          isActive ? 'bg-brand-blue text-white' : isCompleted ? 'bg-green-100 dark:bg-green-900/30 text-green-600' : 'bg-gray-100 dark:bg-gray-800 text-gray-500'
                         }`}>
                           {isActive ? (
                             <div className="flex items-end gap-0.5 h-3 mb-1">
@@ -688,8 +843,16 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
                               <span className="w-1 h-2 bg-white animate-[bounce_1.2s_infinite]" />
                               <span className="w-1 h-3 bg-white animate-[bounce_0.8s_infinite]" />
                             </div>
+                          ) : isCompleted ? (
+                            <CheckCircle2 className="w-5 h-5" />
                           ) : (
                             <span className="text-xs font-bold">{String(index + 1).padStart(2, '0')}</span>
+                          )}
+                          {/* Watch progress bar */}
+                          {!isActive && pct > 0 && pct < 90 && (
+                            <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/10">
+                              <div className="h-full bg-brand-blue" style={{ width: `${pct}%` }} />
+                            </div>
                           )}
                         </div>
 
@@ -703,7 +866,13 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
                             <span className="text-[10px] text-gray-400 flex items-center gap-1 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">
                               <Clock size={10} /> {Math.floor((cls.durationSeconds || 0) / 60)}m
                             </span>
-                            {isActive && <span className="text-[10px] font-bold text-brand-blue">Playing</span>}
+                            {isActive ? (
+                              <span className="text-[10px] font-bold text-brand-blue">Playing</span>
+                            ) : isCompleted ? (
+                              <span className="text-[10px] font-bold text-green-600">Completed</span>
+                            ) : pct > 0 ? (
+                              <span className="text-[10px] font-medium text-gray-400">{pct}% watched</span>
+                            ) : null}
                           </div>
                         </div>
                       </button>
@@ -721,7 +890,7 @@ function LearnDashboard({ enrollment }: { enrollment: RecordedEnrollment }) {
         
         {/* Expand Sidebar Button (When closed) */}
         {(!cinemaMode && !sidebarOpen) && (
-          <div className="absolute right-0 top-0 bottom-0 w-12 border-l border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 flex flex-col items-center py-4 gap-4 z-10">
+          <div className="absolute right-0 top-0 bottom-0 w-12 border-l border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hidden md:flex flex-col items-center py-4 gap-4 z-10">
              <Button 
               variant="ghost" 
               size="icon" 

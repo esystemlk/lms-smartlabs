@@ -5,6 +5,8 @@ import { UserData, Enrollment, Course, Batch } from "@/lib/types";
 import { userService } from "@/services/userService";
 import { enrollmentService } from "@/services/enrollmentService";
 import { courseService } from "@/services/courseService";
+import { recordedClassService } from "@/services/recordedClassService";
+import { usageService, UserUsage, formatDuration } from "@/services/usageService";
 import { useToast } from "@/components/ui/Toast";
 import { 
   Search, 
@@ -18,7 +20,9 @@ import {
   Globe, 
   Loader2,
   ChevronRight,
-  ExternalLink
+  ExternalLink,
+  Monitor,
+  PlayCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Dialog, Transition } from "@headlessui/react";
@@ -39,6 +43,11 @@ export function StudentManagementTab() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [batches, setBatches] = useState<Batch[]>([]);
   const [loading, setLoading] = useState(true);
+
+  // Per-student activity: LMS active time (from user_usage) and total recording
+  // watch time (from recorded_enrollments), keyed by userId.
+  const [usageMap, setUsageMap] = useState<Record<string, UserUsage>>({});
+  const [watchMap, setWatchMap] = useState<Record<string, number>>({});
 
   // Filters
   const [searchTerm, setSearchTerm] = useState("");
@@ -68,14 +77,27 @@ export function StudentManagementTab() {
   const fetchInitialData = async () => {
     try {
       setLoading(true);
-      const [usersData, enrollmentsData, coursesData] = await Promise.all([
+      const [usersData, enrollmentsData, coursesData, usageData, recEnrollments] = await Promise.all([
         userService.getAllUsers(),
         enrollmentService.getAllEnrollments(),
         courseService.getAllCourses(),
+        usageService.getAllUsage(),
+        recordedClassService.getAllEnrollments().catch(() => []),
       ]);
       setUsers(usersData);
       setEnrollments(enrollmentsData);
       setCourses(coursesData);
+
+      const uMap: Record<string, UserUsage> = {};
+      usageData.forEach((u) => { uMap[u.uid] = u; });
+      setUsageMap(uMap);
+
+      // Sum recording watch time per user across their recorded enrollments.
+      const wMap: Record<string, number> = {};
+      recEnrollments.forEach((e) => {
+        wMap[e.userId] = (wMap[e.userId] || 0) + (e.totalWatchTimeSeconds || 0);
+      });
+      setWatchMap(wMap);
     } catch (error) {
       console.error("Error fetching admin data:", error);
     } finally {
@@ -294,6 +316,7 @@ export function StudentManagementTab() {
                 <th className="px-6 py-4">Student</th>
                 <th className="px-6 py-4">Course & Batch</th>
                 <th className="px-6 py-4">Time Slot</th>
+                <th className="px-6 py-4">Activity</th>
                 <th className="px-6 py-4">Status</th>
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
@@ -333,6 +356,18 @@ export function StudentManagementTab() {
                     ) : (
                       <span className="text-sm text-gray-400">Regular</span>
                     )}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-1.5 text-sm font-medium text-gray-900" title="Total recording watch time">
+                        <PlayCircle size={14} className="text-green-600" />
+                        {formatDuration(watchMap[enrollment.userId] || 0)}
+                      </div>
+                      <div className="flex items-center gap-1.5 text-xs text-gray-500" title="Total active time on the LMS">
+                        <Monitor size={14} className="text-gray-400" />
+                        {formatDuration(usageMap[enrollment.userId]?.lmsTimeSeconds || 0)}
+                      </div>
+                    </div>
                   </td>
                   <td className="px-6 py-4">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${

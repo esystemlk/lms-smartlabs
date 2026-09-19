@@ -51,6 +51,7 @@ export interface RecordedEnrollment {
   paymentMethod: 'payhere' | 'bank_transfer';
   paymentId?: string; // Order ID or Bank Transfer ID
   totalWatchTimeSeconds: number;
+  watchTimeByClass?: Record<string, number>; // classId -> seconds watched
   lastActive: any; // Firestore Timestamp or Date
 }
 
@@ -149,9 +150,12 @@ export const recordedClassService = {
     return await addDoc(collection(db, "recorded_enrollments"), data);
   },
 
-  async updateWatchTime(enrollmentId: string, seconds: number) {
+  async updateWatchTime(enrollmentId: string, seconds: number, classId?: string) {
+    if (!enrollmentId || seconds <= 0) return;
+    const secs = Math.round(seconds);
     await updateDoc(doc(db, "recorded_enrollments", enrollmentId), {
-      totalWatchTimeSeconds: increment(seconds),
+      totalWatchTimeSeconds: increment(secs),
+      ...(classId ? { [`watchTimeByClass.${classId}`]: increment(secs) } : {}),
       lastActive: serverTimestamp()
     });
   },

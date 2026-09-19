@@ -10,6 +10,7 @@ import { TitleBar } from "@/components/layout/TitleBar";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { FloatingChatWidget } from "@/components/features/FloatingChatWidget";
 import { NotificationListener } from "@/components/features/NotificationListener";
+import { UsageTracker } from "@/components/features/UsageTracker";
 import { SuperLoader } from "@/components/ui/SuperLoader";
 import { Loader2, Megaphone, AlertTriangle, X, UserCog, LogOut } from "lucide-react";
 import { clsx } from "clsx";
@@ -197,6 +198,7 @@ export default function ProtectedLayout({
           <MobileNav onMenuClick={() => setIsMobileMenuOpen(true)} />
           <FloatingChatWidget />
           <NotificationListener />
+          <UsageTracker />
           <CommandPalette />
           <TutorialTour />
         </div>
