@@ -27,6 +27,7 @@ export interface UserUsage {
   lmsTimeSeconds: number;
   recordingWatchSeconds: number;
   watchByClass?: Record<string, number>;
+  watchTitles?: Record<string, string>; // recordingId -> title for display
   lastActive?: any;
   updatedAt?: any;
 }
@@ -65,7 +66,8 @@ export const usageService = {
     uid: string,
     seconds: number,
     classId?: string,
-    profile?: { name?: string; email?: string }
+    profile?: { name?: string; email?: string },
+    title?: string
   ): Promise<void> {
     if (!uid || seconds <= 0) return;
     const secs = Math.round(seconds);
@@ -79,6 +81,9 @@ export const usageService = {
           recordingWatchSeconds: increment(secs),
           ...(classId
             ? { watchByClass: { [classId]: increment(secs) } }
+            : {}),
+          ...(classId && title
+            ? { watchTitles: { [classId]: title } }
             : {}),
           lastActive: serverTimestamp(),
           updatedAt: serverTimestamp(),

@@ -5,7 +5,6 @@ import { UserData, Enrollment, Course, Batch } from "@/lib/types";
 import { userService } from "@/services/userService";
 import { enrollmentService } from "@/services/enrollmentService";
 import { courseService } from "@/services/courseService";
-import { recordedClassService } from "@/services/recordedClassService";
 import { usageService, UserUsage, formatDuration } from "@/services/usageService";
 import { useToast } from "@/components/ui/Toast";
 import { 
@@ -44,10 +43,10 @@ export function StudentManagementTab() {
   const [batches, setBatches] = useState<Batch[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Per-student activity: LMS active time (from user_usage) and total recording
-  // watch time (from recorded_enrollments), keyed by userId.
+  // Per-student activity (LMS active time + total recording watch time),
+  // keyed by userId. Sourced from user_usage so every student who has watched
+  // any recording is covered, not just paid recorded-package buyers.
   const [usageMap, setUsageMap] = useState<Record<string, UserUsage>>({});
-  const [watchMap, setWatchMap] = useState<Record<string, number>>({});
 
   // Filters
   const [searchTerm, setSearchTerm] = useState("");
@@ -77,12 +76,11 @@ export function StudentManagementTab() {
   const fetchInitialData = async () => {
     try {
       setLoading(true);
-      const [usersData, enrollmentsData, coursesData, usageData, recEnrollments] = await Promise.all([
+      const [usersData, enrollmentsData, coursesData, usageData] = await Promise.all([
         userService.getAllUsers(),
         enrollmentService.getAllEnrollments(),
         courseService.getAllCourses(),
         usageService.getAllUsage(),
-        recordedClassService.getAllEnrollments().catch(() => []),
       ]);
       setUsers(usersData);
       setEnrollments(enrollmentsData);
@@ -91,13 +89,6 @@ export function StudentManagementTab() {
       const uMap: Record<string, UserUsage> = {};
       usageData.forEach((u) => { uMap[u.uid] = u; });
       setUsageMap(uMap);
-
-      // Sum recording watch time per user across their recorded enrollments.
-      const wMap: Record<string, number> = {};
-      recEnrollments.forEach((e) => {
-        wMap[e.userId] = (wMap[e.userId] || 0) + (e.totalWatchTimeSeconds || 0);
-      });
-      setWatchMap(wMap);
     } catch (error) {
       console.error("Error fetching admin data:", error);
     } finally {
@@ -361,7 +352,7 @@ export function StudentManagementTab() {
                     <div className="space-y-1">
                       <div className="flex items-center gap-1.5 text-sm font-medium text-gray-900" title="Total recording watch time">
                         <PlayCircle size={14} className="text-green-600" />
-                        {formatDuration(watchMap[enrollment.userId] || 0)}
+                        {formatDuration(usageMap[enrollment.userId]?.recordingWatchSeconds || 0)}
                       </div>
                       <div className="flex items-center gap-1.5 text-xs text-gray-500" title="Total active time on the LMS">
                         <Monitor size={14} className="text-gray-400" />

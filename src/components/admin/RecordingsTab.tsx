@@ -725,7 +725,7 @@ function StudentsTab() {
                                     <div className="space-y-1.5 max-w-2xl">
                                         {breakdownEntries.map(([classId, secs]) => (
                                             <div key={classId} className="flex items-center justify-between gap-4 text-sm">
-                                                <span className="text-gray-700 dark:text-gray-300 truncate">{classTitle(classId)}</span>
+                                                <span className="text-gray-700 dark:text-gray-300 truncate">{usageMap[s.userId]?.watchTitles?.[classId] || classTitle(classId)}</span>
                                                 <span className="font-medium text-gray-900 dark:text-white shrink-0 tabular-nums">{formatDuration(secs || 0)}</span>
                                             </div>
                                         ))}

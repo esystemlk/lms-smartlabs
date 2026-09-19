@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { useWatchTracker } from "@/hooks/useWatchTracker";
 import { useRouter } from "next/navigation";
 import { courseService } from "@/services/courseService";
 import { bunnyService } from "@/services/bunnyService";
@@ -16,8 +17,17 @@ export default function MyRecordingsPage() {
   const router = useRouter();
   const [recordings, setRecordings] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedVideo, setSelectedVideo] = useState<{ videoId: string; title: string } | null>(null);
+  const [selectedVideo, setSelectedVideo] = useState<{ id: string; videoId: string; title: string } | null>(null);
   const [libraryId, setLibraryId] = useState<string>("");
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+
+  // Track how long the student actually watches the open recording.
+  useWatchTracker({
+    iframeRef,
+    recordingId: selectedVideo?.id,
+    title: selectedVideo?.title,
+    user: userData,
+  });
 
   useEffect(() => {
     fetchRecordings();
@@ -146,7 +156,7 @@ export default function MyRecordingsPage() {
               <div 
                 key={rec.id} 
                 className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow overflow-hidden group cursor-pointer"
-                onClick={() => setSelectedVideo({ videoId: (rec.bunnyVideoId || rec.recordingUrl)!, title: rec.title })}
+                onClick={() => setSelectedVideo({ id: rec.id, videoId: (rec.bunnyVideoId || rec.recordingUrl)!, title: rec.title })}
               >
                 {/* Thumbnail / Placeholder */}
                 <div className="aspect-video bg-gray-900 relative flex items-center justify-center overflow-hidden">
@@ -204,9 +214,10 @@ export default function MyRecordingsPage() {
             </div>
             
             <div className="relative pt-[56.25%] bg-black">
-              <iframe 
-                src={selectedVideo.videoId.startsWith('http') 
-                  ? selectedVideo.videoId 
+              <iframe
+                ref={iframeRef}
+                src={selectedVideo.videoId.startsWith('http')
+                  ? selectedVideo.videoId
                   : `https://player.mediadelivery.net/embed/${libraryId}/${selectedVideo.videoId}?autoplay=false&preload=true&playsinline=true&disableIosPlayer=true`
                 }
                 className="absolute top-0 left-0 w-full h-full border-0"
