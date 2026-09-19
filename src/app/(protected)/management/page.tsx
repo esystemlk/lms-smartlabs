@@ -141,10 +141,10 @@ export default function ManagementPortalPage() {
         { id: 'courses', label: 'Courses', icon: BookOpen },
         { id: 'recordings', label: 'Recorded Library', icon: PlayCircle },
         { id: 'class-recordings', label: 'Live Recordings', icon: Video },
-        { id: 'video-library', label: 'Video Library', icon: Download },
         { id: 'grammar', label: 'Grammar', icon: BookText },
         { id: 'resources', label: 'Resources', icon: FolderOpen },
         ...(isAdmin ? [
+            { id: 'video-library' as ManagementTab, label: 'Video Library', icon: Download },
             { id: 'enrollments' as ManagementTab, label: 'Enrollments', icon: CreditCard },
             { id: 'attendance' as ManagementTab, label: 'Attendance', icon: CalendarCheck },
             { id: 'users' as ManagementTab, label: 'Users', icon: Users },
@@ -280,7 +280,7 @@ export default function ManagementPortalPage() {
                         </button>
                     </div>
                 )}
-                {activeTab === 'video-library' && (
+                {activeTab === 'video-library' && isAdmin && (
                     <div className="bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
                         <div className="mb-6">
                             <h2 className="text-xl font-bold text-gray-900 dark:text-white">Video Library</h2>

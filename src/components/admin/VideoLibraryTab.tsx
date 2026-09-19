@@ -196,6 +196,18 @@ export function VideoLibraryTab() {
     URL.revokeObjectURL(url);
   };
 
+  if (!isAdmin) {
+    return (
+      <div className="flex items-start gap-3 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-sm text-gray-600 dark:text-gray-300">
+        <AlertTriangle size={18} className="shrink-0 mt-0.5 text-amber-500" />
+        <div>
+          <p className="font-semibold text-gray-900 dark:text-white">Admins only</p>
+          <p>Downloading recordings is restricted to administrators.</p>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) return <div className="flex justify-center p-12"><Loader2 className="animate-spin text-brand-blue" /></div>;
 
   return (
