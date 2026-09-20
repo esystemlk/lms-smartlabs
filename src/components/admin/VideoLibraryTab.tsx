@@ -17,6 +17,7 @@ interface VideoItem {
   courseId?: string;
   courseTitle: string;
   batchIds: string[];
+  batchNames: string[];
   date?: string;
   binded: boolean;
   source: "live" | "batch" | "library";
@@ -33,8 +34,11 @@ export function VideoLibraryTab() {
   const [cdnHostname, setCdnHostname] = useState("");
   const [search, setSearch] = useState("");
   const [courseFilter, setCourseFilter] = useState("all");
+  const [batchFilter, setBatchFilter] = useState("all");
   const [includeLibrary, setIncludeLibrary] = useState(false);
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  // batchId -> { name, courseId }
+  const [batchMap, setBatchMap] = useState<Record<string, { name: string; courseId?: string }>>({});
 
   const load = async (withLibrary: boolean) => {
     setLoading(true);
@@ -43,15 +47,22 @@ export function VideoLibraryTab() {
       setLibraryId(settings.bunnyLibraryId || "");
       setCdnHostname(settings.bunnyCdnHostname || "");
 
-      const [live, batchRecs, courses, lib] = await Promise.all([
+      const [live, batchRecs, courses, allBatches, lib] = await Promise.all([
         courseService.getPastLiveClasses().catch(() => []),
         courseService.getAllBatchRecordings().catch(() => []),
         courseService.getAllCourses().catch(() => []),
+        courseService.getAllBatches().catch(() => []),
         withLibrary ? bunnyService.getVideos(1, 500).catch(() => ({ items: [] })) : Promise.resolve({ items: [] }),
       ]);
 
       const courseTitle = (id?: string) =>
         (id && courses.find((c: any) => c.id === id)?.title) || "—";
+
+      const bMap: Record<string, { name: string; courseId?: string }> = {};
+      (allBatches as any[]).forEach((b) => { bMap[b.id] = { name: b.name || "Batch", courseId: b.courseId }; });
+      setBatchMap(bMap);
+      const batchNamesFor = (ids: string[] = []) =>
+        ids.map((id) => bMap[id]?.name).filter(Boolean) as string[];
 
       const list: VideoItem[] = [];
 
@@ -67,6 +78,7 @@ export function VideoLibraryTab() {
           courseId: l.courseId,
           courseTitle: courseTitle(l.courseId),
           batchIds: l.batchIds || [],
+          batchNames: batchNamesFor(l.batchIds),
           date: l.startTime,
           binded,
           source: "live",
@@ -84,6 +96,7 @@ export function VideoLibraryTab() {
           courseId: r.courseId,
           courseTitle: courseTitle(r.courseId),
           batchIds: r.batchIds || [],
+          batchNames: batchNamesFor(r.batchIds),
           date: r.startTime,
           binded: false,
           source: "batch",
@@ -101,6 +114,7 @@ export function VideoLibraryTab() {
             videoId: v.guid,
             courseTitle: "Unlinked (Bunny library)",
             batchIds: [],
+            batchNames: [],
             date: v.dateUploaded,
             binded: false,
             source: "library",
@@ -123,11 +137,23 @@ export function VideoLibraryTab() {
     [items]
   );
 
+  // Batches to show in the dropdown — narrowed to the selected course, and only
+  // those that actually appear on the loaded videos.
+  const batchOptions = useMemo(() => {
+    const relevant = items.filter((i) => courseFilter === "all" || i.courseTitle === courseFilter);
+    const ids = new Set<string>();
+    relevant.forEach((i) => i.batchIds.forEach((id) => ids.add(id)));
+    return Array.from(ids)
+      .map((id) => ({ id, name: batchMap[id]?.name || "Batch" }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [items, courseFilter, batchMap]);
+
   const filtered = items.filter((i) => {
     const s = search.toLowerCase();
     const matchesSearch = i.title.toLowerCase().includes(s) || i.courseTitle.toLowerCase().includes(s);
     const matchesCourse = courseFilter === "all" || i.courseTitle === courseFilter;
-    return matchesSearch && matchesCourse;
+    const matchesBatch = batchFilter === "all" || i.batchIds.includes(batchFilter);
+    return matchesSearch && matchesCourse && matchesBatch;
   });
 
   const downloadUrlFor = (v: VideoItem) => bunnyService.getDownloadUrl(v.videoId, cdnHostname);
@@ -235,11 +261,20 @@ export function VideoLibraryTab() {
         </div>
         <select
           value={courseFilter}
-          onChange={(e) => setCourseFilter(e.target.value)}
+          onChange={(e) => { setCourseFilter(e.target.value); setBatchFilter("all"); }}
           className="px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm outline-none"
         >
           <option value="all">All courses</option>
           {courseOptions.map((c) => <option key={c} value={c}>{c}</option>)}
+        </select>
+        <select
+          value={batchFilter}
+          onChange={(e) => setBatchFilter(e.target.value)}
+          disabled={batchOptions.length === 0}
+          className="px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm outline-none disabled:opacity-50"
+        >
+          <option value="all">All batches</option>
+          {batchOptions.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
         </select>
         <label className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 whitespace-nowrap">
           <input type="checkbox" checked={includeLibrary} onChange={(e) => setIncludeLibrary(e.target.checked)} />
@@ -299,7 +334,14 @@ export function VideoLibraryTab() {
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-3 text-gray-600 dark:text-gray-300">{v.courseTitle}</td>
+                <td className="px-4 py-3 text-gray-600 dark:text-gray-300">
+                  <div>{v.courseTitle}</div>
+                  {v.batchNames.length > 0 && (
+                    <div className="text-xs text-gray-400 mt-0.5 truncate max-w-[200px]">
+                      {v.batchNames.join(", ")}
+                    </div>
+                  )}
+                </td>
                 <td className="px-4 py-3 text-gray-500">{v.date ? new Date(v.date).toLocaleDateString() : "—"}</td>
                 <td className="px-4 py-3 text-right">
                   {isAdmin ? (

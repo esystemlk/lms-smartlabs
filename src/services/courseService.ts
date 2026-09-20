@@ -318,6 +318,21 @@ export const courseService = {
     return batch?.recordedClasses || [];
   },
 
+  async getAllBatches() {
+    try {
+      const q = query(collectionGroup(db, BATCHES_COLLECTION));
+      const snapshot = await getDocs(q);
+      return snapshot.docs.map((docSnap: any) => {
+        const data = docSnap.data();
+        const courseId = data.courseId || docSnap.ref.parent.parent?.id;
+        return { id: docSnap.id, courseId, name: data.name || "Batch", ...data } as Batch & { courseId?: string };
+      });
+    } catch (error) {
+      console.error("Error fetching all batches:", error);
+      return [];
+    }
+  },
+
   async getAllBatchRecordings() {
     try {
       const q = query(collectionGroup(db, BATCHES_COLLECTION));
