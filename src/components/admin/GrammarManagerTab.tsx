@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { grammarService, GrammarClass } from "@/services/grammarService";
 import { bunnyService } from "@/services/bunnyService";
+import { courseService } from "@/services/courseService";
 import { useToast } from "@/components/ui/Toast";
 import { Button } from "@/components/ui/Button";
 import {
@@ -26,6 +27,13 @@ export function GrammarManagerTab() {
   const [adding, setAdding] = useState(false);
   const [search, setSearch] = useState("");
 
+  // Course/batch filtering for the Bunny library (resolved via recordings).
+  // videoId -> { courseTitles, batchIds }
+  const [videoMeta, setVideoMeta] = useState<Record<string, { courseTitles: string[]; batchIds: string[] }>>({});
+  const [batchMap, setBatchMap] = useState<Record<string, string>>({}); // batchId -> name
+  const [courseFilter, setCourseFilter] = useState("all");
+  const [batchFilter, setBatchFilter] = useState("all");
+
   // Bulk upload
   const [uploads, setUploads] = useState<{ name: string; percent: number; status: "uploading" | "done" | "error" }[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -39,9 +47,13 @@ export function GrammarManagerTab() {
       const libId = settings.bunnyLibraryId;
       const cdn = settings.bunnyCdnHostname;
       setLibraryId(libId);
-      const [cls, apiVideos] = await Promise.all([
+      const [cls, apiVideos, live, batchRecs, courses, allBatches] = await Promise.all([
         grammarService.getClasses(),
         bunnyService.getVideos(1, 200).catch(() => ({ items: [] })),
+        courseService.getPastLiveClasses().catch(() => []),
+        courseService.getAllBatchRecordings().catch(() => []),
+        courseService.getAllCourses().catch(() => []),
+        courseService.getAllBatches().catch(() => []),
       ]);
       setClasses(cls);
       const host = (cdn || `vz-${libId}.b-cdn.net`).replace(/^https?:\/\//, "").replace(/\/+$/, "");
@@ -53,6 +65,27 @@ export function GrammarManagerTab() {
           thumbnailUrl: v.thumbnailFileName ? `https://${host}/${v.guid}/${v.thumbnailFileName}` : undefined,
         }))
       );
+
+      // Map each Bunny video -> the course(s)/batch(es) it appears in, via recordings.
+      const bMap: Record<string, string> = {};
+      (allBatches as any[]).forEach((b) => { bMap[b.id] = b.name || "Batch"; });
+      setBatchMap(bMap);
+      const courseTitle = (id?: string) =>
+        (id && (courses as any[]).find((c) => c.id === id)?.title) || "";
+      const meta: Record<string, { courseTitles: Set<string>; batchIds: Set<string> }> = {};
+      const addMeta = (vid: string, cTitle: string, batchIds: string[] = []) => {
+        if (!vid) return;
+        if (!meta[vid]) meta[vid] = { courseTitles: new Set(), batchIds: new Set() };
+        if (cTitle) meta[vid].courseTitles.add(cTitle);
+        batchIds.forEach((id) => id && meta[vid].batchIds.add(id));
+      };
+      (live as any[]).forEach((l) => addMeta(l.bunnyVideoId || l.recordingUrl, courseTitle(l.courseId), l.batchIds || []));
+      (batchRecs as any[]).forEach((r) => addMeta(r.bunnyVideoId || r.recordingUrl, courseTitle(r.courseId), r.batchIds || []));
+      const metaOut: Record<string, { courseTitles: string[]; batchIds: string[] }> = {};
+      Object.entries(meta).forEach(([vid, m]) => {
+        metaOut[vid] = { courseTitles: Array.from(m.courseTitles), batchIds: Array.from(m.batchIds) };
+      });
+      setVideoMeta(metaOut);
     } catch (e: any) {
       toast(e.message || "Failed to load Bunny library", "error");
     } finally {
@@ -63,9 +96,33 @@ export function GrammarManagerTab() {
   useEffect(() => { load(); }, []);
 
   const existingIds = new Set(classes.map((c) => c.bunnyVideoId));
-  const availableVideos = bunnyVideos.filter(
-    (v) => !existingIds.has(v.guid) && v.title.toLowerCase().includes(search.toLowerCase())
-  );
+
+  // Course options: every course a Bunny video is linked to.
+  const courseOptions = Array.from(
+    new Set(Object.values(videoMeta).flatMap((m) => m.courseTitles))
+  ).sort();
+
+  // Batch options narrowed to the selected course.
+  const batchOptions = (() => {
+    const ids = new Set<string>();
+    Object.values(videoMeta).forEach((m) => {
+      if (courseFilter === "all" || m.courseTitles.includes(courseFilter)) {
+        m.batchIds.forEach((id) => ids.add(id));
+      }
+    });
+    return Array.from(ids)
+      .map((id) => ({ id, name: batchMap[id] || "Batch" }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  })();
+
+  const availableVideos = bunnyVideos.filter((v) => {
+    if (existingIds.has(v.guid)) return false;
+    if (!v.title.toLowerCase().includes(search.toLowerCase())) return false;
+    const m = videoMeta[v.guid];
+    if (courseFilter !== "all" && !(m && m.courseTitles.includes(courseFilter))) return false;
+    if (batchFilter !== "all" && !(m && m.batchIds.includes(batchFilter))) return false;
+    return true;
+  });
 
   const toggleGuid = (guid: string) => {
     setSelectedGuids((prev) => {
@@ -236,6 +293,23 @@ export function GrammarManagerTab() {
                 className="w-full pl-9 pr-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm outline-none"
               />
             </div>
+            <select
+              value={courseFilter}
+              onChange={(e) => { setCourseFilter(e.target.value); setBatchFilter("all"); }}
+              className="px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm outline-none"
+            >
+              <option value="all">All courses</option>
+              {courseOptions.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <select
+              value={batchFilter}
+              onChange={(e) => setBatchFilter(e.target.value)}
+              disabled={batchOptions.length === 0}
+              className="px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm outline-none disabled:opacity-50"
+            >
+              <option value="all">All batches</option>
+              {batchOptions.map((b) => <option key={b.id} value={b.id}>{b.name}</option>)}
+            </select>
             <input
               value={defaultCategory}
               onChange={(e) => setDefaultCategory(e.target.value)}
@@ -251,7 +325,11 @@ export function GrammarManagerTab() {
           </div>
 
           {availableVideos.length === 0 ? (
-            <p className="text-center text-gray-500 py-10">No new videos in your Bunny library to add.</p>
+            <p className="text-center text-gray-500 py-10">
+              {courseFilter !== "all" || batchFilter !== "all"
+                ? "No videos match this course/batch filter."
+                : "No new videos in your Bunny library to add."}
+            </p>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {availableVideos.map((v) => {
