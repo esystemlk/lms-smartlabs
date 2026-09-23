@@ -28,48 +28,37 @@ const withPWA = require("@ducanh2912/next-pwa").default({
           cacheName: "ignore-firebase",
         },
       },
-      // Navigations (HTML documents): network-first so SSR/auth pages stay fresh,
-      // with cache as an offline fallback. StaleWhileRevalidate must NOT handle these
-      // — a cache miss + failed network throws `no-response` and the navigation dies.
+      // Navigations (HTML documents): NETWORK ONLY. We must never serve a cached
+      // HTML shell — after a deploy, its hashed chunk references no longer exist
+      // on the CDN, so every _next/static asset 404s and the page breaks. Always
+      // fetch fresh HTML (whose chunk hashes match the live deploy); if the
+      // network fails, show a self-contained retry page (no _next chunks) instead
+      // of a stale shell, so we never reject with `no-response`.
       {
         urlPattern: ({ request }: { request: Request }) => request.mode === "navigate",
-        handler: "NetworkFirst",
+        handler: "NetworkOnly",
         options: {
-          cacheName: "pages",
-          networkTimeoutSeconds: 10,
-          cacheableResponse: {
-            statuses: [200],
-          },
-          expiration: {
-            maxEntries: 50,
-            maxAgeSeconds: 60 * 60 * 24, // 1 day
-          },
           plugins: [
             {
-              // A failed document navigation (slow/flaky network, or a cache miss on a
-              // ?query URL) must NOT reject with `no-response` — that kills the page.
-              // Serve the cached page (exact, then ignoring the query as an app-shell
-              // fallback); as a last resort return a lightweight, non-looping retry page.
-              handlerDidError: async ({ request }: { request: Request }) => {
-                const exact = await caches.match(request);
-                if (exact) return exact;
-                const shell = await caches.match(request, { ignoreSearch: true });
-                if (shell) return shell;
-                return new Response(
+              handlerDidError: async () =>
+                new Response(
                   '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SmartLabs</title></head><body style="font-family:system-ui,-apple-system,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;color:#0f172a"><div style="text-align:center;padding:2rem"><p style="color:#64748b">Connection issue — please check your network.</p><button onclick="location.reload()" style="padding:.7rem 1.4rem;border-radius:10px;border:0;background:#2563eb;color:#fff;font-weight:600;cursor:pointer">Reload</button></div></body></html>',
                   { headers: { "Content-Type": "text/html; charset=utf-8" }, status: 200 }
-                );
-              },
+                ),
             },
           ],
         },
       },
-      // Same-origin assets: standard SWR
+      // Same-origin assets: standard SWR. Only cache 200s so a transient 404
+      // (e.g. a chunk requested during a stale window) is never persisted.
       {
         urlPattern: ({ url }: { url: URL }) => url.origin === self.location.origin,
         handler: "StaleWhileRevalidate",
         options: {
           cacheName: "static-resources",
+          cacheableResponse: {
+            statuses: [200],
+          },
           expiration: {
             maxEntries: 300,
             maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
