@@ -28,8 +28,8 @@ export function GrammarManagerTab() {
   const [search, setSearch] = useState("");
 
   // Course/batch filtering for the Bunny library (resolved via recordings).
-  // videoId -> { courseTitles, batchIds }
-  const [videoMeta, setVideoMeta] = useState<Record<string, { courseTitles: string[]; batchIds: string[] }>>({});
+  // videoId -> { courseTitles, batchIds, classTitles }
+  const [videoMeta, setVideoMeta] = useState<Record<string, { courseTitles: string[]; batchIds: string[]; classTitles: string[] }>>({});
   const [batchMap, setBatchMap] = useState<Record<string, string>>({}); // batchId -> name
   const [courseFilter, setCourseFilter] = useState("all");
   const [batchFilter, setBatchFilter] = useState("all");
@@ -72,18 +72,19 @@ export function GrammarManagerTab() {
       setBatchMap(bMap);
       const courseTitle = (id?: string) =>
         (id && (courses as any[]).find((c) => c.id === id)?.title) || "";
-      const meta: Record<string, { courseTitles: Set<string>; batchIds: Set<string> }> = {};
-      const addMeta = (vid: string, cTitle: string, batchIds: string[] = []) => {
+      const meta: Record<string, { courseTitles: Set<string>; batchIds: Set<string>; classTitles: Set<string> }> = {};
+      const addMeta = (vid: string, cTitle: string, batchIds: string[] = [], className?: string) => {
         if (!vid) return;
-        if (!meta[vid]) meta[vid] = { courseTitles: new Set(), batchIds: new Set() };
+        if (!meta[vid]) meta[vid] = { courseTitles: new Set(), batchIds: new Set(), classTitles: new Set() };
         if (cTitle) meta[vid].courseTitles.add(cTitle);
+        if (className) meta[vid].classTitles.add(className);
         batchIds.forEach((id) => id && meta[vid].batchIds.add(id));
       };
-      (live as any[]).forEach((l) => addMeta(l.bunnyVideoId || l.recordingUrl, courseTitle(l.courseId), l.batchIds || []));
-      (batchRecs as any[]).forEach((r) => addMeta(r.bunnyVideoId || r.recordingUrl, courseTitle(r.courseId), r.batchIds || []));
-      const metaOut: Record<string, { courseTitles: string[]; batchIds: string[] }> = {};
+      (live as any[]).forEach((l) => addMeta(l.bunnyVideoId || l.recordingUrl, courseTitle(l.courseId), l.batchIds || [], l.title));
+      (batchRecs as any[]).forEach((r) => addMeta(r.bunnyVideoId || r.recordingUrl, courseTitle(r.courseId), r.batchIds || [], r.title));
+      const metaOut: Record<string, { courseTitles: string[]; batchIds: string[]; classTitles: string[] }> = {};
       Object.entries(meta).forEach(([vid, m]) => {
-        metaOut[vid] = { courseTitles: Array.from(m.courseTitles), batchIds: Array.from(m.batchIds) };
+        metaOut[vid] = { courseTitles: Array.from(m.courseTitles), batchIds: Array.from(m.batchIds), classTitles: Array.from(m.classTitles) };
       });
       setVideoMeta(metaOut);
     } catch (e: any) {
@@ -115,10 +116,14 @@ export function GrammarManagerTab() {
       .sort((a, b) => a.name.localeCompare(b.name));
   })();
 
+  const classNameFor = (guid: string) => videoMeta[guid]?.classTitles?.[0];
+
   const availableVideos = bunnyVideos.filter((v) => {
     if (existingIds.has(v.guid)) return false;
-    if (!v.title.toLowerCase().includes(search.toLowerCase())) return false;
     const m = videoMeta[v.guid];
+    const s = search.toLowerCase();
+    const haystack = `${v.title} ${(m?.classTitles || []).join(" ")}`.toLowerCase();
+    if (s && !haystack.includes(s)) return false;
     if (courseFilter !== "all" && !(m && m.courseTitles.includes(courseFilter))) return false;
     if (batchFilter !== "all" && !(m && m.batchIds.includes(batchFilter))) return false;
     return true;
@@ -145,7 +150,7 @@ export function GrammarManagerTab() {
         .filter((v) => selectedGuids.has(v.guid))
         .map((v, i) => ({
           bunnyVideoId: v.guid,
-          title: v.title,
+          title: classNameFor(v.guid) || v.title,
           category: defaultCategory || undefined,
           durationSeconds: v.length,
           thumbnailUrl: v.thumbnailUrl,
@@ -334,6 +339,8 @@ export function GrammarManagerTab() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
               {availableVideos.map((v) => {
                 const sel = selectedGuids.has(v.guid);
+                const className = classNameFor(v.guid);
+                const course = videoMeta[v.guid]?.courseTitles?.[0];
                 return (
                   <button
                     key={v.guid}
@@ -348,7 +355,11 @@ export function GrammarManagerTab() {
                       {sel && <div className="absolute top-2 right-2 bg-brand-blue text-white rounded-full p-1"><Check size={14} /></div>}
                     </div>
                     <div className="p-2">
-                      <p className="text-xs font-medium text-gray-900 dark:text-white truncate">{v.title}</p>
+                      <p className="text-xs font-semibold text-gray-900 dark:text-white truncate" title={className || v.title}>
+                        {className || v.title}
+                      </p>
+                      {course && <p className="text-[10px] text-gray-500 truncate">{course}</p>}
+                      {className && <p className="text-[10px] text-gray-400 truncate" title={v.title}>{v.title}</p>}
                     </div>
                   </button>
                 );
