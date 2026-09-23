@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { UpcomingSchedule } from "@/components/features/UpcomingSchedule";
 import { notificationService, Notification } from "@/services/notificationService";
@@ -35,6 +36,7 @@ import {
   Sun,
   Moon,
   Cloud,
+  Loader2,
 } from "lucide-react";
 import Link from "next/link";
 import { clsx } from "clsx";
@@ -63,6 +65,7 @@ function getGreeting() {
 
 export default function DashboardPage() {
   const { userData } = useAuth();
+  const router = useRouter();
   const [latestNotification, setLatestNotification] = useState<Notification | null>(null);
   const [lastEnrolled, setLastEnrolled] = useState<Enrollment | null>(null);
   const [recentEnrollments, setRecentEnrollments] = useState<Enrollment[]>([]);
@@ -74,6 +77,17 @@ export default function DashboardPage() {
   const isNewStudent =
     userData?.role === "student" &&
     (!userData?.enrolledBatches || userData.enrolledBatches.length === 0);
+
+  const isEnrolled =
+    (userData?.enrolledBatches?.length || 0) > 0 ||
+    (userData?.enrolledCourses?.length || 0) > 0;
+
+  // Students shouldn't linger on the busy dashboard — send enrolled students
+  // straight to the LMS study hub, and everyone else to browse courses.
+  useEffect(() => {
+    if (!userData || userData.role !== "student") return;
+    router.replace(isEnrolled ? "/lms" : "/courses");
+  }, [userData?.role, isEnrolled, router]);
 
   // Auto-launch the guided tour once for brand-new students.
   useEffect(() => {
@@ -151,6 +165,64 @@ export default function DashboardPage() {
   }
   if (userData?.role === "lecturer") {
     return <LecturerDashboard />;
+  }
+
+  // While auth/profile is still resolving, show a loader rather than flashing
+  // the old busy dashboard.
+  if (!userData) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
+      </div>
+    );
+  }
+
+  // Simplified student landing: a single clear path into the LMS (shown briefly
+  // while the redirect above takes them there, and as a graceful fallback).
+  if (userData?.role === "student") {
+    const firstNameS = userData?.name?.split(" ")[0] || "there";
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-lg text-center bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl shadow-xl p-8 md:p-10"
+        >
+          <div className="w-16 h-16 mx-auto rounded-2xl bg-brand-blue/10 text-brand-blue flex items-center justify-center mb-5">
+            <LayoutGrid size={30} />
+          </div>
+          <h1 className="text-2xl md:text-3xl font-black text-gray-900 dark:text-white">
+            Welcome, {firstNameS}
+          </h1>
+          {isEnrolled ? (
+            <>
+              <p className="text-gray-500 dark:text-gray-400 mt-2">
+                Taking you to your LMS to continue studying…
+              </p>
+              <Link href="/lms" className="block mt-7">
+                <Button className="w-full h-14 text-lg rounded-2xl font-bold shadow-lg shadow-blue-500/20 gap-2">
+                  <LayoutGrid size={22} /> Enter LMS
+                </Button>
+              </Link>
+              <Link href="/courses" className="inline-block mt-3 text-sm font-medium text-gray-500 hover:text-brand-blue">
+                Browse more courses
+              </Link>
+            </>
+          ) : (
+            <>
+              <p className="text-gray-500 dark:text-gray-400 mt-2">
+                You're not enrolled in a course yet. Browse our courses to get started.
+              </p>
+              <Link href="/courses" className="block mt-7">
+                <Button className="w-full h-14 text-lg rounded-2xl font-bold shadow-lg shadow-blue-500/20 gap-2">
+                  <BookOpen size={22} /> Browse Courses
+                </Button>
+              </Link>
+            </>
+          )}
+        </motion.div>
+      </div>
+    );
   }
 
   const greeting = getGreeting();
