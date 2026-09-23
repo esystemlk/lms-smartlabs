@@ -12,6 +12,7 @@ import Link from "next/link";
 import { Input } from "@/components/ui/Input";
 import ManualUploadModal from "@/components/admin/ManualUploadModal";
 import ScheduleClassModal from "@/components/admin/ScheduleClassModal";
+import EditClassModal from "@/components/admin/EditClassModal";
 
 export default function LiveClassManagementPage() {
   const { userData } = useAuth();
@@ -26,6 +27,9 @@ export default function LiveClassManagementPage() {
 
   // Schedule Modal State
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
+
+  // Edit Modal State
+  const [editingClass, setEditingClass] = useState<Lesson | null>(null);
 
   // Instant Meeting State
   const [showInstantModal, setShowInstantModal] = useState(false);
@@ -439,6 +443,19 @@ export default function LiveClassManagementPage() {
                                         <Menu.Item>
                                           {({ active }) => (
                                             <button
+                                              onClick={() => setEditingClass(cls)}
+                                              className={`${
+                                                active ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
+                                              } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                                            >
+                                              <Settings className="w-4 h-4 mr-2" />
+                                              Edit Class
+                                            </button>
+                                          )}
+                                        </Menu.Item>
+                                        <Menu.Item>
+                                          {({ active }) => (
+                                            <button
                                               onClick={() => handleMarkComplete(cls)}
                                               className={`${
                                                 active ? 'bg-blue-50 text-blue-700' : 'text-gray-700'
@@ -728,6 +745,11 @@ export default function LiveClassManagementPage() {
       <ScheduleClassModal
         isOpen={scheduleModalOpen}
         onClose={() => setScheduleModalOpen(false)}
+        onSuccess={fetchClasses}
+      />
+      <EditClassModal
+        lesson={editingClass}
+        onClose={() => setEditingClass(null)}
         onSuccess={fetchClasses}
       />
         {/* Schedule Details Modal */}
