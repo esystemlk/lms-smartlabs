@@ -56,8 +56,13 @@ export async function POST(req: Request) {
 
     const tokenData = await tokenResponse.json();
 
-    if (!tokenData.access_token) {
-      throw new Error('Failed to get Zoom access token: ' + JSON.stringify(tokenData));
+    if (!tokenResponse.ok || !tokenData.access_token) {
+      // Surface Zoom's real reason (e.g. bad account id / client credentials).
+      const reason = tokenData?.reason || tokenData?.error || JSON.stringify(tokenData);
+      return NextResponse.json(
+        { error: `Zoom auth failed: ${reason}. Check the Server-to-Server OAuth credentials in Developer Settings.` },
+        { status: 502 }
+      );
     }
 
     // 2. Create Meeting
@@ -86,8 +91,18 @@ export async function POST(req: Request) {
 
     const meetingData = await meetingResponse.json();
 
-    if (meetingData.error) {
-      throw new Error('Failed to create Zoom meeting: ' + JSON.stringify(meetingData));
+    // Zoom reports API errors via HTTP status + { code, message } — NOT `error`.
+    // A missing `id` means no meeting was created, so never treat that as success.
+    if (!meetingResponse.ok || !meetingData?.id) {
+      const msg = meetingData?.message || JSON.stringify(meetingData);
+      const hint =
+        meetingData?.code === 4711 || /scope/i.test(String(meetingData?.message || ""))
+          ? " (Your Zoom Server-to-Server app is missing the meeting:write scope.)"
+          : "";
+      return NextResponse.json(
+        { error: `Failed to create Zoom meeting: ${msg}${hint}`, code: meetingData?.code },
+        { status: 502 }
+      );
     }
 
     return NextResponse.json(meetingData);
