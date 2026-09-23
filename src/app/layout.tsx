@@ -9,6 +9,7 @@ import { AccessibilityMenu } from "@/components/accessibility/AccessibilityMenu"
 import { AccessibilityWidget } from "@/components/accessibility-widget";
 import { ToastProvider } from "@/components/ui/Toast";
 import PreloadGate from "@/components/layout/PreloadGate";
+import { ChunkReloader } from "@/components/features/ChunkReloader";
 import Script from "next/script";
 import "./globals.css";
 
@@ -60,6 +61,7 @@ export default function RootLayout({
             <CurrencyProvider>
               <AccessibilityProvider>
                 <ToastProvider>
+                  <ChunkReloader />
                   <PreloadGate />
                   <TitleBar />
                   {children}
@@ -70,18 +72,9 @@ export default function RootLayout({
           </ThemeProvider>
         </AuthProvider>
 
-        {/* Scripts must live inside <body>, not as direct children of <html>
-            (that causes a hydration error). */}
-        <Script id="chunk-error-handler" strategy="afterInteractive">
-          {`
-            window.addEventListener('error', (event) => {
-              if (event.message && (event.message.includes('ChunkLoadError') || event.message.includes('Loading chunk'))) {
-                console.warn('Chunk loading failed, reloading page...', event);
-                window.location.reload();
-              }
-            }, true);
-          `}
-        </Script>
+        {/* Chunk/stale-deploy recovery is handled by <ChunkReloader /> above
+            (with a loop guard). Scripts live inside <body> to avoid hydration
+            errors. */}
         <Script src="https://www.payhere.lk/lib/payhere.js" strategy="lazyOnload" />
       </body>
     </html>
