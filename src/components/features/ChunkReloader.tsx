@@ -26,7 +26,7 @@ export function ChunkReloader() {
 
     const isChunkError = (msg?: string) =>
       !!msg &&
-      /ChunkLoadError|Loading chunk [\w-]+ failed|Loading CSS chunk|dynamically imported module|Importing a module script failed|Failed to fetch dynamically imported module|import\(\) failed|because its MIME type/i.test(
+      /ChunkLoadError|Loading chunk [\w-]+ failed|Loading CSS chunk|dynamically imported module|Importing a module script failed|Failed to fetch dynamically imported module|import\(\) failed|because its MIME type|no-response/i.test(
         msg
       );
 
@@ -68,9 +68,31 @@ export function ChunkReloader() {
       /* SW not available */
     }
 
+    // An installed PWA is often resumed from the background rather than
+    // freshly navigated, so the browser's passive ~24h update check may not
+    // run for a long time. Proactively ask the registered worker to check
+    // for a new version whenever the app regains focus/visibility, so a
+    // fixed worker (e.g. the no-response navigation fix) reaches devices
+    // without requiring the student to manually clear anything.
+    const checkForUpdate = () => {
+      try {
+        navigator.serviceWorker?.getRegistration?.().then((reg) => reg?.update());
+      } catch {
+        /* SW not available */
+      }
+    };
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") checkForUpdate();
+    };
+    checkForUpdate();
+    window.addEventListener("focus", checkForUpdate);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
     return () => {
       window.removeEventListener("error", onError, true);
       window.removeEventListener("unhandledrejection", onRejection);
+      window.removeEventListener("focus", checkForUpdate);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       try {
         navigator.serviceWorker?.removeEventListener?.("controllerchange", onControllerChange);
       } catch {

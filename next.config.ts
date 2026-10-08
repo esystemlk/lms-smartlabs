@@ -11,6 +11,7 @@ const withPWA = require("@ducanh2912/next-pwa").default({
   skipWaiting: true,
   workboxOptions: {
     disableDevLogs: true,
+    clientsClaim: true,
     runtimeCaching: [
       // Avoid caching problematic third-party trackers/cleardot
       {
@@ -106,6 +107,21 @@ const nextConfig: NextConfig = {
         headers: [
           { key: "Cross-Origin-Embedder-Policy", value: "require-corp" },
           { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+        ],
+      },
+      {
+        // The service worker script itself must never be served stale by any
+        // CDN/browser cache, or devices silently stay stuck on an old worker
+        // across deploys (what caused the no-response navigation failures).
+        source: "/sw.js",
+        headers: [
+          { key: "Cache-Control", value: "no-cache, no-store, must-revalidate" },
+        ],
+      },
+      {
+        source: "/workbox-:hash*.js",
+        headers: [
+          { key: "Cache-Control", value: "no-cache, no-store, must-revalidate" },
         ],
       },
     ];
