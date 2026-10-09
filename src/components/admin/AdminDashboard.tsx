@@ -362,6 +362,7 @@ export function AdminDashboard() {
               <QuickAction href="/lms" icon={LayoutGrid} label="Open LMS" color="bg-brand-blue" />
               {isAdmin && <QuickAction href="/management?tab=users" icon={Users} label="Add User" color="bg-blue-500" />}
               <QuickAction href="/management?tab=recordings" icon={PlayCircle} label="Rec. Classes" color="bg-violet-500" />
+              {isAdmin && <QuickAction href="/live-classes" icon={Video} label="Live Classes" color="bg-fuchsia-500" />}
               <QuickAction href="/management?tab=courses" icon={BookOpen} label="Courses" color="bg-emerald-500" />
               {isAdmin && (
                 <QuickAction

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { courseService } from "@/services/courseService";
 import { Lesson, Course } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
-import { Loader2, Video, Calendar, Clock, Play, ExternalLink, Plus, Settings, Users, Zap, X, CloudUpload, RefreshCw, MoreVertical, Trash2, CheckCircle, BookOpen } from "lucide-react";
+import { Loader2, Video, Calendar, Clock, Play, ExternalLink, Plus, Settings, Users, Zap, X, CloudUpload, RefreshCw, MoreVertical, Trash2, CheckCircle, BookOpen, Repeat } from "lucide-react";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { Input } from "@/components/ui/Input";
@@ -125,6 +125,24 @@ export default function LiveClassManagementPage() {
     } catch (error) {
       console.error("Failed to cancel class:", error);
       alert("Failed to cancel class.");
+    }
+  };
+
+  const handleDeleteRecording = async (lesson: Lesson) => {
+    if (!confirm("Remove this recording? This unlinks the wrongly uploaded video from this class (the file itself stays in Bunny.net storage).")) return;
+
+    try {
+      if (lesson.courseId) {
+        await courseService.updateLesson(lesson.courseId, lesson.id, {
+          recordingUrl: "",
+          bunnyVideoId: "",
+          recordingStatus: "processed"
+        });
+        fetchClasses();
+      }
+    } catch (error) {
+      console.error("Failed to delete recording:", error);
+      alert("Failed to delete recording.");
     }
   };
 
@@ -562,12 +580,35 @@ export default function LiveClassManagementPage() {
                             </td>
                             <td className="px-6 py-4 text-right">
                                 {hasRecording ? (
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        Recorded
-                                    </span>
+                                    <div className="flex items-center justify-end gap-1">
+                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            Recorded
+                                        </span>
+                                        <Button
+                                            size="sm"
+                                            variant="ghost"
+                                            title="Replace with a different video (fixes a wrong upload)"
+                                            onClick={() => {
+                                                setSelectedLessonForUpload(cls);
+                                                setUploadModalOpen(true);
+                                            }}
+                                            className="p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 rounded-lg"
+                                        >
+                                            <Repeat size={14} />
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant="ghost"
+                                            title="Delete this recording"
+                                            onClick={() => handleDeleteRecording(cls)}
+                                            className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg"
+                                        >
+                                            <Trash2 size={14} />
+                                        </Button>
+                                    </div>
                                 ) : (
-                                    <Button 
-                                        size="sm" 
+                                    <Button
+                                        size="sm"
                                         variant="outline"
                                         onClick={() => {
                                             setSelectedLessonForUpload(cls);
@@ -740,6 +781,7 @@ export default function LiveClassManagementPage() {
         onSuccess={fetchClasses}
         courseId={selectedLessonForUpload?.courseId}
         lessonId={selectedLessonForUpload?.id}
+        isReplace={!!(selectedLessonForUpload?.recordingUrl || selectedLessonForUpload?.bunnyVideoId)}
       />
       
       <ScheduleClassModal

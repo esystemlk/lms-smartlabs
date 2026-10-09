@@ -11,11 +11,12 @@ interface ManualUploadModalProps {
   isOpen: boolean;
   lessonId?: string;
   courseId?: string; // Needed to update the lesson in the correct course
+  isReplace?: boolean; // True when this lesson already has a recording being swapped out
   onClose: () => void;
   onSuccess: () => void;
 }
 
-export default function ManualUploadModal({ isOpen, lessonId, courseId, onClose, onSuccess }: ManualUploadModalProps) {
+export default function ManualUploadModal({ isOpen, lessonId, courseId, isReplace, onClose, onSuccess }: ManualUploadModalProps) {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -127,9 +128,11 @@ export default function ManualUploadModal({ isOpen, lessonId, courseId, onClose,
           <X size={20} />
         </button>
 
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Upload Recording</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-2">{isReplace ? "Replace Recording" : "Upload Recording"}</h2>
         <p className="text-sm text-gray-500 mb-6">
-          Manually upload a class recording to Bunny.net.
+          {isReplace
+            ? "Upload a different video to replace the one currently attached to this class."
+            : "Manually upload a class recording to Bunny.net."}
         </p>
 
         {step === "select" && (
@@ -211,8 +214,8 @@ export default function ManualUploadModal({ isOpen, lessonId, courseId, onClose,
             <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle size={32} />
             </div>
-            <h3 className="text-lg font-bold text-gray-900">Upload Complete!</h3>
-            <p className="text-gray-500">The recording has been attached to the class.</p>
+            <h3 className="text-lg font-bold text-gray-900">{isReplace ? "Video Replaced!" : "Upload Complete!"}</h3>
+            <p className="text-gray-500">{isReplace ? "The class now points to the new video." : "The recording has been attached to the class."}</p>
           </div>
         )}
       </div>

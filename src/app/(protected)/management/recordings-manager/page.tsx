@@ -5,6 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { courseService } from "@/services/courseService";
+import { bunnyService } from "@/services/bunnyService";
 import { Lesson, Course, Batch } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { 
@@ -21,7 +22,9 @@ import {
     RefreshCw,
     X,
     Layout,
-    Download
+    Download,
+    Upload,
+    AlertCircle
 } from "lucide-react";
 import { Menu, Transition } from "@headlessui/react";
 import { Input } from "@/components/ui/Input";
@@ -55,6 +58,14 @@ export default function RecordingManagerPage() {
     const [targetBatches, setTargetBatches] = useState<Batch[]>([]);
     const [selectedBatchIds, setSelectedBatchIds] = useState<string[]>([]);
     const [attaching, setAttaching] = useState(false);
+
+    // Replace Video Modal State
+    const [replaceModalOpen, setReplaceModalOpen] = useState(false);
+    const [replacingRecording, setReplacingRecording] = useState<ManagerRecording | null>(null);
+    const [replaceFile, setReplaceFile] = useState<File | null>(null);
+    const [replaceUploading, setReplaceUploading] = useState(false);
+    const [replaceProgress, setReplaceProgress] = useState(0);
+    const [replaceError, setReplaceError] = useState("");
 
     useEffect(() => {
         if (userData && !["lecturer", "admin", "superadmin", "developer"].includes(userData.role || '')) {
@@ -221,6 +232,54 @@ export default function RecordingManagerPage() {
         } catch (error) {
             console.error("Failed to remove recording:", error);
             toast("Failed to remove recording", "error");
+        }
+    };
+
+    // Replace Video Logic
+    const openReplaceModal = (recording: ManagerRecording) => {
+        setReplacingRecording(recording);
+        setReplaceFile(null);
+        setReplaceError("");
+        setReplaceProgress(0);
+        setReplaceModalOpen(true);
+    };
+
+    const handleReplaceVideo = async () => {
+        if (!replacingRecording || !replaceFile) return;
+
+        setReplaceUploading(true);
+        setReplaceError("");
+        setReplaceProgress(0);
+        try {
+            // 1. Create a fresh video object in Bunny.net and upload the new file to it
+            const videoObj = await bunnyService.createVideo(replacingRecording.title || "Replaced Recording");
+            const newVideoId = videoObj.guid;
+            await bunnyService.uploadVideo(replaceFile, newVideoId, (p) => setReplaceProgress(p));
+
+            // 2. Point the existing recording entry at the new video instead of creating a new entry
+            if (replacingRecording.isAttached && replacingRecording.originalBatchId) {
+                await courseService.updateRecordedClassInBatch(
+                    replacingRecording.courseId,
+                    replacingRecording.originalBatchId,
+                    replacingRecording.id,
+                    { videoUrl: newVideoId }
+                );
+            } else {
+                await courseService.updateLesson(replacingRecording.courseId, replacingRecording.id, {
+                    bunnyVideoId: newVideoId,
+                    recordingUrl: "",
+                    recordingStatus: "processed"
+                });
+            }
+
+            toast("Video replaced successfully", "success");
+            setReplaceModalOpen(false);
+            fetchData();
+        } catch (error: any) {
+            console.error("Replace failed:", error);
+            setReplaceError(error.message || "Failed to replace video");
+        } finally {
+            setReplaceUploading(false);
         }
     };
 
@@ -511,9 +570,21 @@ export default function RecordingManagerPage() {
                                                 </Button>
 
                                                 {(rec.bunnyVideoId || rec.recordingUrl) && (
-                                                    <Button 
-                                                        size="sm" 
-                                                        variant="ghost" 
+                                                    <Button
+                                                        size="sm"
+                                                        variant="ghost"
+                                                        className="p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-all rounded-lg"
+                                                        onClick={() => openReplaceModal(rec)}
+                                                        title="Replace this video with a different upload"
+                                                    >
+                                                        <Upload size={16} />
+                                                    </Button>
+                                                )}
+
+                                                {(rec.bunnyVideoId || rec.recordingUrl) && (
+                                                    <Button
+                                                        size="sm"
+                                                        variant="ghost"
                                                         className={`p-2 transition-all rounded-lg ${rec.isAttached ? "text-red-500 hover:bg-red-50" : "text-gray-400 hover:text-red-500 hover:bg-red-50"}`}
                                                         onClick={() => handleDeleteRecording(rec)}
                                                         title={rec.isAttached ? "Detach from this batch" : "Delete recording linkage"}
@@ -554,6 +625,17 @@ export default function RecordingManagerPage() {
                                                                             <ExternalLink className="w-4 h-4 mr-3" />
                                                                             Preview Video
                                                                         </a>
+                                                                    )}
+                                                                </Menu.Item>
+                                                                 <Menu.Item>
+                                                                    {({ active }: { active: boolean }) => (
+                                                                        <button
+                                                                            onClick={() => openReplaceModal(rec)}
+                                                                            className={`${active ? 'bg-blue-50 text-brand-blue' : 'text-gray-700'} group flex rounded-lg items-center w-full px-3 py-2 text-sm transition-colors`}
+                                                                        >
+                                                                            <Upload className="w-4 h-4 mr-3" />
+                                                                            Replace Video
+                                                                        </button>
                                                                     )}
                                                                 </Menu.Item>
                                                                  <Menu.Item>
@@ -677,6 +759,94 @@ export default function RecordingManagerPage() {
                                         Attaching...
                                     </>
                                 ) : "Confirm Attachment"}
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Replace Video Modal */}
+            {replaceModalOpen && (
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+                    <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+                        <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900">Replace Video</h2>
+                                <p className="text-xs text-gray-500 mt-0.5">Swap the file behind "{replacingRecording?.title}" — wrong upload fixed without re-linking.</p>
+                            </div>
+                            <button
+                                onClick={() => setReplaceModalOpen(false)}
+                                disabled={replaceUploading}
+                                className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-100 rounded-full transition-colors disabled:opacity-50"
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        <div className="p-6 space-y-5">
+                            <div className={`relative border-2 border-dashed rounded-2xl p-8 text-center transition-all ${replaceFile ? "border-green-200 bg-green-50" : "border-gray-200 hover:border-brand-blue"}`}>
+                                <input
+                                    type="file"
+                                    accept="video/*"
+                                    onChange={e => setReplaceFile(e.target.files?.[0] || null)}
+                                    disabled={replaceUploading}
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                />
+                                <div className="space-y-2">
+                                    <div className="w-12 h-12 bg-blue-50 text-brand-blue rounded-full flex items-center justify-center mx-auto mb-2">
+                                        {replaceFile ? <CheckCircle className="w-6 h-6" /> : <Upload className="w-6 h-6" />}
+                                    </div>
+                                    {replaceFile ? (
+                                        <div>
+                                            <p className="font-medium text-gray-900">{replaceFile.name}</p>
+                                            <p className="text-sm text-gray-500">{(replaceFile.size / (1024 * 1024)).toFixed(2)} MB</p>
+                                        </div>
+                                    ) : (
+                                        <p className="font-medium text-gray-900">Click or drag the correct video file</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100 flex gap-3">
+                                <AlertCircle className="text-amber-500 shrink-0 mt-0.5" size={16} />
+                                <p className="text-xs text-amber-800 leading-relaxed font-medium">
+                                    The old video stays in Bunny.net storage (not deleted), but students will immediately see the new video at this same recording entry.
+                                </p>
+                            </div>
+
+                            {replaceUploading && (
+                                <div className="space-y-2">
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-gray-500">Uploading...</span>
+                                        <span className="font-medium text-brand-blue">{Math.round(replaceProgress)}%</span>
+                                    </div>
+                                    <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                                        <div className="bg-brand-blue h-full transition-all duration-300" style={{ width: `${replaceProgress}%` }} />
+                                    </div>
+                                </div>
+                            )}
+
+                            {replaceError && (
+                                <div className="p-4 bg-red-50 text-red-700 rounded-xl flex items-center gap-3">
+                                    <AlertCircle className="shrink-0" size={18} />
+                                    <p className="text-sm">{replaceError}</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="px-6 py-5 border-t border-gray-100 bg-gray-50/50 flex justify-end gap-3">
+                            <Button variant="ghost" className="font-bold text-gray-500" onClick={() => setReplaceModalOpen(false)} disabled={replaceUploading}>Cancel</Button>
+                            <Button
+                                onClick={handleReplaceVideo}
+                                disabled={replaceUploading || !replaceFile}
+                                className="bg-brand-blue hover:bg-blue-700 text-white font-bold h-11 px-8 rounded-xl shadow-lg shadow-blue-500/20"
+                            >
+                                {replaceUploading ? (
+                                    <>
+                                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                        Replacing...
+                                    </>
+                                ) : "Replace Video"}
                             </Button>
                         </div>
                     </div>

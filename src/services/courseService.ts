@@ -366,6 +366,21 @@ export const courseService = {
     }
   },
 
+  async updateRecordedClassInBatch(courseId: string, batchId: string, recordingId: string, updates: Partial<RecordedClass>) {
+    const batchRef = doc(db, COURSES_COLLECTION, courseId, BATCHES_COLLECTION, batchId);
+    const batchSnap = await getDoc(batchRef);
+    if (batchSnap.exists()) {
+      const data = batchSnap.data();
+      const updatedClasses = (data.recordedClasses || []).map((r: RecordedClass) =>
+        r.id === recordingId ? { ...r, ...updates } : r
+      );
+      await updateDoc(batchRef, {
+        recordedClasses: updatedClasses,
+        updatedAt: serverTimestamp()
+      });
+    }
+  },
+
   async removeRecordedClassFromBatch(courseId: string, batchId: string, recordingId: string) {
     // Note: arrayRemove requires the exact object. 
     // If that's tricky, we might need to fetch, filter, and update.
