@@ -4,6 +4,7 @@ import { useEffect, useState, Fragment } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { courseService } from "@/services/courseService";
+import { bunnyService } from "@/services/bunnyService";
 import { Lesson, Course } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { Loader2, Video, Calendar, Clock, Play, ExternalLink, Plus, Settings, Users, Zap, X, CloudUpload, RefreshCw, MoreVertical, Trash2, CheckCircle, BookOpen, Repeat } from "lucide-react";
@@ -179,9 +180,13 @@ export default function LiveClassManagementPage() {
 
   const fetchBunnySettings = async () => {
     try {
-      const settings = await courseService.getGlobalSettings();
-      if (settings?.bunny?.libraryId) {
-        setBunnyLibraryId(settings.bunny.libraryId);
+      // Must match the same settings doc used by bunnyService for the actual
+      // upload (settings/general, flat bunnyLibraryId) - not courseService's
+      // settings/global, which is a separate/unrelated document and left the
+      // player with no library ID (so recordings silently failed to play).
+      const settings = await bunnyService.getSettings();
+      if (settings?.bunnyLibraryId) {
+        setBunnyLibraryId(settings.bunnyLibraryId);
       }
     } catch (error) {
       console.error("Error fetching bunny settings:", error);
@@ -833,9 +838,9 @@ export default function LiveClassManagementPage() {
               </button>
             </div>
             <div className="aspect-video w-full bg-black">
-              {previewingLesson.bunnyVideoId && bunnyLibraryId ? (
+              {previewingLesson.bunnyVideoId ? (
                 <iframe
-                  src={`https://player.mediadelivery.net/embed/${bunnyLibraryId}/${previewingLesson.bunnyVideoId}?autoplay=true&loop=false&muted=false&preload=true&playsinline=true&disableIosPlayer=true`}
+                  src={`https://player.mediadelivery.net/embed/${bunnyLibraryId || '301323'}/${previewingLesson.bunnyVideoId}?autoplay=true&loop=false&muted=false&preload=true&playsinline=true&disableIosPlayer=true`}
                   className="w-full h-full"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; screen-wake-lock"
                   allowFullScreen
