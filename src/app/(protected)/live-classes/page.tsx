@@ -50,6 +50,10 @@ export default function LiveClassManagementPage() {
   const [scheduleDetailsLoading, setScheduleDetailsLoading] = useState(false);
   const [scheduleBatchesData, setScheduleBatchesData] = useState<{ courseName: string, batchName: string, timeSlotLabel: string }[]>([]);
 
+  // Video Preview Modal State
+  const [previewingLesson, setPreviewingLesson] = useState<Lesson | null>(null);
+  const [bunnyLibraryId, setBunnyLibraryId] = useState("");
+
   useEffect(() => {
     if (selectedScheduleDetails) {
       const fetchDetails = async () => {
@@ -170,7 +174,19 @@ export default function LiveClassManagementPage() {
     }
     fetchClasses();
     fetchCourses();
+    fetchBunnySettings();
   }, [userData]);
+
+  const fetchBunnySettings = async () => {
+    try {
+      const settings = await courseService.getGlobalSettings();
+      if (settings?.bunny?.libraryId) {
+        setBunnyLibraryId(settings.bunny.libraryId);
+      }
+    } catch (error) {
+      console.error("Error fetching bunny settings:", error);
+    }
+  };
 
   useEffect(() => {
     if (instantMeetingData.courseId) {
@@ -587,6 +603,15 @@ export default function LiveClassManagementPage() {
                                         <Button
                                             size="sm"
                                             variant="ghost"
+                                            title="Watch this recording to confirm the correct video was uploaded"
+                                            onClick={() => setPreviewingLesson(cls)}
+                                            className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg"
+                                        >
+                                            <Play size={14} />
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant="ghost"
                                             title="Replace with a different video (fixes a wrong upload)"
                                             onClick={() => {
                                                 setSelectedLessonForUpload(cls);
@@ -794,6 +819,38 @@ export default function LiveClassManagementPage() {
         onClose={() => setEditingClass(null)}
         onSuccess={fetchClasses}
       />
+      {/* Video Preview Modal */}
+      {previewingLesson && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-black rounded-2xl w-full max-w-4xl shadow-2xl overflow-hidden relative">
+            <div className="flex items-center justify-between p-4 bg-gray-900">
+              <h3 className="text-white font-medium truncate pr-4">{previewingLesson.title}</h3>
+              <button
+                onClick={() => setPreviewingLesson(null)}
+                className="text-gray-400 hover:text-white transition-colors shrink-0"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="aspect-video w-full bg-black">
+              {previewingLesson.bunnyVideoId && bunnyLibraryId ? (
+                <iframe
+                  src={`https://player.mediadelivery.net/embed/${bunnyLibraryId}/${previewingLesson.bunnyVideoId}?autoplay=true&loop=false&muted=false&preload=true&playsinline=true&disableIosPlayer=true`}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; fullscreen; gyroscope; picture-in-picture; screen-wake-lock"
+                  allowFullScreen
+                />
+              ) : previewingLesson.recordingUrl ? (
+                <video src={previewingLesson.recordingUrl} controls autoPlay className="w-full h-full" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  No video available to preview.
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
         {/* Schedule Details Modal */}
         {selectedScheduleDetails && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
