@@ -78,8 +78,11 @@ export const notificationService = {
   },
 
   async createNotification(notification: Partial<Notification>) {
+    const cleaned = Object.fromEntries(
+      Object.entries(notification).filter(([, value]) => value !== undefined)
+    );
     const docRef = await addDoc(collection(db, NOTIFICATIONS_COLLECTION), {
-      ...notification,
+      ...cleaned,
       createdAt: serverTimestamp(),
     });
     return docRef.id;
