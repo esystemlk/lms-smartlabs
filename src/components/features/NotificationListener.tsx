@@ -17,22 +17,16 @@ export function NotificationListener() {
   const [permission, setPermission] = useState<NotificationPermission>("default");
   const [showPermissionBanner, setShowPermissionBanner] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && "Notification" in window) {
-      setPermission(Notification.permission);
-      if (Notification.permission === "default") {
-        setShowPermissionBanner(true);
-      } else if (Notification.permission === "granted") {
-        registerFcmToken();
-      }
-    }
-  }, [userData]);
-
   const registerFcmToken = async () => {
     if (!messaging || !userData) return;
     try {
       const vapidKey = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY;
-      const token = await getToken(messaging, { vapidKey });
+      // Registered at a dedicated scope so it doesn't fight the next-pwa
+      // service worker (public/sw.js) for control of scope "/".
+      const swRegistration = await navigator.serviceWorker.register("/firebase-messaging-sw.js", {
+        scope: "/firebase-cloud-messaging-push-scope",
+      });
+      const token = await getToken(messaging, { vapidKey, serviceWorkerRegistration: swRegistration });
       if (token) {
         await updateDoc(doc(db, "users", userData.uid), {
           fcmTokens: arrayUnion(token)
@@ -42,6 +36,18 @@ export function NotificationListener() {
       console.error("FCM Token registration failed:", error);
     }
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && "Notification" in window) {
+      setPermission(Notification.permission);
+      if (Notification.permission === "default") {
+        setShowPermissionBanner(true);
+      } else if (Notification.permission === "granted") {
+        registerFcmToken();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData]);
 
   const requestPermission = async () => {
     if (!("Notification" in window)) return;
@@ -62,16 +68,27 @@ export function NotificationListener() {
     }
   };
 
-  // Listen for FCM foreground messages
+  // Listen for FCM foreground messages (e.g. admin announcements). FCM only
+  // auto-displays a system notification when the app is backgrounded, so
+  // foreground delivery needs to be shown manually here.
   useEffect(() => {
-    if (messaging) {
-      const unsubscribe = onMessage(messaging, (payload) => {
-        // console.log("Foreground FCM message:", payload);
-        // Handled by Firestore listener or custom UI
+    if (!messaging) return;
+    const unsubscribe = onMessage(messaging, (payload) => {
+      if (permission !== "granted" || !payload.notification) return;
+      const link = payload.data?.link;
+      const n = new Notification(payload.notification.title || "Smart Labs", {
+        body: payload.notification.body,
+        icon: "/icons/icon-192x192.png",
       });
-      return () => unsubscribe();
-    }
-  }, []);
+      if (link) {
+        n.onclick = () => {
+          window.focus();
+          router.push(link);
+        };
+      }
+    });
+    return () => unsubscribe();
+  }, [permission, router]);
 
   useEffect(() => {
     if (!userData) return;

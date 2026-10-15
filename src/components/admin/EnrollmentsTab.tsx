@@ -74,12 +74,12 @@ export function EnrollmentsTab() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Pending Enrollments</h2>
           <p className="text-gray-500">Review and approve bank transfer and website payment enrollments</p>
         </div>
-        <div className="bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium">
+        <div className="self-start sm:self-auto bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
           {enrollments.length} Pending Requests
         </div>
       </div>
