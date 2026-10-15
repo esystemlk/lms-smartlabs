@@ -77,7 +77,7 @@ export const notificationService = {
       .slice(0, limitCount);
   },
 
-  async createNotification(notification: Partial<Notification>) {
+  async createNotification(notification: Partial<Notification>, options?: { push?: boolean }) {
     const cleaned = Object.fromEntries(
       Object.entries(notification).filter(([, value]) => value !== undefined)
     );
@@ -89,9 +89,11 @@ export const notificationService = {
     // Best-effort push to phones/PCs with a registered FCM token. In-app
     // notification creation above already succeeded, so a push failure here
     // shouldn't surface as an error to the admin publishing the announcement.
-    this.sendPush(notification).catch((error) => {
-      console.error("Failed to send push notification:", error);
-    });
+    if (options?.push) {
+      this.sendPush(notification).catch((error) => {
+        console.error("Failed to send push notification:", error);
+      });
+    }
 
     return docRef.id;
   },

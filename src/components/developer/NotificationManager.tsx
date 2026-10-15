@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { notificationService, Notification, NotificationType, NotificationPriority } from "@/services/notificationService";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/context/AuthContext";
-import { Loader2, Trash2, Bell, AlertTriangle, FileText, Info, Megaphone, Pin, PinOff, Link2, Eye, EyeOff } from "lucide-react";
+import { Loader2, Trash2, BellRing, AlertTriangle, FileText, Info, Megaphone, Pin, PinOff, Link2, Eye, EyeOff } from "lucide-react";
 import { format } from "date-fns";
 import { useToast } from "@/components/ui/Toast";
 import { clsx } from "clsx";
@@ -36,6 +36,7 @@ export function NotificationManager() {
   const [priority, setPriority] = useState<NotificationPriority>("info");
   const [link, setLink] = useState("");
   const [pinned, setPinned] = useState(true);
+  const [sendPush, setSendPush] = useState(true);
   const [targetRoles, setTargetRoles] = useState<string[]>(["student", "lecturer", "admin"]);
 
   useEffect(() => {
@@ -66,6 +67,7 @@ export function NotificationManager() {
     setPriority("info");
     setLink("");
     setPinned(true);
+    setSendPush(true);
     setTargetRoles(["student", "lecturer", "admin"]);
   };
 
@@ -79,19 +81,22 @@ export function NotificationManager() {
 
     setSubmitting(true);
     try {
-      await notificationService.createNotification({
-        title,
-        message,
-        type,
-        priority,
-        link: link.trim() || undefined,
-        pinned,
-        active: true,
-        createdBy: userData?.uid,
-        targetRoles,
-      });
+      await notificationService.createNotification(
+        {
+          title,
+          message,
+          type,
+          priority,
+          link: link.trim() || undefined,
+          pinned,
+          active: true,
+          createdBy: userData?.uid,
+          targetRoles,
+        },
+        { push: sendPush }
+      );
 
-      toast("Announcement published", "success");
+      toast(sendPush ? "Announcement published and pushed to devices" : "Announcement published", "success");
       resetForm();
       fetchNotifications();
     } catch (error) {
@@ -261,7 +266,7 @@ export function NotificationManager() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+          <div className="flex flex-col gap-3 pt-2">
             <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer">
               <input
                 type="checkbox"
@@ -271,9 +276,28 @@ export function NotificationManager() {
               />
               Pin as a dismissible banner at the top of the app
             </label>
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={sendPush}
+                onChange={(e) => setSendPush(e.target.checked)}
+                className="w-4 h-4 rounded accent-brand-blue"
+              />
+              <BellRing size={14} className="text-brand-blue" />
+              Push to phones/PCs currently logged in (selected audience)
+            </label>
+          </div>
+
+          <div className="flex justify-end pt-2">
             <Button type="submit" disabled={submitting} className="flex items-center gap-2">
-              {submitting ? <Loader2 className="animate-spin" size={16} /> : <Megaphone size={16} />}
-              Publish
+              {submitting ? (
+                <Loader2 className="animate-spin" size={16} />
+              ) : sendPush ? (
+                <BellRing size={16} />
+              ) : (
+                <Megaphone size={16} />
+              )}
+              {sendPush ? "Publish & Push" : "Publish"}
             </Button>
           </div>
         </form>
