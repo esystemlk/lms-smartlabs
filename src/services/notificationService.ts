@@ -10,7 +10,7 @@ import {
   serverTimestamp,
   limit 
 } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
 
 export type NotificationType = 'system' | 'maintenance' | 'course_material' | 'assignment' | 'general';
 
@@ -85,7 +85,34 @@ export const notificationService = {
       ...cleaned,
       createdAt: serverTimestamp(),
     });
+
+    // Best-effort push to phones/PCs with a registered FCM token. In-app
+    // notification creation above already succeeded, so a push failure here
+    // shouldn't surface as an error to the admin publishing the announcement.
+    this.sendPush(notification).catch((error) => {
+      console.error("Failed to send push notification:", error);
+    });
+
     return docRef.id;
+  },
+
+  async sendPush(notification: Partial<Notification>) {
+    const idToken = await auth.currentUser?.getIdToken();
+    if (!idToken) return;
+
+    await fetch("/api/notifications/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
+      },
+      body: JSON.stringify({
+        title: notification.title,
+        message: notification.message,
+        link: notification.link,
+        targetRoles: notification.targetRoles?.length ? notification.targetRoles : ["student", "lecturer", "admin"],
+      }),
+    });
   },
 
   async updateNotification(id: string, data: Partial<Notification>) {
