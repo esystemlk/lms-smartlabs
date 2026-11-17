@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { StaffBar } from "@/components/layout/StaffBar";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
@@ -99,32 +100,24 @@ export default function ProtectedLayout({
 
   return (
     <TutorialProvider>
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex transition-colors duration-300 w-full relative overflow-x-hidden">
-        {/* Dynamic Background */}
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-blue-950" />
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] opacity-50 mix-blend-multiply dark:mix-blend-screen animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] opacity-50 mix-blend-multiply dark:mix-blend-screen" />
-          <div className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03]" 
-               style={{ backgroundImage: 'radial-gradient(#64748b 1px, transparent 1px)', backgroundSize: '32px 32px' }}>
-          </div>
-        </div>
-
+      <div className="min-h-screen bg-background dark:bg-slate-950 flex transition-colors duration-300 w-full relative overflow-x-clip">
         <div className="relative z-10 flex w-full">
           {userData && <ProfileCompletionModal user={userData} />}
           <ScrollProgressBar />
-          {/* Mobile Sidebar (Drawer) */}
-          <Sidebar
-            isOpen={isMobileMenuOpen}
-            onClose={() => setIsMobileMenuOpen(false)}
-          />
+          {/* Desktop sidebar + phone/tablet drawer */}
+          <Suspense fallback={null}>
+            <Sidebar
+              isOpen={isMobileMenuOpen}
+              onClose={() => setIsMobileMenuOpen(false)}
+            />
+          </Suspense>
 
-          <div className="flex-1 flex flex-col min-h-screen">
+          <div className="flex-1 min-w-0 flex flex-col min-h-screen">
             <TitleBar />
             
             {/* Impersonation Banner */}
             {isImpersonating && (
-              <div className="bg-purple-600 text-white px-4 py-2 flex items-center justify-between shadow-md relative z-50">
+              <div className="bg-orange-600 text-white px-4 py-2 flex items-center justify-between shadow-md relative z-50">
                 <div className="flex items-center gap-2">
                   <div className="bg-white/20 p-1 rounded">
                     <UserCog className="w-4 h-4" />
@@ -143,7 +136,10 @@ export default function ProtectedLayout({
               </div>
             )}
 
-            <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
+            <div className="sticky top-0 z-30">
+              <StaffBar />
+              <Header onMenuClick={() => setIsMobileMenuOpen(true)} />
+            </div>
             {/* Role-targeted, dismissible announcement banners (from notifications collection) */}
             <AnnouncementBanners />
             {!hideBanner && (announcement || (!isAdmin && maintenanceMode)) && (
@@ -185,7 +181,7 @@ export default function ProtectedLayout({
               </div>
             )}
             <main className={clsx(
-              "flex-1 max-w-7xl mx-auto w-full transition-all duration-300 pb-20 md:pb-0",
+              "flex-1 max-w-7xl mx-auto w-full min-w-0 transition-all duration-300 pb-28 lg:pb-8",
               // Conditional padding: Remove padding for lesson pages to allow full-width video/content
               !isLessonPage && (isCompact ? "p-2 md:p-4" : "p-4 md:p-8")
             )}>
@@ -195,7 +191,9 @@ export default function ProtectedLayout({
               </PageTransition>
             </main>
           </div>
-          <MobileNav onMenuClick={() => setIsMobileMenuOpen(true)} />
+          <Suspense fallback={null}>
+            <MobileNav onMenuClick={() => setIsMobileMenuOpen(true)} />
+          </Suspense>
           <FloatingChatWidget />
           <NotificationListener />
           <UsageTracker />

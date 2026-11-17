@@ -143,12 +143,12 @@ export default function SystemStatusPage() {
         {/* Enrollments Card */}
         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
             <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 bg-purple-50 text-purple-600 rounded-xl">
+                <div className="p-3 bg-orange-50 text-orange-600 rounded-xl">
                     <Cpu size={24} />
                 </div>
                 <div>
                     <h3 className="font-bold text-gray-900">Enrollments</h3>
-                    <p className="text-xs text-purple-600 font-medium">Active</p>
+                    <p className="text-xs text-orange-600 font-medium">Active</p>
                 </div>
             </div>
              <div className="space-y-2">

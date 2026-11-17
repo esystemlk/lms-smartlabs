@@ -61,7 +61,7 @@ export default function OnboardingPage() {
             </div>
             
             <div className="group p-6 rounded-3xl border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800 hover:shadow-lg transition-all duration-300">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-500 shadow-lg shadow-indigo-500/30 text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounded-2xl bg-orange-500 shadow-lg shadow-orange-500/30 text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <Calendar className="w-6 h-6" />
               </div>
               <h3 className="font-bold text-gray-900 dark:text-white mb-2">2. Pick Schedule</h3>

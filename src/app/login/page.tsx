@@ -17,7 +17,7 @@ import { auth, db } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Eye, EyeOff, Loader2, ArrowLeft, Mail, Lock, User as UserIcon, Phone, Globe, ChevronRight } from "lucide-react";
+import { Eye, EyeOff, Loader2, ArrowLeft, Mail, Lock, Globe } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { countries } from "@/data/countries";
@@ -240,98 +240,49 @@ export default function LoginPage() {
   );
 
   return (
-    <div className="min-h-screen w-full relative flex items-center justify-center overflow-y-auto lg:overflow-hidden bg-[#0f172a] py-12 md:py-0">
-      {/* Dynamic Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/40 via-slate-900 to-slate-950 z-10" />
-        <div className="absolute -top-40 -right-40 w-64 h-64 md:w-96 md:h-96 bg-brand-blue/20 rounded-full blur-[100px] animate-pulse" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-indigo-500/10 rounded-full blur-[120px]" />
-        <div className="absolute -bottom-20 -left-20 w-48 h-48 md:w-72 md:h-72 bg-purple-500/10 rounded-full blur-[80px]" />
-        
-        {/* Pattern Overlay */}
-        <div className="absolute inset-0 z-20 opacity-[0.03]" 
-             style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }}>
+    <div className="min-h-screen w-full bg-background grid lg:grid-cols-[1.1fr_1fr]">
+      {/* Brand panel: full height on desktop, a short header on phones */}
+      <section className="relative overflow-hidden sl-hero text-white lg:m-4 lg:rounded-[32px] rounded-b-[32px] px-6 pt-8 pb-20 lg:p-11 flex flex-col justify-between gap-8">
+        <span aria-hidden className="sl-float absolute -right-28 -top-28 w-[420px] h-[420px] rounded-full bg-[radial-gradient(circle,rgba(158,176,255,.7),transparent_70%)]" />
+        <span aria-hidden className="sl-float absolute -left-20 -bottom-24 w-[320px] h-[320px] rounded-full bg-[radial-gradient(circle,rgba(255,150,70,.55),transparent_70%)]" style={{ animationDelay: "-4s" }} />
+        <div className="relative flex items-center gap-3">
+          <div className="w-11 h-11 rounded-xl bg-white relative overflow-hidden">
+            <Image src="/logo.png" alt="" fill className="object-contain p-1" priority />
+          </div>
+          <span className="font-display font-bold text-xl">SMART LABS</span>
         </div>
-      </div>
-
-      {/* Main Container */}
-      <div className="relative z-30 w-full max-w-6xl mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center gap-10 md:gap-12 lg:gap-24">
-        
-        {/* Left Side: Brand & Welcome */}
-        <div className="hidden md:flex flex-col flex-1 text-white space-y-8 animate-fade-in-up">
-          <div className="w-64 h-20 relative">
-             {/* Brand Logo */}
-             <div className="flex items-center gap-4">
-               <div className="w-16 h-16 relative shadow-lg shadow-blue-500/20 rounded-2xl overflow-hidden bg-white/10 backdrop-blur-sm border border-white/10 p-2">
-                 <Image 
-                   src="/logo.png" 
-                   alt="Smart Labs Logo" 
-                   fill 
-                   className="object-contain"
-                   priority
-                 />
-               </div>
-               <div>
-                 <h1 className="text-3xl font-bold tracking-tight text-white drop-shadow-sm">SMART LABS</h1>
-                 <p className="text-xs text-blue-200 tracking-[0.2em] uppercase font-medium">LMS Portal</p>
-               </div>
-             </div>
-          </div>
-          
-          <div className="space-y-4 max-w-lg">
-            <h2 className="text-5xl font-bold leading-tight font-display">
-              Master English <br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                The Smart Way
-              </span>
-            </h2>
-            <p className="text-lg text-slate-300 leading-relaxed">
-              Join thousands of students achieving their goals with our advanced learning platform. Interactive lessons, live classes, and a supportive community await.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-8 pt-4">
-            <div className="flex -space-x-4">
-              {[1,2,3,4].map(i => (
-                <div key={i} className="w-10 h-10 rounded-full border-2 border-slate-900 bg-slate-800 flex items-center justify-center text-xs font-bold">
-                  {/* Placeholder avatars */}
-                  <div className={`w-full h-full rounded-full bg-gradient-to-br from-blue-${i}00 to-purple-${i}00 opacity-80`} />
-                </div>
-              ))}
+        <div className="relative flex flex-col gap-4 max-w-xl">
+          <h1 className="sl-rise text-[28px] lg:text-[44px] font-extrabold leading-[1.1]">
+            Learn live. Catch up anytime. Track every step.
+          </h1>
+          <p className="sl-rise hidden lg:block text-[#DCE2FF] text-base max-w-md" style={{ animationDelay: ".08s" }}>
+            IELTS, PTE and English classes with live sessions, recordings and progress — on any device.
+          </p>
+          {/* Illustrations generated with ChatGPT, saved in /public/login */}
+          <div className="hidden lg:flex items-end gap-5 mt-4">
+            <div className="sl-rise sl-float w-[46%] max-w-[260px] aspect-square relative rounded-[28px] overflow-hidden border-4 border-white/30 shadow-[0_20px_40px_rgba(15,23,42,.25)] -rotate-3" style={{ animationDelay: ".16s" }}>
+              <Image src="/login/live-class.png" alt="Student joining a live online class on a laptop" fill sizes="260px" className="object-cover" priority />
             </div>
-            <div>
-              <p className="font-bold text-white">2,000+ Students</p>
-              <p className="text-xs text-slate-400">Trust Smart Labs</p>
+            <div className="sl-rise sl-float w-[46%] max-w-[260px] aspect-square relative rounded-[28px] overflow-hidden border-4 border-white/30 shadow-[0_20px_40px_rgba(15,23,42,.25)] rotate-3 mb-10" style={{ animationDelay: "-3s" }}>
+              <Image src="/login/recordings.png" alt="Student watching a class recording on a tablet" fill sizes="260px" className="object-cover" />
             </div>
           </div>
         </div>
+        <p className="relative hidden lg:block text-[13px] text-[#DCE2FF]">© SMART LABS · Developed &amp; powered by ESystemLK</p>
+      </section>
 
-        {/* Right Side: Auth Card */}
-        <div className="w-full md:w-[420px] animate-scale-in">
-          <div className="glass-card rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden">
-            {/* Decorative Top Line */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-blue via-purple-500 to-brand-blue opacity-50" />
+      {/* Form */}
+      <div className="flex items-start lg:items-center justify-center px-4 pb-10 -mt-12 lg:mt-0 lg:py-10 relative z-10">
+        <div className="w-full max-w-[420px] sl-rise" style={{ animationDelay: ".05s" }}>
+          <div className="bg-white rounded-[26px] border border-line shadow-[0_16px_40px_rgba(15,23,42,.1)] lg:shadow-none lg:border-0 lg:bg-transparent p-6 sm:p-8 lg:p-0">
 
-            <div className="mb-8 text-center md:text-left">
-               {/* Mobile Logo */}
-               <div className="md:hidden flex flex-col items-center justify-center mb-8">
-                 <div className="w-16 h-16 relative mb-3 drop-shadow-xl">
-                   <Image 
-                     src="/logo.png" 
-                     alt="Smart Labs Logo" 
-                     fill 
-                     className="object-contain"
-                   />
-                 </div>
-                 <h2 className="text-xl font-bold text-gray-900">SMART LABS</h2>
-               </div>
-
-              <h3 className="text-2xl font-bold text-gray-900">
+            <div className="mb-6">
+              <h3 className="text-[28px] font-extrabold text-ink">
                 {mode === 'login' && "Welcome Back"}
                 {mode === 'register' && "Create Account"}
                 {mode === 'forgot-password' && "Reset Password"}
               </h3>
-              <p className="text-sm text-gray-500 mt-2">
+              <p className="text-[15px] text-ink-muted mt-1">
                 {mode === 'login' && "Enter your details to access your account"}
                 {mode === 'register' && "Start your learning journey today"}
                 {mode === 'forgot-password' && "We'll send you a link to reset it"}
@@ -363,7 +314,7 @@ export default function LoginPage() {
                       type="email" 
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2.5 md:py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all text-sm font-medium"
+                      className="w-full pl-10 pr-4 h-12 bg-white border border-line rounded-[14px] focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all text-sm font-medium"
                       placeholder="student@smartlabs.lk"
                       required
                     />
@@ -387,7 +338,7 @@ export default function LoginPage() {
                       type={showPassword ? "text" : "password"} 
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full pl-10 pr-10 py-2.5 md:py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all text-sm font-medium"
+                      className="w-full pl-10 pr-10 h-12 bg-white border border-line rounded-[14px] focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all text-sm font-medium"
                       placeholder="••••••••"
                       required
                     />
@@ -407,7 +358,7 @@ export default function LoginPage() {
 
                 <div className="relative flex items-center justify-center my-4 md:my-6">
                   <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-200"></div></div>
-                  <span className="relative bg-white px-3 text-[10px] md:text-xs text-gray-500 uppercase font-medium">Or continue with</span>
+                  <span className="relative bg-white lg:bg-background px-3 text-[10px] md:text-xs text-gray-500 uppercase font-medium">Or continue with</span>
                 </div>
 
                 <GoogleButton />
@@ -430,7 +381,7 @@ export default function LoginPage() {
                       type="text" 
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full px-4 py-2.5 md:py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
+                      className="w-full px-4 h-12 bg-white border border-line rounded-[14px] focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
                       placeholder="John Doe"
                       required
                     />
@@ -441,7 +392,7 @@ export default function LoginPage() {
                       type="tel" 
                       value={contact}
                       onChange={(e) => setContact(e.target.value)}
-                      className="w-full px-4 py-2.5 md:py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
+                      className="w-full px-4 h-12 bg-white border border-line rounded-[14px] focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
                       placeholder="077..."
                       required
                     />
@@ -454,7 +405,7 @@ export default function LoginPage() {
                     type="email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
+                    className="w-full px-4 h-12 bg-white border border-line rounded-[14px] focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
                     placeholder="student@example.com"
                     required
                   />
@@ -466,7 +417,7 @@ export default function LoginPage() {
                     type="password" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
+                    className="w-full px-4 h-12 bg-white border border-line rounded-[14px] focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
                     placeholder="Min 6 chars"
                     required
                   />
@@ -493,7 +444,7 @@ export default function LoginPage() {
                     type="email" 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
+                    className="w-full px-4 h-12 bg-white border border-line rounded-[14px] focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none text-sm"
                     placeholder="Enter your registered email"
                     required
                   />
@@ -516,17 +467,10 @@ export default function LoginPage() {
 
           </div>
           
-          <p className="text-center text-xs text-slate-500 mt-8 font-medium">
-            © 2024 SMART LABS PVT LTD. All rights reserved.
+          <p className="lg:hidden text-center text-xs text-ink-muted mt-6">
+            © SMART LABS · Developed &amp; powered by ESystemLK
           </p>
         </div>
-      </div>
-
-      {/* Footer Credit */}
-      <div className="absolute bottom-4 left-0 right-0 text-center z-30 pointer-events-none">
-        <p className="text-[10px] md:text-xs text-slate-500/60 font-medium">
-          Developed & Powered by <span className="text-slate-400/80 font-bold hover:text-brand-blue transition-colors cursor-pointer pointer-events-auto">ESystemLK</span>
-        </p>
       </div>
     </div>
   );

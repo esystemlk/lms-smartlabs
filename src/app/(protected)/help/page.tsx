@@ -48,7 +48,7 @@ const GUIDES: Guide[] = [
     title: "LMS Dashboard",
     tagline: "Your home base for everything learning.",
     icon: LayoutGrid,
-    gradient: "from-blue-500 to-indigo-600",
+    gradient: "from-blue-500 to-orange-600",
     href: "/lms",
     category: "Getting Started",
     steps: [
@@ -96,7 +96,7 @@ const GUIDES: Guide[] = [
     title: "Resources — How to Access Files",
     tagline: "Download notes, PDFs and study materials.",
     icon: Download,
-    gradient: "from-violet-500 to-purple-600",
+    gradient: "from-orange-500 to-orange-600",
     href: "/lms/resources",
     category: "Study Materials",
     steps: [
@@ -192,7 +192,7 @@ const GUIDES: Guide[] = [
     title: "Community",
     tagline: "Chat and learn together with classmates.",
     icon: Users,
-    gradient: "from-fuchsia-500 to-pink-600",
+    gradient: "from-orange-500 to-pink-600",
     href: "/community",
     category: "Connect",
     steps: [
@@ -281,7 +281,7 @@ export default function HelpPage() {
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-indigo-700 via-blue-700 to-blue-600 p-8 md:p-10 text-white shadow-2xl"
+        className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-orange-700 via-blue-700 to-blue-600 p-8 md:p-10 text-white shadow-2xl"
       >
         <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-[100px] -mr-24 -mt-24 pointer-events-none" />
         <div className="relative z-10 max-w-2xl">

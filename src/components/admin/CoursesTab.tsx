@@ -126,7 +126,7 @@ export function CoursesTab({ courses, enrollments = [], onCourseUpdated }: Cours
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto sl-rtable">
         <table className="w-full">
           <thead className="bg-gray-50 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
             <tr>
@@ -145,7 +145,7 @@ export function CoursesTab({ courses, enrollments = [], onCourseUpdated }: Cours
                 .reduce((sum, e) => sum + (e.amount || 0), 0);
               return (
                 <tr key={course.id} className="hover:bg-gray-50/50 transition-colors">
-                  <td className="px-4 py-3 md:px-6 md:py-4">
+                  <td data-label="Course" className="px-4 py-3 md:px-6 md:py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gray-100 flex-shrink-0 flex items-center justify-center text-gray-400 overflow-hidden">
                         {course.image ? (
@@ -160,10 +160,10 @@ export function CoursesTab({ courses, enrollments = [], onCourseUpdated }: Cours
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 md:px-6 md:py-4">
+                  <td data-label="Instructor" className="px-4 py-3 md:px-6 md:py-4">
                     <div className="text-xs md:text-sm text-gray-900">{course.instructorName}</div>
                   </td>
-                  <td className="px-4 py-3 md:px-6 md:py-4">
+                  <td data-label="Stats" className="px-4 py-3 md:px-6 md:py-4">
                     <div className="flex flex-col gap-1">
                       <span className="text-xs md:text-sm text-gray-500">{course.lessonsCount} Lessons</span>
                       <div className="flex items-center gap-2 text-[11px] md:text-xs text-gray-600">
@@ -177,7 +177,7 @@ export function CoursesTab({ courses, enrollments = [], onCourseUpdated }: Cours
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 md:px-6 md:py-4">
+                  <td data-label="Status" className="px-4 py-3 md:px-6 md:py-4">
                     <div className="flex flex-col gap-2 items-start">
                       <button
                         onClick={() => handleTogglePublish(course)}
@@ -210,7 +210,7 @@ export function CoursesTab({ courses, enrollments = [], onCourseUpdated }: Cours
                       </button>
                     </div>
                   </td>
-                  <td className="px-4 py-3 md:px-6 md:py-4 text-right">
+                  <td data-label="Actions" className="px-4 py-3 md:px-6 md:py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => handleExportStudents(course)}

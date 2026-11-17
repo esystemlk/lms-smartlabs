@@ -2,6 +2,7 @@
  
  import { useEffect, useMemo, useRef, useState } from "react";
  import { useRouter } from "next/navigation";
+import { LetterRing } from "@/components/ui/LetterRing";
  
  export default function PreloadGate() {
    const router = useRouter();
@@ -87,37 +88,17 @@
    }, [router, routesToPrefetch, assetsToWarm]);
  
    if (!active) return null;
- 
-   return (
-     <div className="fixed inset-0 z-[1000] bg-slate-950/90 backdrop-blur-sm flex items-center justify-center">
-       <div className="w-[92%] max-w-xl rounded-2xl border border-white/10 bg-slate-900/60 p-6 shadow-2xl">
-         <div className="mb-4 flex items-center gap-3">
-           <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-             <div className="w-5 h-5 rounded-md bg-gradient-to-br from-blue-500 to-purple-500" />
-           </div>
-           <div>
-             <div className="text-white font-semibold">Preparing SMART LABS</div>
-             <div className="text-xs text-slate-300">Optimizing and caching resources</div>
-           </div>
-         </div>
- 
-         <div className="w-full h-3 rounded-full bg-slate-800/60 overflow-hidden">
-           <div
-             className="h-full rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 transition-all"
-             style={{ width: `${progress}%` }}
-           />
-         </div>
- 
-         <div className="mt-3 flex items-center justify-between text-xs text-slate-300">
-           <span>Preloading interface</span>
-           <span>{progress}%</span>
-         </div>
- 
-         <div className="mt-5 text-[11px] text-slate-400">
-           This first-time setup takes about 10 seconds and makes navigation smoother.
-         </div>
-       </div>
-     </div>
-   );
- }
- 
+
+  return (
+    <div role="status" aria-live="polite" className="fixed inset-0 z-[1000] bg-background flex flex-col items-center justify-center gap-7 px-4 text-center">
+      <LetterRing size={184} />
+      <div className="flex flex-col items-center gap-3 w-full max-w-xs">
+        <p className="font-display text-lg md:text-xl font-bold text-ink">Preparing SMART LABS</p>
+        <div className="w-full h-2 rounded-full bg-[#E6E9F2] overflow-hidden">
+          <div className="h-full rounded-full bg-gradient-to-r from-[#3B5BFD] to-[#FF7A1A] transition-all" style={{ width: `${progress}%` }} />
+        </div>
+        <p className="text-[13px] text-ink-muted">First visit only · {progress}%</p>
+      </div>
+    </div>
+  );
+}

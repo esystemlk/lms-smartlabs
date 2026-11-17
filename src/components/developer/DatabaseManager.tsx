@@ -75,11 +75,11 @@ export function DatabaseManager() {
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between bg-white p-4 rounded-xl border shadow-sm">
         <div className="flex items-center gap-2">
-          <Database className="w-5 h-5 text-purple-600" />
+          <Database className="w-5 h-5 text-orange-600" />
           <select 
             value={selectedCollection}
             onChange={(e) => setSelectedCollection(e.target.value)}
-            className="font-mono text-sm bg-gray-50 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-purple-500"
+            className="font-mono text-sm bg-gray-50 border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-orange-500"
           >
             {KNOWN_COLLECTIONS.map(c => (
               <option key={c} value={c}>{c}</option>

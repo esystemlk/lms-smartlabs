@@ -193,7 +193,7 @@ export default function MessagesPage() {
               <Button variant="ghost" size="sm" className="md:hidden -ml-2" onClick={() => setSelectedChat(null)}>
                 <Loader2 className="rotate-90" size={20} /> {/* Should be back arrow but Loader2 is imported */}
               </Button>
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center text-purple-700 font-bold flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-orange-700 font-bold flex-shrink-0">
                 {selectedChat.userName.substring(0, 2).toUpperCase()}
               </div>
               <div>

@@ -446,7 +446,7 @@ export function AdvancedSettingsManager() {
           {/* System Utilities */}
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
             <h3 className="text-md font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <HardDrive className="w-5 h-5 text-indigo-500" />
+              <HardDrive className="w-5 h-5 text-orange-500" />
               System Utilities
             </h3>
             <div className="grid grid-cols-2 gap-4">
@@ -472,7 +472,7 @@ export function AdvancedSettingsManager() {
           {/* Client Diagnostics */}
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
             <h3 className="text-md font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Smartphone className="w-5 h-5 text-purple-500" />
+              <Smartphone className="w-5 h-5 text-orange-500" />
               Client Diagnostics
             </h3>
 

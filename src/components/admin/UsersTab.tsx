@@ -55,7 +55,7 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case "admin": return "bg-red-500 text-white";
-      case "superadmin": return "bg-purple-500 text-white";
+      case "superadmin": return "bg-orange-500 text-white";
       case "lecturer": return "bg-blue-600 text-white";
       case "developer": return "bg-emerald-500 text-white";
       case "student": return "bg-gray-500 text-white";
@@ -124,7 +124,7 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
       </div>
 
       {/* Table Container */}
-      <div className="w-full overflow-x-auto">
+      <div className="w-full overflow-x-auto sl-rtable">
         <div className="min-w-[800px] md:min-w-full">
           {/* Wrapper div to force min-width so the table doesn't squash on mobile */}
           <table className="w-full">
@@ -140,7 +140,7 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
             <tbody className="divide-y divide-gray-100">
               {filteredUsers.map((user) => (
                 <tr key={user.uid} className="hover:bg-gray-50/50 transition-colors">
-                  <td className="px-4 py-3 md:px-6 md:py-4">
+                  <td data-label="User" className="px-4 py-3 md:px-6 md:py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center font-bold text-gray-500 overflow-hidden">
                         {user.photoURL ? (
@@ -160,7 +160,7 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 md:px-6 md:py-4">
+                  <td data-label="Role" className="px-4 py-3 md:px-6 md:py-4">
                     {editingId === user.uid ? (
                       <select
                         value={selectedRole}
@@ -181,13 +181,13 @@ export function UsersTab({ users, onUserUpdated }: UsersTabProps) {
                       </span>
                     )}
                   </td>
-                  <td className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4 text-xs md:text-sm text-gray-500">
+                  <td data-label="Contact" className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4 text-xs md:text-sm text-gray-500">
                     {user.contact || "-"}
                   </td>
-                  <td className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4 text-xs md:text-sm text-gray-500">
+                  <td data-label="Country" className="hidden md:table-cell px-4 py-3 md:px-6 md:py-4 text-xs md:text-sm text-gray-500">
                     {user.country || "-"}
                   </td>
-                  <td className="px-4 py-3 md:px-6 md:py-4 text-right">
+                  <td data-label="Actions" className="px-4 py-3 md:px-6 md:py-4 text-right">
                     {editingId === user.uid ? (
                       <div className="flex items-center justify-end gap-2">
                         <button

@@ -95,7 +95,7 @@ function StatCard({ title, value, icon: Icon, color }: any) {
     const colors: any = {
         blue: "bg-blue-50 text-blue-600",
         orange: "bg-orange-50 text-orange-600",
-        purple: "bg-purple-50 text-purple-600",
+        purple: "bg-orange-50 text-orange-600",
         green: "bg-green-50 text-green-600",
     };
     return (
@@ -654,7 +654,7 @@ function StudentsTab() {
     if (loading) return <Loader2 className="animate-spin mx-auto" />;
 
     return (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto sl-rtable">
             <table className="w-full text-sm text-left">
                 <thead className="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-gray-800">
                     <tr>
@@ -668,18 +668,18 @@ function StudentsTab() {
                 <tbody>
                     {students.map((s) => (
                         <tr key={s.id} className="bg-white dark:bg-gray-900 border-b dark:border-gray-800">
-                            <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                            <td data-label="Student" className="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                 <div>{s.userName}</div>
                                 <div className="text-xs text-gray-500">{s.userEmail}</div>
                             </td>
-                            <td className="px-6 py-4">{s.packageName}</td>
-                            <td className="px-6 py-4">
+                            <td data-label="Package" className="px-6 py-4">{s.packageName}</td>
+                            <td data-label="Status" className="px-6 py-4">
                                 <span className={`px-2 py-1 rounded-full text-xs font-bold ${s.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                                     {s.status.toUpperCase()}
                                 </span>
                             </td>
-                            <td className="px-6 py-4">{Math.floor((s.totalWatchTimeSeconds || 0) / 60)} mins</td>
-                            <td className="px-6 py-4">{s.expiryDate?.seconds ? new Date(s.expiryDate.seconds * 1000).toLocaleDateString() : 'N/A'}</td>
+                            <td data-label="Watch time" className="px-6 py-4">{Math.floor((s.totalWatchTimeSeconds || 0) / 60)} mins</td>
+                            <td data-label="Expiry" className="px-6 py-4">{s.expiryDate?.seconds ? new Date(s.expiryDate.seconds * 1000).toLocaleDateString() : 'N/A'}</td>
                         </tr>
                     ))}
                 </tbody>

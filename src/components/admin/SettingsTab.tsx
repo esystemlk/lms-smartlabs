@@ -197,7 +197,7 @@ export function SettingsTab() {
         <section className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <Zap className="text-purple-500" size={20} />
+              <Zap className="text-orange-500" size={20} />
               Bunny.net Stream Configuration
             </h2>
             <Button

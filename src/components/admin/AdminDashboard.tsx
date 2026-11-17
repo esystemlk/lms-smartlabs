@@ -148,9 +148,9 @@ export function AdminDashboard() {
   return (
     <div className="space-y-6 md:space-y-8 pb-24">
       {/* Premium Hero Header */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white shadow-2xl">
+      <section className="sl-hero sl-rise relative overflow-hidden rounded-[26px] text-white">
         <div className="absolute -top-24 -right-16 w-80 h-80 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute -bottom-20 -left-10 w-72 h-72 bg-indigo-500/20 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute -bottom-20 -left-10 w-72 h-72 bg-orange-500/20 rounded-full blur-[100px] pointer-events-none" />
         <div
           className="absolute inset-0 opacity-[0.04] pointer-events-none"
           style={{ backgroundImage: "radial-gradient(#fff 1px, transparent 1px)", backgroundSize: "26px 26px" }}
@@ -169,10 +169,10 @@ export function AdminDashboard() {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <Link href="/lms">
+              <Link href="/dashboard">
                 <Button className="bg-white text-blue-800 hover:bg-blue-50 rounded-2xl px-5 h-11 font-bold shadow-lg flex items-center gap-2">
                   <LayoutGrid size={18} />
-                  LMS Dashboard
+                  Student view
                 </Button>
               </Link>
               <Link
@@ -206,7 +206,7 @@ export function AdminDashboard() {
           title={isAdmin ? "Total Students" : "My Students"}
           value={totalStudents}
           icon={GraduationCap}
-          trend={isAdmin ? "+12%" : undefined}
+          trend={undefined}
           trendUp={true}
           color="blue"
           loading={loading}
@@ -215,7 +215,7 @@ export function AdminDashboard() {
           title={isAdmin ? "Active Courses" : "My Active Courses"}
           value={activeCourses}
           icon={BookOpen}
-          trend={isAdmin ? "+4" : undefined}
+          trend={undefined}
           trendUp={true}
           color="emerald"
           loading={loading}
@@ -247,7 +247,7 @@ export function AdminDashboard() {
 
           {/* Operation Metrics (Live Classes & Grading) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <motion.div id="t-admin-live" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+            <motion.div id="t-admin-live" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="sl-card p-5 md:p-6 dark:bg-gray-800 dark:border-gray-700">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold">Upcoming Live Classes</h2>
               </div>
@@ -259,7 +259,7 @@ export function AdminDashboard() {
                 ) : (
                   upcomingClasses.slice(0, 3).map(l => (
                     <div key={l.id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                      <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 font-bold">
+                      <div className="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 font-bold">
                         <Video size={18} />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -272,7 +272,7 @@ export function AdminDashboard() {
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="sl-card p-5 md:p-6 dark:bg-gray-800 dark:border-gray-700">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold">Grading Queue</h2>
               </div>
@@ -306,7 +306,7 @@ export function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm"
+              className="sl-card p-5 md:p-6 dark:bg-gray-800 dark:border-gray-700"
             >
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-lg font-bold text-gray-900 dark:text-white">New Registrations</h2>
@@ -334,7 +334,7 @@ export function AdminDashboard() {
                       </div>
                       <div className="text-right">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
-                        ${user.role === 'admin' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300' :
+                        ${user.role === 'admin' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300' :
                             user.role === 'lecturer' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300' :
                               'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'}`}>
                           {user.role}
@@ -361,21 +361,21 @@ export function AdminDashboard() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <QuickAction href="/lms" icon={LayoutGrid} label="Open LMS" color="bg-brand-blue" />
               {isAdmin && <QuickAction href="/management?tab=users" icon={Users} label="Add User" color="bg-blue-500" />}
-              <QuickAction href="/management?tab=recordings" icon={PlayCircle} label="Rec. Classes" color="bg-violet-500" />
-              {isAdmin && <QuickAction href="/live-classes" icon={Video} label="Live Classes" color="bg-fuchsia-500" />}
+              <QuickAction href="/management?tab=recordings" icon={PlayCircle} label="Rec. Classes" color="bg-orange-500" />
+              {isAdmin && <QuickAction href="/live-classes" icon={Video} label="Live Classes" color="bg-orange-500" />}
               <QuickAction href="/management?tab=courses" icon={BookOpen} label="Courses" color="bg-emerald-500" />
               {isAdmin && (
                 <QuickAction
                   href="/management?tab=enrollments"
                   icon={CreditCard}
                   label="Enrollments"
-                  color="bg-indigo-500"
+                  color="bg-orange-500"
                   badge={pendingEnrollments > 0 ? pendingEnrollments : undefined}
                 />
               )}
               {isAdmin && <QuickAction href="/management?tab=attendance" icon={Calendar} label="Attendance" color="bg-rose-500" />}
               <QuickAction href="/management?tab=resources" icon={FolderOpen} label="Resources" color="bg-orange-500" />
-              {isAdmin && <QuickAction href="/management?tab=support" icon={MessageSquare} label="Support" color="bg-purple-500" />}
+              {isAdmin && <QuickAction href="/management?tab=support" icon={MessageSquare} label="Support" color="bg-orange-500" />}
               {isAdmin && <QuickAction href="/management?tab=settings" icon={Settings} label="Settings" color="bg-gray-600" />}
             </div>
           </motion.div>
@@ -390,7 +390,7 @@ export function AdminDashboard() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white dark:bg-gray-800 rounded-3xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm"
+            className="sl-card p-5 md:p-6 dark:bg-gray-800 dark:border-gray-700"
           >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">Latest Courses</h2>
@@ -491,7 +491,7 @@ function StatCard({ title, value, label, icon: Icon, trend, trendUp, color, load
   const colors: any = {
     blue: "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400",
     emerald: "bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-400",
-    purple: "bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400",
+    purple: "bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400",
     orange: "bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400",
   };
 
@@ -501,7 +501,7 @@ function StatCard({ title, value, label, icon: Icon, trend, trendUp, color, load
   };
 
   return (
-    <motion.div variants={item} className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-2xl md:rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
+    <motion.div variants={item} className="sl-card sl-card-hover p-4 md:p-5 dark:bg-gray-800 dark:border-gray-700">
       <div className="flex justify-between items-start mb-3 md:mb-4">
         <div className={`p-2.5 md:p-3 rounded-xl md:rounded-2xl ${colors[color]}`}>
           <Icon className="w-5 h-5 md:w-6 md:h-6" />

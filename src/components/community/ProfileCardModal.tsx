@@ -16,7 +16,7 @@ const roleColors: Record<UserRole, string> = {
   student: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
   lecturer: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300',
   admin: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300',
-  superadmin: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300',
+  superadmin: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300',
   developer: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300',
   instructor: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300',
   service: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-300',
@@ -68,7 +68,7 @@ export const ProfileCardModal: React.FC<ProfileCardModalProps> = ({
       <div className="relative w-full max-w-sm md:max-w-md bg-white dark:bg-zinc-900 rounded-2xl shadow-xl overflow-hidden animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
         
         {/* Header / Cover */}
-        <div className="h-28 md:h-32 bg-gradient-to-r from-blue-500 to-purple-600 relative shrink-0">
+        <div className="h-28 md:h-32 bg-gradient-to-r from-blue-500 to-orange-600 relative shrink-0">
           <button 
             onClick={onClose}
             className="absolute top-3 right-3 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full transition-colors z-10"

@@ -390,7 +390,7 @@ export function AttendanceTab() {
             </div>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto sl-rtable">
             <table className="w-full">
               <thead className="bg-gray-50 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 <tr>
@@ -416,14 +416,14 @@ export function AttendanceTab() {
                 ) : (
                   filteredStudents.map(student => (
                     <tr key={student.id} className="hover:bg-gray-50/50 transition-colors">
-                      <td className="px-6 py-4">
+                      <td data-label="Student" className="px-6 py-4">
                         <div className="font-medium text-gray-900">{student.userName}</div>
                         <div className="text-xs text-gray-500">{student.userEmail}</div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
+                      <td data-label="Batch" className="px-6 py-4 text-sm text-gray-500">
                         {student.batchName || "N/A"}
                       </td>
-                      <td className="px-6 py-4">
+                      <td data-label="Status" className="px-6 py-4">
                         <div className="flex justify-center gap-2">
                           {(['present', 'absent', 'late', 'excused'] as const).map((status) => (
                             <button

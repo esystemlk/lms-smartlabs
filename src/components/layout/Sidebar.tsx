@@ -2,199 +2,190 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard,
-  Monitor,
-  GraduationCap,
-  Users,
-  Settings,
-  Activity,
-  Globe,
-  BookOpen,
-  Video,
-  Play,
-  MessageSquare,
-  MessageCircle,
-  Calendar,
-  FolderOpen,
-  ShieldAlert,
-  Upload,
-  CreditCard,
-  LayoutGrid,
-  LifeBuoy
-} from "lucide-react";
-import { clsx } from "clsx";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Transition } from "@headlessui/react";
-import { Fragment, useMemo } from "react";
+import { Fragment } from "react";
+import { clsx } from "clsx";
+import { X, ArrowsLeftRight, DownloadSimple } from "@phosphor-icons/react";
 import { useAuth } from "@/context/AuthContext";
-
-const navConfig = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, section: "General", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/lms", label: "LMS Dashboard", icon: LayoutGrid, section: "General", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/help", label: "Help & Guide", icon: LifeBuoy, section: "General", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-
-  { href: "/learn", label: "My Learning", icon: Play, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/courses", label: "Browse Courses", icon: BookOpen, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/lms/live", label: "Join Live Classes", icon: Video, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/lms/grammar", label: "Grammar Classes", icon: BookOpen, section: "Student", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-
-  { href: "/live-classes", label: "Schedule Classes", icon: Calendar, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/management?tab=courses", label: "My Courses", icon: BookOpen, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/management?tab=recordings", label: "Recorded Classes", icon: Video, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/management", label: "Management Portal", icon: Monitor, section: "Management", roles: ["lecturer", "admin", "superadmin", "developer"] as const },
-
-  { href: "/management?tab=users", label: "User Management", icon: Users, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/management?tab=students", label: "Student Management", icon: GraduationCap, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/management?tab=enrollments", label: "Enrollments & Payments", icon: CreditCard, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/management?tab=attendance", label: "Attendance Records", icon: Activity, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
-  { href: "/management?tab=settings", label: "System Settings", icon: Settings, section: "Administration", roles: ["admin", "superadmin", "developer"] as const },
-
-  { href: "/community", label: "Community", icon: MessageCircle, section: "Interaction", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/messages", label: "Messages", icon: MessageSquare, section: "Interaction", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-
-  { href: "/websites", label: "Our Websites", icon: Globe, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/lecturers", label: "Lecturers", icon: GraduationCap, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-  { href: "/activities", label: "Activities", icon: Activity, section: "Resources", roles: ["student", "lecturer", "admin", "superadmin", "developer"] as const },
-
-  { href: "/developer", label: "Developer Tools", icon: ShieldAlert, section: "Developer", roles: ["admin", "superadmin", "developer"] as const },
-] as const;
+import { usePWAInstall } from "@/hooks/usePWAInstall";
+import {
+  navFor,
+  isActiveHref,
+  isConsolePath,
+  isStaffRole,
+  isAdminRole,
+  CONSOLE_HOME,
+  consoleLabel,
+} from "./navConfig";
 
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function Sidebar({ isOpen, onClose }: SidebarProps) {
-  const pathname = usePathname();
+function Brand({ subtitle }: { subtitle: string }) {
+  return (
+    <Link href="/dashboard" className="flex items-center gap-3 px-2 pb-5">
+      <div className="w-10 h-10 rounded-xl bg-white border border-line relative overflow-hidden shrink-0">
+        <Image src="/logo.png" alt="" fill className="object-contain p-1" />
+      </div>
+      <div className="min-w-0">
+        <p className="font-display font-bold text-[17px] text-ink dark:text-white leading-tight">SMART LABS</p>
+        <p className="text-xs text-ink-muted truncate">{subtitle}</p>
+      </div>
+    </Link>
+  );
+}
+
+function NavList({ onNavigate }: { onNavigate?: () => void }) {
+  const pathname = usePathname() || "";
+  const tab = useSearchParams()?.get("tab") ?? null;
   const { userData } = useAuth();
+  const role = userData?.role;
+  const inConsole = isConsolePath(pathname) && isStaffRole(role);
+  const sections = navFor(role, inConsole);
 
-  const sections = useMemo(() => {
-    if (!userData) return [];
+  return (
+    <nav aria-label={inConsole ? "Staff menu" : "Main menu"} className="flex flex-col gap-1">
+      {sections.map((section, si) => (
+        <div key={section.label ?? si} className="flex flex-col gap-1">
+          {section.label && (
+            <p className="px-3 pt-4 pb-1 text-[11px] font-bold uppercase tracking-[0.06em] text-ink-muted">
+              {section.label}
+            </p>
+          )}
+          {section.items.map((item) => {
+            const active = isActiveHref(item.href, pathname, tab);
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={onNavigate}
+                aria-current={active ? "page" : undefined}
+                className={clsx(
+                  "h-11 px-3 rounded-xl flex items-center gap-3 text-[14.5px] transition-colors",
+                  active
+                    ? "bg-soft text-[#2338C9] font-semibold dark:bg-blue-500/15 dark:text-blue-200"
+                    : "text-slate-600 dark:text-slate-300 font-medium hover:bg-slate-100 dark:hover:bg-slate-800"
+                )}
+              >
+                <Icon size={20} weight={active ? "fill" : "regular"} className="shrink-0" />
+                <span className="truncate">{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      ))}
+    </nav>
+  );
+}
 
-    const isNewStudent = userData.role === 'student' && (!userData.enrolledBatches || userData.enrolledBatches.length === 0);
+/** Bottom card: staff get a one-tap switch between the student view and their console. */
+function SideCard({ onNavigate }: { onNavigate?: () => void }) {
+  const pathname = usePathname() || "";
+  const { userData } = useAuth();
+  const { isInstallable, promptInstall } = usePWAInstall();
+  const role = userData?.role;
 
-    if (isNewStudent) {
-      const items = navConfig.filter(i => ["/help", "/lms", "/courses", "/activities", "/websites", "/community", "/learn", "/lms/grammar"].includes(i.href));
-      return [{ label: "Menu", items }];
-    }
+  if (isStaffRole(role)) {
+    const inConsole = isConsolePath(pathname);
+    return (
+      <div className="mt-auto rounded-2xl p-4 bg-gradient-to-br from-[#EEF1FF] to-[#FFF1E6] dark:from-slate-800 dark:to-slate-800 flex flex-col gap-2.5">
+        <p className="font-display font-bold text-sm text-ink dark:text-white">
+          {inConsole ? "Student view" : consoleLabel(role)}
+        </p>
+        <p className="text-[13px] text-slate-600 dark:text-slate-300">
+          {inConsole ? "See the LMS exactly as your students do." : "Manage classes, students and content."}
+        </p>
+        <Link
+          href={inConsole ? "/dashboard" : CONSOLE_HOME}
+          onClick={onNavigate}
+          className={clsx("sl-btn sl-btn-sm", inConsole ? "sl-btn-outline" : "sl-btn-primary")}
+        >
+          <ArrowsLeftRight size={16} weight="bold" />
+          {inConsole ? "Switch to student view" : `Open ${consoleLabel(role).toLowerCase()}`}
+        </Link>
+      </div>
+    );
+  }
 
-    const allowed = navConfig.filter(i => i.roles.includes(userData.role as any));
-    const grouped: Record<string, typeof allowed> = {};
-    for (const item of allowed) {
-      if (!grouped[item.section]) grouped[item.section] = [];
-      grouped[item.section].push(item);
-    }
-    const order = ["General", "Student", "Management", "Administration", "Interaction", "Resources", "Developer"];
-    return Object.keys(grouped)
-      .sort((a, b) => {
-        const indexA = order.indexOf(a);
-        const indexB = order.indexOf(b);
-        return (indexA === -1 ? 99 : indexA) - (indexB === -1 ? 99 : indexB);
-      })
-      .map(label => ({ label, items: grouped[label as keyof typeof grouped] }));
-  }, [userData]);
+  if (!isInstallable) return null;
+  return (
+    <div className="mt-auto rounded-2xl p-4 bg-gradient-to-br from-[#EEF1FF] to-[#FFF1E6] dark:from-slate-800 dark:to-slate-800 flex flex-col gap-2.5">
+      <p className="font-display font-bold text-sm text-ink dark:text-white">Get the app</p>
+      <p className="text-[13px] text-slate-600 dark:text-slate-300">Install Smart Labs on your phone for class reminders.</p>
+      <button type="button" onClick={() => promptInstall()} className="sl-btn sl-btn-sm sl-btn-primary">
+        <DownloadSimple size={16} weight="bold" /> Install app
+      </button>
+    </div>
+  );
+}
+
+function subtitleFor(role: string | undefined, pathname: string) {
+  if (isConsolePath(pathname) && isStaffRole(role)) return isAdminRole(role) ? "Admin console" : "Lecturer console";
+  return role === "student" || !role ? "Student" : "Student view";
+}
+
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const pathname = usePathname() || "";
+  const { userData } = useAuth();
+  const subtitle = subtitleFor(userData?.role, pathname);
 
   return (
     <>
-      {/* Mobile Overlay */}
-      <Transition
-        as={Fragment}
-        show={isOpen}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-300"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <div
-          className="fixed inset-0 bg-black/50 z-[90] md:hidden"
-          onClick={onClose}
-        />
-      </Transition>
+      {/* Desktop: always-visible sidebar */}
+      <aside className="hidden lg:flex flex-col w-[264px] shrink-0 h-screen sticky top-0 bg-white dark:bg-slate-900 border-r border-line dark:border-slate-800 px-4 py-5 overflow-y-auto no-scrollbar">
+        <Brand subtitle={subtitle} />
+        <NavList />
+        <div className="pt-6 mt-auto flex flex-col">
+          <SideCard />
+        </div>
+      </aside>
 
-      {/* Sidebar Drawer */}
-      <Transition
-        as={Fragment}
-        show={isOpen}
-        enter="transition ease-in-out duration-300 transform"
-        enterFrom="-translate-x-full"
-        enterTo="translate-x-0"
-        leave="transition ease-in-out duration-300 transform"
-        leaveFrom="translate-x-0"
-        leaveTo="-translate-x-full"
-      >
-        <aside className="fixed top-0 left-0 bottom-0 w-72 bg-white dark:bg-gray-900 z-[100] shadow-2xl flex flex-col md:hidden transition-colors duration-300 pb-safe">
-          <div className="p-6 border-b border-border flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 relative">
-                <Image
-                  src="/logo.png"
-                  alt="Logo"
-                  fill
-                  className="object-contain"
-                />
+      {/* Phone / tablet: slide-in drawer (opened from the bottom bar "More" button or header menu) */}
+      <Transition as={Fragment} show={isOpen}>
+        <div className="lg:hidden">
+          <Transition.Child
+            as={Fragment}
+            enter="transition-opacity duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-slate-900/50 z-[90]" onClick={onClose} aria-hidden="true" />
+          </Transition.Child>
+          <Transition.Child
+            as={Fragment}
+            enter="transition ease-out duration-300 transform"
+            enterFrom="-translate-x-full"
+            enterTo="translate-x-0"
+            leave="transition ease-in duration-200 transform"
+            leaveFrom="translate-x-0"
+            leaveTo="-translate-x-full"
+          >
+            <aside className="fixed top-0 left-0 bottom-0 w-[86vw] max-w-[320px] bg-white dark:bg-slate-900 z-[100] shadow-2xl flex flex-col px-4 pt-5 pb-safe overflow-y-auto">
+              <div className="flex items-start justify-between">
+                <Brand subtitle={subtitle} />
+                <button
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Close menu"
+                  className="w-11 h-11 -mr-1 rounded-xl flex items-center justify-center text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  <X size={22} />
+                </button>
               </div>
-              <span className="font-bold text-lg text-foreground tracking-tight">SMART LABS</span>
-            </div>
-            <button
-              onClick={onClose}
-              className="p-2 -mr-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-
-          <nav className="flex-1 p-4 space-y-4 overflow-y-auto no-scrollbar">
-            {sections.map((section) => (
-              <div key={section.label} className="space-y-2">
-                <p className="px-4 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
-                  {section.label}
-                </p>
-                {section.items.map((item) => {
-                  const Icon = item.icon as any;
-                  const isActive = pathname.startsWith(item.href);
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={onClose}
-                      className={clsx(
-                        "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group",
-                        isActive
-                          ? "bg-brand-blue text-white shadow-md shadow-blue-200 dark:shadow-blue-900/20"
-                          : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-brand-blue dark:hover:text-brand-blue"
-                      )}
-                    >
-                      <Icon size={20} className={clsx(isActive ? "text-white" : "text-gray-400 dark:text-gray-500 group-hover:text-brand-blue")} />
-                      <span className="font-medium">{item.label}</span>
-                    </Link>
-                  );
-                })}
+              <NavList onNavigate={onClose} />
+              <div className="py-6 mt-auto flex flex-col">
+                <SideCard onNavigate={onClose} />
               </div>
-            ))}
-          </nav>
-
-          <div className="p-3 md:p-4 border-t border-border mt-auto">
-            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 dark:bg-gray-800">
-              <div className="w-7 h-7 rounded-lg bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold text-[10px]">
-                SL
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold text-foreground truncate">Smart Labs LMS</p>
-                <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">v1.1.0 (Mobile Optimized)</p>
-              </div>
-            </div>
-            <div className="mt-3 text-center">
-              <p className="text-[9px] text-gray-400 dark:text-gray-600">
-                Developed & Powered by <span className="font-bold text-brand-blue">ESystemLK</span>
-              </p>
-            </div>
-          </div>
-        </aside>
+            </aside>
+          </Transition.Child>
+        </div>
       </Transition>
     </>
   );

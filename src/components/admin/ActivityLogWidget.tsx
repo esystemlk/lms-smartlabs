@@ -36,7 +36,7 @@ export function ActivityLogWidget() {
   const getIcon = (type?: string) => {
     switch (type) {
       case "user": return <User className="w-4 h-4 text-blue-500" />;
-      case "course": return <BookOpen className="w-4 h-4 text-purple-500" />;
+      case "course": return <BookOpen className="w-4 h-4 text-orange-500" />;
       case "enrollment": return <CreditCard className="w-4 h-4 text-green-500" />;
       case "system": return <Settings className="w-4 h-4 text-gray-500" />;
       default: return <Activity className="w-4 h-4 text-orange-500" />;
@@ -90,7 +90,7 @@ export function ActivityLogWidget() {
                     {log.createdAt?.seconds ? formatDistanceToNow(new Date(log.createdAt.seconds * 1000), { addSuffix: true }) : 'Just now'}
                   </span>
                   <span className={`text-[10px] px-1.5 py-0.5 rounded-full capitalize ${
-                    log.performedByRole === 'admin' ? 'bg-purple-100 text-purple-700' :
+                    log.performedByRole === 'admin' ? 'bg-orange-100 text-orange-700' :
                     log.performedByRole === 'developer' ? 'bg-red-100 text-red-700' :
                     'bg-gray-100 text-gray-600'
                   }`}>

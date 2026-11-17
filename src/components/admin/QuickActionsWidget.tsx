@@ -31,7 +31,7 @@ export function QuickActionsWidget() {
     {
       label: "System Status",
       icon: BarChart,
-      color: "text-purple-600 bg-purple-50",
+      color: "text-orange-600 bg-orange-50",
       onClick: () => router.push("/admin/analytics"),
       desc: "Check health & stats"
     }

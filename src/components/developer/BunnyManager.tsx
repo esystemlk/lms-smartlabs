@@ -234,7 +234,7 @@ export function BunnyManager() {
       <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
         <div className="p-4 border-b flex items-center justify-between bg-gray-50">
           <h3 className="font-semibold flex items-center gap-2">
-            <Video className="w-5 h-5 text-purple-500" />
+            <Video className="w-5 h-5 text-orange-500" />
             Library Videos
           </h3>
           <button onClick={fetchVideos} className="p-2 hover:bg-gray-200 rounded-lg">

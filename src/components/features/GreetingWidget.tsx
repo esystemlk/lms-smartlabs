@@ -22,14 +22,14 @@ export function GreetingWidget() {
       setIcon(<Cloud className="w-12 h-12 text-blue-400 animate-bounce-slow" />);
     } else {
       setGreeting("Good Evening");
-      setIcon(<Moon className="w-12 h-12 text-indigo-400 animate-pulse" />);
+      setIcon(<Moon className="w-12 h-12 text-orange-400 animate-pulse" />);
     }
   }, []);
 
   if (!mounted) return null;
 
   return (
-    <div className="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl md:rounded-2xl p-3 md:p-6 text-white shadow-lg overflow-hidden relative">
+    <div className="bg-gradient-to-r from-blue-500 to-orange-600 rounded-xl md:rounded-2xl p-3 md:p-6 text-white shadow-lg overflow-hidden relative">
       <div className="relative z-10 flex items-center justify-between">
         <div>
           <h2 className="text-lg md:text-3xl font-bold mb-1 flex items-center gap-2 md:gap-3">

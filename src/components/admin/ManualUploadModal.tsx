@@ -137,14 +137,14 @@ export default function ManualUploadModal({ isOpen, lessonId, courseId, isReplac
 
         {step === "select" && (
           <div className="space-y-6">
-            <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:border-purple-500 hover:bg-purple-50 transition-all cursor-pointer relative">
+            <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:border-orange-500 hover:bg-orange-50 transition-all cursor-pointer relative">
               <input 
                 type="file" 
                 accept="video/*"
                 onChange={handleFileChange}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
-              <CloudUpload size={48} className="text-purple-200 mb-4" />
+              <CloudUpload size={48} className="text-orange-200 mb-4" />
               {file ? (
                 <div>
                   <p className="font-medium text-gray-900">{file.name}</p>
@@ -167,7 +167,7 @@ export default function ManualUploadModal({ isOpen, lessonId, courseId, isReplac
               <Button 
                 onClick={handleUpload} 
                 disabled={!file}
-                className="bg-purple-600 hover:bg-purple-700 text-white"
+                className="bg-orange-600 hover:bg-orange-700 text-white"
               >
                 Start Upload
               </Button>
@@ -197,10 +197,10 @@ export default function ManualUploadModal({ isOpen, lessonId, courseId, isReplac
                   fill="transparent"
                   strokeDasharray={276}
                   strokeDashoffset={276 - (276 * progress) / 100}
-                  className="text-purple-600 transition-all duration-300"
+                  className="text-orange-600 transition-all duration-300"
                 />
               </svg>
-              <div className="absolute inset-0 flex items-center justify-center font-bold text-xl text-purple-700">
+              <div className="absolute inset-0 flex items-center justify-center font-bold text-xl text-orange-700">
                 {progress}%
               </div>
             </div>

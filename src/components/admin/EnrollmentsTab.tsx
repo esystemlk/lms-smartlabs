@@ -111,7 +111,7 @@ export function EnrollmentsTab() {
                       <p className="text-sm text-gray-500">{enrollment.userEmail}</p>
                     </div>
                   </div>
-                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${enrollment.paymentMethod === 'website' ? 'bg-purple-100 text-purple-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${enrollment.paymentMethod === 'website' ? 'bg-orange-100 text-orange-800' : 'bg-yellow-100 text-yellow-800'}`}>
                     {enrollment.paymentMethod === 'website' ? 'Website Payment' : 'Bank Transfer'}
                   </span>
                 </div>
@@ -136,10 +136,10 @@ export function EnrollmentsTab() {
                 </div>
 
                 {enrollment.paymentMethod === 'website' && (
-                  <div className="mt-4 p-3 bg-purple-50 rounded-lg text-sm border border-purple-100">
-                    <div className="font-semibold text-purple-900 mb-1">Website Details Provided:</div>
-                    <div className="text-purple-800"><span className="opacity-70">Name:</span> {enrollment.websitePaymentName}</div>
-                    <div className="text-purple-800"><span className="opacity-70">Email:</span> {enrollment.websitePaymentEmail}</div>
+                  <div className="mt-4 p-3 bg-orange-50 rounded-lg text-sm border border-orange-100">
+                    <div className="font-semibold text-orange-900 mb-1">Website Details Provided:</div>
+                    <div className="text-orange-800"><span className="opacity-70">Name:</span> {enrollment.websitePaymentName}</div>
+                    <div className="text-orange-800"><span className="opacity-70">Email:</span> {enrollment.websitePaymentEmail}</div>
                   </div>
                 )}
               </div>

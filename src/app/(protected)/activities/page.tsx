@@ -48,7 +48,7 @@ export default function ActivitiesPage() {
             <div key={activity.id} className="bg-white p-3 md:p-6 rounded-xl md:rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all">
               <div className="flex justify-between items-start mb-2 md:mb-4">
                 <span className={`px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-medium capitalize
-                  ${activity.type === 'hackathon' ? 'bg-purple-100 text-purple-700' : 
+                  ${activity.type === 'hackathon' ? 'bg-orange-100 text-orange-700' : 
                     activity.type === 'workshop' ? 'bg-blue-100 text-blue-700' : 
                     'bg-gray-100 text-gray-700'}`}>
                   {activity.type}

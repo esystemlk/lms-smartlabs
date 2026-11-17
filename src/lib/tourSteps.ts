@@ -14,9 +14,9 @@ export const homeTourSteps: TutorialStep[] = [
   },
   {
     target: "#t-enter-lms",
-    title: "Enter the LMS",
+    title: "Join your next class",
     content:
-      "This button opens your classroom hub, where live classes, recordings, resources, timetable, assignments and exams all live together.",
+      "Your next live class shows here with a countdown. When it's time, tap Join class to go straight into the session.",
   },
   {
     target: "#t-menu",

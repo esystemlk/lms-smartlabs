@@ -72,6 +72,7 @@
     "@capacitor/ios": "^8.0.2",
     "@ducanh2912/next-pwa": "^10.2.9",
     "@headlessui/react": "^2.2.9",
+    "@phosphor-icons/react": "^2.1.10",
     "@zoom/meetingsdk": "^5.1.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

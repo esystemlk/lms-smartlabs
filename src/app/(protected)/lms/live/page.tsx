@@ -187,7 +187,7 @@ export default function LiveClassesPage() {
                   {cls.zoomStartUrl && userData?.role !== 'student' ? (
                     <div className="col-span-2">
                       <a href={cls.zoomStartUrl} target="_blank" rel="noopener noreferrer">
-                        <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-sm">
+                        <Button className="w-full bg-orange-600 hover:bg-orange-700 text-sm">
                           Start Class (Host)
                           <Presentation size={16} className="ml-2" />
                         </Button>

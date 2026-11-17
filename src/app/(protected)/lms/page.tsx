@@ -23,6 +23,7 @@ import { notificationService, Notification } from "@/services/notificationServic
 import { enrollmentService } from "@/services/enrollmentService";
 import { Lesson, Enrollment } from "@/lib/types";
 import { format, formatDistanceToNow } from "date-fns";
+import { filterClassesForUser } from "@/lib/classAccess";
 import { clsx } from "clsx";
 
 export default function LMSPage() {
@@ -44,54 +45,7 @@ export default function LMSPage() {
           userData.role === 'student' ? enrollmentService.getUserEnrollments(userData.uid) : Promise.resolve([] as Enrollment[])
         ]);
 
-        let filtered = upcoming;
-        
-        // Filter for student's enrolled batches and time slots
-        if (userData && userData.role === 'student') {
-          const activeEnrollments = enrollments.filter(e => e.status === 'active' || e.status === 'completed');
-          const enrollmentBatchIds = activeEnrollments.map(e => e.batchId).filter(Boolean);
-          const userDataBatchIds = userData.enrolledBatches || [];
-          const userBatches = Array.from(new Set([...enrollmentBatchIds, ...userDataBatchIds])) as string[];
-          
-          if (userBatches.length === 0) {
-            filtered = [];
-          } else {
-            // Map batchId -> timeSlotId
-            const batchTimeSlots = new Map<string, string>();
-            activeEnrollments.forEach(e => {
-              if (e.batchId && e.timeSlotId) {
-                batchTimeSlots.set(e.batchId, e.timeSlotId);
-              }
-            });
-
-            filtered = upcoming.filter(cls => {
-                // 1. Check Course Access
-                const userCourseIds = activeEnrollments.map(e => e.courseId);
-                const hasPrimaryDbAccess = cls.courseId && userCourseIds.includes(cls.courseId);
-                const hasBindedDbAccess = cls.bindedCourseIds && cls.bindedCourseIds.some(id => userCourseIds.includes(id));
-                
-                if (!hasPrimaryDbAccess && !hasBindedDbAccess) {
-                    return false;
-                }
-
-                // 2. Check if student is in any of the batches assigned to this class
-                if (!cls.batchIds || cls.batchIds.length === 0) return false;
-                const matchingBatchIds = cls.batchIds.filter(id => userBatches.includes(id));
-                if (matchingBatchIds.length === 0) return false;
-
-                // If class has a time slot restriction
-                if (cls.timeSlotId || (cls.bindedTimeSlotIds && cls.bindedTimeSlotIds.length > 0)) {
-                  return matchingBatchIds.some(bid => {
-                      const studentTId = batchTimeSlots.get(bid);
-                      if (!studentTId) return false;
-                      return studentTId === cls.timeSlotId || (cls.bindedTimeSlotIds && cls.bindedTimeSlotIds.includes(studentTId));
-                  });
-                }
-
-                return true;
-            });
-          }
-        }
+        const filtered = filterClassesForUser(upcoming, enrollments, userData);
 
         setUpcomingClasses(filtered.slice(0, 3));
         setNextClass(filtered[0] || null);
@@ -185,7 +139,7 @@ export default function LMSPage() {
       {/* Hero Grid */}
       <motion.div variants={item} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Next Class Hero */}
-        <div className="lg:col-span-2 bg-gradient-to-br from-indigo-700 via-blue-700 to-blue-600 rounded-3xl md:rounded-[2.5rem] p-5 sm:p-6 md:p-10 text-white shadow-2xl relative overflow-hidden group">
+        <div className="lg:col-span-2 bg-gradient-to-br from-orange-700 via-blue-700 to-blue-600 rounded-3xl md:rounded-[2.5rem] p-5 sm:p-6 md:p-10 text-white shadow-2xl relative overflow-hidden group">
           {/* Decorative Background */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-[80px] -ml-20 -mb-20 pointer-events-none" />
@@ -281,9 +235,9 @@ export default function LMSPage() {
           {[
             { href: "/lms/live", icon: PlayCircle, label: "Live Classes", sub: "Join sessions", tint: "bg-blue-50 dark:bg-blue-500/10 text-blue-500" },
             { href: "/lms/my-recordings", icon: Video, label: "Recordings", sub: "View past", tint: "bg-pink-50 dark:bg-pink-500/10 text-pink-500" },
-            { href: "/lms/grammar", icon: BookText, label: "Grammar", sub: "Grammar classes", tint: "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-500" },
+            { href: "/lms/grammar", icon: BookText, label: "Grammar", sub: "Grammar classes", tint: "bg-orange-50 dark:bg-orange-500/10 text-orange-500" },
             { href: "/lms/assignments", icon: FileText, label: "Assignments", sub: "Submit work", tint: "bg-orange-50 dark:bg-orange-500/10 text-orange-500" },
-            { href: "/lms/resources", icon: Download, label: "Resources", sub: "Study materials", tint: "bg-purple-50 dark:bg-purple-500/10 text-purple-500" },
+            { href: "/lms/resources", icon: Download, label: "Resources", sub: "Study materials", tint: "bg-orange-50 dark:bg-orange-500/10 text-orange-500" },
             { href: "/lms/exams", icon: BookOpen, label: "Exams", sub: "Take tests", tint: "bg-red-50 dark:bg-red-500/10 text-red-500" },
             { href: "/lms/timetable", icon: Calendar, label: "Timetable", sub: "Your schedule", tint: "bg-green-50 dark:bg-green-500/10 text-green-500" },
           ].map((nav, i) => (

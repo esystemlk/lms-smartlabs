@@ -121,11 +121,11 @@ export function AnalyticsTab({ users, courses, enrollments }: AnalyticsTabProps)
                 {activeStudents}
               </h3>
             </div>
-            <div className="p-3 bg-purple-50 rounded-xl text-purple-600">
+            <div className="p-3 bg-orange-50 rounded-xl text-orange-600">
               <Users size={20} />
             </div>
           </div>
-           <div className="flex items-center text-sm text-purple-600">
+           <div className="flex items-center text-sm text-orange-600">
             <Users size={16} className="mr-1" />
             <span className="font-medium">Registered Learners</span>
           </div>
@@ -192,7 +192,7 @@ export function AnalyticsTab({ users, courses, enrollments }: AnalyticsTabProps)
                   </div>
                   <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
                     <div 
-                      className="h-full bg-indigo-500 rounded-full transition-all duration-1000 ease-out"
+                      className="h-full bg-orange-500 rounded-full transition-all duration-1000 ease-out"
                       style={{ width: `${percentage}%` }}
                     ></div>
                   </div>

@@ -303,7 +303,7 @@ export function StudentManagementTab() {
 
       {/* Student List */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto sl-rtable">
           <table className="w-full">
             <thead className="bg-gray-50 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
               <tr>
@@ -325,7 +325,7 @@ export function StudentManagementTab() {
                 return (
                 <Fragment key={enrollment.id}>
                 <tr className="hover:bg-gray-50/50 transition-colors">
-                  <td className="px-6 py-4">
+                  <td data-label="Student" className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold">
                         {enrollment.userName.charAt(0).toUpperCase()}
@@ -336,7 +336,7 @@ export function StudentManagementTab() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td data-label="Course &amp; batch" className="px-6 py-4">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
                         <BookOpen size={14} className="text-gray-400" />
@@ -348,7 +348,7 @@ export function StudentManagementTab() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td data-label="Time slot" className="px-6 py-4">
                     {enrollment.timeSlotLabel ? (
                       <div className="flex items-center gap-2 text-sm text-gray-600">
                         <Clock size={14} className="text-gray-400" />
@@ -358,7 +358,7 @@ export function StudentManagementTab() {
                       <span className="text-sm text-gray-400">Regular</span>
                     )}
                   </td>
-                  <td className="px-6 py-4">
+                  <td data-label="Activity" className="px-6 py-4">
                     <div className="space-y-1">
                       <div className="flex items-center gap-1.5 text-sm font-medium text-gray-900" title="Total recording watch time">
                         <PlayCircle size={14} className="text-green-600" />
@@ -379,7 +379,7 @@ export function StudentManagementTab() {
                       )}
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td data-label="Status" className="px-6 py-4">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${
                       enrollment.status === 'active' ? 'bg-green-100 text-green-800' :
                       enrollment.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
@@ -390,7 +390,7 @@ export function StudentManagementTab() {
                       {enrollment.status.replace('_', ' ')}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right">
+                  <td data-label="Actions" className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-2">
                       <Button 
                         variant="ghost" 

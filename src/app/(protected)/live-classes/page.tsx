@@ -323,7 +323,7 @@ export default function LiveClassManagementPage() {
         <div className="flex gap-3">
             <Button 
                 onClick={() => setShowInstantModal(true)}
-                className="gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-lg shadow-purple-500/20 border-0"
+                className="gap-2 bg-gradient-to-r from-orange-600 to-orange-600 hover:from-orange-700 hover:to-orange-700 text-white shadow-lg shadow-orange-500/20 border-0"
             >
                 <Zap size={16} className="fill-white" />
                 Instant Class
@@ -376,7 +376,7 @@ export default function LiveClassManagementPage() {
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto sl-rtable">
                 <table className="w-full text-left text-sm">
                     <thead className="bg-gray-50 border-b border-gray-100 text-gray-500">
                     <tr>
@@ -415,7 +415,7 @@ export default function LiveClassManagementPage() {
 
                         return (
                             <tr key={cls.id} className="hover:bg-gray-50/50 transition-colors group">
-                            <td className="px-6 py-4">
+                            <td data-label="Class" className="px-6 py-4">
                                 <div className="font-medium text-gray-900 text-base">{cls.title}</div>
                                 {isHappeningNow && (
                                 <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 mt-1 animate-pulse">
@@ -432,7 +432,7 @@ export default function LiveClassManagementPage() {
                                   </button>
                                 )}
                             </td>
-                            <td className="px-6 py-4">
+                            <td data-label="Schedule" className="px-6 py-4">
                                 <div className="flex flex-col gap-1 text-gray-500">
                                 <div className="flex items-center gap-2">
                                     <Calendar size={14} />
@@ -444,7 +444,7 @@ export default function LiveClassManagementPage() {
                                 </div>
                                 </div>
                             </td>
-                            <td className="px-6 py-4 text-right">
+                            <td data-label="Actions" className="px-6 py-4 text-right">
                                 <div className="flex items-center justify-end gap-2">
                                 {cls.zoomStartUrl ? (
                                 <a 
@@ -554,7 +554,7 @@ export default function LiveClassManagementPage() {
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto sl-rtable">
                 <table className="w-full text-left text-sm">
                     <thead className="bg-gray-50 border-b border-gray-100 text-gray-500">
                     <tr>
@@ -577,7 +577,7 @@ export default function LiveClassManagementPage() {
 
                         return (
                             <tr key={cls.id} className="hover:bg-gray-50/50 transition-colors">
-                            <td className="px-6 py-4">
+                            <td data-label="Class" className="px-6 py-4">
                                 <div className="font-medium text-gray-900 text-base">{cls.title}</div>
                                 <button 
                                     onClick={() => setSelectedScheduleDetails(cls)}
@@ -587,7 +587,7 @@ export default function LiveClassManagementPage() {
                                     View Details
                                 </button>
                             </td>
-                            <td className="px-6 py-4">
+                            <td data-label="Date and time" className="px-6 py-4">
                                 <div className="flex flex-col gap-1 text-gray-500">
                                 <div className="flex items-center gap-2">
                                     <Calendar size={14} />
@@ -599,7 +599,7 @@ export default function LiveClassManagementPage() {
                                 </div>
                                 </div>
                             </td>
-                            <td className="px-6 py-4 text-right">
+                            <td data-label="Recording" className="px-6 py-4 text-right">
                                 {hasRecording ? (
                                     <div className="flex items-center justify-end gap-1">
                                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -644,7 +644,7 @@ export default function LiveClassManagementPage() {
                                             setSelectedLessonForUpload(cls);
                                             setUploadModalOpen(true);
                                         }}
-                                        className="gap-2 text-purple-600 border-purple-200 hover:bg-purple-50"
+                                        className="gap-2 text-orange-600 border-orange-200 hover:bg-orange-50"
                                     >
                                         <CloudUpload size={14} />
                                         Upload
@@ -692,7 +692,7 @@ export default function LiveClassManagementPage() {
             </div>
 
             {/* Quick Tips */}
-            <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-6 border border-blue-100">
+            <div className="bg-gradient-to-br from-orange-50 to-blue-50 rounded-2xl p-6 border border-blue-100">
                 <h3 className="font-semibold text-gray-900 mb-2">Host Tips</h3>
                 <ul className="text-sm text-gray-600 space-y-2 list-disc pl-4">
                     <li>Start class 5 mins early.</li>
@@ -706,9 +706,9 @@ export default function LiveClassManagementPage() {
       {showInstantModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in">
           <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-in zoom-in-95">
-            <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-indigo-50">
+            <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gradient-to-r from-orange-50 to-orange-50">
               <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                <Zap size={20} className="text-purple-600 fill-purple-600" />
+                <Zap size={20} className="text-orange-600 fill-orange-600" />
                 Start Instant Class
               </h3>
               <button 
@@ -729,7 +729,7 @@ export default function LiveClassManagementPage() {
                 <select
                   value={instantMeetingData.courseId}
                   onChange={(e) => setInstantMeetingData({ ...instantMeetingData, courseId: e.target.value, batchIds: [] })}
-                  className="w-full h-10 px-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none transition-all bg-white"
+                  className="w-full h-10 px-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-all bg-white"
                   required
                 >
                   <option value="">Select a Course...</option>
@@ -757,7 +757,7 @@ export default function LiveClassManagementPage() {
                                 : instantMeetingData.batchIds.filter(id => id !== batch.id);
                               setInstantMeetingData({ ...instantMeetingData, batchIds: newIds });
                             }}
-                            className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                            className="w-4 h-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500"
                           />
                           <span className="text-sm text-gray-700">{batch.name}</span>
                         </label>
@@ -786,7 +786,7 @@ export default function LiveClassManagementPage() {
                 <Button 
                     type="submit" 
                     disabled={instantLoading}
-                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    className="bg-orange-600 hover:bg-orange-700 text-white"
                 >
                   {instantLoading ? (
                     <>
@@ -891,7 +891,7 @@ export default function LiveClassManagementPage() {
                                             <div className="flex-1">
                                                 <h4 className="font-semibold text-gray-900">{data.courseName}</h4>
                                                 <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-gray-600">
-                                                    <span className="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 px-2.5 py-1 rounded-md font-medium text-xs">
+                                                    <span className="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 px-2.5 py-1 rounded-md font-medium text-xs">
                                                         <Users size={12} />
                                                         {data.batchName}
                                                     </span>

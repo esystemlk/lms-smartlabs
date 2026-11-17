@@ -89,7 +89,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const getRoleBadgeColor = (role?: string) => {
     switch (role) {
       case "admin": return "bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800";
-      case "superadmin": return "bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800";
+      case "superadmin": return "bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-800";
       case "lecturer": return "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800";
       case "developer": return "bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800";
       default: return "bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-700"; // student/user
@@ -128,13 +128,14 @@ export function Header({ onMenuClick }: HeaderProps) {
   };
 
   return (
-    <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-border h-16 px-4 md:px-8 flex items-center justify-between sticky top-0 z-20 transition-colors duration-300 supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-gray-900/60">
+    <header className="bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-line dark:border-slate-800 h-16 px-3 md:px-8 flex items-center justify-between transition-colors duration-300">
       {/* Left Section: Navigation & Mobile Menu */}
       <div className="flex items-center gap-2 md:gap-4">
         {/* Mobile Menu Trigger */}
         <button
           onClick={onMenuClick}
-          className="md:hidden p-2 -ml-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+          aria-label="Open menu"
+          className="lg:hidden w-11 h-11 -ml-1 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl"
         >
           <MenuIcon size={24} />
         </button>
@@ -150,14 +151,14 @@ export function Header({ onMenuClick }: HeaderProps) {
               <ChevronLeft size={20} />
               <span className="hidden sm:inline text-sm font-medium">Back</span>
             </button>
-            <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 hidden sm:block"></div>
+            <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 hidden sm:block lg:hidden"></div>
             <button
               onClick={() => router.push('/dashboard')}
-              className="p-2 text-gray-700 dark:text-gray-300 hover:text-brand-blue dark:hover:text-brand-blue hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors flex items-center gap-1"
-              title="Main Menu"
+              className="lg:hidden p-2 text-gray-700 dark:text-gray-300 hover:text-brand-blue dark:hover:text-brand-blue hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors flex items-center gap-1"
+              title="Home"
             >
               <Home size={20} />
-              <span className="hidden sm:inline text-sm font-medium">Main Menu</span>
+              <span className="hidden sm:inline text-sm font-medium">Home</span>
             </button>
           </div>
         )}

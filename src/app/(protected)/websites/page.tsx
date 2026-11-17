@@ -121,7 +121,7 @@ export default function WebsitesPage() {
                   <div className="flex items-start justify-between mb-6">
                     <div className={`p-3 rounded-2xl ${
                       site.id === 'main-site' ? 'bg-blue-50 text-brand-blue dark:bg-blue-900/20 dark:text-blue-300' :
-                      site.id === 'register-site' ? 'bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-300' :
+                      site.id === 'register-site' ? 'bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-300' :
                       'bg-gray-50 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
                     }`}>
                       {site.id === 'main-site' ? <Layout size={24} /> :
@@ -145,7 +145,7 @@ export default function WebsitesPage() {
                   <div className="mt-auto pt-4 flex items-center justify-between border-t border-gray-50 dark:border-gray-700/50">
                     <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${
                       site.category === 'Official' ? 'bg-blue-50 text-brand-blue border border-blue-100' :
-                      site.category === 'Portal' ? 'bg-purple-50 text-purple-600 border border-purple-100' :
+                      site.category === 'Portal' ? 'bg-orange-50 text-orange-600 border border-orange-100' :
                       'bg-gray-50 text-gray-600 border border-gray-200'
                     }`}>
                       <Sparkles size={10} />

@@ -7,7 +7,7 @@ import { motion, useScroll, useSpring } from "framer-motion";
 export function ScrollProgressBar() {
     const pathname = usePathname();
     // Only show on course/lesson pages or long content pages if desired
-    const isContentPage = pathname.includes("/courses/") || pathname.includes("/learn/");
+    const isContentPage = pathname.includes("/courses/");
 
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, {
@@ -20,7 +20,7 @@ export function ScrollProgressBar() {
 
     return (
         <motion.div
-            className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-blue to-purple-600 origin-left z-50"
+            className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-blue to-orange-600 origin-left z-50"
             style={{ scaleX }}
         />
     );

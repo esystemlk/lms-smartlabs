@@ -914,7 +914,7 @@ export default function EditCoursePage() {
         <div className="space-y-4">
           {batches.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-2xl border border-gray-100">
-              <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-3">
+              <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Users className="w-6 h-6" />
               </div>
               <h3 className="text-lg font-medium text-gray-900">No batches yet</h3>

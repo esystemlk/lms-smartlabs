@@ -132,7 +132,7 @@ export function StorageManager() {
               ) : item.type === "image" ? (
                 <img src={item.url} alt={item.name} className="w-full h-full object-cover" />
               ) : item.type === "video" ? (
-                <Video className="w-16 h-16 text-purple-400" />
+                <Video className="w-16 h-16 text-orange-400" />
               ) : (
                 <FileIcon className="w-16 h-16 text-gray-400" />
               )}

@@ -474,7 +474,7 @@ export default function RecordingManagerPage() {
 
             {/* Content List */}
             <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden text-black">
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto sl-rtable">
                     <table className="w-full text-left">
                         <thead className="bg-gray-50/50 border-b border-gray-100">
                             <tr>
@@ -497,7 +497,7 @@ export default function RecordingManagerPage() {
                             ) : (
                                 filteredRecordings.map((rec: ManagerRecording) => (
                                     <tr key={rec.id} className="hover:bg-gray-50/50 transition-colors group">
-                                        <td className="px-6 py-5">
+                                        <td data-label="Recording" className="px-6 py-5">
                                             <div className="flex items-start gap-4">
                                                 <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 shrink-0">
                                                      <Play size={20} fill="currentColor" />
@@ -529,7 +529,7 @@ export default function RecordingManagerPage() {
                                                             {rec.startTime || (rec as any).date ? new Date(rec.startTime || (rec as any).date).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }) : '-'}
                                                         </span>
                                                         {rec.bunnyVideoId && (
-                                                            <span className="px-2 py-0.5 bg-purple-50 text-purple-600 rounded text-[10px] font-bold tracking-tight">
+                                                            <span className="px-2 py-0.5 bg-orange-50 text-orange-600 rounded text-[10px] font-bold tracking-tight">
                                                                 BUNNY.NET
                                                             </span>
                                                         )}
@@ -542,7 +542,7 @@ export default function RecordingManagerPage() {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-5">
+                                        <td data-label="Origin course" className="px-6 py-5">
                                             <div className="text-sm text-gray-600 font-medium truncate max-w-[200px]">
                                                 {courses.find((c: Course) => c.id === rec.courseId)?.title || "Unknown Course"}
                                             </div>
@@ -556,7 +556,7 @@ export default function RecordingManagerPage() {
                                                 </div>
                                             )}
                                         </td>
-                                        <td className="px-6 py-5">
+                                        <td data-label="Actions" className="px-6 py-5">
                                             <div className="flex items-center justify-end gap-2">
                                                 <Button 
                                                     size="sm" 

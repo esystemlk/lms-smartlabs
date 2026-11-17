@@ -303,7 +303,7 @@ export function VideoLibraryTab() {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl border border-gray-100 dark:border-gray-800">
+      <div className="overflow-x-auto sl-rtable rounded-xl border border-gray-100 dark:border-gray-800">
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-gray-800">
             <tr>
@@ -320,7 +320,7 @@ export function VideoLibraryTab() {
                 <td className="px-3 py-3">
                   <input type="checkbox" checked={selected.has(v.key)} onChange={() => toggleSelect(v.key)} />
                 </td>
-                <td className="px-4 py-3">
+                <td data-label="Video" className="px-4 py-3">
                   <div className="flex items-center gap-2">
                     <div className="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 shrink-0">
                       <Video size={16} />
@@ -334,7 +334,7 @@ export function VideoLibraryTab() {
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-3 text-gray-600 dark:text-gray-300">
+                <td data-label="Course" className="px-4 py-3 text-gray-600 dark:text-gray-300">
                   <div>{v.courseTitle}</div>
                   {v.batchNames.length > 0 && (
                     <div className="text-xs text-gray-400 mt-0.5 truncate max-w-[200px]">
@@ -342,8 +342,8 @@ export function VideoLibraryTab() {
                     </div>
                   )}
                 </td>
-                <td className="px-4 py-3 text-gray-500">{v.date ? new Date(v.date).toLocaleDateString() : "—"}</td>
-                <td className="px-4 py-3 text-right">
+                <td data-label="Date" className="px-4 py-3 text-gray-500">{v.date ? new Date(v.date).toLocaleDateString() : "—"}</td>
+                <td data-label="Action" className="px-4 py-3 text-right">
                   {isAdmin ? (
                     <button
                       onClick={() => triggerDownload(v)}

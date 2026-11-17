@@ -157,7 +157,7 @@ export function LecturerDashboard() {
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
       >
         <StatCard title="Active Courses" value={stats.activeCourses} icon={BookOpen} color="bg-emerald-500" />
-        <StatCard title="Upcoming Sessions" value={stats.upcomingCount} icon={Calendar} color="bg-indigo-500" />
+        <StatCard title="Upcoming Sessions" value={stats.upcomingCount} icon={Calendar} color="bg-orange-500" />
         <StatCard title="Students (est.)" value={stats.totalStudents} icon={Users} color="bg-blue-500" />
         <StatCard title="LMS Access" value="Learning Hub" icon={LayoutGrid} color="bg-brand-blue" />
       </motion.div>
@@ -179,7 +179,7 @@ export function LecturerDashboard() {
               ) : (
                 upcoming.map(l => (
                   <div key={l.id} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                    <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600">
+                    <div className="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600">
                       <Video className="w-5 h-5" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -221,8 +221,8 @@ export function LecturerDashboard() {
             <h2 className="text-lg font-bold mb-4 px-1">Manage My Content</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <QuickAction href="/management?tab=courses" icon={BookOpen} label="My Courses" color="bg-emerald-500" />
-              <QuickAction href="/lms/live" icon={Video} label="Live Schedule" color="bg-indigo-500" />
-              <QuickAction href="/management?tab=recordings" icon={PlayCircle} label="Recorded" color="bg-violet-600" />
+              <QuickAction href="/lms/live" icon={Video} label="Live Schedule" color="bg-orange-500" />
+              <QuickAction href="/management?tab=recordings" icon={PlayCircle} label="Recorded" color="bg-orange-600" />
               <QuickAction href="/management?tab=resources" icon={FolderOpen} label="Study Materials" color="bg-orange-500" />
               <QuickAction href="/management?tab=attendance" icon={Calendar} label="Attendance" color="bg-rose-500" />
               <QuickAction href="/community" icon={Users} label="Community" color="bg-pink-500" />
@@ -246,7 +246,7 @@ export function LecturerDashboard() {
               ) : (
                 recentRecordings.map((rec, i) => (
                   <div key={rec.id || i} className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                    <div className="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center text-violet-600">
+                    <div className="w-10 h-10 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600">
                       <PlayCircle className="w-5 h-5" />
                     </div>
                     <div className="flex-1 min-w-0">

@@ -70,7 +70,7 @@ export default function GrammarPage() {
     <div className="space-y-6 animate-in fade-in duration-500 pb-20 pt-4 px-4 md:px-0 max-w-7xl mx-auto">
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-purple-100 dark:bg-purple-900/30 rounded-xl text-purple-600">
+          <div className="p-2.5 bg-orange-100 dark:bg-orange-900/30 rounded-xl text-orange-600">
             <BookText size={22} />
           </div>
           <div>
@@ -141,7 +141,7 @@ export default function GrammarPage() {
               <div className="p-4">
                 <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2">{c.title}</h3>
                 <div className="flex items-center gap-3 mt-2 text-sm text-gray-500 dark:text-gray-400">
-                  {c.category && <span className="px-2 py-0.5 rounded-full bg-purple-50 dark:bg-purple-900/20 text-purple-600 text-xs">{c.category}</span>}
+                  {c.category && <span className="px-2 py-0.5 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-600 text-xs">{c.category}</span>}
                   {c.durationSeconds ? (
                     <span className="flex items-center gap-1"><Clock size={13} />{Math.floor(c.durationSeconds / 60)}m</span>
                   ) : null}

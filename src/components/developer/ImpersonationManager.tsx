@@ -25,7 +25,7 @@ export function ImpersonationManager() {
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
         <h3 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
-          <UserCog className="w-5 h-5 text-purple-600" />
+          <UserCog className="w-5 h-5 text-orange-600" />
           Role Impersonation
         </h3>
         <p className="text-sm text-gray-500 mb-6">
@@ -38,13 +38,13 @@ export function ImpersonationManager() {
             <button
               key={role.id}
               onClick={() => handleImpersonate(role.id)}
-              className="flex items-start gap-4 p-4 rounded-xl border border-gray-200 hover:border-purple-200 hover:bg-purple-50 transition-all text-left group"
+              className="flex items-start gap-4 p-4 rounded-xl border border-gray-200 hover:border-orange-200 hover:bg-orange-50 transition-all text-left group"
             >
               <div className="p-3 bg-gray-100 rounded-lg group-hover:bg-white group-hover:shadow-sm transition-all">
-                <role.icon className="w-6 h-6 text-gray-500 group-hover:text-purple-600" />
+                <role.icon className="w-6 h-6 text-gray-500 group-hover:text-orange-600" />
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 group-hover:text-purple-700">
+                <h4 className="font-semibold text-gray-900 group-hover:text-orange-700">
                   {role.label}
                 </h4>
                 <p className="text-xs text-gray-500 mt-1">

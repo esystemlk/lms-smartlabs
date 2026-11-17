@@ -14,7 +14,6 @@ import { Button } from "@/components/ui/Button";
 const PALETTES = [
     { name: "Default Blue", primary: "#0056D2" },
     { name: "Emerald", primary: "#10b981" },
-    { name: "Purple", primary: "#8b5cf6" },
     { name: "Rose", primary: "#f43f5e" },
     { name: "Orange", primary: "#f97316" },
     { name: "Black", primary: "#000000" },

@@ -44,7 +44,7 @@ export default function SettingsMenuPage() {
       description: "Theme, dark mode, layout",
       icon: Palette,
       href: "/settings/appearance",
-      color: "bg-purple-500 text-white"
+      color: "bg-orange-500 text-white"
     },
   ];
 

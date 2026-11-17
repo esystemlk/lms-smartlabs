@@ -34,7 +34,7 @@ const getFileIcon = (type: string) => {
     case 'document': return <FileText className="text-blue-600" />;
     case 'text': return <FileText className="text-gray-600" />;
     case 'image': return <ImageIcon className="text-blue-500" />;
-    case 'video': return <Video className="text-purple-500" />;
+    case 'video': return <Video className="text-orange-500" />;
     case 'audio': return <Music className="text-yellow-500" />;
     case 'archive': return <Folder className="text-gray-500" />;
     default: return <FileText className="text-gray-400" />;

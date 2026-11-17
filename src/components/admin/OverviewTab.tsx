@@ -35,7 +35,7 @@ export function OverviewTab({ users, courses, enrollments = [], loading }: Overv
       title: "Total Revenue",
       value: formatPrice(totalRevenue, undefined),
       icon: DollarSign,
-      color: "bg-purple-500",
+      color: "bg-orange-500",
       description: "Lifetime earnings"
     },
     {

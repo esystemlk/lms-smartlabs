@@ -21,10 +21,13 @@ import {
     Megaphone,
     ChevronDown,
     Download,
-    BookText
+    BookText,
+    MonitorPlay
 } from "lucide-react";
 import { clsx } from "clsx";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
+import { LecturerDashboard } from "@/components/lecturer/LecturerDashboard";
+import { VideoCheckTab } from "@/components/admin/VideoCheckTab";
 import { CoursesTab } from "@/components/admin/CoursesTab";
 import { RecordingsTab } from "@/components/admin/RecordingsTab";
 import { ResourceManager } from "@/components/admin/ResourceManager";
@@ -43,7 +46,7 @@ import { enrollmentService } from "@/services/enrollmentService";
 import { userService } from "@/services/userService";
 import { Course, Enrollment, UserData } from "@/lib/types";
 
-type ManagementTab = 'dashboard' | 'courses' | 'recordings' | 'class-recordings' | 'video-library' | 'grammar' | 'resources' | 'users' | 'settings' | 'analytics' | 'enrollments' | 'attendance' | 'support' | 'students' | 'announcements';
+type ManagementTab = 'dashboard' | 'video-check' | 'courses' | 'recordings' | 'class-recordings' | 'video-library' | 'grammar' | 'resources' | 'users' | 'settings' | 'analytics' | 'enrollments' | 'attendance' | 'support' | 'students' | 'announcements';
 
 export default function ManagementPortalPage() {
     const { userData, loading: authLoading } = useAuth();
@@ -118,10 +121,8 @@ export default function ManagementPortalPage() {
 
     const handleTabChange = (tab: ManagementTab) => {
         setActiveTab(tab);
-        // Update URL without refresh
-        const url = new URL(window.location.href);
-        url.searchParams.set('tab', tab);
-        window.history.pushState({}, '', url);
+        // Router navigation (not pushState) so the sidebar's active item follows along.
+        router.push(`/management?tab=${tab}`, { scroll: false });
     };
 
     if (authLoading || (loadingData && courses.length === 0)) {
@@ -137,10 +138,11 @@ export default function ManagementPortalPage() {
     const isAdmin = ["admin", "superadmin", "developer"].includes(userData.role || '');
 
     const tabs: { id: ManagementTab; label: string; icon: any }[] = [
-        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
         { id: 'courses', label: 'Courses', icon: BookOpen },
         { id: 'recordings', label: 'Recorded Library', icon: PlayCircle },
         { id: 'class-recordings', label: 'Live Recordings', icon: Video },
+        { id: 'video-check', label: 'Video Check', icon: MonitorPlay },
         { id: 'grammar', label: 'Grammar', icon: BookText },
         { id: 'resources', label: 'Resources', icon: FolderOpen },
         ...(isAdmin ? [
@@ -161,15 +163,20 @@ export default function ManagementPortalPage() {
     return (
         <div className="space-y-6 pb-20 animate-in fade-in duration-500">
             {/* Portal Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white dark:bg-gray-800 p-4 md:p-6 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-sm">
-                <div>
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Management Portal</h1>
-                    <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mt-1">
-                        Centralized control for courses, resources, and students.
-                    </p>
+            <div className="sl-card sl-rise flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 md:p-6">
+                <div className="flex items-center gap-4 min-w-0">
+                    <span className="hidden sm:flex w-12 h-12 rounded-2xl bg-soft text-primary items-center justify-center shrink-0">
+                        <activeTabMeta.icon size={24} />
+                    </span>
+                    <div className="min-w-0">
+                        <p className="text-xs font-bold uppercase tracking-[0.06em] text-ink-muted">
+                            {isAdmin ? "Admin console" : "Lecturer console"}
+                        </p>
+                        <h1 className="text-2xl md:text-[28px] font-extrabold text-ink dark:text-white leading-tight">{activeTabMeta.label}</h1>
+                    </div>
                 </div>
-                {/* Mobile: dropdown menu that opens a 2x2 grid of links */}
-                <div className="md:hidden relative w-full">
+                {/* Below desktop: section switcher (desktop uses the sidebar) */}
+                <div className="lg:hidden relative w-full">
                     <button
                         onClick={() => setMenuOpen(o => !o)}
                         className="w-full flex items-center justify-between gap-2 px-4 py-3 rounded-2xl bg-brand-blue text-white font-bold shadow-md active:scale-[0.99] transition-transform"
@@ -211,23 +218,11 @@ export default function ManagementPortalPage() {
                     )}
                 </div>
 
-                {/* Desktop: wrapping tab row */}
-                <div className="hidden md:flex items-center gap-2 flex-wrap justify-end">
-                    {tabs.map(t => (
-                        <TabButton
-                            key={t.id}
-                            active={activeTab === t.id}
-                            onClick={() => handleTabChange(t.id)}
-                            icon={t.icon}
-                            label={t.label}
-                        />
-                    ))}
-                </div>
             </div>
 
             {/* Main Content Area */}
             <div className="min-h-[60vh]">
-                {activeTab === 'dashboard' && <AdminDashboard />}
+                {activeTab === 'dashboard' && (isAdmin ? <AdminDashboard /> : <LecturerDashboard />)}
                 {activeTab === 'courses' && (
                     <div className="space-y-6">
                         <div className="flex justify-end">
@@ -251,7 +246,7 @@ export default function ManagementPortalPage() {
                         <div className="flex justify-end">
                             <button
                                 onClick={() => router.push('/admin/recordings/upload')}
-                                className="flex items-center gap-2 px-4 py-2 bg-violet-600 text-white rounded-xl font-bold hover:bg-violet-700 transition-all shadow-md active:scale-95"
+                                className="flex items-center gap-2 px-4 py-2 bg-orange-600 text-white rounded-xl font-bold hover:bg-orange-700 transition-all shadow-md active:scale-95"
                             >
                                 <PlayCircle size={18} />
                                 Manual Upload
@@ -280,6 +275,7 @@ export default function ManagementPortalPage() {
                         </button>
                     </div>
                 )}
+                {activeTab === 'video-check' && <VideoCheckTab />}
                 {activeTab === 'video-library' && isAdmin && (
                     <div className="bg-white dark:bg-gray-800 rounded-3xl p-4 md:p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
                         <div className="mb-6">
@@ -364,17 +360,3 @@ export default function ManagementPortalPage() {
     );
 }
 
-function TabButton({ active, onClick, icon: Icon, label }: { active: boolean, onClick: () => void, icon: any, label: string }) {
-    return (
-        <button
-            onClick={onClick}
-            className={`flex items-center gap-2 px-4 py-2 rounded-2xl transition-all whitespace-nowrap font-bold text-sm ${active
-                ? "bg-brand-blue text-white shadow-lg shadow-blue-200 dark:shadow-none translate-y-[-2px]"
-                : "text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-700/50"
-                }`}
-        >
-            <Icon size={18} />
-            <span>{label}</span>
-        </button>
-    );
-}

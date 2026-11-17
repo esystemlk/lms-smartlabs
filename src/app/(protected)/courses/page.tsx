@@ -27,6 +27,7 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { Course, Batch } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { settingsService } from "@/services/settingsService";
+import { BookOpenText, Books, Storefront, Play, Clock as ClockIcon, ChalkboardTeacher, ListBullets, Certificate } from "@phosphor-icons/react";
 
 export default function CoursesPage() {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function CoursesPage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [pendingCourses, setPendingCourses] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<"all" | "mine" | "available">("all");
 
   // Enrollment Modal State
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
@@ -211,134 +213,136 @@ export default function CoursesPage() {
     );
   }
 
-  return (
-    <div className="w-full max-w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+  const isMine = (id: string) => getEnrollmentStatus(id) !== "none";
+  const counts = { mine: courses.filter((c) => isMine(c.id)).length, available: courses.filter((c) => !isMine(c.id)).length };
+  const visibleCourses = filter === "all" ? courses : courses.filter((c) => (filter === "mine") === isMine(c.id));
 
-      {/* Hero Section */}
-      <section className="relative w-full max-w-full rounded-2xl md:rounded-3xl overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 md:p-12 shadow-xl">
-        <div className="relative z-10 max-w-2xl">
-          <h1 className="text-xl md:text-5xl font-bold mb-2 md:mb-4 leading-tight">
-            Master Your Future with <span className="text-yellow-300">Smart Labs</span>
-          </h1>
-          <p className="text-blue-100 text-xs md:text-lg mb-4 md:mb-8">
-            Join thousands of students learning cutting-edge technologies. Select a course, choose your batch, and start your journey today.
-          </p>
-          <div className="flex gap-4">
-            <Button variant="ghost" className="bg-white/20 hover:bg-white/30 text-white border-0 text-xs md:text-base h-8 md:h-10">
-              Browse Courses
-            </Button>
+  return (
+    <div className="w-full max-w-full space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+
+      {/* Header */}
+      <section className="sl-hero sl-rise relative overflow-hidden rounded-[26px] p-5 md:p-8 text-white">
+        <span aria-hidden className="sl-float absolute -right-12 -top-20 w-56 h-56 rounded-full bg-[radial-gradient(circle,#9EB0FF,transparent_70%)] opacity-60" />
+        <span aria-hidden className="sl-float absolute right-40 -bottom-24 w-44 h-44 rounded-full bg-[radial-gradient(circle,#FFB070,transparent_70%)] opacity-50" style={{ animationDelay: "-3s" }} />
+        <div className="relative flex flex-wrap items-end justify-between gap-5">
+          <div className="max-w-xl">
+            <h1 className="text-[24px] md:text-[34px] font-extrabold leading-tight">Courses</h1>
+            <p className="text-[#DCE2FF] mt-1.5 text-sm md:text-base">
+              Continue your enrolled courses, or pick a new one, choose your batch and start learning.
+            </p>
+          </div>
+          <div className="flex gap-2.5">
+            <div className="rounded-2xl bg-white/15 border border-white/25 px-4 py-2.5 text-center min-w-[92px]">
+              <b className="block font-display text-2xl">{counts.mine}</b>
+              <span className="text-[12px] text-[#DCE2FF]">Enrolled</span>
+            </div>
+            <div className="rounded-2xl bg-white/15 border border-white/25 px-4 py-2.5 text-center min-w-[92px]">
+              <b className="block font-display text-2xl">{counts.available}</b>
+              <span className="text-[12px] text-[#DCE2FF]">Available</span>
+            </div>
           </div>
         </div>
-
-        {/* Decorative Circles */}
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-40 h-40 md:w-96 md:h-96 bg-white/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-32 h-32 md:w-72 md:h-72 bg-blue-500/30 rounded-full blur-3xl"></div>
       </section>
 
-      {/* Course Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
-        {courses.map((course) => (
-          <div key={course.id} className="group bg-white dark:bg-card rounded-xl md:rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-border overflow-hidden flex flex-col h-full">
-            {/* Content */}
-            <div className="p-3 md:p-6 flex flex-col flex-1">
-              <div className="mb-2 md:mb-4">
-                <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mb-1.5 md:mb-2">
-                  {course.level && (
-                    <span className="px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-300">
-                      {course.level}
-                    </span>
-                  )}
-                  {course.category && (
-                    <span className="px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-300">
-                      {course.category}
-                    </span>
-                  )}
-                  {course.includesCertificate && (
-                    <span className="px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-300">
-                      Certificate
-                    </span>
-                  )}
+      {/* Filter tabs */}
+      <div role="tablist" aria-label="Course filter" className="flex gap-1 p-1.5 bg-white dark:bg-slate-900 border border-line dark:border-slate-800 rounded-2xl overflow-x-auto no-scrollbar w-fit max-w-full">
+        {([
+          { id: "all", label: "All courses", icon: ListBullets, n: courses.length },
+          { id: "mine", label: "My courses", icon: Books, n: counts.mine },
+          { id: "available", label: "Available", icon: Storefront, n: counts.available },
+        ] as const).map((t) => {
+          const on = filter === t.id;
+          return (
+            <button
+              key={t.id}
+              type="button"
+              role="tab"
+              aria-selected={on}
+              onClick={() => setFilter(t.id)}
+              className={`h-10 px-4 rounded-xl inline-flex items-center gap-2 text-sm font-semibold whitespace-nowrap transition-colors ${on ? "bg-ink text-white shadow-[0_4px_12px_rgba(15,23,42,.18)]" : "text-slate-600 dark:text-slate-300 hover:text-ink"}`}
+            >
+              <t.icon size={18} weight={on ? "fill" : "regular"} />
+              {t.label}
+              <span className={`text-[11.5px] px-1.5 rounded-full ${on ? "bg-white/20" : "bg-soft text-primary"}`}>{t.n}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Course grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
+        {visibleCourses.map((course, i) => {
+          const status = getEnrollmentStatus(course.id);
+          return (
+            <article
+              key={course.id}
+              className="sl-card sl-card-hover sl-rise group flex flex-col overflow-hidden"
+              style={{ animationDelay: `${0.05 + i * 0.04}s` }}
+            >
+              {/* Colour band with icon + status */}
+              <div className="relative h-24 bg-gradient-to-br from-[#EEF1FF] to-[#FFF1E6] dark:from-slate-800 dark:to-slate-800 flex items-end justify-between px-5 pb-3">
+                <span className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-900 shadow-sm text-primary flex items-center justify-center translate-y-6">
+                  <BookOpenText size={24} weight="duotone" />
+                </span>
+                <div className="flex flex-wrap justify-end gap-1.5 self-start mt-3">
+                  {status === "active" && <span className="pill-sm bg-[#E6F8F1] text-[#08795A]">Enrolled</span>}
+                  {status === "pending" && <span className="pill-sm bg-[#FFF5E0] text-[#8A5300]">Pending approval</span>}
+                  {course.level && <span className="pill-sm bg-white/80 text-primary">{course.level}</span>}
                 </div>
-                <Link href={`/courses/${course.id}`}>
-                  <h3 className="text-base md:text-xl font-bold text-gray-900 dark:text-white mb-1 md:mb-2 line-clamp-1 group-hover:text-brand-blue transition-colors">
+              </div>
+
+              <div className="p-5 pt-8 flex flex-col gap-3 flex-1">
+                <Link href={`/courses/${course.id}`} className="min-w-0">
+                  <h3 className="text-[17px] font-bold text-ink dark:text-white leading-snug line-clamp-2 group-hover:text-primary transition-colors">
                     {course.title}
                   </h3>
                 </Link>
-                <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
-                  {course.description}
-                </p>
-              </div>
+                {course.description && (
+                  <p className="text-[13.5px] text-ink-muted line-clamp-2">{course.description}</p>
+                )}
 
-              {course.tags && course.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1 mb-2 md:mb-4">
-                  {course.tags.slice(0, 3).map((tag, i) => (
-                    <span key={i} className="text-[10px] text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">
-                      #{tag}
+                <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[13px] text-ink-muted">
+                  {course.instructorName && (
+                    <span className="inline-flex items-center gap-1.5"><ChalkboardTeacher size={16} /> {course.instructorName}</span>
+                  )}
+                  <span className="inline-flex items-center gap-1.5"><ClockIcon size={16} /> Flexible</span>
+                  <span className="inline-flex items-center gap-1.5"><ListBullets size={16} /> {course.lessonsCount || 0} lessons</span>
+                  {course.includesCertificate && (
+                    <span className="inline-flex items-center gap-1.5"><Certificate size={16} /> Certificate</span>
+                  )}
+                </div>
+
+                <div className="mt-auto pt-4 border-t border-line dark:border-slate-800 flex flex-col gap-3">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-[12px] font-semibold uppercase tracking-wide text-ink-muted">Course fee</span>
+                    <span className="font-display text-xl font-extrabold text-ink dark:text-white">
+                      {formatPrice(course.priceLKR || course.price, course.priceUSD)}
                     </span>
-                  ))}
-                </div>
-              )}
-
-              <div className="flex items-center gap-3 md:gap-4 text-[10px] md:text-xs text-gray-500 dark:text-gray-400 mb-3 md:mb-6">
-                <div className="flex items-center gap-1">
-                  <Users size={12} className="md:w-3.5 md:h-3.5" />
-                  <span>{course.instructorName}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Clock size={12} className="md:w-3.5 md:h-3.5" />
-                  <span>Flexible</span>
-                </div>
-                <div className="flex items-center gap-1 ml-auto font-medium text-brand-blue">
-                  <BookOpen size={12} className="md:w-3.5 md:h-3.5" />
-                  <span>{course.lessonsCount} Lessons</span>
+                  </div>
+                  {status === "active" ? (
+                    <Link href={`/courses/${course.id}`} className="sl-btn sl-btn-soft w-full">
+                      <Play size={16} weight="fill" /> Continue learning
+                    </Link>
+                  ) : status === "pending" ? (
+                    <div className="sl-btn w-full bg-[#FFF5E0] text-[#8A5300] cursor-default hover:transform-none">
+                      <ClockIcon size={16} /> Waiting for approval
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2">
+                      <Link href={`/courses/${course.id}`} className="sl-btn sl-btn-outline">Details</Link>
+                      <button type="button" onClick={() => handleOpenEnrollModal(course)} className="sl-btn sl-btn-primary">
+                        Enroll now
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
-
-              <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-50 dark:border-gray-800">
-                <div className="flex flex-col">
-                  <span className="text-[10px] md:text-xs text-gray-400 uppercase tracking-wider">Price</span>
-                  <span className="text-base md:text-xl font-bold text-brand-blue">
-                    {formatPrice(course.priceLKR || course.price, course.priceUSD)}
-                  </span>
-                </div>
-                {(() => {
-                  const status = getEnrollmentStatus(course.id);
-                  if (status === 'active') {
-                    return (
-                      <Button
-                        onClick={() => router.push('/dashboard')}
-                        variant="outline"
-                        className="border-brand-blue text-brand-blue hover:bg-blue-50 text-xs md:text-sm h-8 md:h-10"
-                      >
-                        Continue Learning
-                      </Button>
-                    );
-                  } else if (status === 'pending') {
-                    return (
-                      <div className="flex items-center gap-2 bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100">
-                        <Clock size={12} className="text-amber-600" />
-                        <span className="text-[10px] md:text-xs font-bold text-amber-800">Pending Approval</span>
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <Button
-                        onClick={() => handleOpenEnrollModal(course)}
-                        variant="secondary"
-                        className="shadow-lg shadow-blue-500/20 text-xs md:text-sm h-8 md:h-10"
-                      >
-                        Enroll Now
-                      </Button>
-                    );
-                  }
-                })()}
-              </div>
-            </div>
-          </div>
-        ))}
+            </article>
+          );
+        })}
       </div>
 
-      {courses.length === 0 && (
+      {visibleCourses.length === 0 && (
         <div className="w-full max-w-full mx-auto text-center py-20 bg-gray-50 dark:bg-gray-800/50 rounded-3xl border border-dashed border-gray-200 dark:border-gray-700 overflow-hidden">
           <Award className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 dark:text-white">No courses available yet</h3>
