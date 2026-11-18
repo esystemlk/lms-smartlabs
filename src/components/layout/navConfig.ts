@@ -6,6 +6,7 @@ import {
   PlayCircle,
   ClipboardText,
   Exam,
+  Target,
   CalendarBlank,
   FolderOpen,
   TextAa,
@@ -37,6 +38,7 @@ export interface NavItem {
   label: string;
   icon: Icon;
   roles?: Role[]; // omitted = everyone who can see the section
+  pte?: boolean; // only shown when the server confirms PTE training access
 }
 
 export interface NavSection {
@@ -74,6 +76,7 @@ export const STUDENT_NAV: NavSection[] = [
     items: [
       { href: "/lms/assignments", label: "Assignments", icon: ClipboardText },
       { href: "/lms/exams", label: "Exams", icon: Exam },
+      { href: "/lms/pte", label: "PTE Training", icon: Target, pte: true },
       { href: "/lms/resources", label: "Resources", icon: FolderOpen },
       { href: "/lms/grammar", label: "Grammar Classes", icon: TextAa },
     ],

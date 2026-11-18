@@ -9,6 +9,7 @@ import { clsx } from "clsx";
 import { X, ArrowsLeftRight, DownloadSimple } from "@phosphor-icons/react";
 import { useAuth } from "@/context/AuthContext";
 import { usePWAInstall } from "@/hooks/usePWAInstall";
+import { usePteAccess } from "@/lib/pte/client";
 import {
   navFor,
   isActiveHref,
@@ -44,7 +45,10 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const { userData } = useAuth();
   const role = userData?.role;
   const inConsole = isConsolePath(pathname) && isStaffRole(role);
-  const sections = navFor(role, inConsole);
+  const pteOk = usePteAccess(userData?.uid);
+  const sections = navFor(role, inConsole)
+    .map((s) => ({ ...s, items: s.items.filter((i) => !i.pte || pteOk) }))
+    .filter((s) => s.items.length > 0);
 
   return (
     <nav aria-label={inConsole ? "Staff menu" : "Main menu"} className="flex flex-col gap-1">
