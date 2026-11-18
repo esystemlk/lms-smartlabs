@@ -1,0 +1,1268 @@
+[
+  {
+    "id": "r_reorder-01",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "This changed in 1923, when the town council took over its running and abolished all charges."
+      },
+      {
+        "id": "B",
+        "text": "For decades, however, it was open only two evenings a week, and borrowers had to pay a small fee."
+      },
+      {
+        "id": "C",
+        "text": "The first public library in the town opened in 1887, funded by a local mill owner."
+      },
+      {
+        "id": "D",
+        "text": "Within five years, the number of registered members had tripled."
+      }
+    ],
+    "displayOrder": [
+      "A",
+      "D",
+      "B",
+      "C"
+    ],
+    "answer": [
+      "C",
+      "B",
+      "A",
+      "D"
+    ],
+    "explanation": "A introduces the library; 'however' in B contrasts with its opening; 'This changed' in C refers to the limits in B; D gives the result."
+  },
+  {
+    "id": "r_reorder-02",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "As it moves, the glacier scrapes the ground beneath it, carving deep valleys."
+      },
+      {
+        "id": "B",
+        "text": "Over many years, the accumulated snow is compressed into dense ice."
+      },
+      {
+        "id": "C",
+        "text": "These U-shaped valleys remain long after the ice itself has melted."
+      },
+      {
+        "id": "D",
+        "text": "Once the ice becomes thick enough, its own weight causes it to flow slowly downhill."
+      },
+      {
+        "id": "E",
+        "text": "Glaciers form where more snow falls in winter than melts in summer."
+      }
+    ],
+    "displayOrder": [
+      "B",
+      "D",
+      "E",
+      "C",
+      "A"
+    ],
+    "answer": [
+      "E",
+      "B",
+      "D",
+      "A",
+      "C"
+    ],
+    "explanation": "Follow the process in time: snow builds up, becomes ice, flows, carves valleys, and the valleys remain."
+  },
+  {
+    "id": "r_reorder-03",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "At first, many Europeans believed the fruit was poisonous and grew it only as a decoration."
+      },
+      {
+        "id": "B",
+        "text": "Over time, however, it became a central ingredient in Italian cooking."
+      },
+      {
+        "id": "C",
+        "text": "The tomato was first grown in South America."
+      },
+      {
+        "id": "D",
+        "text": "Spanish explorers brought it to Europe in the sixteenth century."
+      }
+    ],
+    "displayOrder": [
+      "A",
+      "C",
+      "B",
+      "D"
+    ],
+    "answer": [
+      "C",
+      "D",
+      "A",
+      "B"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-04",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "Next, an experiment is designed to test this prediction under controlled conditions."
+      },
+      {
+        "id": "B",
+        "text": "A good scientific experiment begins with a clear question."
+      },
+      {
+        "id": "C",
+        "text": "Finally, the results are analysed to see whether they support the hypothesis."
+      },
+      {
+        "id": "D",
+        "text": "The researcher then forms a hypothesis that predicts a possible answer."
+      }
+    ],
+    "displayOrder": [
+      "C",
+      "D",
+      "A",
+      "B"
+    ],
+    "answer": [
+      "B",
+      "D",
+      "A",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-05",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "Around the mould, the bacteria had been killed."
+      },
+      {
+        "id": "B",
+        "text": "In 1928, Alexander Fleming returned from holiday to find mould growing on one of his bacteria dishes."
+      },
+      {
+        "id": "C",
+        "text": "He identified the substance responsible and named it penicillin."
+      },
+      {
+        "id": "D",
+        "text": "More than a decade later, other scientists found a way to produce it in large quantities."
+      }
+    ],
+    "displayOrder": [
+      "C",
+      "A",
+      "D",
+      "B"
+    ],
+    "answer": [
+      "B",
+      "A",
+      "C",
+      "D"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-06",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "Many students find it hard to start writing an essay."
+      },
+      {
+        "id": "B",
+        "text": "One useful strategy is to begin by writing a rough plan of the main points."
+      },
+      {
+        "id": "C",
+        "text": "The draft can then be revised and edited until the argument is clear."
+      },
+      {
+        "id": "D",
+        "text": "Once the plan is clear, the first draft can be written without worrying about perfect wording."
+      }
+    ],
+    "displayOrder": [
+      "D",
+      "A",
+      "B",
+      "C"
+    ],
+    "answer": [
+      "A",
+      "B",
+      "D",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-07",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "She is the only female in the colony that lays eggs."
+      },
+      {
+        "id": "B",
+        "text": "The thousands of other females are workers, which collect food, build the hive and care for the young."
+      },
+      {
+        "id": "C",
+        "text": "Male bees, called drones, exist mainly to mate with queens from other colonies."
+      },
+      {
+        "id": "D",
+        "text": "Honeybees live in large colonies headed by a single queen."
+      }
+    ],
+    "displayOrder": [
+      "A",
+      "D",
+      "B",
+      "C"
+    ],
+    "answer": [
+      "D",
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-08",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "However, its second product became a surprise success after it was recommended by a popular website."
+      },
+      {
+        "id": "B",
+        "text": "Within five years, the firm employed more than two thousand people."
+      },
+      {
+        "id": "C",
+        "text": "Its first product, a simple music player, sold only a few hundred units."
+      },
+      {
+        "id": "D",
+        "text": "The company was founded in a small garage in 1998."
+      }
+    ],
+    "displayOrder": [
+      "A",
+      "D",
+      "B",
+      "C"
+    ],
+    "answer": [
+      "D",
+      "C",
+      "A",
+      "B"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-09",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "When the droplets in the clouds become heavy enough, they fall as rain or snow."
+      },
+      {
+        "id": "B",
+        "text": "This water eventually flows back into rivers and oceans, completing the cycle."
+      },
+      {
+        "id": "C",
+        "text": "Water evaporates from oceans, lakes and rivers when it is heated by the sun."
+      },
+      {
+        "id": "D",
+        "text": "As the warm, moist air rises, it cools and the water vapour condenses into clouds."
+      }
+    ],
+    "displayOrder": [
+      "A",
+      "D",
+      "B",
+      "C"
+    ],
+    "answer": [
+      "C",
+      "D",
+      "A",
+      "B"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-10",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "This document gives candidates a chance to explain why they want to study a particular subject."
+      },
+      {
+        "id": "B",
+        "text": "For this reason, a generic statement that could apply to any course is unlikely to impress."
+      },
+      {
+        "id": "C",
+        "text": "Most universities ask applicants to submit a personal statement."
+      },
+      {
+        "id": "D",
+        "text": "Admissions tutors use it to judge motivation and suitability beyond exam results."
+      }
+    ],
+    "displayOrder": [
+      "D",
+      "C",
+      "A",
+      "B"
+    ],
+    "answer": [
+      "C",
+      "A",
+      "D",
+      "B"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-11",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "In the 1990s, the local council decided to redevelop the area."
+      },
+      {
+        "id": "B",
+        "text": "The city's old harbour had been in decline for decades."
+      },
+      {
+        "id": "C",
+        "text": "Today the harbour is one of the city's most popular destinations for visitors."
+      },
+      {
+        "id": "D",
+        "text": "Old warehouses were converted into apartments, restaurants and galleries."
+      }
+    ],
+    "displayOrder": [
+      "B",
+      "D",
+      "C",
+      "A"
+    ],
+    "answer": [
+      "B",
+      "A",
+      "D",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-12",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "The dough is then kneaded, which develops the gluten that gives bread its structure."
+      },
+      {
+        "id": "B",
+        "text": "Bread is made by mixing flour, water, salt and yeast to form a dough."
+      },
+      {
+        "id": "C",
+        "text": "Finally, the dough is shaped and baked in a hot oven."
+      },
+      {
+        "id": "D",
+        "text": "Next, it is left to rise as the yeast produces gas."
+      }
+    ],
+    "displayOrder": [
+      "A",
+      "C",
+      "D",
+      "B"
+    ],
+    "answer": [
+      "B",
+      "A",
+      "D",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-13",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "When Gutenberg introduced movable type in the fifteenth century, books could be produced much more quickly."
+      },
+      {
+        "id": "B",
+        "text": "Each copy had to be written by hand, often by monks in monasteries."
+      },
+      {
+        "id": "C",
+        "text": "As a result, literacy gradually spread beyond the clergy and the wealthy."
+      },
+      {
+        "id": "D",
+        "text": "Before the invention of the printing press, books were rare and expensive."
+      }
+    ],
+    "displayOrder": [
+      "B",
+      "A",
+      "D",
+      "C"
+    ],
+    "answer": [
+      "D",
+      "B",
+      "A",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-14",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "This is mainly because lithium is a key component of batteries for electric vehicles."
+      },
+      {
+        "id": "B",
+        "text": "However, mining lithium can use large amounts of water in dry regions."
+      },
+      {
+        "id": "C",
+        "text": "Researchers are therefore exploring ways to recycle batteries and reduce new mining."
+      },
+      {
+        "id": "D",
+        "text": "Global demand for lithium has increased rapidly in recent years."
+      }
+    ],
+    "displayOrder": [
+      "D",
+      "B",
+      "A",
+      "C"
+    ],
+    "answer": [
+      "D",
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-15",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "This shows that even small financial incentives can change everyday behaviour."
+      },
+      {
+        "id": "B",
+        "text": "In an effort to reduce waste, many governments introduced a small charge for each bag."
+      },
+      {
+        "id": "C",
+        "text": "The policy had a dramatic effect: in some countries, bag use fell by more than eighty percent."
+      },
+      {
+        "id": "D",
+        "text": "Plastic bags were once given away free in most shops."
+      }
+    ],
+    "displayOrder": [
+      "D",
+      "A",
+      "C",
+      "B"
+    ],
+    "answer": [
+      "D",
+      "B",
+      "C",
+      "A"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-16",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "The waves travel through the ground and can be recorded by instruments called seismometers."
+      },
+      {
+        "id": "B",
+        "text": "These movements release energy in the form of seismic waves."
+      },
+      {
+        "id": "C",
+        "text": "Earthquakes are caused by sudden movements along faults in the Earth's crust."
+      },
+      {
+        "id": "D",
+        "text": "By comparing records from several stations, scientists can locate the earthquake's origin."
+      }
+    ],
+    "displayOrder": [
+      "B",
+      "D",
+      "A",
+      "C"
+    ],
+    "answer": [
+      "C",
+      "B",
+      "A",
+      "D"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-17",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "It now runs public viewing evenings that attract hundreds of local residents."
+      },
+      {
+        "id": "B",
+        "text": "A student society was formed to encourage interest in astronomy."
+      },
+      {
+        "id": "C",
+        "text": "The following year, the society raised enough money to buy a professional telescope."
+      },
+      {
+        "id": "D",
+        "text": "In its first year, members met weekly to observe the night sky from the campus."
+      }
+    ],
+    "displayOrder": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "answer": [
+      "B",
+      "D",
+      "C",
+      "A"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-18",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "Elephants are known for their remarkable memory."
+      },
+      {
+        "id": "B",
+        "text": "Older females, called matriarchs, lead family groups and remember the locations of water sources."
+      },
+      {
+        "id": "C",
+        "text": "Herds led by older matriarchs are therefore more likely to survive difficult years."
+      },
+      {
+        "id": "D",
+        "text": "During droughts, this knowledge can be the difference between survival and death."
+      }
+    ],
+    "displayOrder": [
+      "C",
+      "A",
+      "D",
+      "B"
+    ],
+    "answer": [
+      "A",
+      "B",
+      "D",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-19",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "Because women could not attend university in Poland at the time, she moved to Paris to study."
+      },
+      {
+        "id": "B",
+        "text": "Marie Curie was born in Warsaw in 1867."
+      },
+      {
+        "id": "C",
+        "text": "There she carried out pioneering research on radioactivity."
+      },
+      {
+        "id": "D",
+        "text": "She became the first person to win Nobel Prizes in two different sciences."
+      }
+    ],
+    "displayOrder": [
+      "B",
+      "D",
+      "A",
+      "C"
+    ],
+    "answer": [
+      "B",
+      "A",
+      "C",
+      "D"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-20",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "This layout is one of many techniques designed to increase spending."
+      },
+      {
+        "id": "B",
+        "text": "This means customers must walk past many other products to reach them."
+      },
+      {
+        "id": "C",
+        "text": "Supermarkets often place essential items such as milk and bread at the back of the store."
+      },
+      {
+        "id": "D",
+        "text": "Along the way, shoppers may notice and buy items they had not planned to purchase."
+      }
+    ],
+    "displayOrder": [
+      "D",
+      "B",
+      "A",
+      "C"
+    ],
+    "answer": [
+      "C",
+      "B",
+      "D",
+      "A"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-21",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "In the early morning, the market is quiet."
+      },
+      {
+        "id": "B",
+        "text": "Around midday, the narrow streets are crowded with shoppers and tourists."
+      },
+      {
+        "id": "C",
+        "text": "By nine o'clock, stall holders have set up their tables and the first customers arrive."
+      },
+      {
+        "id": "D",
+        "text": "By late afternoon, most traders are packing away and the streets empty again."
+      }
+    ],
+    "displayOrder": [
+      "C",
+      "D",
+      "A",
+      "B"
+    ],
+    "answer": [
+      "A",
+      "C",
+      "B",
+      "D"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-22",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "The most successful method reduced water use by almost a third."
+      },
+      {
+        "id": "B",
+        "text": "The project team first identified the main problems facing local farmers."
+      },
+      {
+        "id": "C",
+        "text": "As a result, it has now been adopted by farms across the whole region."
+      },
+      {
+        "id": "D",
+        "text": "They then worked with the farmers to test several new irrigation methods."
+      }
+    ],
+    "displayOrder": [
+      "C",
+      "A",
+      "D",
+      "B"
+    ],
+    "answer": [
+      "B",
+      "D",
+      "A",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-23",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "In reality, shark attacks are extremely rare."
+      },
+      {
+        "id": "B",
+        "text": "Humans pose a far greater threat to sharks, killing millions every year through fishing."
+      },
+      {
+        "id": "C",
+        "text": "Conservationists argue that changing public perceptions is essential to protect these animals."
+      },
+      {
+        "id": "D",
+        "text": "Many people assume that sharks are dangerous to humans."
+      }
+    ],
+    "displayOrder": [
+      "A",
+      "C",
+      "B",
+      "D"
+    ],
+    "answer": [
+      "D",
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-24",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "When it reopened, critics praised the clarity and warmth of its sound."
+      },
+      {
+        "id": "B",
+        "text": "The concert hall was completed in 1962."
+      },
+      {
+        "id": "C",
+        "text": "For many years, musicians complained about its poor acoustics."
+      },
+      {
+        "id": "D",
+        "text": "In 2015, the hall was closed for a major renovation designed by sound engineers."
+      }
+    ],
+    "displayOrder": [
+      "B",
+      "D",
+      "C",
+      "A"
+    ],
+    "answer": [
+      "B",
+      "C",
+      "D",
+      "A"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-25",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "Children learn to speak by listening to the language around them."
+      },
+      {
+        "id": "B",
+        "text": "At first, babies produce simple sounds such as 'ba' and 'ma'."
+      },
+      {
+        "id": "C",
+        "text": "By the age of two, many can combine words into short sentences."
+      },
+      {
+        "id": "D",
+        "text": "Around their first birthday, most say their first recognisable words."
+      }
+    ],
+    "displayOrder": [
+      "B",
+      "D",
+      "C",
+      "A"
+    ],
+    "answer": [
+      "A",
+      "B",
+      "D",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-26",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "Two weeks later, the volcano erupted, but no one was injured."
+      },
+      {
+        "id": "B",
+        "text": "As the activity increased, authorities ordered the evacuation of nearby villages."
+      },
+      {
+        "id": "C",
+        "text": "Then, in the spring, scientists recorded a series of small earthquakes beneath it."
+      },
+      {
+        "id": "D",
+        "text": "A volcano had been dormant for over a century."
+      }
+    ],
+    "displayOrder": [
+      "C",
+      "A",
+      "D",
+      "B"
+    ],
+    "answer": [
+      "D",
+      "C",
+      "B",
+      "A"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-27",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "During the 1980s, more universities and organisations joined the network."
+      },
+      {
+        "id": "B",
+        "text": "The invention of the World Wide Web in 1989 made information much easier to access."
+      },
+      {
+        "id": "C",
+        "text": "Within a decade, millions of households were online."
+      },
+      {
+        "id": "D",
+        "text": "The internet began as a project to connect a small number of research computers."
+      }
+    ],
+    "displayOrder": [
+      "B",
+      "A",
+      "D",
+      "C"
+    ],
+    "answer": [
+      "D",
+      "A",
+      "B",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-28",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "This means there may be no single best time of day for everyone to study."
+      },
+      {
+        "id": "B",
+        "text": "Research suggests that these preferences are partly influenced by genetics."
+      },
+      {
+        "id": "C",
+        "text": "Others find that they concentrate best early in the morning."
+      },
+      {
+        "id": "D",
+        "text": "Some students prefer to study late at night."
+      }
+    ],
+    "displayOrder": [
+      "A",
+      "B",
+      "D",
+      "C"
+    ],
+    "answer": [
+      "D",
+      "C",
+      "B",
+      "A"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-29",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "A new species of frog was recently discovered in a remote rainforest."
+      },
+      {
+        "id": "B",
+        "text": "Researchers first noticed its unusual call during a night-time survey."
+      },
+      {
+        "id": "C",
+        "text": "The analysis confirmed that the frog had never been described before."
+      },
+      {
+        "id": "D",
+        "text": "After capturing several specimens, they compared their DNA with that of known species."
+      }
+    ],
+    "displayOrder": [
+      "B",
+      "D",
+      "C",
+      "A"
+    ],
+    "answer": [
+      "A",
+      "B",
+      "D",
+      "C"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  },
+  {
+    "id": "r_reorder-30",
+    "section": "reading",
+    "type": "r_reorder",
+    "title": "Re-order paragraphs",
+    "instructions": "The text boxes below have been placed in a random order. Restore the original order by dragging the text boxes.",
+    "scoring": "adjacent_pairs",
+    "skills": [
+      "reading"
+    ],
+    "paragraphs": [
+      {
+        "id": "A",
+        "text": "New techniques that allow fields to dry out periodically can reduce these emissions."
+      },
+      {
+        "id": "B",
+        "text": "Flooding helps control weeds but also produces methane, a powerful greenhouse gas."
+      },
+      {
+        "id": "C",
+        "text": "Rice is the staple food for more than half of the world's population."
+      },
+      {
+        "id": "D",
+        "text": "Traditionally, rice fields are flooded with water during the growing season."
+      }
+    ],
+    "displayOrder": [
+      "B",
+      "A",
+      "D",
+      "C"
+    ],
+    "answer": [
+      "C",
+      "D",
+      "B",
+      "A"
+    ],
+    "explanation": "Follow the time order and the linking words (then, however, as a result, this) that point back to the previous sentence."
+  }
+]

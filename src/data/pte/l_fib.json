@@ -1,0 +1,702 @@
+[
+  {
+    "id": "l_fib-01",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Good morning, everyone. Before we begin today's practical session, I'd like to remind you about laboratory safety. Please make sure you are wearing protective glasses at all times, even when you are only observing. Long hair should be tied back, and any food or drinks must be left outside the room. If a chemical comes into contact with your skin, rinse the area immediately with cold water and inform a demonstrator. Finally, remember to record every measurement in your notebook as you go, rather than trying to remember the results at the end of the session.",
+    "audioUrl": null,
+    "passage": "Good morning, everyone. Before we begin today's {{1}} session, I'd like to remind you about laboratory safety. Please make sure you are wearing {{2}} glasses at all times, even when you are only {{3}}. Long hair should be tied back, and any food or {{4}} must be left outside the room. If a chemical comes into contact with your skin, rinse the area {{5}} with cold water and inform a demonstrator. Finally, remember to record every {{6}} in your notebook as you go, rather than trying to remember the results at the end of the session.",
+    "answers": {
+      "1": "practical",
+      "2": "protective",
+      "3": "observing",
+      "4": "drinks",
+      "5": "immediately",
+      "6": "measurement"
+    },
+    "explanation": "Each word must match the recording and be spelled correctly."
+  },
+  {
+    "id": "l_fib-02",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The history of the bicycle is longer than many people realise. The earliest version, built in Germany in 1817, had no pedals at all; riders pushed themselves along with their feet. Pedals were added several decades later, but early models with an enormous front wheel were difficult and dangerous to ride. The real breakthrough came in the 1880s with the safety bicycle, which had two wheels of equal size and a chain driving the rear wheel. Its design was so successful that most modern bicycles still follow the same basic pattern.",
+    "audioUrl": null,
+    "passage": "The history of the bicycle is longer than many people {{1}}. The earliest version, built in Germany in 1817, had no {{2}} at all; riders pushed themselves along with their feet. Pedals were added several decades later, but early models with an enormous front wheel were difficult and {{3}} to ride. The real {{4}} came in the 1880s with the safety bicycle, which had two wheels of {{5}} size and a chain driving the rear wheel. Its design was so successful that most modern bicycles still follow the same basic {{6}}.",
+    "answers": {
+      "1": "realise",
+      "2": "pedals",
+      "3": "dangerous",
+      "4": "breakthrough",
+      "5": "equal",
+      "6": "pattern"
+    },
+    "acceptAlso": {
+      "1": [
+        "realize"
+      ]
+    },
+    "explanation": "British and American spellings of 'realise/realize' are both accepted."
+  },
+  {
+    "id": "l_fib-03",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Welcome to the first lecture in introductory psychology. This {{1}} we'll cover the main research methods, including experiments, surveys and case studies. You'll need to read the first two chapters of the {{2}} before Thursday. Assessment consists of a short {{3}} in week six and a final examination, and attendance at tutorials is {{4}}. If you have any questions, please contact me during my office {{5}}.",
+    "answers": {
+      "1": "semester",
+      "2": "textbook",
+      "3": "essay",
+      "4": "compulsory",
+      "5": "hours"
+    },
+    "transcript": "Welcome to the first lecture in introductory psychology. This semester we'll cover the main research methods, including experiments, surveys and case studies. You'll need to read the first two chapters of the textbook before Thursday. Assessment consists of a short essay in week six and a final examination, and attendance at tutorials is compulsory. If you have any questions, please contact me during my office hours.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-04",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Rainforests cover only a small {{1}} of the Earth's surface, yet they contain more than half of all known plant and animal species. Their {{2}} is threatened by logging, farming and mining. When forests are cleared, the carbon stored in trees is {{3}} into the atmosphere, which contributes to climate change. Protecting the remaining forests is therefore important for both wildlife and the global {{4}}.",
+    "answers": {
+      "1": "fraction",
+      "2": "survival",
+      "3": "released",
+      "4": "climate"
+    },
+    "transcript": "Rainforests cover only a small fraction of the Earth's surface, yet they contain more than half of all known plant and animal species. Their survival is threatened by logging, farming and mining. When forests are cleared, the carbon stored in trees is released into the atmosphere, which contributes to climate change. Protecting the remaining forests is therefore important for both wildlife and the global climate.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-05",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "The modern supply chain is remarkably {{1}}. A single smartphone may contain components made in more than a dozen countries. This allows companies to reduce costs, but it also creates {{2}}. When a factory in one region is closed by a natural {{3}} or a pandemic, production can be delayed around the world. As a result, many firms are now trying to {{4}} their suppliers.",
+    "answers": {
+      "1": "complex",
+      "2": "risks",
+      "3": "disaster",
+      "4": "diversify"
+    },
+    "transcript": "The modern supply chain is remarkably complex. A single smartphone may contain components made in more than a dozen countries. This allows companies to reduce costs, but it also creates risks. When a factory in one region is closed by a natural disaster or a pandemic, production can be delayed around the world. As a result, many firms are now trying to diversify their suppliers.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-06",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Good morning. Today's talk is about academic {{1}}. Whenever you use another person's ideas or words, you must {{2}} the original source. This applies to books, journal articles and websites alike. Failing to do so is considered plagiarism, which can lead to serious {{3}}, including failing the course. If you are unsure how to reference correctly, the library offers free {{4}} every week.",
+    "answers": {
+      "1": "integrity",
+      "2": "acknowledge",
+      "3": "penalties",
+      "4": "workshops"
+    },
+    "transcript": "Good morning. Today's talk is about academic integrity. Whenever you use another person's ideas or words, you must acknowledge the original source. This applies to books, journal articles and websites alike. Failing to do so is considered plagiarism, which can lead to serious penalties, including failing the course. If you are unsure how to reference correctly, the library offers free workshops every week.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-07",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Sleep is divided into several {{1}}, which repeat in cycles of about ninety minutes. During deep sleep, the body repairs tissues and strengthens the immune {{2}}. During REM sleep, most dreaming occurs and the brain processes {{3}} and emotions. Adults who regularly sleep less than seven hours a night may experience reduced {{4}} and a higher risk of illness.",
+    "answers": {
+      "1": "stages",
+      "2": "system",
+      "3": "memories",
+      "4": "concentration"
+    },
+    "transcript": "Sleep is divided into several stages, which repeat in cycles of about ninety minutes. During deep sleep, the body repairs tissues and strengthens the immune system. During REM sleep, most dreaming occurs and the brain processes memories and emotions. Adults who regularly sleep less than seven hours a night may experience reduced concentration and a higher risk of illness.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-08",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "The Industrial Revolution began in Britain in the late eighteenth century. New machines powered by water and later by {{1}} transformed the production of textiles. People moved from the countryside to rapidly growing {{2}} in search of work. Although industrialisation increased national wealth, working {{3}} in early factories were often dangerous, and child labour was {{4}}.",
+    "answers": {
+      "1": "steam",
+      "2": "cities",
+      "3": "conditions",
+      "4": "common"
+    },
+    "transcript": "The Industrial Revolution began in Britain in the late eighteenth century. New machines powered by water and later by steam transformed the production of textiles. People moved from the countryside to rapidly growing cities in search of work. Although industrialisation increased national wealth, working conditions in early factories were often dangerous, and child labour was common.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-09",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Marketing today relies heavily on data. Online retailers track what customers search for, what they click on and what they {{1}}. This information is used to create personalised {{2}}, which can increase sales significantly. However, consumers are becoming more concerned about {{3}}, and new laws in many regions require companies to explain how personal data is {{4}} and stored.",
+    "answers": {
+      "1": "purchase",
+      "2": "recommendations",
+      "3": "privacy",
+      "4": "collected"
+    },
+    "transcript": "Marketing today relies heavily on data. Online retailers track what customers search for, what they click on and what they purchase. This information is used to create personalised recommendations, which can increase sales significantly. However, consumers are becoming more concerned about privacy, and new laws in many regions require companies to explain how personal data is collected and stored.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-10",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Before you begin the experiment, check that all the equipment is {{1}} and working properly. Record the temperature at the start and then every two minutes for half an hour. Make sure you write down your {{2}} immediately, and don't rely on memory. At the end, compare your {{3}} with those of the other groups and discuss any {{4}} you notice.",
+    "answers": {
+      "1": "clean",
+      "2": "observations",
+      "3": "results",
+      "4": "differences"
+    },
+    "transcript": "Before you begin the experiment, check that all the equipment is clean and working properly. Record the temperature at the start and then every two minutes for half an hour. Make sure you write down your observations immediately, and don't rely on memory. At the end, compare your results with those of the other groups and discuss any differences you notice.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-11",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Volcanoes form where magma from deep inside the Earth rises to the {{1}}. Most are found along the edges of tectonic {{2}}, where these huge sections of crust either move apart or collide. Eruptions can be extremely {{3}}, but volcanic regions also offer benefits, such as fertile soil and {{4}} energy from underground heat.",
+    "answers": {
+      "1": "surface",
+      "2": "plates",
+      "3": "destructive",
+      "4": "geothermal"
+    },
+    "transcript": "Volcanoes form where magma from deep inside the Earth rises to the surface. Most are found along the edges of tectonic plates, where these huge sections of crust either move apart or collide. Eruptions can be extremely destructive, but volcanic regions also offer benefits, such as fertile soil and geothermal energy from underground heat.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-12",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "In this course you will learn how to write a business {{1}}. A strong plan explains what the company will sell, who its customers are and how it will compete with {{2}}. It should also include realistic financial {{3}} for at least the first three years. Investors use these plans to decide whether a business is worth the {{4}}.",
+    "answers": {
+      "1": "plan",
+      "2": "rivals",
+      "3": "forecasts",
+      "4": "risk"
+    },
+    "transcript": "In this course you will learn how to write a business plan. A strong plan explains what the company will sell, who its customers are and how it will compete with rivals. It should also include realistic financial forecasts for at least the first three years. Investors use these plans to decide whether a business is worth the risk.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-13",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Language learners often worry about making mistakes when they speak. However, research suggests that errors are a natural part of {{1}}. Learners who take part in real conversations, even imperfectly, tend to improve faster than those who wait until they feel {{2}}. Teachers can help by creating a supportive {{3}} where students feel comfortable taking {{4}}.",
+    "answers": {
+      "1": "learning",
+      "2": "confident",
+      "3": "environment",
+      "4": "risks"
+    },
+    "transcript": "Language learners often worry about making mistakes when they speak. However, research suggests that errors are a natural part of learning. Learners who take part in real conversations, even imperfectly, tend to improve faster than those who wait until they feel confident. Teachers can help by creating a supportive environment where students feel comfortable taking risks.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-14",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Hospitals are increasingly using telemedicine, which allows patients to {{1}} doctors by video call. This is particularly useful for people living in {{2}} areas far from medical centres. Telemedicine can reduce waiting times and travel {{3}}, although some examinations still require patients to attend in person. Doctors say that clear {{4}} is essential for successful online appointments.",
+    "answers": {
+      "1": "consult",
+      "2": "remote",
+      "3": "costs",
+      "4": "communication"
+    },
+    "transcript": "Hospitals are increasingly using telemedicine, which allows patients to consult doctors by video call. This is particularly useful for people living in remote areas far from medical centres. Telemedicine can reduce waiting times and travel costs, although some examinations still require patients to attend in person. Doctors say that clear communication is essential for successful online appointments.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-15",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "The Great Wall of China was not built all at once. It is actually a series of walls constructed over many {{1}} by different dynasties. Workers used local {{2}}, including earth, stone and brick. The wall was designed mainly for {{3}}, but it also helped control trade and movement along the {{4}}.",
+    "answers": {
+      "1": "centuries",
+      "2": "materials",
+      "3": "defence",
+      "4": "border"
+    },
+    "transcript": "The Great Wall of China was not built all at once. It is actually a series of walls constructed over many centuries by different dynasties. Workers used local materials, including earth, stone and brick. The wall was designed mainly for defence, but it also helped control trade and movement along the border.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-16",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "For your assignment, you will analyse a set of real survey {{1}}. First, describe the sample, including its size and how participants were {{2}}. Then present the main findings using appropriate graphs. Finally, discuss the {{3}} of the study and suggest how future research could address them. The word {{4}} is two thousand words.",
+    "answers": {
+      "1": "data",
+      "2": "selected",
+      "3": "limitations",
+      "4": "limit"
+    },
+    "transcript": "For your assignment, you will analyse a set of real survey data. First, describe the sample, including its size and how participants were selected. Then present the main findings using appropriate graphs. Finally, discuss the limitations of the study and suggest how future research could address them. The word limit is two thousand words.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-17",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Ocean currents act like a global conveyor belt, moving heat from the {{1}} towards the poles. Without these currents, many coastal regions would have much colder {{2}}. Scientists are concerned that melting ice could add large amounts of fresh water to the North Atlantic, which might {{3}} these currents and cause significant changes in weather {{4}}.",
+    "answers": {
+      "1": "tropics",
+      "2": "winters",
+      "3": "weaken",
+      "4": "patterns"
+    },
+    "transcript": "Ocean currents act like a global conveyor belt, moving heat from the tropics towards the poles. Without these currents, many coastal regions would have much colder winters. Scientists are concerned that melting ice could add large amounts of fresh water to the North Atlantic, which might weaken these currents and cause significant changes in weather patterns.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-18",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Effective teamwork depends on clear roles and good {{1}}. At the start of a project, teams should agree on their goals, divide tasks fairly and set realistic {{2}}. Regular meetings help members share progress and identify {{3}} early. When disagreements arise, it is important to focus on the problem rather than on {{4}}.",
+    "answers": {
+      "1": "communication",
+      "2": "deadlines",
+      "3": "problems",
+      "4": "personalities"
+    },
+    "transcript": "Effective teamwork depends on clear roles and good communication. At the start of a project, teams should agree on their goals, divide tasks fairly and set realistic deadlines. Regular meetings help members share progress and identify problems early. When disagreements arise, it is important to focus on the problem rather than on personalities.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-19",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Photosynthesis is the process by which plants convert light energy into chemical energy. Using sunlight, plants combine carbon dioxide from the air with {{1}} taken up by their roots to produce sugar. Oxygen is released as a {{2}}. This process not only feeds the plant but also supports almost all {{3}} on Earth by supplying food and {{4}}.",
+    "answers": {
+      "1": "water",
+      "2": "by-product",
+      "3": "life",
+      "4": "oxygen"
+    },
+    "transcript": "Photosynthesis is the process by which plants convert light energy into chemical energy. Using sunlight, plants combine carbon dioxide from the air with water taken up by their roots to produce sugar. Oxygen is released as a by-product. This process not only feeds the plant but also supports almost all life on Earth by supplying food and oxygen.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-20",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "The city council has announced a plan to plant ten thousand new trees over the next five years. Officials say the trees will provide {{1}} during hot summers, improve air {{2}} and create habitats for birds and insects. Residents can {{3}} locations for new trees through an online map, and volunteers are needed to help with {{4}}.",
+    "answers": {
+      "1": "shade",
+      "2": "quality",
+      "3": "suggest",
+      "4": "planting"
+    },
+    "transcript": "The city council has announced a plan to plant ten thousand new trees over the next five years. Officials say the trees will provide shade during hot summers, improve air quality and create habitats for birds and insects. Residents can suggest locations for new trees through an online map, and volunteers are needed to help with planting.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-21",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Cryptocurrencies are digital currencies that operate without a central {{1}}. Transactions are recorded on a shared digital ledger known as a blockchain. Supporters argue that this makes payments faster and more {{2}}. Critics point to their price {{3}}, their high energy use and their potential use in illegal {{4}}.",
+    "answers": {
+      "1": "bank",
+      "2": "transparent",
+      "3": "volatility",
+      "4": "activities"
+    },
+    "transcript": "Cryptocurrencies are digital currencies that operate without a central bank. Transactions are recorded on a shared digital ledger known as a blockchain. Supporters argue that this makes payments faster and more transparent. Critics point to their price volatility, their high energy use and their potential use in illegal activities.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-22",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Please note that the deadline for course {{1}} is Friday at five p.m. After that date, you will not be able to change your {{2}} without written permission from your faculty. If you are considering dropping a course, speak to your academic {{3}} first, as it may affect your {{4}} or your visa status.",
+    "answers": {
+      "1": "registration",
+      "2": "timetable",
+      "3": "adviser",
+      "4": "funding"
+    },
+    "transcript": "Please note that the deadline for course registration is Friday at five p.m. After that date, you will not be able to change your timetable without written permission from your faculty. If you are considering dropping a course, speak to your academic adviser first, as it may affect your funding or your visa status.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-23",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Archaeologists use several methods to {{1}} ancient objects. Radiocarbon dating measures the decay of carbon in organic {{2}} such as bone, wood and charcoal. It is reliable for items up to about fifty thousand years old. For older materials, scientists rely on other {{3}}, such as measuring the decay of elements in volcanic {{4}}.",
+    "answers": {
+      "1": "date",
+      "2": "remains",
+      "3": "techniques",
+      "4": "rock"
+    },
+    "transcript": "Archaeologists use several methods to date ancient objects. Radiocarbon dating measures the decay of carbon in organic remains such as bone, wood and charcoal. It is reliable for items up to about fifty thousand years old. For older materials, scientists rely on other techniques, such as measuring the decay of elements in volcanic rock.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-24",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Public speaking is one of the most common {{1}}. Many people feel nervous before giving a presentation, but preparation can make a big difference. Practise your talk aloud several times, know your opening {{2}} well and use notes rather than a full script. Remember that a little nervousness can actually improve your {{3}} by keeping you alert and {{4}}.",
+    "answers": {
+      "1": "fears",
+      "2": "lines",
+      "3": "performance",
+      "4": "focused"
+    },
+    "transcript": "Public speaking is one of the most common fears. Many people feel nervous before giving a presentation, but preparation can make a big difference. Practise your talk aloud several times, know your opening lines well and use notes rather than a full script. Remember that a little nervousness can actually improve your performance by keeping you alert and focused.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-25",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Wetlands such as marshes and swamps were once seen as wasteland and were often {{1}} for farming or building. Today, scientists recognise their value. Wetlands filter {{2}} from water, reduce the risk of flooding by storing excess rain and provide {{3}} for many species of birds and fish. They also store large amounts of {{4}}.",
+    "answers": {
+      "1": "drained",
+      "2": "pollutants",
+      "3": "habitats",
+      "4": "carbon"
+    },
+    "transcript": "Wetlands such as marshes and swamps were once seen as wasteland and were often drained for farming or building. Today, scientists recognise their value. Wetlands filter pollutants from water, reduce the risk of flooding by storing excess rain and provide habitats for many species of birds and fish. They also store large amounts of carbon.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-26",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "In today's seminar we'll look at the concept of supply and {{1}}. When the supply of a product increases while demand stays the same, prices usually {{2}}. When demand rises faster than supply, prices tend to go up. These simple {{3}} help explain changes in everything from housing {{4}} to the cost of fresh fruit.",
+    "answers": {
+      "1": "demand",
+      "2": "fall",
+      "3": "principles",
+      "4": "prices"
+    },
+    "transcript": "In today's seminar we'll look at the concept of supply and demand. When the supply of a product increases while demand stays the same, prices usually fall. When demand rises faster than supply, prices tend to go up. These simple principles help explain changes in everything from housing prices to the cost of fresh fruit.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-27",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Migration has shaped human history. People have moved in search of better {{1}}, safety or a more favourable climate. Migrants often bring new skills, foods and traditions that {{2}} the societies they join. At the same time, rapid population change can create {{3}} for housing and public services, so governments must plan {{4}}.",
+    "answers": {
+      "1": "opportunities",
+      "2": "enrich",
+      "3": "pressure",
+      "4": "carefully"
+    },
+    "transcript": "Migration has shaped human history. People have moved in search of better opportunities, safety or a more favourable climate. Migrants often bring new skills, foods and traditions that enrich the societies they join. At the same time, rapid population change can create pressure for housing and public services, so governments must plan carefully.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-28",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Lithium-ion batteries power most mobile phones, laptops and electric vehicles. They are popular because they store a large amount of energy for their {{1}}. However, mining lithium requires large quantities of {{2}}, and recycling used batteries remains {{3}}. Researchers are developing new battery types that could be safer, cheaper and easier to {{4}}.",
+    "answers": {
+      "1": "weight",
+      "2": "water",
+      "3": "difficult",
+      "4": "recycle"
+    },
+    "transcript": "Lithium-ion batteries power most mobile phones, laptops and electric vehicles. They are popular because they store a large amount of energy for their weight. However, mining lithium requires large quantities of water, and recycling used batteries remains difficult. Researchers are developing new battery types that could be safer, cheaper and easier to recycle.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-29",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Welcome to the campus tour. On your left is the main library, which is open {{1}} hours a day during exam periods. Straight ahead is the student union, where you'll find cafes, a bookshop and the {{2}} office. Behind it is the sports centre, which offers free {{3}} for all first-year students. Please stay with the group as we head towards the science {{4}}.",
+    "answers": {
+      "1": "twenty-four",
+      "2": "accommodation",
+      "3": "membership",
+      "4": "buildings"
+    },
+    "transcript": "Welcome to the campus tour. On your left is the main library, which is open twenty-four hours a day during exam periods. Straight ahead is the student union, where you'll find cafes, a bookshop and the accommodation office. Behind it is the sports centre, which offers free membership for all first-year students. Please stay with the group as we head towards the science buildings.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_fib-30",
+    "section": "listening",
+    "type": "l_fib",
+    "title": "Listening: Fill in the blanks",
+    "instructions": "You will hear a recording. Type the missing words in each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "passage": "Memory is not like a video recording. Each time we recall an event, we {{1}} it, and details can change without us noticing. This is why eyewitness {{2}} can be unreliable, even when witnesses are completely {{3}}. Courts are increasingly aware of these findings and treat eyewitness evidence with greater {{4}}.",
+    "answers": {
+      "1": "reconstruct",
+      "2": "testimony",
+      "3": "sincere",
+      "4": "caution"
+    },
+    "transcript": "Memory is not like a video recording. Each time we recall an event, we reconstruct it, and details can change without us noticing. This is why eyewitness testimony can be unreliable, even when witnesses are completely sincere. Courts are increasingly aware of these findings and treat eyewitness evidence with greater caution.",
+    "explanation": "Each word must match the recording and be spelled correctly.",
+    "audioUrl": null
+  }
+]

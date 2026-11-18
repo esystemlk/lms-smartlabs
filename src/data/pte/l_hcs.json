@@ -1,0 +1,1052 @@
+[
+  {
+    "id": "l_hcs-01",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "One of the most persistent myths about the brain is that we only use ten percent of it. Brain imaging tells a very different story. Even during simple tasks, such as clenching a fist or listening to a sentence, activity can be seen across many regions, and over the course of a day virtually every part of the brain is active at some point. The brain is also extremely expensive to run: although it makes up only about two percent of body weight, it consumes roughly twenty percent of the body's energy. It would make little evolutionary sense for such a costly organ to be ninety percent idle.",
+    "audioUrl": null,
+    "options": [
+      {
+        "id": "A",
+        "text": "Scientists disagree about how much of the brain is used, but most believe that at least ninety percent is idle at any time."
+      },
+      {
+        "id": "B",
+        "text": "The idea that we use only ten percent of our brain is false; imaging shows widespread activity, and the brain's high energy cost would make large unused areas unlikely."
+      },
+      {
+        "id": "C",
+        "text": "The brain makes up twenty percent of body weight and is active only during demanding tasks such as listening to sentences."
+      },
+      {
+        "id": "D",
+        "text": "Brain imaging shows that people use only a small part of their brain, which is why the brain needs so much energy."
+      }
+    ],
+    "answer": "B",
+    "explanation": "A and D repeat the myth; C swaps the figures (2% of weight, 20% of energy) and says activity is limited to demanding tasks."
+  },
+  {
+    "id": "l_hcs-02",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "When we think about the invention of writing, we often imagine poets or historians. In fact, the earliest writing systems in Mesopotamia appear to have developed for a much more practical purpose: keeping accounts. Clay tokens and, later, marks pressed into clay tablets were used to record quantities of grain, livestock and other goods that were stored, traded or owed as taxes. Only gradually, over several centuries, did these accounting symbols expand to represent spoken words, making it possible to write down laws, letters and eventually literature.",
+    "audioUrl": null,
+    "options": [
+      {
+        "id": "A",
+        "text": "Early Mesopotamian writing grew out of record-keeping for goods, and only over centuries came to represent language more fully."
+      },
+      {
+        "id": "B",
+        "text": "Writing was first created by poets in Mesopotamia and was later adapted for recording trade."
+      },
+      {
+        "id": "C",
+        "text": "Clay tokens were used to write laws and letters long before they were used for accounting."
+      },
+      {
+        "id": "D",
+        "text": "Historians believe writing developed suddenly to record taxes and was never used for literature."
+      }
+    ],
+    "answer": "A",
+    "explanation": "The talk says writing began with accounting and expanded 'gradually, over several centuries'."
+  },
+  {
+    "id": "l_hcs-03",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Many people assume that introverts are shy, but the two traits are different. Shyness is a fear of social judgement, while introversion describes where people get their energy. Introverts often enjoy social events but feel drained afterwards and need time alone to recover. Extroverts, by contrast, tend to feel energised by being around others. A person can therefore be an introvert without being shy, or shy without being an introvert.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Introversion concerns how people regain energy, which is different from shyness, a fear of judgement; the two can occur separately."
+      },
+      {
+        "id": "B",
+        "text": "Introverts are shy people who avoid social events because they fear being judged."
+      },
+      {
+        "id": "C",
+        "text": "Extroverts are usually shy, but they hide it by spending time with others."
+      },
+      {
+        "id": "D",
+        "text": "Shyness and introversion are the same trait, so introverts never enjoy social events."
+      }
+    ],
+    "answer": "A",
+    "explanation": "The talk distinguishes the two traits and says they can exist independently.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-04",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The development of refrigeration transformed what people eat. Before refrigerators, food had to be preserved by drying, salting or smoking, and fresh produce was available only locally and in season. Refrigerated ships and lorries made it possible to transport meat, fruit and dairy products across long distances, so that diets in many countries became more varied throughout the year.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Refrigeration allowed fresh food to be transported long distances, making diets more varied all year round."
+      },
+      {
+        "id": "B",
+        "text": "Before refrigeration, people ate a wider variety of food from other countries."
+      },
+      {
+        "id": "C",
+        "text": "Refrigerated transport was mainly used for moving dried and smoked meat."
+      },
+      {
+        "id": "D",
+        "text": "Refrigeration replaced fresh food with dried and salted products."
+      }
+    ],
+    "answer": "A",
+    "explanation": "Refrigerated transport widened access to fresh food year-round.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-05",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "In economics, a public good is something that everyone can use and that one person's use doesn't reduce what is available to others. Street lighting is a classic example. Because it's hard to stop people who don't pay from benefiting, private companies have little incentive to provide such goods, which is why they are usually funded by governments through taxes.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Governments avoid funding public goods because people use them too much."
+      },
+      {
+        "id": "B",
+        "text": "Public goods can be used by all without reducing availability, and since non-payers can't easily be excluded, governments usually fund them."
+      },
+      {
+        "id": "C",
+        "text": "Street lighting is a private good because only taxpayers can use it."
+      },
+      {
+        "id": "D",
+        "text": "Public goods are always provided by private companies because they are very profitable."
+      }
+    ],
+    "answer": "B",
+    "explanation": "Defines public goods and explains why governments fund them.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-06",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Coral reefs are often called the rainforests of the sea because of their extraordinary biodiversity. But reefs also protect coastlines. By breaking the force of waves before they reach the shore, reefs reduce erosion and limit damage from storms. Scientists estimate that healthy reefs can reduce wave energy by more than ninety percent, protecting coastal communities worth billions of dollars.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Coral reefs increase coastal erosion by creating stronger waves."
+      },
+      {
+        "id": "B",
+        "text": "Rainforests protect coastlines better than coral reefs do."
+      },
+      {
+        "id": "C",
+        "text": "Coral reefs are mainly valuable as tourist attractions."
+      },
+      {
+        "id": "D",
+        "text": "Besides supporting biodiversity, reefs protect coasts by absorbing most wave energy and reducing storm damage."
+      }
+    ],
+    "answer": "D",
+    "explanation": "Biodiversity plus coastal protection through wave reduction.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-07",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Some universities have replaced traditional lectures with what is called a flipped classroom. Students watch recorded lectures at home, and class time is used for discussion, problem-solving and group work. Supporters say this makes better use of the time students spend with teachers. However, the approach only works if students actually prepare in advance, which is not always the case.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Students always prepare well for flipped classrooms, so the method never fails."
+      },
+      {
+        "id": "B",
+        "text": "Flipped classrooms have removed the need for teachers altogether."
+      },
+      {
+        "id": "C",
+        "text": "Flipped classrooms move lectures to home study and use class time for active work, but depend on students preparing beforehand."
+      },
+      {
+        "id": "D",
+        "text": "In a flipped classroom, lectures happen in class and discussion happens at home."
+      }
+    ],
+    "answer": "C",
+    "explanation": "Describes the model and its dependence on preparation.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-08",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The idea of a five-day working week is relatively recent. In the nineteenth century, factory workers often worked six or even seven days a week. The two-day weekend became common in many industrialised countries only in the twentieth century, partly due to pressure from trade unions and partly because employers found that rested workers were more productive.",
+    "options": [
+      {
+        "id": "A",
+        "text": "The weekend was introduced because workers wanted to travel more."
+      },
+      {
+        "id": "B",
+        "text": "Factory workers in the nineteenth century usually worked only four days a week."
+      },
+      {
+        "id": "C",
+        "text": "The two-day weekend became common in the twentieth century, driven by unions and by employers seeing that rested workers produced more."
+      },
+      {
+        "id": "D",
+        "text": "Employers opposed the weekend because it reduced productivity."
+      }
+    ],
+    "answer": "C",
+    "explanation": "Recent origin, unions and productivity are the key points.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-09",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Bilingual people regularly switch between languages, and some researchers believe this constant practice in controlling attention may strengthen certain mental skills, such as focusing on relevant information and ignoring distractions. However, the evidence is mixed. Some large studies have found clear advantages, while others have found little or no difference between bilingual and monolingual people.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Speaking two languages may improve attention control, but studies disagree on whether there is a real advantage."
+      },
+      {
+        "id": "B",
+        "text": "Monolingual people are better at ignoring distractions than bilinguals."
+      },
+      {
+        "id": "C",
+        "text": "Research proves that bilingual people are more intelligent in every way."
+      },
+      {
+        "id": "D",
+        "text": "Researchers agree that bilingualism has no effect on the mind."
+      }
+    ],
+    "answer": "A",
+    "explanation": "Possible benefit with mixed evidence.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-10",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Most of the plastic ever produced has not been recycled. A large proportion has ended up in landfill or the natural environment, and only a small percentage has been recycled more than once. One reason is that many plastics are made from mixed materials that are difficult and expensive to separate, so recycling them is often less profitable than producing new plastic.",
+    "options": [
+      {
+        "id": "A",
+        "text": "New plastic is more expensive to produce than recycled plastic."
+      },
+      {
+        "id": "B",
+        "text": "Little plastic has been recycled, partly because mixed materials make recycling difficult and less profitable than making new plastic."
+      },
+      {
+        "id": "C",
+        "text": "Most plastic is recycled many times because it is cheap to separate."
+      },
+      {
+        "id": "D",
+        "text": "Plastic in landfill is usually recovered and recycled later."
+      }
+    ],
+    "answer": "B",
+    "explanation": "Low recycling rates explained by mixed materials and cost.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-11",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Moon phases are often misunderstood. Many people think they are caused by the Earth's shadow falling on the Moon. In fact, the Moon is always half lit by the Sun. What changes is how much of that lit half we can see from Earth as the Moon orbits us. The Earth's shadow only falls on the Moon during a lunar eclipse.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Lunar eclipses happen every month during the full moon."
+      },
+      {
+        "id": "B",
+        "text": "The Moon produces its own light, which changes during the month."
+      },
+      {
+        "id": "C",
+        "text": "Moon phases result from how much of the Moon's sunlit half we see as it orbits; the Earth's shadow matters only during eclipses."
+      },
+      {
+        "id": "D",
+        "text": "Moon phases are caused by the Earth's shadow covering different parts of the Moon."
+      }
+    ],
+    "answer": "C",
+    "explanation": "Corrects the misconception about the Earth's shadow.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-12",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "When companies set prices, they often use what is called charm pricing, ending prices in nine or ninety-nine. A product priced at nine ninety-nine feels noticeably cheaper than one priced at ten, even though the difference is only one cent. This works because people tend to focus on the first digit they see when judging a price.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Shoppers carefully calculate every cent before buying."
+      },
+      {
+        "id": "B",
+        "text": "Prices ending in nine are illegal in most countries."
+      },
+      {
+        "id": "C",
+        "text": "Round prices such as ten dollars always sell better."
+      },
+      {
+        "id": "D",
+        "text": "Prices ending in nine seem cheaper because shoppers focus on the first digit."
+      }
+    ],
+    "answer": "D",
+    "explanation": "Charm pricing works through attention to the first digit.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-13",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Groundwater is water stored underground in layers of rock and soil called aquifers. In many dry regions, farmers depend heavily on it for irrigation. The problem is that some aquifers refill extremely slowly, over thousands of years, so when water is pumped out faster than it is replaced, water tables fall and wells eventually run dry.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Pumping groundwater faster than slow-refilling aquifers can recover lowers water tables and can dry up wells."
+      },
+      {
+        "id": "B",
+        "text": "Wells run dry mainly because of pollution from cities."
+      },
+      {
+        "id": "C",
+        "text": "Aquifers refill within a few weeks after heavy rain."
+      },
+      {
+        "id": "D",
+        "text": "Groundwater is rarely used for farming."
+      }
+    ],
+    "answer": "A",
+    "explanation": "Over-extraction of slow-recharging aquifers is the issue.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-14",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The Olympic Games were revived in eighteen ninety-six, inspired by the ancient Greek games. The first modern Games were small, with athletes from only a handful of countries, and all of them were men. Over the following century, the Games expanded enormously, adding new sports, winter events and, eventually, equal participation by women.",
+    "options": [
+      {
+        "id": "A",
+        "text": "The ancient Greek games were revived in 1996."
+      },
+      {
+        "id": "B",
+        "text": "The first modern Games included athletes from every country in the world."
+      },
+      {
+        "id": "C",
+        "text": "The modern Olympics have always included as many women as men."
+      },
+      {
+        "id": "D",
+        "text": "The modern Games began in 1896 on a small scale and grew over time, adding sports and including women."
+      }
+    ],
+    "answer": "D",
+    "explanation": "Small start in 1896 and gradual expansion.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-15",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Many organisations now use open-plan offices, hoping to encourage collaboration. However, studies that tracked employee interactions found that after moving to open-plan layouts, face-to-face conversations actually decreased, while emails and messages increased. Researchers suggest that people protect their privacy by withdrawing, wearing headphones and communicating digitally instead.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Open-plan offices led to more face-to-face conversations, as companies hoped."
+      },
+      {
+        "id": "B",
+        "text": "Open-plan offices were meant to increase collaboration but reduced face-to-face interaction as people sought privacy."
+      },
+      {
+        "id": "C",
+        "text": "Employees in open-plan offices stopped using email completely."
+      },
+      {
+        "id": "D",
+        "text": "Researchers found no change in how employees communicated."
+      }
+    ],
+    "answer": "B",
+    "explanation": "The intended effect reversed.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-16",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Vaccines work by training the immune system to recognise a disease without causing the illness itself. They usually contain a weakened or inactive form of the pathogen, or part of it. When the body later meets the real disease, the immune system can respond quickly. When enough people are vaccinated, even those who cannot be vaccinated are protected, because the disease cannot spread easily.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Vaccines contain the full, active disease to make the body stronger."
+      },
+      {
+        "id": "B",
+        "text": "Vaccines train the immune system using weakened or partial pathogens, and high vaccination rates also protect people who are not vaccinated."
+      },
+      {
+        "id": "C",
+        "text": "Vaccination protects only the person who receives it."
+      },
+      {
+        "id": "D",
+        "text": "Vaccines cure diseases after a person becomes ill."
+      }
+    ],
+    "answer": "B",
+    "explanation": "Mechanism plus community protection.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-17",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Silk was produced in China for thousands of years before the method became known elsewhere. The process, which involves raising silkworms on mulberry leaves and unwinding their cocoons, was kept secret, and revealing it was severely punished. According to tradition, the secret only reached the Byzantine Empire in the sixth century, when silkworm eggs were smuggled out.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Silk production was invented in the Byzantine Empire and later copied in China."
+      },
+      {
+        "id": "B",
+        "text": "Silkworms feed on cotton plants, which were grown only in China."
+      },
+      {
+        "id": "C",
+        "text": "China kept silk-making secret for a very long time until, by tradition, silkworm eggs were smuggled to Byzantium in the sixth century."
+      },
+      {
+        "id": "D",
+        "text": "China shared the silk process freely with its trading partners."
+      }
+    ],
+    "answer": "C",
+    "explanation": "Long-kept secret, later smuggled.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-18",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Procrastination is often seen as a problem of poor time management, but psychologists increasingly describe it as a problem of managing emotions. People delay tasks that make them feel anxious, bored or uncertain, choosing short-term relief over long-term goals. Strategies that reduce the unpleasant feelings, such as breaking tasks into very small steps, are therefore often more effective than simply creating a stricter schedule.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Stricter schedules are the most effective cure for procrastination."
+      },
+      {
+        "id": "B",
+        "text": "Procrastination is largely about avoiding unpleasant feelings, so reducing those feelings works better than stricter schedules."
+      },
+      {
+        "id": "C",
+        "text": "Procrastination is caused mainly by having too much free time."
+      },
+      {
+        "id": "D",
+        "text": "Psychologists believe procrastination cannot be changed."
+      }
+    ],
+    "answer": "B",
+    "explanation": "Emotional explanation and the matching strategy.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-19",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Desalination, the removal of salt from seawater, can provide fresh water for dry coastal regions. However, the process requires large amounts of energy, which makes it expensive, and it produces very salty waste water that can harm marine life if it is not disposed of carefully. Improvements in technology and cheaper renewable energy are making it more practical.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Desalination has been abandoned because of its high cost."
+      },
+      {
+        "id": "B",
+        "text": "Desalination adds salt to rivers to make them suitable for marine life."
+      },
+      {
+        "id": "C",
+        "text": "Desalination supplies fresh water but is energy-intensive and creates harmful salty waste, though new technology and renewables are making it more practical."
+      },
+      {
+        "id": "D",
+        "text": "Desalination is cheap and has no environmental impact."
+      }
+    ],
+    "answer": "C",
+    "explanation": "Benefit, two drawbacks, and improving prospects.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-20",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The way a question is worded can change the answers people give in surveys. In one experiment, people who were asked how fast cars were going when they smashed into each other gave higher speed estimates than those asked how fast the cars were going when they hit each other. Researchers must therefore design survey questions very carefully to avoid influencing responses.",
+    "options": [
+      {
+        "id": "A",
+        "text": "The word 'hit' caused people to give higher speed estimates."
+      },
+      {
+        "id": "B",
+        "text": "Survey wording has no effect on how people answer."
+      },
+      {
+        "id": "C",
+        "text": "People always remember the exact speed of cars in accidents."
+      },
+      {
+        "id": "D",
+        "text": "Survey wording can influence answers, as shown when the word 'smashed' produced higher speed estimates, so questions need careful design."
+      }
+    ],
+    "answer": "D",
+    "explanation": "Wording effect demonstrated by the experiment.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-21",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Cities are trying different ways to reduce traffic congestion. One approach is congestion charging, where drivers pay a fee to enter the city centre at busy times. Where it has been introduced, traffic has typically fallen and public transport use has risen. Critics argue that the charge affects lower-income drivers more heavily, so revenue is often reinvested in public transport.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Critics say congestion charges mainly affect wealthy drivers."
+      },
+      {
+        "id": "B",
+        "text": "Congestion charges make driving into city centres free at busy times."
+      },
+      {
+        "id": "C",
+        "text": "Congestion charging has reduced traffic and raised public transport use, though it may burden lower-income drivers, so revenue is often reinvested."
+      },
+      {
+        "id": "D",
+        "text": "Congestion charging has increased traffic in every city that tried it."
+      }
+    ],
+    "answer": "C",
+    "explanation": "Effects, criticism and response.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-22",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Mushrooms are not plants. Fungi belong to a separate kingdom of life and are, in some ways, more closely related to animals than to plants. Unlike plants, they cannot make their own food from sunlight. Instead, they absorb nutrients from their surroundings, often by breaking down dead material, which makes them essential for recycling nutrients in ecosystems.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Fungi are a separate kingdom closer in some ways to animals; they absorb nutrients, often from dead matter, recycling them in ecosystems."
+      },
+      {
+        "id": "B",
+        "text": "Fungi are a type of animal that hunts other organisms."
+      },
+      {
+        "id": "C",
+        "text": "Fungi harm ecosystems by stopping nutrient recycling."
+      },
+      {
+        "id": "D",
+        "text": "Mushrooms are plants that make food from sunlight."
+      }
+    ],
+    "answer": "A",
+    "explanation": "Classification, feeding and ecological role.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-23",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Historically, maps reflected the knowledge and the priorities of the people who made them. Medieval European world maps often placed Jerusalem at the centre and focused on religious meaning rather than geographical accuracy. Maps were therefore not only tools for navigation but also expressions of how a culture saw its place in the world.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Maps have never been influenced by culture."
+      },
+      {
+        "id": "B",
+        "text": "Medieval maps were mainly accurate tools for navigation."
+      },
+      {
+        "id": "C",
+        "text": "All historical maps placed Europe at the centre."
+      },
+      {
+        "id": "D",
+        "text": "Historical maps reflected their makers' beliefs and priorities, such as medieval maps centred on Jerusalem, not just geography."
+      }
+    ],
+    "answer": "D",
+    "explanation": "Maps as cultural expressions.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-24",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The term 'gig economy' describes work arranged through short-term contracts or apps, such as delivery and ride services. Workers value the flexibility to choose when they work. However, many lack benefits such as sick pay and pensions, and their income can vary greatly from week to week. Several countries are now debating whether these workers should have more legal protection.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Gig workers usually receive generous pensions and sick pay."
+      },
+      {
+        "id": "B",
+        "text": "Gig workers have fixed working hours set by their employers."
+      },
+      {
+        "id": "C",
+        "text": "Most countries have banned app-based work."
+      },
+      {
+        "id": "D",
+        "text": "The gig economy offers flexibility but often lacks benefits and stable income, prompting debate on legal protection."
+      }
+    ],
+    "answer": "D",
+    "explanation": "Flexibility versus security, and the policy debate.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-25",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Human hearing is most sensitive to sounds in the range of human speech. We can generally hear frequencies from about twenty to twenty thousand hertz, but this range narrows with age, particularly at the higher end. Prolonged exposure to loud noise, such as music through headphones at high volume, can speed up this loss.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Headphones protect hearing from age-related loss."
+      },
+      {
+        "id": "B",
+        "text": "Humans cannot hear the frequencies used in speech."
+      },
+      {
+        "id": "C",
+        "text": "Hearing range expands as people get older."
+      },
+      {
+        "id": "D",
+        "text": "Humans hear roughly 20 to 20,000 hertz, a range that narrows with age, especially at high frequencies, and loud noise can accelerate this."
+      }
+    ],
+    "answer": "D",
+    "explanation": "Range, age effect, noise effect.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-26",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The decline of honeybees has received a lot of attention, but wild pollinators such as bumblebees, butterflies and hoverflies are also important for crops and wild plants. Some studies suggest wild insects are responsible for a larger share of crop pollination than previously thought. Protecting hedgerows and wildflower areas can help these species survive.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Only honeybees pollinate crops, so other insects are unimportant."
+      },
+      {
+        "id": "B",
+        "text": "Wild pollinators matter for crops, perhaps more than thought, and protecting habitats like hedgerows helps them."
+      },
+      {
+        "id": "C",
+        "text": "Hedgerows harm wild pollinators by spreading disease."
+      },
+      {
+        "id": "D",
+        "text": "Butterflies have replaced honeybees in all farms."
+      }
+    ],
+    "answer": "B",
+    "explanation": "Importance of wild pollinators and habitat protection.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-27",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Many people believe that we lose most of our body heat through our heads. This idea seems to come from an old military experiment in which subjects wore cold-weather suits that left only their heads exposed. In reality, the head loses heat at roughly the same rate as any other uncovered part of the body.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Military suits caused people to lose heat through their feet."
+      },
+      {
+        "id": "B",
+        "text": "Covering the head prevents all heat loss."
+      },
+      {
+        "id": "C",
+        "text": "The head loses much more heat than any other body part."
+      },
+      {
+        "id": "D",
+        "text": "The belief that most heat escapes through the head likely came from a flawed experiment; the head loses heat like any other exposed area."
+      }
+    ],
+    "answer": "D",
+    "explanation": "Corrects the myth and explains its origin.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-28",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Digital photographs are easy to take and store, but historians worry about a possible digital dark age. File formats change, storage devices fail and online services close, so images and documents may become unreadable within decades. Paper photographs, by contrast, can survive for a century or more if stored properly. Archivists recommend regularly copying digital files to new formats.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Digital records may become unreadable as formats and devices change, unlike well-stored paper, so archivists recommend regular migration."
+      },
+      {
+        "id": "B",
+        "text": "Historians prefer digital photos because they never fail."
+      },
+      {
+        "id": "C",
+        "text": "Online services guarantee that files will last forever."
+      },
+      {
+        "id": "D",
+        "text": "Digital files last longer than paper photographs."
+      }
+    ],
+    "answer": "A",
+    "explanation": "Risk of digital loss and the recommended solution.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-29",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Sports psychologists often teach athletes to use visualisation, mentally rehearsing a performance in detail before it happens. Research suggests that imagining a movement activates many of the same brain areas as performing it. While visualisation cannot replace physical training, combining the two seems to improve performance more than physical practice alone.",
+    "options": [
+      {
+        "id": "A",
+        "text": "Imagining movements uses different brain areas from performing them."
+      },
+      {
+        "id": "B",
+        "text": "Visualisation activates similar brain areas to real movement and, combined with physical practice, improves performance more than practice alone."
+      },
+      {
+        "id": "C",
+        "text": "Athletes who visualise perform worse than those who do not."
+      },
+      {
+        "id": "D",
+        "text": "Visualisation can completely replace physical training."
+      }
+    ],
+    "answer": "B",
+    "explanation": "Mechanism and combined benefit.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_hcs-30",
+    "section": "listening",
+    "type": "l_hcs",
+    "title": "Highlight correct summary",
+    "instructions": "You will hear a recording. Click on the paragraph that best relates to the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Before standard time zones existed, each town set its clocks by the local position of the sun, so noon in one city could be several minutes different from noon in a nearby town. This caused confusion once railways allowed fast travel between cities. In the late nineteenth century, railway companies and governments adopted standard time zones to make timetables workable.",
+    "options": [
+      {
+        "id": "A",
+        "text": "All towns used the same time before railways were built."
+      },
+      {
+        "id": "B",
+        "text": "Railways stopped using timetables because of time differences."
+      },
+      {
+        "id": "C",
+        "text": "Local solar time caused confusion once railways connected cities, leading to standard time zones in the late nineteenth century."
+      },
+      {
+        "id": "D",
+        "text": "Time zones were created by farmers to manage harvests."
+      }
+    ],
+    "answer": "C",
+    "explanation": "Railways drove adoption of standard time.",
+    "audioUrl": null
+  }
+]

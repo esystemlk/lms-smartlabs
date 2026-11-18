@@ -1,0 +1,784 @@
+[
+  {
+    "id": "r_fib-01",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Bees play an essential role in agriculture because they {{1}} many of the crops that people eat. As they move from flower to flower collecting nectar, they {{2}} pollen, allowing plants to produce fruit and seeds. In recent years, bee populations in several regions have {{3}} sharply, and scientists are investigating possible causes, including pesticides, disease and the {{4}} of natural habitats.",
+    "wordBank": [
+      "declined",
+      "pollinate",
+      "increased",
+      "harvest",
+      "loss",
+      "transfer",
+      "gain"
+    ],
+    "answers": {
+      "1": "pollinate",
+      "2": "transfer",
+      "3": "declined",
+      "4": "loss"
+    },
+    "explanation": "Scientists investigate causes of a problem, so populations 'declined'; 'the loss of natural habitats' is a cause."
+  },
+  {
+    "id": "r_fib-02",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "A good night's sleep before an examination is often more {{1}} than an extra hour of revision. Tired students find it harder to {{2}} on questions and are more likely to make careless errors. Experts therefore {{3}} that learners plan their study time so that they can rest properly before important tests.",
+    "wordBank": [
+      "ignore",
+      "valuable",
+      "concentrate",
+      "recommend",
+      "expensive",
+      "forbid"
+    ],
+    "answers": {
+      "1": "valuable",
+      "2": "concentrate",
+      "3": "recommend"
+    },
+    "explanation": "'concentrate on' is the collocation; 'recommend that' introduces advice."
+  },
+  {
+    "id": "r_fib-03",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Volcanic eruptions can have effects far beyond the area {{1}} the volcano. Large eruptions release tiny particles into the upper atmosphere, where they {{2}} some sunlight back into space. In 1816, the year after a major eruption in Indonesia, unusually cold weather caused crop {{3}} across Europe and North America, and it became known as the 'year without a summer'.",
+    "wordBank": [
+      "absorb",
+      "failures",
+      "harvests",
+      "reflect",
+      "around",
+      "despite"
+    ],
+    "answers": {
+      "1": "around",
+      "2": "reflect",
+      "3": "failures"
+    },
+    "explanation": "Particles send sunlight 'back into space', so they reflect it; cold weather causes crop failures."
+  },
+  {
+    "id": "r_fib-04",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Deserts are among the most {{1}} environments on Earth, yet many plants and animals have adapted to survive there. Cacti store water in their thick stems, while many desert animals are active only at night to {{2}} the extreme heat of the day. Some species can go for long periods without {{3}} at all.",
+    "wordBank": [
+      "build",
+      "drinking",
+      "avoid",
+      "enjoy",
+      "colour",
+      "welcoming",
+      "harsh"
+    ],
+    "answers": {
+      "1": "harsh",
+      "2": "avoid",
+      "3": "drinking"
+    }
+  },
+  {
+    "id": "r_fib-05",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Online learning has grown rapidly over the past decade. It offers {{1}} for students who work or live far from a university. However, studying alone requires strong self-discipline, and some learners {{2}} the face-to-face contact of a traditional classroom. Many universities now {{3}} online and in-person teaching.",
+    "wordBank": [
+      "combine",
+      "flexibility",
+      "separate",
+      "miss",
+      "forget",
+      "avoid",
+      "difficulty"
+    ],
+    "answers": {
+      "1": "flexibility",
+      "2": "miss",
+      "3": "combine"
+    }
+  },
+  {
+    "id": "r_fib-06",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The ancient city of Pompeii was buried under volcanic ash when Mount Vesuvius {{1}} in 79 AD. Because the ash covered the city so quickly, buildings, paintings and even food were {{2}} in remarkable detail. Today, the site gives historians a unique {{3}} into everyday Roman life.",
+    "wordBank": [
+      "erupted",
+      "insight",
+      "preserved",
+      "collapsed",
+      "reason",
+      "destroyed",
+      "decided"
+    ],
+    "answers": {
+      "1": "erupted",
+      "2": "preserved",
+      "3": "insight"
+    }
+  },
+  {
+    "id": "r_fib-07",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Regular exercise has many benefits for mental health. Physical activity {{1}} the release of chemicals in the brain that improve mood, and it can reduce symptoms of anxiety. Exercise also {{2}} sleep quality. Even short walks can make a {{3}} difference to how people feel.",
+    "wordBank": [
+      "tiny",
+      "improves",
+      "triggers",
+      "prevents",
+      "noticeable",
+      "reduces",
+      "delays"
+    ],
+    "answers": {
+      "1": "triggers",
+      "2": "improves",
+      "3": "noticeable"
+    }
+  },
+  {
+    "id": "r_fib-08",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Recycling paper saves trees, but it also {{1}} energy and water compared with producing paper from new wood. However, paper fibres become shorter each time they are recycled, so paper can only be recycled a {{2}} number of times before it is no longer {{3}}.",
+    "wordBank": [
+      "wastes",
+      "limited",
+      "saves",
+      "visible",
+      "endless",
+      "costs",
+      "usable"
+    ],
+    "answers": {
+      "1": "saves",
+      "2": "limited",
+      "3": "usable"
+    }
+  },
+  {
+    "id": "r_fib-09",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Many companies now allow employees to work flexible hours. Instead of arriving at nine and leaving at five, staff can {{1}} their schedules, as long as they complete their work. Supporters say this improves {{2}} and reduces stress, while critics worry that it can make team meetings harder to {{3}}.",
+    "wordBank": [
+      "ignore",
+      "adjust",
+      "morale",
+      "forget",
+      "cancel",
+      "arrange",
+      "salaries"
+    ],
+    "answers": {
+      "1": "adjust",
+      "2": "morale",
+      "3": "arrange"
+    }
+  },
+  {
+    "id": "r_fib-10",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The human eye can distinguish millions of colours. This ability depends on cells in the retina called cones, which {{1}} to different wavelengths of light. People with colour blindness usually have cones that do not function {{2}}, making certain colours difficult to {{3}}.",
+    "wordBank": [
+      "properly",
+      "paint",
+      "distinguish",
+      "rarely",
+      "respond",
+      "produce",
+      "refer"
+    ],
+    "answers": {
+      "1": "respond",
+      "2": "properly",
+      "3": "distinguish"
+    }
+  },
+  {
+    "id": "r_fib-11",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Coffee was first {{1}} in Ethiopia, according to legend, by a goat herder who noticed his animals became energetic after eating certain berries. From there, coffee spread to the Arabian Peninsula, where it was first {{2}} as a drink. By the seventeenth century, coffee houses had become popular {{3}} places across Europe.",
+    "wordBank": [
+      "grown",
+      "quiet",
+      "meeting",
+      "prepared",
+      "invented",
+      "discovered",
+      "banned"
+    ],
+    "answers": {
+      "1": "discovered",
+      "2": "prepared",
+      "3": "meeting"
+    }
+  },
+  {
+    "id": "r_fib-12",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Good academic writing is clear and well organised. Each paragraph should focus on one main idea, which is usually {{1}} in a topic sentence. Writers should {{2}} their claims with evidence and explain how that evidence {{3}} their argument.",
+    "wordBank": [
+      "repeat",
+      "weakens",
+      "support",
+      "strengthens",
+      "copy",
+      "hidden",
+      "introduced"
+    ],
+    "answers": {
+      "1": "introduced",
+      "2": "support",
+      "3": "strengthens"
+    }
+  },
+  {
+    "id": "r_fib-13",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Glaciers around the world are {{1}} as global temperatures rise. In many mountain regions, glaciers act as natural water stores, releasing meltwater during dry summers. As they {{2}}, communities that depend on this water may face {{3}} in the future.",
+    "wordBank": [
+      "celebrations",
+      "retreating",
+      "expanding",
+      "holidays",
+      "shrink",
+      "grow",
+      "shortages"
+    ],
+    "answers": {
+      "1": "retreating",
+      "2": "shrink",
+      "3": "shortages"
+    }
+  },
+  {
+    "id": "r_fib-14",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Mobile banking has transformed financial services in many developing countries. People without access to a bank branch can now {{1}} money, pay bills and save using a basic phone. This has helped small businesses {{2}} and has made it easier for families to receive money from relatives working {{3}}.",
+    "wordBank": [
+      "print",
+      "nearby",
+      "transfer",
+      "spend",
+      "close",
+      "grow",
+      "abroad"
+    ],
+    "answers": {
+      "1": "transfer",
+      "2": "grow",
+      "3": "abroad"
+    }
+  },
+  {
+    "id": "r_fib-15",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Volunteers play an important role in many museums. They guide visitors, help with research and {{1}} events. In return, volunteers gain experience, learn new skills and meet people with similar {{2}}. For students, volunteering can also be a valuable addition to a {{3}}.",
+    "wordBank": [
+      "problems",
+      "cancel",
+      "CV",
+      "exam",
+      "interests",
+      "debt",
+      "organise"
+    ],
+    "answers": {
+      "1": "organise",
+      "2": "interests",
+      "3": "CV"
+    }
+  },
+  {
+    "id": "r_fib-16",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Wolves were reintroduced to Yellowstone National Park in 1995 after an absence of about seventy years. Their return {{1}} the behaviour of elk, which began to avoid certain areas. As a result, trees along riverbanks {{2}}, providing habitats for birds and beavers and showing how one species can {{3}} an entire ecosystem.",
+    "wordBank": [
+      "ignore",
+      "recovered",
+      "changed",
+      "influence",
+      "disappeared",
+      "prevented",
+      "stopped"
+    ],
+    "answers": {
+      "1": "changed",
+      "2": "recovered",
+      "3": "influence"
+    }
+  },
+  {
+    "id": "r_fib-17",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Before an important presentation, many people feel {{1}}. Preparing thoroughly and practising aloud can help. Experts also suggest arriving early to {{2}} the room and equipment. Taking slow, deep breaths before beginning can {{3}} the body and improve concentration.",
+    "wordBank": [
+      "check",
+      "bored",
+      "avoid",
+      "disturb",
+      "hungry",
+      "nervous",
+      "calm"
+    ],
+    "answers": {
+      "1": "nervous",
+      "2": "check",
+      "3": "calm"
+    }
+  },
+  {
+    "id": "r_fib-18",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Vertical farms grow crops in stacked layers inside buildings, using artificial light and carefully controlled conditions. They use far less {{1}} than traditional farms and can operate all year round. However, the high cost of {{2}} means that most vertical farms grow only {{3}} crops such as herbs and salad leaves.",
+    "wordBank": [
+      "sunlight",
+      "staple",
+      "water",
+      "soil",
+      "cheap",
+      "high-value",
+      "electricity"
+    ],
+    "answers": {
+      "1": "water",
+      "2": "electricity",
+      "3": "high-value"
+    }
+  },
+  {
+    "id": "r_fib-19",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The Olympic Games bring athletes from around the world together every four years. Host cities often {{1}} heavily in new stadiums and transport. While the Games can boost tourism and {{2}} a city's international profile, some venues are rarely used afterwards, leaving cities with expensive {{3}} costs.",
+    "wordBank": [
+      "maintenance",
+      "travel",
+      "invest",
+      "raise",
+      "ticket",
+      "save",
+      "lower"
+    ],
+    "answers": {
+      "1": "invest",
+      "2": "raise",
+      "3": "maintenance"
+    }
+  },
+  {
+    "id": "r_fib-20",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Plants communicate in surprising ways. When some plants are attacked by insects, they release chemicals into the air that {{1}} nearby plants of the danger. The neighbouring plants may then {{2}} their own defences, producing substances that make their leaves less {{3}} to insects.",
+    "wordBank": [
+      "attractive",
+      "remove",
+      "strengthen",
+      "dangerous",
+      "remind",
+      "weaken",
+      "warn"
+    ],
+    "answers": {
+      "1": "warn",
+      "2": "strengthen",
+      "3": "attractive"
+    }
+  },
+  {
+    "id": "r_fib-21",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Many universities offer peer mentoring programmes, in which experienced students {{1}} new students during their first year. Mentors can answer practical questions, share study tips and help newcomers feel less {{2}}. Research suggests that students with mentors are more likely to {{3}} their studies.",
+    "wordBank": [
+      "abandon",
+      "confident",
+      "complete",
+      "ignore",
+      "support",
+      "replace",
+      "isolated"
+    ],
+    "answers": {
+      "1": "support",
+      "2": "isolated",
+      "3": "complete"
+    }
+  },
+  {
+    "id": "r_fib-22",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Ice cores drilled from glaciers contain tiny bubbles of ancient air. By {{1}} these bubbles, scientists can measure how the composition of the atmosphere has changed over hundreds of thousands of years. This evidence has been {{2}} in understanding the link between carbon dioxide and global {{3}}.",
+    "wordBank": [
+      "populations",
+      "temperatures",
+      "analysing",
+      "useless",
+      "melting",
+      "ignoring",
+      "crucial"
+    ],
+    "answers": {
+      "1": "analysing",
+      "2": "crucial",
+      "3": "temperatures"
+    }
+  },
+  {
+    "id": "r_fib-23",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "A balanced diet includes a {{1}} of foods from different groups, such as fruit, vegetables, whole grains and proteins. Eating a wide range of foods helps ensure the body receives the vitamins and minerals it {{2}}. Nutritionists recommend {{3}} highly processed foods that contain large amounts of sugar and salt.",
+    "wordBank": [
+      "needs",
+      "rejects",
+      "increasing",
+      "variety",
+      "limiting",
+      "shortage",
+      "lack"
+    ],
+    "answers": {
+      "1": "variety",
+      "2": "needs",
+      "3": "limiting"
+    }
+  },
+  {
+    "id": "r_fib-24",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Tidal energy uses the regular rise and fall of the sea to generate electricity. Unlike wind and solar power, tides are highly {{1}}, which makes it easier to plan electricity supply. However, tidal power stations are expensive to build and can {{2}} marine habitats, so only a {{3}} number have been constructed.",
+    "wordBank": [
+      "disturb",
+      "predictable",
+      "protect",
+      "random",
+      "large",
+      "small",
+      "weak"
+    ],
+    "answers": {
+      "1": "predictable",
+      "2": "disturb",
+      "3": "small"
+    }
+  },
+  {
+    "id": "r_fib-25",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Libraries are adapting to the digital age. As well as lending books, many now provide access to e-books, online databases and computers. They also offer quiet {{1}} for study and run workshops that help people {{2}} digital skills. In this way, libraries continue to {{3}} their communities.",
+    "wordBank": [
+      "forget",
+      "spaces",
+      "develop",
+      "serve",
+      "noise",
+      "fees",
+      "leave"
+    ],
+    "answers": {
+      "1": "spaces",
+      "2": "develop",
+      "3": "serve"
+    }
+  },
+  {
+    "id": "r_fib-26",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Coral bleaching occurs when water temperatures rise and corals {{1}} the algae living in their tissues. Without the algae, corals lose their colour and their main source of food. If high temperatures {{2}} for too long, the corals may die, affecting thousands of species that {{3}} on reefs.",
+    "wordBank": [
+      "insist",
+      "continue",
+      "grow",
+      "absorb",
+      "decrease",
+      "expel",
+      "depend"
+    ],
+    "answers": {
+      "1": "expel",
+      "2": "continue",
+      "3": "depend"
+    }
+  },
+  {
+    "id": "r_fib-27",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Effective leaders do not simply give orders. They {{1}} a clear vision, listen to their team and create an environment where people feel able to share ideas. Good leaders also take {{2}} for mistakes rather than blaming others, which helps build {{3}} within the team.",
+    "wordBank": [
+      "credit",
+      "hide",
+      "trust",
+      "responsibility",
+      "communicate",
+      "forget",
+      "conflict"
+    ],
+    "answers": {
+      "1": "communicate",
+      "2": "responsibility",
+      "3": "trust"
+    }
+  },
+  {
+    "id": "r_fib-28",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The first vaccines were developed in the late eighteenth century, when Edward Jenner noticed that milkmaids who had caught cowpox appeared to be {{1}} to smallpox. He tested this idea by {{2}} a boy with material from a cowpox sore, and the boy did not develop smallpox. This work laid the {{3}} for modern immunology.",
+    "wordBank": [
+      "problem",
+      "foundation",
+      "roof",
+      "infecting",
+      "vulnerable",
+      "immune",
+      "curing"
+    ],
+    "answers": {
+      "1": "immune",
+      "2": "infecting",
+      "3": "foundation"
+    }
+  },
+  {
+    "id": "r_fib-29",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Many people make New Year's resolutions, but few keep them. Psychologists suggest setting {{1}} goals and planning specific actions. Instead of deciding to exercise more, for example, a person could {{2}} to walk for twenty minutes after lunch each day. Small, clear steps are easier to {{3}}.",
+    "wordBank": [
+      "refuse",
+      "impossible",
+      "maintain",
+      "realistic",
+      "forget",
+      "commit",
+      "vague"
+    ],
+    "answers": {
+      "1": "realistic",
+      "2": "commit",
+      "3": "maintain"
+    }
+  },
+  {
+    "id": "r_fib-30",
+    "section": "reading",
+    "type": "r_fib",
+    "title": "Reading: Fill in the blanks",
+    "instructions": "In the text below some words are missing. Drag words from the box below to the appropriate place in the text. To undo an answer choice, drag the word back to the box below the text.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Satellites have many uses beyond communication. They help forecast the weather, {{1}} changes in forests and ice sheets, and guide navigation systems in cars and phones. As the number of satellites grows, however, space debris is becoming a {{2}} concern, because collisions can {{3}} working satellites.",
+    "wordBank": [
+      "ignore",
+      "minor",
+      "launch",
+      "monitor",
+      "serious",
+      "damage",
+      "repair"
+    ],
+    "answers": {
+      "1": "monitor",
+      "2": "serious",
+      "3": "damage"
+    }
+  }
+]

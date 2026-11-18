@@ -1,0 +1,1382 @@
+[
+  {
+    "id": "l_mcma-01",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Today I want to look at how migratory birds find their way over thousands of kilometres. For a long time, people assumed that birds simply followed familiar landmarks such as coastlines and mountain ranges, and visual landmarks certainly do play a part, especially near the end of a journey. But experiments have shown that birds use several other systems as well. Many species can sense the Earth's magnetic field, which gives them a kind of internal compass. Birds that migrate during the day also use the position of the sun, adjusting for the time of day with remarkable accuracy, while night migrants have been shown to orient themselves using the pattern of stars around the North Star. What's particularly interesting is that young birds on their first migration often don't know the exact destination. They seem to be born with a direction and a rough distance, and they refine their route in later years through experience. That's why first-year birds blown off course by storms sometimes turn up hundreds of kilometres from where they should be, whereas adults are much better at correcting their position.",
+    "audioUrl": null,
+    "question": "Which of the following statements are true according to the speaker?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Young birds know their exact destination before their first migration."
+      },
+      {
+        "id": "B",
+        "text": "Some birds can detect the Earth's magnetic field."
+      },
+      {
+        "id": "C",
+        "text": "Visual landmarks are especially useful towards the end of a migration."
+      },
+      {
+        "id": "D",
+        "text": "Storms rarely affect the route of migrating birds."
+      },
+      {
+        "id": "E",
+        "text": "Night-flying birds rely mainly on the moon."
+      },
+      {
+        "id": "F",
+        "text": "Adult birds are better than first-year birds at correcting their course."
+      }
+    ],
+    "answers": [
+      "B",
+      "C",
+      "F"
+    ],
+    "explanation": "Night migrants use stars (not the moon); young birds 'don't know the exact destination'; storms blow first-year birds off course."
+  },
+  {
+    "id": "l_mcma-02",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "A question that comes up in many city councils is whether public transport should be free. Supporters point to cities that have removed fares and seen passenger numbers rise, sometimes quite sharply. They also argue that collecting fares is surprisingly expensive, because ticket machines, inspectors and payment systems all cost money. On the other hand, studies of free-fare schemes suggest that many of the new passengers are people who previously walked or cycled, rather than people who left their cars at home. So if the main goal is to cut traffic and pollution, removing fares on its own may not achieve very much. Critics also worry that without fare revenue, transport authorities will have less money to improve services. Most researchers conclude that frequency and reliability matter more to passengers than price. In other words, a cheap service that people cannot depend on will not persuade drivers to switch.",
+    "audioUrl": null,
+    "question": "Which of the following points does the speaker make?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Price is the most important factor for passengers."
+      },
+      {
+        "id": "B",
+        "text": "Free public transport always reduces car use substantially."
+      },
+      {
+        "id": "C",
+        "text": "Fare revenue can help authorities improve services."
+      },
+      {
+        "id": "D",
+        "text": "Most cities have already introduced free public transport."
+      },
+      {
+        "id": "E",
+        "text": "Some new passengers on free services previously walked or cycled."
+      },
+      {
+        "id": "F",
+        "text": "Collecting fares involves significant costs."
+      }
+    ],
+    "answers": [
+      "C",
+      "E",
+      "F"
+    ],
+    "explanation": "B and E are contradicted (frequency and reliability matter more than price); F is never stated."
+  },
+  {
+    "id": "l_mcma-03",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Let's talk about why some cities succeed in attracting new industries while others decline. Historically, cities grew around natural advantages such as ports, rivers or nearby resources like coal. Today those advantages matter less. Research suggests that the most important factor is now the presence of skilled workers. Companies increasingly choose locations where they can hire educated people, and educated people, in turn, are attracted to cities with good universities, cultural life and other skilled workers. This creates a cycle that can help successful cities keep growing. However, it also means that cities which lose skilled workers can find it very hard to recover, because new companies are reluctant to move there. Some governments have tried to break this pattern by offering tax incentives to firms, but the evidence suggests that investment in education and quality of life has more lasting effects.",
+    "question": "Which of the following points does the speaker make?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Skilled workers are now the most important factor in a city's success."
+      },
+      {
+        "id": "B",
+        "text": "Tax incentives are the most effective way to revive declining cities."
+      },
+      {
+        "id": "C",
+        "text": "Cities that lose skilled workers usually recover quickly."
+      },
+      {
+        "id": "D",
+        "text": "Investment in education tends to have longer-lasting effects than tax incentives."
+      },
+      {
+        "id": "E",
+        "text": "Natural advantages such as ports matter less than they used to."
+      },
+      {
+        "id": "F",
+        "text": "Universities discourage skilled workers from moving to cities."
+      }
+    ],
+    "answers": [
+      "A",
+      "D",
+      "E"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-04",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Today I'd like to discuss how sleep affects learning. In one well-known study, students learned a list of words in the evening. Half of them slept normally, while the other half stayed awake all night. Two days later, after everyone had caught up on sleep, the students who had been kept awake remembered significantly less. This suggests that the first night's sleep after learning plays a special role in strengthening memories, and that catching up later doesn't fully compensate. Other studies show that short naps during the day can also help, especially naps that include deep sleep. On the other hand, the benefits seem to depend on the type of material. Facts and vocabulary appear to benefit most, while the effect on physical skills, such as playing an instrument, is linked more to a later stage of sleep.",
+    "question": "According to the speaker, which statements are true?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The students were tested on the morning after the experiment."
+      },
+      {
+        "id": "B",
+        "text": "Students who stayed awake after learning remembered less."
+      },
+      {
+        "id": "C",
+        "text": "Facts and vocabulary seem to benefit most from sleep."
+      },
+      {
+        "id": "D",
+        "text": "All types of material benefit equally from sleep."
+      },
+      {
+        "id": "E",
+        "text": "Catching up on sleep later fully restores the lost memory benefit."
+      },
+      {
+        "id": "F",
+        "text": "Daytime naps can also support learning."
+      }
+    ],
+    "answers": [
+      "B",
+      "C",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-05",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "In this lecture, I want to explain why biodiversity matters beyond the simple fact that species are interesting. Ecosystems with many species tend to be more stable. If one species declines, others that play similar roles can take over, a bit like having several insurance policies. Biodiversity also supports services humans depend on, such as pollination, water purification and fertile soil. Many medicines were originally discovered in plants and fungi, so losing species may mean losing future treatments we don't yet know about. Of course, protecting biodiversity has costs. Farmland and development land are valuable, and conservation can limit economic activity in the short term. The challenge for governments is to balance these interests, and economists are increasingly trying to measure the economic value of natural services to support better decisions.",
+    "question": "Which of the following does the speaker mention as benefits of biodiversity?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Support for services such as pollination and water purification."
+      },
+      {
+        "id": "B",
+        "text": "Faster economic growth in the short term."
+      },
+      {
+        "id": "C",
+        "text": "Higher prices for farmland."
+      },
+      {
+        "id": "D",
+        "text": "A possible source of future medicines."
+      },
+      {
+        "id": "E",
+        "text": "Fewer conflicts between governments."
+      },
+      {
+        "id": "F",
+        "text": "Greater stability in ecosystems."
+      }
+    ],
+    "answers": [
+      "A",
+      "D",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-06",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Good afternoon. I'm going to give you some practical advice about preparing for job interviews. First, research the organisation thoroughly. You should know what it does, who its customers are and what challenges it is currently facing. Interviewers are often impressed when candidates can connect their own experience to the company's situation. Second, prepare specific examples. Instead of saying you're a good team player, describe a particular project, what your role was and what the result was. Third, prepare a few questions of your own. Asking about the team or about how success is measured shows genuine interest. Finally, don't worry too much about nerves. Most interviewers expect candidates to be a little nervous, and they're far more interested in what you say than in whether your voice shakes slightly.",
+    "question": "Which pieces of advice does the speaker give?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Give specific examples rather than general claims."
+      },
+      {
+        "id": "B",
+        "text": "Hide any sign of nervousness at all costs."
+      },
+      {
+        "id": "C",
+        "text": "Avoid asking the interviewer any questions."
+      },
+      {
+        "id": "D",
+        "text": "Memorise answers word for word."
+      },
+      {
+        "id": "E",
+        "text": "Prepare some questions to ask the interviewer."
+      },
+      {
+        "id": "F",
+        "text": "Learn about the organisation and its current challenges."
+      }
+    ],
+    "answers": [
+      "A",
+      "E",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-07",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Most people have heard that the Great Pyramid of Giza was built using enormous stone blocks, but how were they moved? For a long time, historians assumed that huge teams of slaves dragged them across the desert. Evidence found near the pyramids now suggests a different picture. Archaeologists have discovered the remains of workers' villages, bakeries and medical care facilities, indicating that the builders were paid and organised labourers rather than slaves. A wall painting also shows workers pouring water in front of a sledge carrying a statue. Experiments have since shown that wetting the sand reduces friction, making it much easier to pull heavy loads. Many blocks were probably transported by boat along the Nile and canals before being moved the final distance over land.",
+    "question": "According to the speaker, what does recent evidence suggest?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Workers lived far away from the building site."
+      },
+      {
+        "id": "B",
+        "text": "The blocks were lifted into place by machines."
+      },
+      {
+        "id": "C",
+        "text": "The pyramids were built by slaves dragging blocks across dry sand."
+      },
+      {
+        "id": "D",
+        "text": "The builders were paid, organised workers."
+      },
+      {
+        "id": "E",
+        "text": "Wetting sand made heavy loads easier to pull."
+      },
+      {
+        "id": "F",
+        "text": "Boats were used to transport many blocks part of the way."
+      }
+    ],
+    "answers": [
+      "D",
+      "E",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-08",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "I'd like to look at the debate around homework in primary schools. Supporters argue that homework helps children develop independent study habits and allows parents to see what their children are learning. However, research on young children shows only a weak link between the amount of homework and academic achievement. For secondary school students, the link is stronger, although there seems to be a limit beyond which more homework brings no extra benefit. Critics also point out that homework can increase inequality, because some children have quiet places to work and parents who can help, while others don't. As a result, several schools have replaced traditional homework with reading for pleasure, which appears to have clear benefits and is less dependent on home circumstances.",
+    "question": "Which of the following statements reflect what the speaker says?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Parents generally oppose homework."
+      },
+      {
+        "id": "B",
+        "text": "Reading for pleasure has been used as an alternative to homework."
+      },
+      {
+        "id": "C",
+        "text": "For secondary students, more homework always means better results."
+      },
+      {
+        "id": "D",
+        "text": "Research shows homework has no benefits at any age."
+      },
+      {
+        "id": "E",
+        "text": "Homework can increase inequality between children."
+      },
+      {
+        "id": "F",
+        "text": "For young children, homework has only a weak link with achievement."
+      }
+    ],
+    "answers": [
+      "B",
+      "E",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-09",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Let's consider the role of fungi in forests. Beneath the forest floor, the roots of many trees are connected to vast networks of fungal threads. These networks help trees absorb water and nutrients such as phosphorus. In return, the trees supply the fungi with sugars produced through photosynthesis. Some researchers have suggested that these networks also allow trees to share resources with each other, for example by passing carbon from large trees to seedlings growing in the shade. This idea has become very popular in the media, sometimes described as a 'wood wide web'. However, other scientists argue that the evidence for large-scale sharing is weaker than often claimed and that more careful field studies are needed before firm conclusions can be drawn.",
+    "question": "Which statements are consistent with the talk?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Some scientists think the evidence for resource sharing has been overstated."
+      },
+      {
+        "id": "B",
+        "text": "Fungi produce sugars through photosynthesis."
+      },
+      {
+        "id": "C",
+        "text": "Fungal networks help trees take up water and nutrients."
+      },
+      {
+        "id": "D",
+        "text": "All scientists agree that trees share large amounts of resources through fungi."
+      },
+      {
+        "id": "E",
+        "text": "Seedlings in the shade never receive carbon from other trees."
+      },
+      {
+        "id": "F",
+        "text": "Trees provide fungi with sugars."
+      }
+    ],
+    "answers": [
+      "A",
+      "C",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-10",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Today's topic is consumer behaviour and the influence of defaults. A default is the option that applies if a person makes no active choice. Studies show that defaults have a powerful effect. For example, when employees are automatically enrolled in a pension scheme and must actively choose to leave it, participation rates are far higher than when they must choose to join. Similar effects have been seen with organ donation and with environmentally friendly energy plans. One reason is simple inertia: people tend to stick with whatever is already in place. Another is that people may see the default as a recommendation. Because defaults are so influential, some critics argue that organisations have a responsibility to set them in ways that benefit people, not just the organisation itself.",
+    "question": "According to the speaker, why are defaults so influential?",
+    "options": [
+      {
+        "id": "A",
+        "text": "People usually read every option carefully."
+      },
+      {
+        "id": "B",
+        "text": "Defaults are always the cheapest option."
+      },
+      {
+        "id": "C",
+        "text": "Laws require people to accept defaults."
+      },
+      {
+        "id": "D",
+        "text": "Defaults are chosen by consumers themselves."
+      },
+      {
+        "id": "E",
+        "text": "People may treat the default as a recommendation."
+      },
+      {
+        "id": "F",
+        "text": "People tend to stay with whatever option is already in place."
+      }
+    ],
+    "answers": [
+      "E",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-11",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "I'd like to talk about the history of the English language. Old English, spoken over a thousand years ago, would be almost impossible for most modern speakers to understand. A major turning point came after eleven sixty-six, when the Normans conquered England. For several centuries, French was the language of the court and the law, and thousands of French words entered English, especially in areas such as government, food and fashion. That's why English often has pairs of words with similar meanings, one of Germanic origin and one from French, like 'cow' and 'beef'. Later, during the Renaissance, scholars borrowed many words directly from Latin and Greek, particularly for science and academic subjects.",
+    "question": "Which of the following are mentioned in the talk?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Old English is difficult for modern speakers to understand."
+      },
+      {
+        "id": "B",
+        "text": "French became the language of the court after the Norman conquest."
+      },
+      {
+        "id": "C",
+        "text": "Word pairs such as 'cow' and 'beef' came from Latin."
+      },
+      {
+        "id": "D",
+        "text": "English borrowed very few words from French."
+      },
+      {
+        "id": "E",
+        "text": "Many scientific words were borrowed from Latin and Greek."
+      },
+      {
+        "id": "F",
+        "text": "The Normans spoke Old English."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "E"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-12",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Let me outline some of the arguments about nuclear power. Supporters point out that nuclear plants produce very low carbon emissions while generating electricity, and unlike wind and solar power, they provide a steady supply regardless of the weather. Modern reactor designs are also claimed to be safer than older ones. On the other hand, nuclear plants are extremely expensive and slow to build, often taking more than a decade. There's also the unresolved question of long-term waste storage, since some radioactive waste remains dangerous for thousands of years. Public concern after major accidents has led some countries to close their plants, while others are planning new ones as part of their climate strategy.",
+    "question": "Which points are made in favour of nuclear power?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Its waste becomes harmless within a few years."
+      },
+      {
+        "id": "B",
+        "text": "All countries are now building new nuclear plants."
+      },
+      {
+        "id": "C",
+        "text": "Nuclear plants are cheap and quick to build."
+      },
+      {
+        "id": "D",
+        "text": "It provides a steady supply regardless of the weather."
+      },
+      {
+        "id": "E",
+        "text": "It produces very low carbon emissions."
+      },
+      {
+        "id": "F",
+        "text": "Modern reactors are said to be safer than older designs."
+      }
+    ],
+    "answers": [
+      "D",
+      "E",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-13",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "In this session, I'll discuss how social media affects political participation. On the positive side, social platforms make it easy for people to find information, join campaigns and organise events, and they have helped young people in particular become more involved in political issues. They also give a voice to groups that might be ignored by traditional media. However, there are also concerns. Algorithms tend to show users content similar to what they already like, which may create so-called echo chambers where people rarely encounter opposing views. False information can spread quickly, and some researchers argue that online activity, such as liking a post, can replace more meaningful forms of participation like voting or volunteering.",
+    "question": "Which concerns about social media does the speaker mention?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Online actions may replace more meaningful participation."
+      },
+      {
+        "id": "B",
+        "text": "Traditional media gives more voice to minority groups."
+      },
+      {
+        "id": "C",
+        "text": "False information can spread quickly."
+      },
+      {
+        "id": "D",
+        "text": "Social media is too difficult for young people to use."
+      },
+      {
+        "id": "E",
+        "text": "Users may rarely see opposing views."
+      },
+      {
+        "id": "F",
+        "text": "Social media prevents people from organising events."
+      }
+    ],
+    "answers": [
+      "A",
+      "C",
+      "E"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-14",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Today we'll look at the causes of obesity. It's tempting to see obesity simply as the result of individual choices, but researchers increasingly emphasise the role of the environment. Processed foods high in sugar and fat are widely available, heavily advertised and often cheaper than fresh produce. Many people work in jobs that involve sitting for most of the day, and cities are often designed around cars rather than walking. Genetics also play a role, influencing appetite and how the body stores energy. For these reasons, public health experts argue that effective solutions require changes at the level of society, such as taxes on sugary drinks or better urban design, rather than relying only on individual willpower.",
+    "question": "Which factors does the speaker link to obesity?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The availability and low price of processed foods."
+      },
+      {
+        "id": "B",
+        "text": "Too much walking in cities."
+      },
+      {
+        "id": "C",
+        "text": "The high cost of processed foods."
+      },
+      {
+        "id": "D",
+        "text": "Taxes on sugary drinks."
+      },
+      {
+        "id": "E",
+        "text": "Jobs that involve sitting for long periods."
+      },
+      {
+        "id": "F",
+        "text": "Genetic influences on appetite."
+      }
+    ],
+    "answers": [
+      "A",
+      "E",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-15",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Welcome back. In this part of the course, we're looking at why some languages have many words for things that others describe with one. A popular claim is that some Arctic languages have hundreds of words for snow. The reality is more complicated. These languages build long words by adding endings to a base, so counting words is not straightforward. However, it is true that communities develop detailed vocabulary for things that matter in their daily lives. Sailors have many terms for wind and sea conditions, and wine experts have extensive vocabulary for taste. Vocabulary reflects needs and interests, but it doesn't prevent speakers of other languages from perceiving the same differences.",
+    "question": "Which statements does the speaker support?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Counting words for snow in some languages is not straightforward."
+      },
+      {
+        "id": "B",
+        "text": "Arctic languages have exactly one hundred words for snow."
+      },
+      {
+        "id": "C",
+        "text": "Communities develop detailed vocabulary for things important to them."
+      },
+      {
+        "id": "D",
+        "text": "Speakers of other languages cannot perceive differences in snow."
+      },
+      {
+        "id": "E",
+        "text": "Wine experts use very few words to describe taste."
+      },
+      {
+        "id": "F",
+        "text": "Sailors have many terms for wind and sea conditions."
+      }
+    ],
+    "answers": [
+      "A",
+      "C",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-16",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Let's discuss why some infrastructure projects run over budget. Large projects such as bridges, railways and stadiums frequently cost far more than first estimated and take longer to complete. One explanation is optimism bias: planners tend to underestimate risks and assume things will go smoothly. Another is that early estimates may be deliberately low to win political approval. Complexity is also a factor. Unexpected ground conditions, design changes during construction and coordination between many contractors can all add costs. One approach to improving estimates is called reference class forecasting, in which planners look at the actual outcomes of many similar past projects rather than relying only on the details of their own plan.",
+    "question": "According to the speaker, why do large projects often exceed their budgets?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Reference class forecasting increases costs."
+      },
+      {
+        "id": "B",
+        "text": "Early estimates may be kept low to gain approval."
+      },
+      {
+        "id": "C",
+        "text": "Construction materials are always free."
+      },
+      {
+        "id": "D",
+        "text": "Planners tend to be overly optimistic."
+      },
+      {
+        "id": "E",
+        "text": "Unexpected conditions and design changes add costs."
+      },
+      {
+        "id": "F",
+        "text": "Contractors usually finish projects early."
+      }
+    ],
+    "answers": [
+      "B",
+      "D",
+      "E"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-17",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Today I want to explain how hurricanes form. Hurricanes develop over warm ocean water, usually at least twenty-six degrees Celsius. Warm, moist air rises, and as it cools, the water vapour condenses, releasing heat that powers the storm. The rotation of the Earth causes the system to spin. Hurricanes weaken when they move over land or cooler water, because they lose their source of energy. Climate scientists expect that warmer oceans may not necessarily produce more hurricanes, but may make the strongest ones more intense and increase the amount of rainfall they bring, which raises the risk of flooding.",
+    "question": "Which statements are true according to the speaker?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Scientists are certain there will be many more hurricanes each year."
+      },
+      {
+        "id": "B",
+        "text": "Warmer oceans may make the strongest hurricanes more intense."
+      },
+      {
+        "id": "C",
+        "text": "Condensing water vapour releases heat that powers the storm."
+      },
+      {
+        "id": "D",
+        "text": "The Earth's rotation stops hurricanes from spinning."
+      },
+      {
+        "id": "E",
+        "text": "Hurricanes need warm ocean water to form."
+      },
+      {
+        "id": "F",
+        "text": "Hurricanes become stronger when they move over land."
+      }
+    ],
+    "answers": [
+      "B",
+      "C",
+      "E"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-18",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Good morning. I'd like to share some findings about successful study groups. Groups of three to five students tend to work best. Larger groups make it easier for some members to stay silent and let others do the work. Effective groups agree on clear goals for each session, such as solving a specific set of problems, rather than meeting just to study together. They also take turns explaining concepts, because explaining something to others is one of the best ways to check your own understanding. Finally, successful groups combine group sessions with individual study. Group work is good for discussion and clarifying difficult ideas, but most students still need time alone to practise and memorise material.",
+    "question": "What features of successful study groups does the speaker mention?",
+    "options": [
+      {
+        "id": "A",
+        "text": "They meet without any specific aims."
+      },
+      {
+        "id": "B",
+        "text": "They set clear goals for each meeting."
+      },
+      {
+        "id": "C",
+        "text": "They replace individual study completely."
+      },
+      {
+        "id": "D",
+        "text": "They work best with ten or more members."
+      },
+      {
+        "id": "E",
+        "text": "Members take turns explaining ideas."
+      },
+      {
+        "id": "F",
+        "text": "They usually have three to five members."
+      }
+    ],
+    "answers": [
+      "B",
+      "E",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-19",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "In this lecture, I'll describe the rise of container shipping. Before the nineteen-sixties, cargo was loaded onto ships piece by piece, often by large teams of dock workers. Loading a ship could take days or even weeks, and theft and damage were common. The introduction of standardised metal containers changed this. Containers could be moved directly between ships, trains and trucks without being unpacked. Loading times fell dramatically, costs dropped and international trade grew rapidly. However, the change also had social effects. Many traditional dock jobs disappeared, and port activity moved away from old city centres to large new terminals with deep water and plenty of space.",
+    "question": "Which effects of container shipping does the speaker describe?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Theft and damage became more common."
+      },
+      {
+        "id": "B",
+        "text": "International trade declined."
+      },
+      {
+        "id": "C",
+        "text": "Many traditional dock jobs disappeared."
+      },
+      {
+        "id": "D",
+        "text": "Ports moved to large new terminals away from old city centres."
+      },
+      {
+        "id": "E",
+        "text": "Shipping costs increased."
+      },
+      {
+        "id": "F",
+        "text": "Loading times fell dramatically."
+      }
+    ],
+    "answers": [
+      "C",
+      "D",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-20",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Let's look at the placebo effect in more detail. Patients who receive a treatment with no active ingredient often report real improvements, particularly for symptoms like pain and nausea. Interestingly, the effect can be influenced by details that seem irrelevant. Larger pills, pills of certain colours and injections tend to produce stronger placebo responses than small tablets. Even the price matters: in one study, people who were told a placebo painkiller was expensive reported more relief than those told it was cheap. Researchers believe expectations trigger real changes in the brain, such as the release of natural pain-relieving chemicals. However, placebos are unlikely to cure underlying diseases.",
+    "question": "According to the speaker, what can make a placebo more effective?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Being told the treatment is cheap."
+      },
+      {
+        "id": "B",
+        "text": "Taking the placebo without knowing anything about it."
+      },
+      {
+        "id": "C",
+        "text": "Being told the treatment is expensive."
+      },
+      {
+        "id": "D",
+        "text": "Larger pills."
+      },
+      {
+        "id": "E",
+        "text": "Using only very small white tablets."
+      },
+      {
+        "id": "F",
+        "text": "Injections rather than small tablets."
+      }
+    ],
+    "answers": [
+      "C",
+      "D",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-21",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "I want to discuss the challenges of measuring national wellbeing. For decades, governments relied mainly on gross domestic product, or GDP, to judge how well a country was doing. But GDP measures economic output, not quality of life. It increases when money is spent on cleaning up pollution or treating illness, and it doesn't count unpaid work such as caring for children or elderly relatives. Several countries now publish additional measures, including life satisfaction surveys, health statistics and environmental indicators. These measures are useful, but they are harder to compare across countries, partly because people in different cultures may answer questions about happiness in different ways.",
+    "question": "Which limitations of GDP does the speaker mention?",
+    "options": [
+      {
+        "id": "A",
+        "text": "It does not count unpaid caring work."
+      },
+      {
+        "id": "B",
+        "text": "It is published only every ten years."
+      },
+      {
+        "id": "C",
+        "text": "It is based on life satisfaction surveys."
+      },
+      {
+        "id": "D",
+        "text": "It is impossible to calculate."
+      },
+      {
+        "id": "E",
+        "text": "It measures economic output rather than quality of life."
+      },
+      {
+        "id": "F",
+        "text": "It can rise because of spending on pollution or illness."
+      }
+    ],
+    "answers": [
+      "A",
+      "E",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-22",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Today we'll look at why some animals migrate long distances. Migration usually allows animals to take advantage of seasonal resources, such as food or suitable breeding sites. For example, many birds breed in northern regions during summer, when insects are plentiful and days are long, and move south when food becomes scarce. Migration is risky and requires a lot of energy, so animals prepare by building up fat reserves. Climate change is now affecting migration. Some species arrive at their breeding grounds at the wrong time, after the peak of food availability, which can reduce the survival of their young.",
+    "question": "Which statements are supported by the talk?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Migration helps animals use seasonal resources."
+      },
+      {
+        "id": "B",
+        "text": "Food is always plentiful in the north during winter."
+      },
+      {
+        "id": "C",
+        "text": "Many birds breed in the north during summer."
+      },
+      {
+        "id": "D",
+        "text": "Animals lose fat before migrating."
+      },
+      {
+        "id": "E",
+        "text": "Migration requires little energy."
+      },
+      {
+        "id": "F",
+        "text": "Climate change can cause species to arrive at the wrong time."
+      }
+    ],
+    "answers": [
+      "A",
+      "C",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-23",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "I'd like to talk about the advantages and disadvantages of studying abroad. Students who study in another country often develop greater independence and confidence, and they gain experience of different cultures, which employers increasingly value. Learning in a second language can also greatly improve language skills. On the other hand, studying abroad can be expensive, and students may feel isolated or homesick, especially in the first few months. Differences in teaching styles can also be challenging. For example, students used to memorising information may find it difficult when teachers expect critical discussion. Universities can reduce these problems by offering orientation programmes and support services.",
+    "question": "Which advantages of studying abroad does the speaker mention?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Never feeling homesick."
+      },
+      {
+        "id": "B",
+        "text": "Identical teaching styles everywhere."
+      },
+      {
+        "id": "C",
+        "text": "Greater independence and confidence."
+      },
+      {
+        "id": "D",
+        "text": "Improved language skills."
+      },
+      {
+        "id": "E",
+        "text": "Lower costs than studying at home."
+      },
+      {
+        "id": "F",
+        "text": "Experience of different cultures."
+      }
+    ],
+    "answers": [
+      "C",
+      "D",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-24",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Let's consider the economics of streaming music. Streaming has made enormous libraries of music available for a monthly fee, and it has helped reduce illegal downloading. For listeners, this is clearly convenient. For musicians, the picture is mixed. Each stream pays only a tiny amount, so artists need millions of plays to earn significant income, which benefits famous performers more than smaller ones. On the other hand, streaming allows new artists to reach global audiences without a record contract. Many musicians now rely more on live performances and merchandise for income, using streaming mainly to build an audience.",
+    "question": "Which points about streaming does the speaker make?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Musicians no longer perform live."
+      },
+      {
+        "id": "B",
+        "text": "It benefits all artists equally."
+      },
+      {
+        "id": "C",
+        "text": "Each stream pays artists only a small amount."
+      },
+      {
+        "id": "D",
+        "text": "It allows new artists to reach global audiences."
+      },
+      {
+        "id": "E",
+        "text": "It has helped reduce illegal downloading."
+      },
+      {
+        "id": "F",
+        "text": "Streaming requires a record contract."
+      }
+    ],
+    "answers": [
+      "C",
+      "D",
+      "E"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-25",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Today's lecture is about the development of antibiotics. Penicillin was discovered by accident in nineteen twenty-eight, when Alexander Fleming noticed that mould had killed bacteria in one of his dishes. However, it took more than a decade before other scientists found ways to produce it in large quantities, and it was only widely used during the Second World War. Antibiotics have saved millions of lives, but bacteria can evolve resistance, particularly when antibiotics are overused or when patients do not complete their treatment. Few new types of antibiotic have been developed in recent decades, partly because they are less profitable for drug companies than medicines taken for long periods.",
+    "question": "Which statements are true according to the lecture?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Many new types of antibiotic have been developed recently."
+      },
+      {
+        "id": "B",
+        "text": "Penicillin was discovered by accident."
+      },
+      {
+        "id": "C",
+        "text": "New antibiotics are less profitable than some other medicines."
+      },
+      {
+        "id": "D",
+        "text": "Overuse of antibiotics can lead to resistance."
+      },
+      {
+        "id": "E",
+        "text": "Fleming discovered penicillin during the Second World War."
+      },
+      {
+        "id": "F",
+        "text": "Penicillin was mass-produced immediately after its discovery."
+      }
+    ],
+    "answers": [
+      "B",
+      "C",
+      "D"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-26",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "In this talk I'll explain why cities are often windier at street level than you might expect. Tall buildings interrupt the flow of wind high above the ground and push some of it downwards. This can create strong gusts at the base of skyscrapers, making some public spaces uncomfortable or even dangerous on windy days. Gaps between buildings can also act like tunnels, increasing wind speed. Architects now use computer models and wind tunnel tests to predict these effects before construction. Solutions include adding podiums at the base of towers, planting trees and designing canopies that shield pedestrians.",
+    "question": "Which ways of reducing wind at street level are mentioned?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Making buildings taller."
+      },
+      {
+        "id": "B",
+        "text": "Adding podiums at the base of towers."
+      },
+      {
+        "id": "C",
+        "text": "Removing all public spaces."
+      },
+      {
+        "id": "D",
+        "text": "Building narrower gaps between towers."
+      },
+      {
+        "id": "E",
+        "text": "Designing canopies to shield pedestrians."
+      },
+      {
+        "id": "F",
+        "text": "Planting trees."
+      }
+    ],
+    "answers": [
+      "B",
+      "E",
+      "F"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-27",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Let's discuss the role of failure in innovation. Many successful products emerged only after numerous failed attempts. Companies that encourage experimentation often allow employees to test ideas quickly and cheaply, accepting that most will not succeed. The key is to learn from each failure and to stop projects early when evidence shows they won't work. However, accepting failure doesn't mean accepting carelessness. In areas such as medicine or aviation, mistakes can have serious consequences, so experimentation happens in controlled settings, with careful testing before anything reaches the public.",
+    "question": "Which of the following does the speaker say?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Many successful products followed failed attempts."
+      },
+      {
+        "id": "B",
+        "text": "Experiments should be quick and cheap where possible."
+      },
+      {
+        "id": "C",
+        "text": "Projects should continue even when evidence shows they will fail."
+      },
+      {
+        "id": "D",
+        "text": "In medicine and aviation, experimentation is carefully controlled."
+      },
+      {
+        "id": "E",
+        "text": "Most experiments succeed."
+      },
+      {
+        "id": "F",
+        "text": "All failures should be accepted, even careless ones."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "D"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-28",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Welcome to this session on academic reading. Many students try to read every word of every article on their reading list, which is often impossible. A more effective approach is to read strategically. Start with the abstract and conclusion to understand the main argument. Then look at headings, tables and figures to see how the article is organised. Only read sections in detail if they are relevant to your question. Take notes in your own words, because this helps you understand the material and avoid accidental plagiarism. Finally, keep a record of full references as you go, so you don't have to search for them later.",
+    "question": "What reading strategies does the speaker recommend?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Read every word of every article."
+      },
+      {
+        "id": "B",
+        "text": "Take notes in your own words."
+      },
+      {
+        "id": "C",
+        "text": "Find references only after finishing the essay."
+      },
+      {
+        "id": "D",
+        "text": "Look at headings, tables and figures."
+      },
+      {
+        "id": "E",
+        "text": "Begin with the abstract and conclusion."
+      },
+      {
+        "id": "F",
+        "text": "Copy long passages directly into your notes."
+      }
+    ],
+    "answers": [
+      "B",
+      "D",
+      "E"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-29",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Today I'll describe how the human body responds to high altitude. At high altitudes, the air contains less oxygen per breath. In the first few days, people may experience headaches, tiredness and difficulty sleeping, a condition known as altitude sickness. The body adapts by breathing faster and, over several weeks, producing more red blood cells to carry oxygen. Climbers often follow the rule of climbing high and sleeping low, ascending gradually to give the body time to adjust. Some populations who have lived at high altitude for thousands of years have genetic adaptations that help them cope with low oxygen levels.",
+    "question": "According to the speaker, how does the body adapt to high altitude?",
+    "options": [
+      {
+        "id": "A",
+        "text": "By breathing faster."
+      },
+      {
+        "id": "B",
+        "text": "By reducing the heart rate."
+      },
+      {
+        "id": "C",
+        "text": "By storing extra oxygen in the muscles before climbing."
+      },
+      {
+        "id": "D",
+        "text": "By producing more red blood cells over time."
+      },
+      {
+        "id": "E",
+        "text": "By sleeping more deeply immediately."
+      },
+      {
+        "id": "F",
+        "text": "By stopping all physical activity."
+      }
+    ],
+    "answers": [
+      "A",
+      "D"
+    ],
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcma-30",
+    "section": "listening",
+    "type": "l_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Listen to the recording and answer the question by selecting all the correct responses. You will need to select more than one response.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "I'd like to finish today by looking at urban farming. In many cities, people are growing food on rooftops, in empty lots and even inside disused warehouses using hydroponic systems, where plants grow in nutrient-rich water instead of soil. Supporters say urban farms shorten supply chains, so food reaches consumers fresher and with lower transport emissions. They can also bring communities together and teach children where food comes from. However, urban farms are unlikely to feed entire cities. Land in cities is expensive, and indoor farms need a lot of electricity for lighting and climate control. At present, they work best for high-value crops such as salad leaves and herbs rather than staple foods like wheat or rice.",
+    "question": "Which statements reflect the speaker's views on urban farming?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Land in cities is usually cheap."
+      },
+      {
+        "id": "B",
+        "text": "Urban farms are likely to feed entire cities in the near future."
+      },
+      {
+        "id": "C",
+        "text": "Hydroponic systems grow plants without soil."
+      },
+      {
+        "id": "D",
+        "text": "Urban farms are best suited to staple crops such as wheat."
+      },
+      {
+        "id": "E",
+        "text": "Urban farms can deliver fresher food with lower transport emissions."
+      },
+      {
+        "id": "F",
+        "text": "Indoor farms require a lot of electricity."
+      }
+    ],
+    "answers": [
+      "C",
+      "E",
+      "F"
+    ],
+    "audioUrl": null
+  }
+]

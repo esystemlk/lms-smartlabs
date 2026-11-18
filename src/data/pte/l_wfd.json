@@ -1,0 +1,452 @@
+[
+  {
+    "id": "l_wfd-01",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The library will be closed on Monday for essential maintenance work.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-02",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Students are encouraged to submit their assignments before the final deadline.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-03",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Climate change has a significant impact on global food production.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-04",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Regular feedback helps learners identify their strengths and weaknesses.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-05",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The university provides free counselling services for all enrolled students.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-06",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Most of the research was funded by a government grant.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-07",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Participants were asked to complete a short questionnaire after each session.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-08",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The new policy will come into effect at the start of next year.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-09",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Economic growth depends largely on investment in education and infrastructure.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-10",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Please make sure that your mobile phones are switched off.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-11",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The results of the experiment were published in a scientific journal.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-12",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Renewable energy sources are becoming cheaper every year.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-13",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Access to the laboratory is restricted to authorised personnel only.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-14",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The lecture has been moved to the main hall this afternoon.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-15",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Many animals have adapted to survive in extreme environments.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-16",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Good time management is essential for success at university.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-17",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The museum offers guided tours in several different languages.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-18",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Researchers found a strong link between diet and long-term health.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-19",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Applications must be submitted online before the end of the month.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-20",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The course introduces students to the basic principles of economics.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-21",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Urban areas are expanding rapidly in many developing countries.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-22",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Students should cite all sources used in their written work.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-23",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The company plans to open three new offices in Asia.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-24",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Water shortages are a serious problem in many dry regions.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-25",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The professor will hold extra office hours before the examination.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-26",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Social media has changed the way people communicate with each other.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-27",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The final report must include a summary of the main findings.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-28",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Public transport is the most efficient way to travel in large cities.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-29",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Group discussions help students develop critical thinking skills.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_wfd-30",
+    "section": "listening",
+    "type": "l_wfd",
+    "title": "Write from dictation",
+    "instructions": "You will hear a sentence. Type the sentence in the box below exactly as you hear it. Write as much of the sentence as you can. You will hear the sentence only once.",
+    "scoring": "per_word",
+    "skills": [
+      "listening",
+      "writing"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The survey was conducted among students from five different universities.",
+    "audioUrl": null
+  }
+]

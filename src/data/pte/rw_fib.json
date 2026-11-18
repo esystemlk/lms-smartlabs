@@ -1,0 +1,1696 @@
+[
+  {
+    "id": "rw_fib-01",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Coral reefs cover less than one percent of the ocean floor, yet they {{1}} roughly a quarter of all marine species. Their survival depends on a delicate {{2}} between coral animals and the microscopic algae that live inside their tissues. The algae supply sugars produced through photosynthesis, while the coral offers shelter and nutrients in {{3}}. When water temperatures rise even slightly above the seasonal average for several weeks, this partnership breaks down and the coral expels the algae, a process known as bleaching. Bleached coral is not dead, but it is severely weakened and more {{4}} to disease. If cooler conditions return quickly, the algae can recolonise the reef; if not, large sections may die, {{5}} the many species that depend on them for food and protection.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "support",
+          "carry",
+          "raise",
+          "admit"
+        ],
+        "answer": "support"
+      },
+      {
+        "id": 2,
+        "options": [
+          "contest",
+          "partnership",
+          "distance",
+          "rivalry"
+        ],
+        "answer": "partnership"
+      },
+      {
+        "id": 3,
+        "options": [
+          "turn",
+          "total",
+          "return",
+          "case"
+        ],
+        "answer": "return"
+      },
+      {
+        "id": 4,
+        "options": [
+          "resistant",
+          "immune",
+          "indifferent",
+          "vulnerable"
+        ],
+        "answer": "vulnerable"
+      },
+      {
+        "id": 5,
+        "options": [
+          "threatening",
+          "protecting",
+          "ignoring",
+          "rewarding"
+        ],
+        "answer": "threatening"
+      }
+    ],
+    "explanation": "'in return' is a fixed phrase; 'vulnerable to' collocates with disease; 'threatening' shows the consequence for dependent species."
+  },
+  {
+    "id": "rw_fib-02",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Cities are often several degrees warmer than the surrounding countryside, a phenomenon known as the urban heat island effect. Dark surfaces such as asphalt and roofing materials {{1}} solar energy during the day and release it slowly at night, which prevents temperatures from falling as they would in rural areas. The {{2}} of vegetation makes the problem worse, because trees and plants cool the air through shade and the evaporation of water from their leaves. Planners are now {{3}} a range of responses, from planting street trees to painting roofs in reflective colours. Although each measure has a modest effect on its own, studies suggest that, when {{4}}, they can lower peak summer temperatures noticeably and reduce the energy {{5}} for air conditioning.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "reflect",
+          "absorb",
+          "deny",
+          "prevent"
+        ],
+        "answer": "absorb"
+      },
+      {
+        "id": 2,
+        "options": [
+          "absence",
+          "presence",
+          "quality",
+          "height"
+        ],
+        "answer": "absence"
+      },
+      {
+        "id": 3,
+        "options": [
+          "resisting",
+          "forgetting",
+          "testing",
+          "delaying"
+        ],
+        "answer": "testing"
+      },
+      {
+        "id": 4,
+        "options": [
+          "isolated",
+          "combined",
+          "removed",
+          "postponed"
+        ],
+        "answer": "combined"
+      },
+      {
+        "id": 5,
+        "options": [
+          "refused",
+          "released",
+          "rejected",
+          "required"
+        ],
+        "answer": "required"
+      }
+    ],
+    "explanation": "Dark surfaces absorb (not reflect) heat; a lack ('absence') of plants worsens the effect; measures work best when combined."
+  },
+  {
+    "id": "rw_fib-03",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Researchers have long suspected that sleep plays an important role in learning, but only recently have experiments begun to {{1}} how it works. During deep sleep, the brain appears to replay patterns of activity that were recorded while a person was awake, gradually {{2}} new information from short-term storage into long-term memory. In one study, students who slept after studying a list of word pairs recalled significantly more of them the following day than those who stayed awake for the same {{3}} of time. Interestingly, the benefit was greatest for material that participants had found difficult, which suggests that the sleeping brain may {{4}} information it judges to be important. Such findings have {{5}} implications for students who sacrifice sleep in order to study late into the night.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "conceal",
+          "reveal",
+          "invent",
+          "assume"
+        ],
+        "answer": "reveal"
+      },
+      {
+        "id": 2,
+        "options": [
+          "deleting",
+          "hiding",
+          "transferring",
+          "ignoring"
+        ],
+        "answer": "transferring"
+      },
+      {
+        "id": 3,
+        "options": [
+          "speed",
+          "period",
+          "kind",
+          "rate"
+        ],
+        "answer": "period"
+      },
+      {
+        "id": 4,
+        "options": [
+          "prioritise",
+          "discard",
+          "distort",
+          "randomise"
+        ],
+        "answer": "prioritise"
+      },
+      {
+        "id": 5,
+        "options": [
+          "accidental",
+          "imaginary",
+          "outdated",
+          "practical"
+        ],
+        "answer": "practical"
+      }
+    ],
+    "explanation": "'transferring ... from ... into' fits the movement of memories; 'the same period of time' is the natural collocation."
+  },
+  {
+    "id": "rw_fib-04",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "The arrival of the printing press in fifteenth-century Europe transformed the way knowledge was {{1}}. Before then, books were copied by hand, a slow and expensive process that kept them largely in the possession of churches, universities and wealthy individuals. Printing reduced the cost of producing a book so {{2}} that, within a few decades, millions of copies were in circulation. This sudden abundance encouraged literacy and allowed scholars in different countries to compare and {{3}} each other's work far more easily than before. Historians still {{4}} how directly the new technology contributed to later scientific and religious movements, but few doubt that it {{5}} the conditions in which those movements could spread.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "hidden",
+          "measured",
+          "shared",
+          "earned"
+        ],
+        "answer": "shared"
+      },
+      {
+        "id": 2,
+        "options": [
+          "dramatically",
+          "slightly",
+          "rarely",
+          "briefly"
+        ],
+        "answer": "dramatically"
+      },
+      {
+        "id": 3,
+        "options": [
+          "abandon",
+          "criticise",
+          "forget",
+          "conceal"
+        ],
+        "answer": "criticise"
+      },
+      {
+        "id": 4,
+        "options": [
+          "accept",
+          "prove",
+          "debate",
+          "celebrate"
+        ],
+        "answer": "debate"
+      },
+      {
+        "id": 5,
+        "options": [
+          "prevented",
+          "delayed",
+          "reversed",
+          "created"
+        ],
+        "answer": "created"
+      }
+    ],
+    "explanation": "'so dramatically that' introduces a large result; 'still debate' matches the contrast with 'few doubt'."
+  },
+  {
+    "id": "rw_fib-05",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "The invention of the steam engine marked a {{1}} point in human history. Before it, most work depended on the muscle power of people and animals, or on wind and water, which were only available in certain places. Steam engines could be built almost anywhere, {{2}} factories to be located close to workers and markets. They also powered railways and ships, dramatically {{3}} the time needed to transport goods and people. However, the new technology {{4}} on coal, and the burning of coal released smoke that polluted growing industrial cities.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "turning",
+          "boring",
+          "minor",
+          "missing"
+        ],
+        "answer": "turning"
+      },
+      {
+        "id": 2,
+        "options": [
+          "preventing",
+          "allowing",
+          "forcing",
+          "forbidding"
+        ],
+        "answer": "allowing"
+      },
+      {
+        "id": 3,
+        "options": [
+          "increasing",
+          "doubling",
+          "reducing",
+          "wasting"
+        ],
+        "answer": "reducing"
+      },
+      {
+        "id": 4,
+        "options": [
+          "depended",
+          "insisted",
+          "argued",
+          "focused"
+        ],
+        "answer": "depended"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-06",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Many universities now require students to complete a work placement as part of their degree. Placements give students the chance to {{1}} what they have learned in a real working environment and to develop skills that are difficult to teach in a classroom, such as teamwork and time management. Employers often {{2}} graduates with practical experience, so placements can improve students' job {{3}}. Some students, however, find it difficult to secure a placement, particularly in {{4}} fields where opportunities are limited.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "forget",
+          "apply",
+          "avoid",
+          "hide"
+        ],
+        "answer": "apply"
+      },
+      {
+        "id": 2,
+        "options": [
+          "prefer",
+          "refuse",
+          "ignore",
+          "dismiss"
+        ],
+        "answer": "prefer"
+      },
+      {
+        "id": 3,
+        "options": [
+          "titles",
+          "prospects",
+          "duties",
+          "contracts"
+        ],
+        "answer": "prospects"
+      },
+      {
+        "id": 4,
+        "options": [
+          "competitive",
+          "empty",
+          "open",
+          "generous"
+        ],
+        "answer": "competitive"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-07",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Coral reefs are not the only ecosystems under {{1}} from rising ocean temperatures. Kelp forests, underwater forests of large brown seaweed found in cool coastal waters, have also declined in many regions. Kelp provides food and shelter for a wide {{2}} of marine life, from fish to sea otters. When water becomes too warm, kelp grows more slowly and is more easily damaged by storms. Scientists are now {{3}} ways to restore kelp forests, including replanting young kelp and controlling populations of sea urchins, which {{4}} on kelp.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "threat",
+          "promise",
+          "control",
+          "protection"
+        ],
+        "answer": "threat"
+      },
+      {
+        "id": 2,
+        "options": [
+          "number",
+          "range",
+          "amount",
+          "level"
+        ],
+        "answer": "range"
+      },
+      {
+        "id": 3,
+        "options": [
+          "exploring",
+          "ignoring",
+          "rejecting",
+          "celebrating"
+        ],
+        "answer": "exploring"
+      },
+      {
+        "id": 4,
+        "options": [
+          "depend",
+          "feed",
+          "rely",
+          "insist"
+        ],
+        "answer": "feed"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-08",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Research on happiness suggests that experiences often bring more lasting satisfaction than material possessions. A new car or phone may create pleasure at first, but people quickly {{1}} to it, and the excitement fades. Experiences such as travel, concerts or meals with friends, on the other hand, tend to become part of our personal stories and are often {{2}} fondly for years. They are also more likely to be shared with others, {{3}} social connections, which are strongly linked to well-being. This does not mean possessions are {{4}}, but it may help people decide how to spend their money.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "object",
+          "adapt",
+          "refer",
+          "belong"
+        ],
+        "answer": "adapt"
+      },
+      {
+        "id": 2,
+        "options": [
+          "remembered",
+          "forgotten",
+          "ignored",
+          "hidden"
+        ],
+        "answer": "remembered"
+      },
+      {
+        "id": 3,
+        "options": [
+          "weakening",
+          "strengthening",
+          "breaking",
+          "limiting"
+        ],
+        "answer": "strengthening"
+      },
+      {
+        "id": 4,
+        "options": [
+          "worthless",
+          "expensive",
+          "heavy",
+          "modern"
+        ],
+        "answer": "worthless"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-09",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "The World Wide Web was invented in 1989 by Tim Berners-Lee, a British scientist working at a research centre in Switzerland. His aim was to make it easier for researchers to {{1}} information stored on different computers. He developed a system of linked documents that could be {{2}} using a browser. Crucially, he decided not to patent his invention, making it freely available to anyone. This decision is widely {{3}} as one reason why the web grew so rapidly and became {{4}} to everyday life around the world.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "share",
+          "delete",
+          "hide",
+          "sell"
+        ],
+        "answer": "share"
+      },
+      {
+        "id": 2,
+        "options": [
+          "accessed",
+          "refused",
+          "excused",
+          "assessed"
+        ],
+        "answer": "accessed"
+      },
+      {
+        "id": 3,
+        "options": [
+          "regarded",
+          "refused",
+          "forgotten",
+          "prevented"
+        ],
+        "answer": "regarded"
+      },
+      {
+        "id": 4,
+        "options": [
+          "central",
+          "opposite",
+          "foreign",
+          "harmful"
+        ],
+        "answer": "central"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-10",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Bilingual education programmes teach students in two languages. Supporters argue that such programmes help children {{1}} their home language while learning the language of the wider society. Research suggests that students in well-designed bilingual programmes often perform as well as, or better than, those taught in one language, especially over the long {{2}}. However, success depends on {{3}} factors, including the training of teachers, the availability of materials and the support of parents. Poorly planned programmes may leave students less {{4}} in both languages.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "maintain",
+          "abandon",
+          "translate",
+          "borrow"
+        ],
+        "answer": "maintain"
+      },
+      {
+        "id": 2,
+        "options": [
+          "way",
+          "term",
+          "road",
+          "distance"
+        ],
+        "answer": "term"
+      },
+      {
+        "id": 3,
+        "options": [
+          "several",
+          "few",
+          "no",
+          "single"
+        ],
+        "answer": "several"
+      },
+      {
+        "id": 4,
+        "options": [
+          "proficient",
+          "curious",
+          "polite",
+          "famous"
+        ],
+        "answer": "proficient"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-11",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Space exploration is expensive, and critics often ask whether the money would be better spent solving problems on Earth. Supporters respond that space research has {{1}} many technologies now used in everyday life, from improvements in medical imaging to water purification systems. Satellites also {{2}} weather forecasting, communications and the monitoring of climate change. In addition, space missions inspire young people to study science and engineering. Nevertheless, the debate about how to {{3}} the costs and benefits of space programmes is likely to {{4}}.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "produced",
+          "prevented",
+          "destroyed",
+          "postponed"
+        ],
+        "answer": "produced"
+      },
+      {
+        "id": 2,
+        "options": [
+          "support",
+          "oppose",
+          "replace",
+          "delay"
+        ],
+        "answer": "support"
+      },
+      {
+        "id": 3,
+        "options": [
+          "balance",
+          "hide",
+          "copy",
+          "ignore"
+        ],
+        "answer": "balance"
+      },
+      {
+        "id": 4,
+        "options": [
+          "continue",
+          "finish",
+          "disappear",
+          "shrink"
+        ],
+        "answer": "continue"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-12",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Wildfires are a natural part of many ecosystems, clearing dead vegetation and allowing new plants to grow. However, in recent decades, fires in some regions have become larger and more {{1}}. Hotter and drier conditions associated with climate change allow vegetation to dry out and fires to spread more easily. In addition, the {{2}} of homes into forested areas has increased the risk to people and property. Fire managers increasingly use controlled burns, small fires lit {{3}} in cool conditions, to reduce the amount of fuel available and {{4}} the chance of catastrophic fires.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "severe",
+          "gentle",
+          "rare",
+          "predictable"
+        ],
+        "answer": "severe"
+      },
+      {
+        "id": 2,
+        "options": [
+          "expansion",
+          "reduction",
+          "removal",
+          "decline"
+        ],
+        "answer": "expansion"
+      },
+      {
+        "id": 3,
+        "options": [
+          "accidentally",
+          "deliberately",
+          "rarely",
+          "dangerously"
+        ],
+        "answer": "deliberately"
+      },
+      {
+        "id": 4,
+        "options": [
+          "raise",
+          "lower",
+          "double",
+          "ignore"
+        ],
+        "answer": "lower"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-13",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Museums have traditionally displayed objects behind glass with short written labels. Today, many are trying to make visits more {{1}}. Interactive displays, audio guides and digital screens allow visitors to explore topics in greater depth, while hands-on activities are particularly popular with children. Some museums have also begun to involve local communities in {{2}} exhibitions, ensuring that different perspectives are represented. Critics warn that too much technology can {{3}} attention from the objects themselves, so curators must find a {{4}} between innovation and tradition.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "engaging",
+          "expensive",
+          "silent",
+          "formal"
+        ],
+        "answer": "engaging"
+      },
+      {
+        "id": 2,
+        "options": [
+          "planning",
+          "closing",
+          "stealing",
+          "avoiding"
+        ],
+        "answer": "planning"
+      },
+      {
+        "id": 3,
+        "options": [
+          "distract",
+          "attract",
+          "protect",
+          "extract"
+        ],
+        "answer": "distract"
+      },
+      {
+        "id": 4,
+        "options": [
+          "balance",
+          "conflict",
+          "difference",
+          "distance"
+        ],
+        "answer": "balance"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-14",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Trees in cities provide more benefits than many people realise. They absorb pollutants from the air, provide shade that lowers temperatures in summer and reduce the risk of flooding by {{1}} rainwater. Studies have also linked green streets with improved mental health and lower levels of stress. Despite these {{2}}, urban trees are often removed during construction projects or {{3}} by poor soil and limited space for roots. Many cities now set targets for increasing tree cover and require developers to {{4}} trees that are lost.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "absorbing",
+          "releasing",
+          "heating",
+          "wasting"
+        ],
+        "answer": "absorbing"
+      },
+      {
+        "id": 2,
+        "options": [
+          "benefits",
+          "costs",
+          "problems",
+          "dangers"
+        ],
+        "answer": "benefits"
+      },
+      {
+        "id": 3,
+        "options": [
+          "weakened",
+          "strengthened",
+          "watered",
+          "protected"
+        ],
+        "answer": "weakened"
+      },
+      {
+        "id": 4,
+        "options": [
+          "replace",
+          "remove",
+          "sell",
+          "count"
+        ],
+        "answer": "replace"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-15",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Many young people now learn about the news through social media rather than newspapers or television. This has made information more {{1}}, but it has also created challenges. Stories are often shared without being checked, and headlines may be designed to attract clicks rather than to inform. Media literacy programmes aim to teach students how to {{2}} sources, recognise bias and distinguish between news and opinion. Advocates argue that these skills are {{3}} for citizens in a democracy, where people must make informed {{4}}.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "accessible",
+          "expensive",
+          "limited",
+          "hidden"
+        ],
+        "answer": "accessible"
+      },
+      {
+        "id": 2,
+        "options": [
+          "evaluate",
+          "invent",
+          "ignore",
+          "decorate"
+        ],
+        "answer": "evaluate"
+      },
+      {
+        "id": 3,
+        "options": [
+          "essential",
+          "optional",
+          "harmful",
+          "irrelevant"
+        ],
+        "answer": "essential"
+      },
+      {
+        "id": 4,
+        "options": [
+          "decisions",
+          "mistakes",
+          "excuses",
+          "promises"
+        ],
+        "answer": "decisions"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-16",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "The Great Barrier Reef, off the coast of Australia, is the world's largest coral reef system. It is home to thousands of species of fish, coral and other marine life and attracts millions of tourists each year, making an important {{1}} to the Australian economy. In recent years, the reef has suffered several mass bleaching events caused by unusually warm water. Scientists warn that if ocean temperatures continue to rise, many parts of the reef may not have enough time to {{2}} between events. Efforts to protect the reef include {{3}} water quality and developing corals that are more {{4}} to heat.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "contribution",
+          "threat",
+          "decision",
+          "exception"
+        ],
+        "answer": "contribution"
+      },
+      {
+        "id": 2,
+        "options": [
+          "recover",
+          "collapse",
+          "expand",
+          "travel"
+        ],
+        "answer": "recover"
+      },
+      {
+        "id": 3,
+        "options": [
+          "improving",
+          "reducing",
+          "ignoring",
+          "testing"
+        ],
+        "answer": "improving"
+      },
+      {
+        "id": 4,
+        "options": [
+          "tolerant",
+          "sensitive",
+          "attractive",
+          "similar"
+        ],
+        "answer": "tolerant"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-17",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Learning a new skill often follows a predictable pattern. At first, progress can be rapid as beginners learn the basics. Later, improvement tends to slow down, and learners may reach a {{1}} where they feel they are no longer improving. Experts suggest that this stage is a natural part of learning rather than a sign of failure. Changing practice methods, seeking {{2}} from a teacher or setting more specific goals can help learners move forward. Above all, {{3}} practice over a long period is more important than {{4}} talent.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "plateau",
+          "summit",
+          "beginning",
+          "shortcut"
+        ],
+        "answer": "plateau"
+      },
+      {
+        "id": 2,
+        "options": [
+          "feedback",
+          "payment",
+          "permission",
+          "distance"
+        ],
+        "answer": "feedback"
+      },
+      {
+        "id": 3,
+        "options": [
+          "consistent",
+          "occasional",
+          "careless",
+          "rapid"
+        ],
+        "answer": "consistent"
+      },
+      {
+        "id": 4,
+        "options": [
+          "natural",
+          "artificial",
+          "official",
+          "borrowed"
+        ],
+        "answer": "natural"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-18",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Before the development of modern medicine, many plants were used to treat illnesses. Some of these traditional remedies have since been found to contain active {{1}} that form the basis of modern drugs. Aspirin, for example, is related to a substance found in willow bark, which was used for centuries to relieve pain and fever. Researchers continue to {{2}} plants used in traditional medicine for potential new treatments. However, they stress that not all traditional remedies are effective, and some may be {{3}} if taken in large quantities, so scientific {{4}} is essential.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "ingredients",
+          "colours",
+          "flavours",
+          "shapes"
+        ],
+        "answer": "ingredients"
+      },
+      {
+        "id": 2,
+        "options": [
+          "investigate",
+          "forbid",
+          "ignore",
+          "harvest"
+        ],
+        "answer": "investigate"
+      },
+      {
+        "id": 3,
+        "options": [
+          "harmful",
+          "helpful",
+          "popular",
+          "natural"
+        ],
+        "answer": "harmful"
+      },
+      {
+        "id": 4,
+        "options": [
+          "testing",
+          "guessing",
+          "advertising",
+          "celebrating"
+        ],
+        "answer": "testing"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-19",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Electric bicycles, or e-bikes, have become increasingly popular in many cities. A small motor {{1}} the rider's pedalling, making it easier to climb hills and travel longer distances without arriving tired. For many commuters, e-bikes offer a practical {{2}} to cars and crowded public transport. They also make cycling accessible to older people and those who are less physically fit. However, their higher speeds have raised {{3}} about safety, and some cities are introducing rules on where e-bikes can be ridden and how fast they may {{4}}.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "assists",
+          "replaces",
+          "prevents",
+          "slows"
+        ],
+        "answer": "assists"
+      },
+      {
+        "id": 2,
+        "options": [
+          "alternative",
+          "obstacle",
+          "addition",
+          "problem"
+        ],
+        "answer": "alternative"
+      },
+      {
+        "id": 3,
+        "options": [
+          "concerns",
+          "prices",
+          "hopes",
+          "standards"
+        ],
+        "answer": "concerns"
+      },
+      {
+        "id": 4,
+        "options": [
+          "travel",
+          "stop",
+          "park",
+          "turn"
+        ],
+        "answer": "travel"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-20",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "The ancient Romans were skilled engineers. Their aqueducts carried water over long distances to supply cities with fresh water for drinking, bathing and public fountains. Many aqueducts used a gentle downward slope so that water could {{1}} by gravity alone, sometimes over distances of more than fifty kilometres. Romans also developed a type of concrete that was remarkably {{2}}; some structures built with it are still standing today. Modern researchers have studied this concrete to understand why it has {{3}} so well and whether its secrets could be used to make more {{4}} building materials.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "flow",
+          "freeze",
+          "evaporate",
+          "rise"
+        ],
+        "answer": "flow"
+      },
+      {
+        "id": 2,
+        "options": [
+          "durable",
+          "fragile",
+          "temporary",
+          "cheap"
+        ],
+        "answer": "durable"
+      },
+      {
+        "id": 3,
+        "options": [
+          "lasted",
+          "failed",
+          "shrunk",
+          "melted"
+        ],
+        "answer": "lasted"
+      },
+      {
+        "id": 4,
+        "options": [
+          "sustainable",
+          "decorative",
+          "dangerous",
+          "colourful"
+        ],
+        "answer": "sustainable"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-21",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Sleep is often the first thing people sacrifice when they are busy, but research shows that lack of sleep can seriously {{1}} performance. People who sleep too little tend to have slower reaction times, poorer memory and greater difficulty making decisions. Over time, chronic sleep loss is also {{2}} with health problems such as obesity and heart disease. Experts recommend keeping a regular sleep schedule and {{3}} screens before bedtime, as the light from devices can make it harder to fall asleep. Even small improvements in sleep habits can produce {{4}} benefits.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "affect",
+          "improve",
+          "measure",
+          "double"
+        ],
+        "answer": "affect"
+      },
+      {
+        "id": 2,
+        "options": [
+          "associated",
+          "combined",
+          "compared",
+          "provided"
+        ],
+        "answer": "associated"
+      },
+      {
+        "id": 3,
+        "options": [
+          "avoiding",
+          "charging",
+          "buying",
+          "watching"
+        ],
+        "answer": "avoiding"
+      },
+      {
+        "id": 4,
+        "options": [
+          "noticeable",
+          "invisible",
+          "negative",
+          "temporary"
+        ],
+        "answer": "noticeable"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-22",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Cooperatives are businesses owned and controlled by their members, who may be customers, workers or producers. Members typically have an equal vote in important decisions, {{1}} of how much money they have invested. Profits are either reinvested in the business or {{2}} among members. Cooperatives exist in many sectors, from agriculture and banking to retail and housing. Supporters argue that they keep wealth within local communities and give people more {{3}} over their working lives. Critics note that democratic decision-making can be slow, which may make it harder to {{4}} quickly to changes in the market.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "regardless",
+          "because",
+          "instead",
+          "ahead"
+        ],
+        "answer": "regardless"
+      },
+      {
+        "id": 2,
+        "options": [
+          "distributed",
+          "hidden",
+          "wasted",
+          "borrowed"
+        ],
+        "answer": "distributed"
+      },
+      {
+        "id": 3,
+        "options": [
+          "control",
+          "debt",
+          "pressure",
+          "doubt"
+        ],
+        "answer": "control"
+      },
+      {
+        "id": 4,
+        "options": [
+          "respond",
+          "refer",
+          "object",
+          "belong"
+        ],
+        "answer": "respond"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-23",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Mountains cover about a quarter of the Earth's land surface and are home to around one in ten people. They also supply fresh water to billions more, as snow and glaciers {{1}} water in winter and release it gradually in warmer months. Mountain ecosystems are particularly {{2}} to climate change. As temperatures rise, plant and animal species are moving to higher altitudes, but those already living near the top have nowhere left to go. Changes in snowfall also {{3}} the timing of water supply to farmers and cities in the valleys {{4}}.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "store",
+          "waste",
+          "heat",
+          "pollute"
+        ],
+        "answer": "store"
+      },
+      {
+        "id": 2,
+        "options": [
+          "vulnerable",
+          "resistant",
+          "indifferent",
+          "unrelated"
+        ],
+        "answer": "vulnerable"
+      },
+      {
+        "id": 3,
+        "options": [
+          "affect",
+          "prevent",
+          "guarantee",
+          "repeat"
+        ],
+        "answer": "affect"
+      },
+      {
+        "id": 4,
+        "options": [
+          "below",
+          "above",
+          "inside",
+          "beyond"
+        ],
+        "answer": "below"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-24",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Group projects are a common feature of university courses. They are designed to help students develop teamwork, communication and problem-solving skills that employers value. However, many students find group work {{1}}, particularly when some members contribute less than others. To address this, some instructors ask students to {{2}} each other's contributions, and the results are used to adjust individual marks. Clear roles, regular meetings and shared {{3}} can also help groups work effectively and {{4}} conflicts before they become serious.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "frustrating",
+          "relaxing",
+          "pointless",
+          "effortless"
+        ],
+        "answer": "frustrating"
+      },
+      {
+        "id": 2,
+        "options": [
+          "assess",
+          "ignore",
+          "copy",
+          "sign"
+        ],
+        "answer": "assess"
+      },
+      {
+        "id": 3,
+        "options": [
+          "deadlines",
+          "complaints",
+          "secrets",
+          "grades"
+        ],
+        "answer": "deadlines"
+      },
+      {
+        "id": 4,
+        "options": [
+          "resolve",
+          "create",
+          "increase",
+          "hide"
+        ],
+        "answer": "resolve"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-25",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Fermentation is one of the oldest methods of preserving food. During fermentation, microorganisms such as bacteria and yeast {{1}} sugars into acids, gases or alcohol. This process not only extends the shelf life of foods but can also change their flavour and texture. Yogurt, cheese, bread and soy sauce all {{2}} on fermentation. In recent years, there has been growing interest in fermented foods because some contain beneficial bacteria that may {{3}} digestive health, although scientists say more research is needed to {{4}} these effects.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "convert",
+          "divide",
+          "attract",
+          "remove"
+        ],
+        "answer": "convert"
+      },
+      {
+        "id": 2,
+        "options": [
+          "depend",
+          "insist",
+          "comment",
+          "focus"
+        ],
+        "answer": "depend"
+      },
+      {
+        "id": 3,
+        "options": [
+          "support",
+          "damage",
+          "replace",
+          "measure"
+        ],
+        "answer": "support"
+      },
+      {
+        "id": 4,
+        "options": [
+          "confirm",
+          "deny",
+          "hide",
+          "forget"
+        ],
+        "answer": "confirm"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-26",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "The first modern marathon was run at the 1896 Olympic Games in Athens. The race was inspired by the legend of a Greek messenger who ran from the town of Marathon to Athens to announce a military {{1}}. Today, marathons are held in cities around the world and attract tens of thousands of participants, most of whom are amateurs running to {{2}} a personal goal or raise money for charity. Completing a marathon requires months of {{3}} training, and runners must gradually increase their distance to avoid {{4}}.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "victory",
+          "defeat",
+          "holiday",
+          "election"
+        ],
+        "answer": "victory"
+      },
+      {
+        "id": 2,
+        "options": [
+          "achieve",
+          "avoid",
+          "forget",
+          "question"
+        ],
+        "answer": "achieve"
+      },
+      {
+        "id": 3,
+        "options": [
+          "careful",
+          "careless",
+          "sudden",
+          "brief"
+        ],
+        "answer": "careful"
+      },
+      {
+        "id": 4,
+        "options": [
+          "injury",
+          "success",
+          "boredom",
+          "applause"
+        ],
+        "answer": "injury"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-27",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Food waste is a significant problem in many countries. It is estimated that around a third of all food produced is lost or wasted, from farms and factories to shops and homes. When food is thrown away, the water, energy and land used to produce it are also {{1}}, and decomposing food in landfill releases methane, a powerful greenhouse gas. Supermarkets have begun to {{2}} unsold food to charities, and some countries have introduced laws requiring them to do so. Consumers can also help by planning meals and {{3}} the difference between 'best before' and 'use by' {{4}}.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "wasted",
+          "saved",
+          "produced",
+          "doubled"
+        ],
+        "answer": "wasted"
+      },
+      {
+        "id": 2,
+        "options": [
+          "donate",
+          "destroy",
+          "import",
+          "price"
+        ],
+        "answer": "donate"
+      },
+      {
+        "id": 3,
+        "options": [
+          "understanding",
+          "ignoring",
+          "printing",
+          "changing"
+        ],
+        "answer": "understanding"
+      },
+      {
+        "id": 4,
+        "options": [
+          "dates",
+          "prices",
+          "shops",
+          "recipes"
+        ],
+        "answer": "dates"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-28",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Wind power has become one of the fastest-growing sources of electricity in the world. Modern wind turbines are much larger and more {{1}} than early designs, and offshore wind farms can take advantage of stronger and more consistent winds at sea. The main challenge is that wind is variable, so electricity grids must find ways to {{2}} supply and demand when the wind is weak. Solutions include connecting grids across wide areas, {{3}} energy in batteries and combining wind with other renewable sources. As costs continue to fall, wind power is expected to play an {{4}} role in reducing emissions.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "efficient",
+          "fragile",
+          "noisy",
+          "ancient"
+        ],
+        "answer": "efficient"
+      },
+      {
+        "id": 2,
+        "options": [
+          "balance",
+          "separate",
+          "ignore",
+          "increase"
+        ],
+        "answer": "balance"
+      },
+      {
+        "id": 3,
+        "options": [
+          "storing",
+          "wasting",
+          "selling",
+          "hiding"
+        ],
+        "answer": "storing"
+      },
+      {
+        "id": 4,
+        "options": [
+          "increasing",
+          "decreasing",
+          "unknown",
+          "accidental"
+        ],
+        "answer": "increasing"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-29",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Learning to cook is a valuable life skill. People who cook regularly at home tend to eat more vegetables and fewer processed foods, which can {{1}} their health. Cooking also helps people save money, as meals prepared at home are usually cheaper than takeaway food. Despite these benefits, many young adults leave home without basic cooking skills. Some schools have {{2}} cooking lessons into the curriculum, teaching students how to plan meals, follow recipes and {{3}} food safely. Advocates argue that such lessons could help {{4}} rising levels of diet-related illness.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "benefit",
+          "harm",
+          "confuse",
+          "delay"
+        ],
+        "answer": "benefit"
+      },
+      {
+        "id": 2,
+        "options": [
+          "introduced",
+          "removed",
+          "excluded",
+          "translated"
+        ],
+        "answer": "introduced"
+      },
+      {
+        "id": 3,
+        "options": [
+          "handle",
+          "waste",
+          "drop",
+          "advertise"
+        ],
+        "answer": "handle"
+      },
+      {
+        "id": 4,
+        "options": [
+          "reduce",
+          "encourage",
+          "measure",
+          "explain"
+        ],
+        "answer": "reduce"
+      }
+    ]
+  },
+  {
+    "id": "rw_fib-30",
+    "section": "reading",
+    "type": "rw_fib",
+    "title": "Reading & Writing: Fill in the blanks",
+    "instructions": "Below is a text with blanks. Click on each blank, a list of choices will appear. Select the appropriate answer choice for each blank.",
+    "scoring": "per_blank",
+    "skills": [
+      "reading",
+      "writing"
+    ],
+    "passage": "Augmented reality, or AR, adds digital information to a person's view of the real world, usually through a smartphone or special glasses. Unlike virtual reality, which replaces the real environment entirely, AR {{1}} digital images onto what the user already sees. It has been used in games, but its potential {{2}} extend far beyond entertainment. Surgeons can view medical images while operating, engineers can see instructions displayed on machinery, and students can explore three-dimensional models in the classroom. As devices become lighter and cheaper, AR is likely to become more {{3}} in everyday {{4}}.",
+    "blanks": [
+      {
+        "id": 1,
+        "options": [
+          "overlays",
+          "removes",
+          "hides",
+          "deletes"
+        ],
+        "answer": "overlays"
+      },
+      {
+        "id": 2,
+        "options": [
+          "applications",
+          "complaints",
+          "prices",
+          "dangers"
+        ],
+        "answer": "applications"
+      },
+      {
+        "id": 3,
+        "options": [
+          "common",
+          "rare",
+          "expensive",
+          "difficult"
+        ],
+        "answer": "common"
+      },
+      {
+        "id": 4,
+        "options": [
+          "life",
+          "history",
+          "weather",
+          "sport"
+        ],
+        "answer": "life"
+      }
+    ]
+  }
+]

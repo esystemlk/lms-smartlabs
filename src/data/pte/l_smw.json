@@ -1,0 +1,1060 @@
+[
+  {
+    "id": "l_smw-01",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about economics. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Economists use the term 'opportunity cost' to describe the value of the next best alternative that is given up when a choice is made. For example, if a student spends an evening working a paid shift instead of studying, the opportunity cost is not just the lost study time but the higher grade they might otherwise have [BEEP]",
+    "missing": "achieved",
+    "audioUrl": null,
+    "options": [
+      {
+        "id": "A",
+        "text": "achieved"
+      },
+      {
+        "id": "B",
+        "text": "purchased"
+      },
+      {
+        "id": "C",
+        "text": "forgotten"
+      },
+      {
+        "id": "D",
+        "text": "borrowed"
+      },
+      {
+        "id": "E",
+        "text": "cancelled"
+      }
+    ],
+    "answer": "A",
+    "explanation": "The lost alternative is the higher grade the student could have achieved."
+  },
+  {
+    "id": "l_smw-02",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about cities. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Many of the world's largest cities are located on coasts or major rivers. Historically, access to water made trade and transport easier, supplied drinking water and supported agriculture in the surrounding area. Today, however, the same locations expose millions of residents to rising sea levels and more frequent [BEEP]",
+    "missing": "flooding",
+    "audioUrl": null,
+    "options": [
+      {
+        "id": "A",
+        "text": "elections"
+      },
+      {
+        "id": "B",
+        "text": "tourism"
+      },
+      {
+        "id": "C",
+        "text": "festivals"
+      },
+      {
+        "id": "D",
+        "text": "flooding"
+      }
+    ],
+    "answer": "D",
+    "explanation": "'however' signals a risk linked to water, alongside rising sea levels."
+  },
+  {
+    "id": "l_smw-03",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about psychology. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "People tend to remember the first and last items in a list better than those in the middle. Psychologists call this the serial position effect. The first items have more time to be rehearsed, while the last items are still fresh in short-term memory. Items in the middle receive the least attention, so they are the most likely to be [BEEP]",
+    "missing": "forgotten",
+    "options": [
+      {
+        "id": "A",
+        "text": "printed"
+      },
+      {
+        "id": "B",
+        "text": "repeated"
+      },
+      {
+        "id": "C",
+        "text": "preferred"
+      },
+      {
+        "id": "D",
+        "text": "forgotten"
+      }
+    ],
+    "answer": "D",
+    "explanation": "Middle items get the least rehearsal, so they are forgotten.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-04",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about business. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Small businesses often struggle in their first few years, and one of the most common reasons is not a lack of customers but a lack of cash. A company can be profitable on paper while still running out of money if customers pay late and bills arrive early. For this reason, experienced advisers tell new owners to monitor their cash flow every [BEEP]",
+    "missing": "week",
+    "options": [
+      {
+        "id": "A",
+        "text": "week"
+      },
+      {
+        "id": "B",
+        "text": "decade"
+      },
+      {
+        "id": "C",
+        "text": "holiday"
+      },
+      {
+        "id": "D",
+        "text": "election"
+      }
+    ],
+    "answer": "A",
+    "explanation": "Cash flow needs frequent monitoring; only 'week' gives a sensible regular interval.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-05",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about astronomy. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "When we look at a distant star, we are not seeing it as it is today. Light travels at an enormous but finite speed, so the light reaching our eyes may have left the star thousands of years ago. In a sense, looking deep into space is the same as looking back in [BEEP]",
+    "missing": "time",
+    "options": [
+      {
+        "id": "A",
+        "text": "silence"
+      },
+      {
+        "id": "B",
+        "text": "time"
+      },
+      {
+        "id": "C",
+        "text": "darkness"
+      },
+      {
+        "id": "D",
+        "text": "anger"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Old light shows the past, so looking far away is looking back in time.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-06",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about health. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Regular physical activity is one of the most effective ways to protect long-term health. Even moderate exercise, such as walking briskly for thirty minutes a day, lowers the risk of heart disease, improves mood and helps people sleep better. The key, according to most experts, is not intensity but [BEEP]",
+    "missing": "consistency",
+    "options": [
+      {
+        "id": "A",
+        "text": "expense"
+      },
+      {
+        "id": "B",
+        "text": "speed"
+      },
+      {
+        "id": "C",
+        "text": "consistency"
+      },
+      {
+        "id": "D",
+        "text": "equipment"
+      },
+      {
+        "id": "E",
+        "text": "competition"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Contrasted with intensity, doing it regularly (consistency) is the key.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-07",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about architecture. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "In hot climates, traditional houses were often built with thick walls, small windows and inner courtyards. These features kept direct sunlight out and allowed cooler air to circulate. Long before air conditioning existed, builders used design itself to keep buildings [BEEP]",
+    "missing": "cool",
+    "options": [
+      {
+        "id": "A",
+        "text": "bright"
+      },
+      {
+        "id": "B",
+        "text": "noisy"
+      },
+      {
+        "id": "C",
+        "text": "crowded"
+      },
+      {
+        "id": "D",
+        "text": "cool"
+      }
+    ],
+    "answer": "D",
+    "explanation": "Every feature described reduces heat.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-08",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about linguistics. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Children acquire their first language without formal lessons. By the age of four, most can form complex sentences, even though nobody has explained grammar rules to them. Linguists still debate how much of this ability is innate and how much is learned from the language children hear around [BEEP]",
+    "missing": "them",
+    "options": [
+      {
+        "id": "A",
+        "text": "them"
+      },
+      {
+        "id": "B",
+        "text": "computers"
+      },
+      {
+        "id": "C",
+        "text": "schools"
+      },
+      {
+        "id": "D",
+        "text": "midnight"
+      }
+    ],
+    "answer": "A",
+    "explanation": "'the language children hear around them' completes the sentence.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-09",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about agriculture. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Crop rotation is one of the oldest techniques in farming. Instead of planting the same crop in a field every year, farmers change crops in a regular sequence. Different plants take different nutrients from the soil, and some, such as beans, actually return nitrogen to it. As a result, rotating crops helps to keep the soil [BEEP]",
+    "missing": "fertile",
+    "options": [
+      {
+        "id": "A",
+        "text": "fertile"
+      },
+      {
+        "id": "B",
+        "text": "frozen"
+      },
+      {
+        "id": "C",
+        "text": "empty"
+      },
+      {
+        "id": "D",
+        "text": "expensive"
+      }
+    ],
+    "answer": "A",
+    "explanation": "Returning nutrients keeps soil fertile.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-10",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about technology. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Many people reuse the same password for several websites because it is easier to remember. The problem is that if one website is hacked, criminals can try the stolen password on many other services. Security experts therefore recommend using a password manager and a different password for every [BEEP]",
+    "missing": "account",
+    "options": [
+      {
+        "id": "A",
+        "text": "computer"
+      },
+      {
+        "id": "B",
+        "text": "account"
+      },
+      {
+        "id": "C",
+        "text": "language"
+      },
+      {
+        "id": "D",
+        "text": "country"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Unique passwords are needed for each account.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-11",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about history. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The Silk Road was not a single road but a network of trade routes connecting China with the Mediterranean. Along these routes, merchants carried silk, spices and precious metals. Yet the most lasting goods they exchanged were not physical objects at all, but religions, technologies and [BEEP]",
+    "missing": "ideas",
+    "options": [
+      {
+        "id": "A",
+        "text": "horses"
+      },
+      {
+        "id": "B",
+        "text": "ideas"
+      },
+      {
+        "id": "C",
+        "text": "taxes"
+      },
+      {
+        "id": "D",
+        "text": "coins"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Non-physical goods listed with religions and technologies: ideas.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-12",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about education. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Research on learning shows that testing yourself is more effective than simply rereading notes. When students try to recall information from memory, they strengthen the connections that make the information easier to retrieve later. This is why practice questions are such a powerful way to [BEEP]",
+    "missing": "revise",
+    "options": [
+      {
+        "id": "A",
+        "text": "relax"
+      },
+      {
+        "id": "B",
+        "text": "sleep"
+      },
+      {
+        "id": "C",
+        "text": "travel"
+      },
+      {
+        "id": "D",
+        "text": "revise"
+      }
+    ],
+    "answer": "D",
+    "explanation": "Practice questions are a way to revise/study.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-13",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about the environment. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Plastic waste in the ocean does not disappear; it slowly breaks into smaller and smaller pieces. These tiny fragments, known as microplastics, are now found in fish, in sea salt and even in drinking water. Scientists are still studying what effect they may have on human [BEEP]",
+    "missing": "health",
+    "options": [
+      {
+        "id": "A",
+        "text": "health"
+      },
+      {
+        "id": "B",
+        "text": "memory"
+      },
+      {
+        "id": "C",
+        "text": "culture"
+      },
+      {
+        "id": "D",
+        "text": "history"
+      }
+    ],
+    "answer": "A",
+    "explanation": "Microplastics in food and water raise questions about human health.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-14",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about economics. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "When the price of a product rises, people usually buy less of it. Economists describe this as the law of demand. However, there are exceptions. For some luxury goods, a higher price can make a product seem more exclusive, so demand may actually [BEEP]",
+    "missing": "increase",
+    "options": [
+      {
+        "id": "A",
+        "text": "freeze"
+      },
+      {
+        "id": "B",
+        "text": "increase"
+      },
+      {
+        "id": "C",
+        "text": "fall"
+      },
+      {
+        "id": "D",
+        "text": "disappear"
+      }
+    ],
+    "answer": "B",
+    "explanation": "An exception to 'buy less when price rises' means demand increases.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-15",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about biology. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Bats find their way in the dark using echolocation. They produce high-pitched sounds and listen to the echoes that bounce back from objects around them. From the timing and direction of these echoes, a bat can work out the size and position of an insect and catch it in complete [BEEP]",
+    "missing": "darkness",
+    "options": [
+      {
+        "id": "A",
+        "text": "daylight"
+      },
+      {
+        "id": "B",
+        "text": "water"
+      },
+      {
+        "id": "C",
+        "text": "comfort"
+      },
+      {
+        "id": "D",
+        "text": "darkness"
+      }
+    ],
+    "answer": "D",
+    "explanation": "Echolocation is used in the dark.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-16",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about urban planning. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Some cities have closed central streets to cars and turned them into pedestrian zones. Shop owners often fear that this will reduce their sales. In practice, many of these streets become busier, because people walking slowly are more likely to notice shops and stop to [BEEP]",
+    "missing": "browse",
+    "options": [
+      {
+        "id": "A",
+        "text": "browse"
+      },
+      {
+        "id": "B",
+        "text": "complain"
+      },
+      {
+        "id": "C",
+        "text": "drive"
+      },
+      {
+        "id": "D",
+        "text": "park"
+      }
+    ],
+    "answer": "A",
+    "explanation": "Pedestrians stop to browse in shops, supporting sales.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-17",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about media studies. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "False news stories often spread faster online than accurate ones. One reason is that false stories tend to be more surprising or emotional, which makes people more likely to share them. Before passing a story on, readers should check whether it comes from a reliable [BEEP]",
+    "missing": "source",
+    "options": [
+      {
+        "id": "A",
+        "text": "colour"
+      },
+      {
+        "id": "B",
+        "text": "source"
+      },
+      {
+        "id": "C",
+        "text": "price"
+      },
+      {
+        "id": "D",
+        "text": "device"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Checking a reliable source is the standard advice.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-18",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about chemistry. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "A catalyst is a substance that speeds up a chemical reaction without being used up itself. Catalysts are essential in industry, where they reduce the energy needed to make products such as fertilisers and plastics. Because they are not consumed, the same catalyst can be used again and [BEEP]",
+    "missing": "again",
+    "options": [
+      {
+        "id": "A",
+        "text": "again"
+      },
+      {
+        "id": "B",
+        "text": "later"
+      },
+      {
+        "id": "C",
+        "text": "apart"
+      },
+      {
+        "id": "D",
+        "text": "never"
+      }
+    ],
+    "answer": "A",
+    "explanation": "'again and again' is the fixed expression meaning repeatedly.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-19",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about sociology. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "In many countries, people are living longer and having fewer children. As a result, the average age of the population is rising. This shift creates challenges for health systems and pension schemes, because a smaller working population must support a growing number of [BEEP]",
+    "missing": "retired people",
+    "options": [
+      {
+        "id": "A",
+        "text": "new schools"
+      },
+      {
+        "id": "B",
+        "text": "retired people"
+      },
+      {
+        "id": "C",
+        "text": "foreign tourists"
+      },
+      {
+        "id": "D",
+        "text": "young athletes"
+      }
+    ],
+    "answer": "B",
+    "explanation": "An ageing population means more retired people supported by fewer workers.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-20",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about transport. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Electric cars produce no exhaust emissions while driving, but their overall environmental impact depends on how the electricity is generated. If the power comes from coal, the benefit is much smaller than if it comes from wind or solar energy. In other words, a clean car needs a clean [BEEP]",
+    "missing": "power grid",
+    "options": [
+      {
+        "id": "A",
+        "text": "road surface"
+      },
+      {
+        "id": "B",
+        "text": "garage"
+      },
+      {
+        "id": "C",
+        "text": "driver"
+      },
+      {
+        "id": "D",
+        "text": "power grid"
+      }
+    ],
+    "answer": "D",
+    "explanation": "The benefit depends on how electricity is generated, i.e. the power grid.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-21",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about geography. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Deserts are defined not by heat but by a lack of rain. A region that receives less than about two hundred and fifty millimetres of rain a year is usually classified as a desert. That is why Antarctica, despite being covered in ice, is considered the largest desert in the [BEEP]",
+    "missing": "world",
+    "options": [
+      {
+        "id": "A",
+        "text": "summer"
+      },
+      {
+        "id": "B",
+        "text": "world"
+      },
+      {
+        "id": "C",
+        "text": "ocean"
+      },
+      {
+        "id": "D",
+        "text": "city"
+      }
+    ],
+    "answer": "B",
+    "explanation": "'the largest desert in the world'.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-22",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about nutrition. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Food labels can be confusing. A product marked low fat may still contain large amounts of sugar, and a drink described as natural may be highly processed. Nutritionists advise shoppers to ignore the claims on the front of the package and read the list of ingredients on the [BEEP]",
+    "missing": "back",
+    "options": [
+      {
+        "id": "A",
+        "text": "receipt"
+      },
+      {
+        "id": "B",
+        "text": "shelf"
+      },
+      {
+        "id": "C",
+        "text": "back"
+      },
+      {
+        "id": "D",
+        "text": "internet"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Contrast with 'the front of the package': read the back.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-23",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about psychology. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "People often believe they can do several tasks at once without any loss of quality. Experiments suggest otherwise. When we switch between tasks, the brain needs time to refocus, and errors increase. What feels like multitasking is usually just rapid switching, which makes us slower and less [BEEP]",
+    "missing": "accurate",
+    "options": [
+      {
+        "id": "A",
+        "text": "tired"
+      },
+      {
+        "id": "B",
+        "text": "accurate"
+      },
+      {
+        "id": "C",
+        "text": "famous"
+      },
+      {
+        "id": "D",
+        "text": "honest"
+      }
+    ],
+    "answer": "B",
+    "explanation": "Errors increase, so people become less accurate.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-24",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about marine science. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "The ocean absorbs a large share of the carbon dioxide that humans release into the atmosphere. This slows climate change, but it comes at a cost. As the water absorbs more carbon dioxide, it becomes more acidic, making it harder for shellfish and corals to build their [BEEP]",
+    "missing": "shells",
+    "options": [
+      {
+        "id": "A",
+        "text": "nests"
+      },
+      {
+        "id": "B",
+        "text": "roots"
+      },
+      {
+        "id": "C",
+        "text": "wings"
+      },
+      {
+        "id": "D",
+        "text": "shells"
+      }
+    ],
+    "answer": "D",
+    "explanation": "Shellfish and corals build shells and skeletons.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-25",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about management. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Many managers assume that employees are motivated mainly by pay. Pay certainly matters, but studies show that once salaries are fair, other factors become more important. People want interesting work, a sense of progress and recognition for what they do. In short, money alone rarely keeps good staff [BEEP]",
+    "missing": "motivated",
+    "options": [
+      {
+        "id": "A",
+        "text": "hungry"
+      },
+      {
+        "id": "B",
+        "text": "motivated"
+      },
+      {
+        "id": "C",
+        "text": "silent"
+      },
+      {
+        "id": "D",
+        "text": "absent"
+      }
+    ],
+    "answer": "B",
+    "explanation": "The topic is motivation; money alone does not keep staff motivated.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-26",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about art history. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Before the nineteenth century, artists had to grind their own pigments and mix them with oil, which meant painting usually took place indoors. The invention of paint in metal tubes changed this. Paint could now be carried easily, and many artists began to work directly in the open [BEEP]",
+    "missing": "air",
+    "options": [
+      {
+        "id": "A",
+        "text": "air"
+      },
+      {
+        "id": "B",
+        "text": "studio"
+      },
+      {
+        "id": "C",
+        "text": "market"
+      },
+      {
+        "id": "D",
+        "text": "museum"
+      }
+    ],
+    "answer": "A",
+    "explanation": "'in the open air' contrasts with painting indoors.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-27",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about physics. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "If you drop a feather and a hammer at the same time on Earth, the hammer lands first because air resistance slows the feather. On the Moon, however, there is almost no air. When an astronaut performed this experiment there, both objects fell at the same rate and hit the ground [BEEP]",
+    "missing": "together",
+    "options": [
+      {
+        "id": "A",
+        "text": "slowly"
+      },
+      {
+        "id": "B",
+        "text": "separately"
+      },
+      {
+        "id": "C",
+        "text": "backwards"
+      },
+      {
+        "id": "D",
+        "text": "together"
+      }
+    ],
+    "answer": "D",
+    "explanation": "Falling at the same rate means landing together.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-28",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about tourism. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Tourism brings money and jobs to many regions, but popular destinations can suffer from too many visitors. Historic city centres become crowded, local rents rise and residents may feel pushed out. Some cities now limit the number of cruise ships or charge visitors a daily tax to reduce [BEEP]",
+    "missing": "overcrowding",
+    "options": [
+      {
+        "id": "A",
+        "text": "employment"
+      },
+      {
+        "id": "B",
+        "text": "tradition"
+      },
+      {
+        "id": "C",
+        "text": "overcrowding"
+      },
+      {
+        "id": "D",
+        "text": "education"
+      }
+    ],
+    "answer": "C",
+    "explanation": "Limits and taxes target the problem of too many visitors.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-29",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about medicine. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Antibiotics are powerful medicines, but they only work against bacteria, not viruses. When people take antibiotics for illnesses such as colds, the drugs do not help, and overuse allows bacteria to develop resistance. Over time, this could make common infections much harder to [BEEP]",
+    "missing": "treat",
+    "options": [
+      {
+        "id": "A",
+        "text": "describe"
+      },
+      {
+        "id": "B",
+        "text": "notice"
+      },
+      {
+        "id": "C",
+        "text": "spread"
+      },
+      {
+        "id": "D",
+        "text": "treat"
+      }
+    ],
+    "answer": "D",
+    "explanation": "Resistance makes infections harder to treat.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_smw-30",
+    "section": "listening",
+    "type": "l_smw",
+    "title": "Select missing word",
+    "instructions": "You will hear a recording about communication. At the end of the recording the last word or group of words has been replaced by a beep. Select the correct option to complete the recording.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 7,
+    "transcript": "Much of what we communicate is not expressed in words. Facial expressions, gestures and tone of voice all carry meaning, and listeners often rely on them to judge whether a speaker is sincere. When words and body language seem to contradict each other, people usually believe the [BEEP]",
+    "missing": "body language",
+    "options": [
+      {
+        "id": "A",
+        "text": "body language"
+      },
+      {
+        "id": "B",
+        "text": "loudest person"
+      },
+      {
+        "id": "C",
+        "text": "dictionary"
+      },
+      {
+        "id": "D",
+        "text": "newspaper"
+      }
+    ],
+    "answer": "A",
+    "explanation": "The talk is about non-verbal signals being trusted.",
+    "audioUrl": null
+  }
+]

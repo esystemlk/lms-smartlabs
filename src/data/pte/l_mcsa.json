@@ -1,0 +1,1052 @@
+[
+  {
+    "id": "l_mcsa-01",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "If you're planning to apply for the summer research internship, please note that the deadline has been moved. Originally, applications were due on the thirtieth of April, but because the online form was unavailable for several days last week, the department has extended the deadline by one week, to the seventh of May. The interviews will still take place in the second half of May as planned, and successful applicants will be notified by the end of the month.",
+    "audioUrl": null,
+    "question": "Why has the application deadline changed?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The department wants to notify applicants earlier."
+      },
+      {
+        "id": "B",
+        "text": "The interviews have been rescheduled."
+      },
+      {
+        "id": "C",
+        "text": "The online application form could not be used for several days."
+      },
+      {
+        "id": "D",
+        "text": "Too few students have applied."
+      }
+    ],
+    "answer": "C",
+    "explanation": "'because the online form was unavailable for several days'; the interviews are unchanged."
+  },
+  {
+    "id": "l_mcsa-02",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Many people believe that eating late at night automatically leads to weight gain. However, recent studies suggest that the total amount of food eaten over the day matters far more than the time it's eaten. That said, late meals can affect sleep quality for some people, particularly if the meal is large or spicy, and poor sleep is itself linked to changes in appetite the following day.",
+    "audioUrl": null,
+    "question": "What is the speaker's main point about eating late at night?",
+    "options": [
+      {
+        "id": "A",
+        "text": "It has no effect on health whatsoever."
+      },
+      {
+        "id": "B",
+        "text": "It always causes weight gain."
+      },
+      {
+        "id": "C",
+        "text": "It improves sleep quality for most people."
+      },
+      {
+        "id": "D",
+        "text": "Total daily intake is more important, although late meals may disturb sleep."
+      }
+    ],
+    "answer": "D",
+    "explanation": "The speaker rejects 'always' (A) but notes possible effects on sleep, so B and D are wrong."
+  },
+  {
+    "id": "l_mcsa-03",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "The library's opening hours will change from next Monday. During the examination period, the main library will stay open until midnight on weekdays, instead of closing at nine. Weekend hours will not change. Please note that the extra evening hours apply only to the main building; the science library will keep its usual schedule.",
+    "question": "What change does the speaker announce?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The main library will close earlier at weekends."
+      },
+      {
+        "id": "B",
+        "text": "All libraries will open at weekends."
+      },
+      {
+        "id": "C",
+        "text": "The science library will open until midnight."
+      },
+      {
+        "id": "D",
+        "text": "The main library will close later on weekdays."
+      }
+    ],
+    "answer": "D",
+    "explanation": "Only the main library's weekday closing time moves from nine to midnight.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-04",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "A common assumption is that creativity is a rare gift that only a few people possess. Yet studies of creative professionals suggest that their success often comes from producing large numbers of ideas, most of which are never used. In other words, creativity may depend less on sudden inspiration and more on regular, sustained effort.",
+    "question": "What does the speaker suggest about creativity?",
+    "options": [
+      {
+        "id": "A",
+        "text": "It depends mainly on sudden moments of inspiration."
+      },
+      {
+        "id": "B",
+        "text": "It is a talent that very few people have."
+      },
+      {
+        "id": "C",
+        "text": "It is often the result of producing many ideas through steady work."
+      },
+      {
+        "id": "D",
+        "text": "Professional artists rarely produce unused ideas."
+      }
+    ],
+    "answer": "C",
+    "explanation": "The speaker contrasts the 'rare gift' view with sustained effort and many ideas.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-05",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "For your group project, each team will choose one local business and analyse its marketing strategy. You'll present your findings in week ten. Each presentation should last no more than fifteen minutes, followed by five minutes of questions. You don't need to submit a written report, but please send me your slides the day before.",
+    "question": "What must students send to the lecturer?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The name of their business by week ten."
+      },
+      {
+        "id": "B",
+        "text": "A list of questions for other teams."
+      },
+      {
+        "id": "C",
+        "text": "A written report on the business."
+      },
+      {
+        "id": "D",
+        "text": "Their presentation slides before the presentation."
+      }
+    ],
+    "answer": "D",
+    "explanation": "'please send me your slides the day before'; no written report is needed.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-06",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Honeybees communicate the location of food through a movement known as the waggle dance. A bee returning to the hive moves in a figure-of-eight pattern. The direction of the straight part of the dance shows the direction of the food relative to the sun, and the length of the waggle indicates how far away it is.",
+    "question": "What does the length of the waggle tell other bees?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The number of bees needed."
+      },
+      {
+        "id": "B",
+        "text": "The type of flower."
+      },
+      {
+        "id": "C",
+        "text": "The distance to the food."
+      },
+      {
+        "id": "D",
+        "text": "The direction of the sun."
+      }
+    ],
+    "answer": "C",
+    "explanation": "'the length of the waggle indicates how far away it is'.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-07",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Many people think of inflation simply as rising prices, but economists pay close attention to its effect on savings. If prices rise by five percent a year while a savings account pays only two percent interest, the money in that account can actually buy less each year, even though the balance is growing.",
+    "question": "What is the speaker's main point?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Economists are not interested in rising prices."
+      },
+      {
+        "id": "B",
+        "text": "Inflation can reduce the real value of savings."
+      },
+      {
+        "id": "C",
+        "text": "Interest rates are usually higher than inflation."
+      },
+      {
+        "id": "D",
+        "text": "Savings accounts always protect people from inflation."
+      }
+    ],
+    "answer": "B",
+    "explanation": "The balance grows but buys less: savings lose real value.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-08",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Good morning. Just a reminder that the field trip to the coastal research station has been postponed because of the storm warning. We'll go next Thursday instead, leaving from the main gate at eight o'clock. The bus will be the same, and you'll still need waterproof clothing and a packed lunch.",
+    "question": "Why has the field trip been postponed?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The bus is not available."
+      },
+      {
+        "id": "B",
+        "text": "Too few students signed up."
+      },
+      {
+        "id": "C",
+        "text": "A storm is expected."
+      },
+      {
+        "id": "D",
+        "text": "The research station is closed."
+      }
+    ],
+    "answer": "C",
+    "explanation": "'because of the storm warning'.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-09",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Some historians argue that the invention of the mechanical clock changed society as much as the steam engine did. Before clocks, work was organised around daylight and the seasons. Once accurate clocks spread through towns, activities could be scheduled precisely, and people increasingly measured their working lives in hours rather than tasks.",
+    "question": "According to the speaker, how did mechanical clocks change society?",
+    "options": [
+      {
+        "id": "A",
+        "text": "They replaced the steam engine in factories."
+      },
+      {
+        "id": "B",
+        "text": "They allowed work to be organised by precise hours."
+      },
+      {
+        "id": "C",
+        "text": "They made people work only during daylight."
+      },
+      {
+        "id": "D",
+        "text": "They made the seasons less important for farming."
+      }
+    ],
+    "answer": "B",
+    "explanation": "Clocks enabled precise scheduling and measuring work in hours.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-10",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "When writing your literature review, don't simply summarise one article after another. Group the studies by theme, show where researchers agree and disagree, and explain how your own research fills a gap. A good review tells the reader a story about the state of knowledge, rather than presenting a list.",
+    "question": "What advice does the speaker give about the literature review?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Summarise each article separately in order."
+      },
+      {
+        "id": "B",
+        "text": "Include only studies that agree with each other."
+      },
+      {
+        "id": "C",
+        "text": "Organise studies by theme and show the gap your research fills."
+      },
+      {
+        "id": "D",
+        "text": "Keep the review as short as possible."
+      }
+    ],
+    "answer": "C",
+    "explanation": "Group by theme, show agreement and disagreement, explain the gap.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-11",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "The giant panda's diet consists almost entirely of bamboo, which is low in nutrients. To survive, pandas must eat for up to fourteen hours a day, and they spend much of the remaining time resting to conserve energy. This explains why pandas appear so inactive compared with other bears.",
+    "question": "Why do pandas appear inactive?",
+    "options": [
+      {
+        "id": "A",
+        "text": "They sleep through the winter."
+      },
+      {
+        "id": "B",
+        "text": "They need to save energy because their food is low in nutrients."
+      },
+      {
+        "id": "C",
+        "text": "They eat meat only occasionally."
+      },
+      {
+        "id": "D",
+        "text": "They are naturally aggressive."
+      }
+    ],
+    "answer": "B",
+    "explanation": "Low-nutrient bamboo means pandas rest to conserve energy.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-12",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Customer reviews have a strong influence on online shopping. However, research shows that a product with a perfect five-star rating can actually seem less trustworthy than one rated around four and a half stars. Shoppers tend to suspect that perfect scores are fake, while a few critical comments make the overall rating appear more genuine.",
+    "question": "What does the research show about online ratings?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Critical reviews always reduce sales."
+      },
+      {
+        "id": "B",
+        "text": "Slightly imperfect ratings can seem more believable."
+      },
+      {
+        "id": "C",
+        "text": "Most online reviews are written by companies."
+      },
+      {
+        "id": "D",
+        "text": "Shoppers trust only five-star products."
+      }
+    ],
+    "answer": "B",
+    "explanation": "About 4.5 stars seems more genuine than a perfect score.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-13",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Welcome to the induction for new research assistants. Your first week will focus on training rather than data collection. You'll complete the online ethics course, learn how to use the laboratory booking system and shadow an experienced colleague. You won't be working with participants until your second week.",
+    "question": "What will new research assistants do in their first week?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Design their own experiments."
+      },
+      {
+        "id": "B",
+        "text": "Teach the ethics course."
+      },
+      {
+        "id": "C",
+        "text": "Complete training and observe a colleague."
+      },
+      {
+        "id": "D",
+        "text": "Collect data from participants."
+      }
+    ],
+    "answer": "C",
+    "explanation": "Week one is training: ethics course, booking system, shadowing.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-14",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Glass may look solid, but its structure is unusual. Unlike crystals, in which atoms are arranged in a regular pattern, the atoms in glass are arranged randomly, more like those in a liquid. That's why scientists sometimes describe glass as an amorphous solid: it behaves like a solid but has the disordered structure of a liquid.",
+    "question": "Why is glass called an amorphous solid?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Its atoms form a regular pattern."
+      },
+      {
+        "id": "B",
+        "text": "It melts at a very low temperature."
+      },
+      {
+        "id": "C",
+        "text": "It slowly flows like water."
+      },
+      {
+        "id": "D",
+        "text": "It is solid but its atoms are arranged randomly."
+      }
+    ],
+    "answer": "D",
+    "explanation": "Solid behaviour with a disordered, liquid-like structure.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-15",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Remote villages often lack reliable electricity, and extending the national grid can be extremely expensive. Small solar systems with batteries offer an alternative. They can be installed quickly, require little maintenance and allow households to power lights and charge phones without waiting years for a grid connection.",
+    "question": "What is the main advantage of small solar systems mentioned?",
+    "options": [
+      {
+        "id": "A",
+        "text": "They need daily maintenance by experts."
+      },
+      {
+        "id": "B",
+        "text": "They produce more electricity than the national grid."
+      },
+      {
+        "id": "C",
+        "text": "They provide power without waiting for a grid connection."
+      },
+      {
+        "id": "D",
+        "text": "They are cheaper than all other energy sources in cities."
+      }
+    ],
+    "answer": "C",
+    "explanation": "Households get power 'without waiting years for a grid connection'.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-16",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Before you submit your dissertation, please check the formatting requirements carefully. Margins must be at least two and a half centimetres, the main text should be double-spaced, and all pages must be numbered. Submissions that don't meet these requirements will be returned to you for correction before they can be marked.",
+    "question": "What happens if a dissertation does not meet the requirements?",
+    "options": [
+      {
+        "id": "A",
+        "text": "It will be marked by a different examiner."
+      },
+      {
+        "id": "B",
+        "text": "It will receive a lower mark."
+      },
+      {
+        "id": "C",
+        "text": "It will be returned for correction before marking."
+      },
+      {
+        "id": "D",
+        "text": "It will be rejected permanently."
+      }
+    ],
+    "answer": "C",
+    "explanation": "'will be returned to you for correction before they can be marked'.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-17",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Octopuses are remarkably intelligent for invertebrates. They can solve puzzles, open jars and escape from tanks. Interestingly, about two thirds of an octopus's neurons are located in its arms rather than its brain, which means each arm can respond to touch and taste with a surprising degree of independence.",
+    "question": "What is surprising about an octopus's neurons?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Most of them are in its arms."
+      },
+      {
+        "id": "B",
+        "text": "They are larger than human neurons."
+      },
+      {
+        "id": "C",
+        "text": "They are found only in the brain."
+      },
+      {
+        "id": "D",
+        "text": "They only respond to light."
+      }
+    ],
+    "answer": "A",
+    "explanation": "About two thirds of neurons are in the arms.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-18",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Several studies have found that people who spend time in green spaces, such as parks and forests, report lower stress levels. Researchers think this may be partly because natural environments hold our attention gently, allowing the mind to rest, unlike busy streets that demand constant focus.",
+    "question": "Why might green spaces reduce stress, according to researchers?",
+    "options": [
+      {
+        "id": "A",
+        "text": "People exercise intensely in them."
+      },
+      {
+        "id": "B",
+        "text": "They are quieter than all indoor spaces."
+      },
+      {
+        "id": "C",
+        "text": "They hold attention gently and let the mind rest."
+      },
+      {
+        "id": "D",
+        "text": "They contain fewer people than offices."
+      }
+    ],
+    "answer": "C",
+    "explanation": "Natural environments 'hold our attention gently, allowing the mind to rest'.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-19",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Our seminar this week will be held online rather than in room three-twelve, as the building is being repaired. You'll receive the video link by email this morning. Please read chapter six beforehand, as we'll spend most of the session discussing the case study it contains.",
+    "question": "Why will the seminar be held online?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The lecturer is travelling."
+      },
+      {
+        "id": "B",
+        "text": "The case study is only available online."
+      },
+      {
+        "id": "C",
+        "text": "The building is under repair."
+      },
+      {
+        "id": "D",
+        "text": "Too many students registered."
+      }
+    ],
+    "answer": "C",
+    "explanation": "'as the building is being repaired'.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-20",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Many coastal cities are building sea walls to protect against flooding. However, some engineers argue for a different approach: restoring natural features such as mangrove forests and salt marshes. These ecosystems absorb wave energy, adapt as sea levels rise and provide habitats for wildlife, often at a lower long-term cost than concrete barriers.",
+    "question": "What alternative to sea walls does the speaker describe?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Restoring natural coastal ecosystems."
+      },
+      {
+        "id": "B",
+        "text": "Moving entire cities inland."
+      },
+      {
+        "id": "C",
+        "text": "Building higher concrete barriers."
+      },
+      {
+        "id": "D",
+        "text": "Pumping water out of the sea."
+      }
+    ],
+    "answer": "A",
+    "explanation": "Restoring mangroves and salt marshes.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-21",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Translators often say that the hardest things to translate are not technical terms but jokes and idioms. Technical vocabulary usually has an exact equivalent in another language, while humour depends on cultural knowledge and wordplay that may simply not exist in the target language.",
+    "question": "Why are jokes difficult to translate?",
+    "options": [
+      {
+        "id": "A",
+        "text": "They are usually very long."
+      },
+      {
+        "id": "B",
+        "text": "Translators are not allowed to change them."
+      },
+      {
+        "id": "C",
+        "text": "They rely on culture and wordplay that may not exist in another language."
+      },
+      {
+        "id": "D",
+        "text": "They contain many technical terms."
+      }
+    ],
+    "answer": "C",
+    "explanation": "Humour depends on cultural knowledge and wordplay.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-22",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "If you're borrowing equipment from the media centre, you can keep cameras for a maximum of three days. Microphones and tripods can be borrowed for a week. Late returns result in a two-week suspension of borrowing rights, so please plan your filming schedule carefully.",
+    "question": "What happens if equipment is returned late?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The equipment must be repaired."
+      },
+      {
+        "id": "B",
+        "text": "Students cannot borrow equipment for two weeks."
+      },
+      {
+        "id": "C",
+        "text": "The filming schedule is cancelled."
+      },
+      {
+        "id": "D",
+        "text": "Students pay a fine."
+      }
+    ],
+    "answer": "B",
+    "explanation": "'a two-week suspension of borrowing rights'.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-23",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "In the past, most maps were made by surveyors who travelled on foot, measuring distances and angles by hand. Today, satellites and aircraft collect detailed images that computers turn into maps automatically. This has made maps far more accurate and allows them to be updated almost continuously.",
+    "question": "What is the main difference between past and present mapmaking?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Modern maps are less accurate than older ones."
+      },
+      {
+        "id": "B",
+        "text": "Surveyors now travel by satellite."
+      },
+      {
+        "id": "C",
+        "text": "Maps are updated only once every few years."
+      },
+      {
+        "id": "D",
+        "text": "Modern maps are made automatically from satellite and aerial images."
+      }
+    ],
+    "answer": "D",
+    "explanation": "Computers now turn satellite and aircraft images into maps.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-24",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "A recent survey of first-year students found that the biggest challenge they faced was not the difficulty of their courses but managing their own time. Without the fixed timetable of school, many students found it hard to plan independent study, and those who used a weekly planner reported significantly less stress.",
+    "question": "What did the survey identify as the biggest challenge?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The cost of textbooks."
+      },
+      {
+        "id": "B",
+        "text": "Making new friends."
+      },
+      {
+        "id": "C",
+        "text": "The difficulty of the courses."
+      },
+      {
+        "id": "D",
+        "text": "Managing their own time."
+      }
+    ],
+    "answer": "D",
+    "explanation": "'the biggest challenge ... was ... managing their own time'.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-25",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Volcanic soil is often extremely fertile. Over time, volcanic ash breaks down and releases minerals that plants need. This is why, despite the obvious danger, farming communities have lived on the slopes of active volcanoes for thousands of years.",
+    "question": "Why do people farm near active volcanoes?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Volcanic soil is very fertile."
+      },
+      {
+        "id": "B",
+        "text": "There is less rainfall."
+      },
+      {
+        "id": "C",
+        "text": "The land is cheaper there."
+      },
+      {
+        "id": "D",
+        "text": "Volcanoes provide heat for crops."
+      }
+    ],
+    "answer": "A",
+    "explanation": "Volcanic ash releases minerals, making soil fertile.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-26",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "When giving feedback to colleagues, it helps to focus on specific behaviour rather than personality. Saying that a report was submitted late is more useful than calling someone disorganised. Specific feedback gives the person something concrete to change and is less likely to make them defensive.",
+    "question": "Why does the speaker recommend specific feedback?",
+    "options": [
+      {
+        "id": "A",
+        "text": "It avoids discussing deadlines."
+      },
+      {
+        "id": "B",
+        "text": "It is quicker to give."
+      },
+      {
+        "id": "C",
+        "text": "It focuses on the person's character."
+      },
+      {
+        "id": "D",
+        "text": "It gives people something concrete to change."
+      }
+    ],
+    "answer": "D",
+    "explanation": "Specific feedback is concrete and less likely to cause defensiveness.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-27",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "The term 'circular economy' refers to a system in which products are designed to be reused, repaired and recycled rather than thrown away. Instead of the traditional pattern of take, make and dispose, materials are kept in use for as long as possible, reducing both waste and the need for new raw materials.",
+    "question": "What is the aim of a circular economy?",
+    "options": [
+      {
+        "id": "A",
+        "text": "To keep materials in use and reduce waste."
+      },
+      {
+        "id": "B",
+        "text": "To produce more new products each year."
+      },
+      {
+        "id": "C",
+        "text": "To make products that are easy to throw away."
+      },
+      {
+        "id": "D",
+        "text": "To increase the use of raw materials."
+      }
+    ],
+    "answer": "A",
+    "explanation": "Materials are kept in use to reduce waste and raw material use.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-28",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Please remember that the computer labs on the second floor are reserved for the statistics workshop every Wednesday afternoon. If you need a computer at that time, use the open-access room on the ground floor, which has the same software installed.",
+    "question": "Where should students go on Wednesday afternoons if they need a computer?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The second-floor labs."
+      },
+      {
+        "id": "B",
+        "text": "The ground-floor open-access room."
+      },
+      {
+        "id": "C",
+        "text": "The statistics workshop."
+      },
+      {
+        "id": "D",
+        "text": "The library on the third floor."
+      }
+    ],
+    "answer": "B",
+    "explanation": "The open-access room on the ground floor has the same software.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-29",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "Sleep researchers have found that teenagers' internal clocks shift later during adolescence, which makes it naturally difficult for them to fall asleep early. Some schools that moved their start time later in the morning reported better attendance and improved concentration among students.",
+    "question": "What did some schools find after starting later?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Attendance and concentration improved."
+      },
+      {
+        "id": "B",
+        "text": "Students slept less."
+      },
+      {
+        "id": "C",
+        "text": "Teachers worked fewer hours."
+      },
+      {
+        "id": "D",
+        "text": "Exam results fell."
+      }
+    ],
+    "answer": "A",
+    "explanation": "'better attendance and improved concentration'.",
+    "audioUrl": null
+  },
+  {
+    "id": "l_mcsa-30",
+    "section": "listening",
+    "type": "l_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Listen to the recording and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "listening"
+    ],
+    "prepSeconds": 5,
+    "transcript": "The word 'robot' comes from a play written in nineteen-twenty by the Czech writer Karel Čapek. In the play, robots were artificial workers created to serve humans. The word was based on a Czech term meaning forced labour, which reflects the play's concern with work and freedom.",
+    "question": "Where does the word 'robot' come from?",
+    "options": [
+      {
+        "id": "A",
+        "text": "A Greek word for computer."
+      },
+      {
+        "id": "B",
+        "text": "An early factory in England."
+      },
+      {
+        "id": "C",
+        "text": "A play by a Czech writer."
+      },
+      {
+        "id": "D",
+        "text": "A scientific paper on machines."
+      }
+    ],
+    "answer": "C",
+    "explanation": "It comes from Karel Čapek's 1920 play.",
+    "audioUrl": null
+  }
+]

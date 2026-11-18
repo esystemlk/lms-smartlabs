@@ -1,0 +1,1324 @@
+[
+  {
+    "id": "r_mcma-01",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Since the early 2020s, a large share of office employees has worked from home for at least part of the week, and the question of how this affects productivity has produced a surprising range of answers. Studies based on self-reported data tend to find that employees feel more productive at home, mainly because they avoid commuting and experience fewer interruptions. However, research that measures output directly gives a more mixed picture. In tasks that require deep concentration, such as writing code or analysing data, remote workers often perform as well as or better than their office-based colleagues. In contrast, roles that depend on frequent informal communication, including training new staff and developing early-stage ideas, appear to suffer when teams are rarely in the same place.\n\nMany organisations have therefore adopted hybrid arrangements, in which employees spend two or three fixed days in the office. Supporters argue that this combines the focus of home working with the collaboration of the office. Critics point out that hybrid schedules only work if colleagues coordinate their office days; otherwise, employees may commute simply to join video calls from a different desk. The evidence so far suggests that the success of any arrangement depends less on location itself than on how deliberately managers organise the work.",
+    "question": "According to the passage, which of the following are true?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Employees who report on their own productivity generally say they work better at home."
+      },
+      {
+        "id": "B",
+        "text": "Hybrid working has been shown to be the most effective arrangement for all organisations."
+      },
+      {
+        "id": "C",
+        "text": "Remote workers tend to do well on tasks requiring sustained concentration."
+      },
+      {
+        "id": "D",
+        "text": "Direct measurements consistently show that remote work lowers output."
+      },
+      {
+        "id": "E",
+        "text": "Training new employees appears to be harder when teams are seldom together."
+      },
+      {
+        "id": "F",
+        "text": "Most critics of hybrid work want employees to return to the office full time."
+      }
+    ],
+    "answers": [
+      "A",
+      "C",
+      "E"
+    ],
+    "explanation": "B contradicts 'a more mixed picture'; E and F are not stated — the passage says success depends on how work is organised."
+  },
+  {
+    "id": "r_mcma-02",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Of the roughly seven thousand languages spoken today, linguists estimate that around forty percent are endangered, meaning that they are no longer being learned by children as a first language. A language rarely disappears because its speakers suddenly abandon it. More often, the decline happens gradually over several generations. Parents who speak a minority language at home may decide that their children will have better economic prospects if they grow up speaking the dominant national language, and schools, media and employers frequently reinforce this choice.\n\nThe loss of a language involves more than the loss of words. Languages encode detailed knowledge about local plants, animals, landscapes and social relationships, much of which has never been written down. When the last fluent speakers die, this knowledge may disappear with them. For this reason, many communities have started revitalisation programmes, such as language nests in which young children are cared for entirely in the heritage language. The results vary, but several languages that were once spoken only by elderly people now have a new generation of young speakers.",
+    "question": "Which of the following statements are supported by the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Most endangered languages disappear within a single generation."
+      },
+      {
+        "id": "B",
+        "text": "All of the knowledge contained in endangered languages has been recorded in writing."
+      },
+      {
+        "id": "C",
+        "text": "Economic considerations can influence parents' choice of language for their children."
+      },
+      {
+        "id": "D",
+        "text": "A language is considered endangered when children stop acquiring it as a first language."
+      },
+      {
+        "id": "E",
+        "text": "Revitalisation programmes have succeeded in every community that has tried them."
+      },
+      {
+        "id": "F",
+        "text": "Language nests have increased the number of young speakers of some languages."
+      }
+    ],
+    "answers": [
+      "C",
+      "D",
+      "F"
+    ],
+    "explanation": "B: decline happens 'over several generations'; D: much knowledge 'has never been written down'; F: 'the results vary'."
+  },
+  {
+    "id": "r_mcma-03",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Most people think of bees as producers of honey, but their greatest value to humans lies elsewhere. Around three quarters of the world's leading food crops depend at least partly on animal pollination, and bees are among the most important pollinators. Without them, the yields of crops such as apples, almonds and many vegetables would fall sharply, and some foods would become much more expensive.\n\nIn recent years, beekeepers in several countries have reported unusually high losses of colonies. Scientists have identified several possible causes rather than a single one. Certain pesticides can affect bees' ability to navigate, parasites such as the varroa mite weaken colonies, and the loss of wildflower habitats reduces the variety of food available. These pressures appear to interact, so that a colony weakened by one factor becomes more vulnerable to others.\n\nResponses have included restrictions on some pesticides, programmes to plant flowers along field edges and research into breeding bees that are more resistant to mites. Experts stress that wild bees, which receive less attention than honeybees, also need protection.",
+    "question": "According to the passage, which of the following are true?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Colony losses have been traced to a single cause."
+      },
+      {
+        "id": "B",
+        "text": "Bees are more valuable to humans as pollinators than as honey producers."
+      },
+      {
+        "id": "C",
+        "text": "Pesticides have been banned completely in all countries."
+      },
+      {
+        "id": "D",
+        "text": "Planting flowers along field edges is one response to bee decline."
+      },
+      {
+        "id": "E",
+        "text": "Wild bees receive more attention than honeybees."
+      },
+      {
+        "id": "F",
+        "text": "Different pressures on bees may make each other worse."
+      }
+    ],
+    "answers": [
+      "B",
+      "D",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-04",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The four-day working week has attracted growing interest from employers and governments. In several trials, companies reduced working hours to around thirty-two per week without cutting pay, on the condition that productivity stayed the same. Many participating firms reported that output was maintained or even improved, while employees described lower levels of stress and burnout and fewer sick days.\n\nSupporters argue that shorter weeks encourage people to work more efficiently, cutting unnecessary meetings and distractions. They also point to benefits for recruitment, as job seekers increasingly value flexibility. Critics, however, note that the trials have mostly involved office-based companies that volunteered to take part, which may not represent the wider economy. In sectors such as healthcare, retail and manufacturing, where work depends on staff being physically present, reducing hours may require hiring additional workers, increasing costs.\n\nSome researchers also caution that early improvements may partly reflect enthusiasm for a new arrangement and could fade over time. Longer studies across a wider range of industries will be needed before firm conclusions can be drawn.",
+    "question": "Which of the following statements are supported by the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "A four-day week is easiest to introduce in healthcare."
+      },
+      {
+        "id": "B",
+        "text": "Researchers have concluded that the four-day week works in every industry."
+      },
+      {
+        "id": "C",
+        "text": "Many firms in the trials reported that output did not fall."
+      },
+      {
+        "id": "D",
+        "text": "In the trials, pay was reduced in line with working hours."
+      },
+      {
+        "id": "E",
+        "text": "The companies in the trials may not represent the whole economy."
+      },
+      {
+        "id": "F",
+        "text": "Early benefits might partly be due to enthusiasm for the change."
+      }
+    ],
+    "answers": [
+      "C",
+      "E",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-05",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "For most of history, maps were drawn by people who had never seen the places they depicted. Medieval mapmakers combined travellers' reports, ancient texts and religious beliefs, producing maps that tell us more about how their creators viewed the world than about its actual shape. Some showed fantastic creatures at the edges of the known world, reflecting both curiosity and fear of the unknown.\n\nThe Age of Exploration brought major changes. As sailors travelled further, they recorded coastlines, currents and distances, and mapmakers began to rely more heavily on observation. The invention of printing allowed maps to be copied accurately and distributed widely, so errors could be corrected and improvements shared. In the sixteenth century, the Flemish mapmaker Gerardus Mercator developed a projection that represented lines of constant compass direction as straight lines, making it extremely useful for navigation, although it greatly exaggerates the size of regions far from the equator.\n\nToday, satellite imagery allows maps of extraordinary precision. Yet every flat map still involves choices about how to represent a curved surface.",
+    "question": "Which of the following are mentioned in the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Mercator's projection was particularly useful for navigation."
+      },
+      {
+        "id": "B",
+        "text": "Medieval maps reflected their makers' beliefs as well as geography."
+      },
+      {
+        "id": "C",
+        "text": "Printing helped errors in maps to be corrected and improvements spread."
+      },
+      {
+        "id": "D",
+        "text": "Mercator's projection shows all regions at their true size."
+      },
+      {
+        "id": "E",
+        "text": "Satellite maps no longer involve any choices about representation."
+      },
+      {
+        "id": "F",
+        "text": "Medieval mapmakers usually visited the places they drew."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "C"
+    ]
+  },
+  {
+    "id": "r_mcma-06",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "When people imagine a scientist making a discovery, they often picture a single genius experiencing a sudden flash of insight. In reality, most scientific progress is collaborative and gradual. Major research projects today involve large teams spread across several countries, and published papers frequently list dozens or even hundreds of authors.\n\nCollaboration has clear advantages. Complex questions often require expertise from different fields, expensive equipment can be shared, and results can be checked by independent groups. However, large collaborations also create challenges. Deciding how credit should be shared can be difficult, especially for early-career researchers who need recognition to build their careers. Communication across time zones and languages can slow progress, and differing expectations about data sharing can lead to disagreements.\n\nThe popular image of the lone genius may also discourage some young people from considering scientific careers, because they believe that only exceptionally gifted individuals can succeed. Educators increasingly emphasise teamwork and persistence as central to science, hoping to present a more accurate and accessible picture of how research is actually done.",
+    "question": "According to the passage, which of the following are true?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The lone-genius image may put some young people off science."
+      },
+      {
+        "id": "B",
+        "text": "Communication across countries always speeds up research."
+      },
+      {
+        "id": "C",
+        "text": "Scientific papers rarely have more than one author today."
+      },
+      {
+        "id": "D",
+        "text": "Most scientific progress happens through collaboration over time."
+      },
+      {
+        "id": "E",
+        "text": "Large collaborations make sharing credit simple."
+      },
+      {
+        "id": "F",
+        "text": "Collaboration allows expensive equipment to be shared."
+      }
+    ],
+    "answers": [
+      "A",
+      "D",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-07",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Urban gardens have become increasingly common in cities around the world. They range from small plots on rooftops to large community gardens on unused land. Their supporters claim a wide range of benefits. Gardens provide fresh vegetables to residents who may have limited access to healthy food, and they create green spaces that can help cool neighbourhoods during hot weather.\n\nPerhaps their most significant contribution, however, is social. Community gardens bring together people of different ages and backgrounds who might otherwise rarely meet. Older residents often share growing skills with younger ones, and gardens can become venues for events, workshops and celebrations. Several studies have found that participants report stronger feelings of belonging to their neighbourhood.\n\nUrban gardens do face difficulties. Many operate on land that the owner may decide to sell for development, so their future can be uncertain. Soil in former industrial areas may be contaminated and needs to be tested or replaced. Gardens also depend heavily on volunteers, and enthusiasm can decline if a few key organisers leave.",
+    "question": "Which of the following does the passage present as challenges for urban gardens?",
+    "options": [
+      {
+        "id": "A",
+        "text": "They discourage contact between different age groups."
+      },
+      {
+        "id": "B",
+        "text": "They depend heavily on volunteers."
+      },
+      {
+        "id": "C",
+        "text": "They make neighbourhoods hotter in summer."
+      },
+      {
+        "id": "D",
+        "text": "The land they use may be sold for development."
+      },
+      {
+        "id": "E",
+        "text": "They reduce access to healthy food."
+      },
+      {
+        "id": "F",
+        "text": "Soil in some areas may be contaminated."
+      }
+    ],
+    "answers": [
+      "B",
+      "D",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-08",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "For decades, nutrition advice focused on reducing dietary fat, particularly saturated fat, as the main way to prevent heart disease. Food manufacturers responded by producing a wide range of low-fat products. However, many of these products replaced fat with sugar and refined carbohydrates to maintain flavour and texture.\n\nResearch over the past twenty years has led to a more nuanced view. Scientists now emphasise the overall quality of the diet rather than any single nutrient. Unsaturated fats, found in foods such as olive oil, nuts and fish, appear to be beneficial for heart health. At the same time, high consumption of added sugar has been linked to obesity, type 2 diabetes and heart disease.\n\nSome nutrition experts argue that the earlier focus on fat may have unintentionally contributed to rising sugar consumption. Others caution against simply replacing one villain with another, noting that dietary patterns, such as eating plenty of vegetables, whole grains and minimally processed foods, matter more than avoiding any one ingredient.",
+    "question": "Which of the following statements are supported by the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Experts agree that sugar is the only cause of heart disease."
+      },
+      {
+        "id": "B",
+        "text": "High sugar consumption has been linked to several health problems."
+      },
+      {
+        "id": "C",
+        "text": "Many low-fat products contained added sugar or refined carbohydrates."
+      },
+      {
+        "id": "D",
+        "text": "All types of fat are harmful to heart health."
+      },
+      {
+        "id": "E",
+        "text": "Unsaturated fats appear to be bad for the heart."
+      },
+      {
+        "id": "F",
+        "text": "Current research emphasises overall diet quality."
+      }
+    ],
+    "answers": [
+      "B",
+      "C",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-09",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The rise of remote learning during the early 2020s forced schools and universities to rethink how teaching is delivered. Many educators were surprised by what worked well online. Recorded lectures allowed students to pause, rewind and review difficult material at their own pace, and online quizzes gave teachers immediate information about which topics students were struggling with.\n\nHowever, the shift also exposed significant problems. Students without reliable internet access or a quiet place to study fell behind, widening existing inequalities. Many learners reported feeling isolated, and teachers found it harder to notice when individual students were losing motivation. Practical subjects, such as laboratory science and performing arts, were especially difficult to teach remotely.\n\nAs institutions returned to in-person teaching, many decided to keep elements of online learning. Blended courses now commonly combine recorded content with face-to-face seminars focused on discussion and problem-solving. The challenge is to use technology where it genuinely adds value rather than simply moving traditional lectures online.",
+    "question": "According to the passage, which of the following are true?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Many institutions kept some online elements after returning to campus."
+      },
+      {
+        "id": "B",
+        "text": "Remote learning reduced inequalities between students."
+      },
+      {
+        "id": "C",
+        "text": "Online quizzes gave teachers no useful information."
+      },
+      {
+        "id": "D",
+        "text": "Teachers found it easier to notice when students lost motivation."
+      },
+      {
+        "id": "E",
+        "text": "Practical subjects were especially hard to teach online."
+      },
+      {
+        "id": "F",
+        "text": "Recorded lectures let students review material at their own pace."
+      }
+    ],
+    "answers": [
+      "A",
+      "E",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-10",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Few inventions have shaped modern life as much as the shipping container. Before its introduction in the 1950s, cargo was loaded onto ships in sacks, crates and barrels by large teams of dock workers. A ship might spend a week or more in port, and goods were frequently damaged or stolen.\n\nThe container's success lay in standardisation. Containers of the same dimensions could be lifted by cranes from ships onto trucks and trains without their contents being handled. Ports invested in specialised equipment, and ships were designed to carry thousands of containers. The time ships spent in port fell dramatically, and the cost of transporting goods across oceans dropped so much that it became a minor part of the price of most products.\n\nThis transformation made global supply chains possible, allowing companies to manufacture components in one country and assemble products in another. However, it also contributed to the decline of traditional port cities, as container terminals required large areas of land and moved away from old city centres, and many dock jobs disappeared.",
+    "question": "Which of the following are presented as effects of the shipping container?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Goods were damaged more frequently."
+      },
+      {
+        "id": "B",
+        "text": "Global supply chains became possible."
+      },
+      {
+        "id": "C",
+        "text": "Ships spent much less time in port."
+      },
+      {
+        "id": "D",
+        "text": "Transport costs became a small part of most products' prices."
+      },
+      {
+        "id": "E",
+        "text": "Old city-centre ports became busier than ever."
+      },
+      {
+        "id": "F",
+        "text": "More dock workers were needed to load ships."
+      }
+    ],
+    "answers": [
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": "r_mcma-11",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Why do people continue to believe information that has been shown to be false? Psychologists have identified several reasons. One is the continued influence effect: even after a claim is corrected, people may still rely on the original information when reasoning about an event, especially if the correction does not offer an alternative explanation. Another factor is familiarity. Repeated exposure to a statement makes it feel more true, a phenomenon sometimes called the illusory truth effect.\n\nPeople are also more likely to accept information that fits their existing beliefs and to question information that challenges them. This tendency, known as confirmation bias, can make corrections less effective when they come from sources people distrust.\n\nResearchers have tested strategies to reduce the spread of misinformation. Warning people in advance about common manipulation techniques, sometimes called prebunking, appears to make them more resistant. Corrections are more effective when they explain why the false claim is wrong and provide a clear alternative account, rather than simply stating that it is untrue.",
+    "question": "Which of the following are mentioned as reasons people keep believing false information?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Repeated exposure makes statements feel more true."
+      },
+      {
+        "id": "B",
+        "text": "False information is usually more boring than true information."
+      },
+      {
+        "id": "C",
+        "text": "Corrections may not offer an alternative explanation."
+      },
+      {
+        "id": "D",
+        "text": "People always trust every source equally."
+      },
+      {
+        "id": "E",
+        "text": "People tend to accept information that fits their beliefs."
+      },
+      {
+        "id": "F",
+        "text": "Prebunking makes people more likely to believe false claims."
+      }
+    ],
+    "answers": [
+      "A",
+      "C",
+      "E"
+    ]
+  },
+  {
+    "id": "r_mcma-12",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Antarctica is the coldest, driest and windiest continent, yet it plays a crucial role in the Earth's climate system. Its vast ice sheet contains around seventy percent of the world's fresh water. If all of this ice melted, global sea levels would rise by about fifty-eight metres, although such a change would take thousands of years.\n\nScientists are particularly concerned about the West Antarctic Ice Sheet, parts of which rest on bedrock below sea level. Warm ocean water can flow beneath the floating edges of the ice, melting it from below and allowing glaciers to flow faster into the sea. Because of the shape of the land, this process could become self-sustaining once it starts.\n\nAntarctica is governed by an international treaty signed in 1959, which reserves the continent for peaceful purposes and scientific research and bans mining. Research stations operated by many countries study everything from ice cores, which record past climate, to the effects of extreme conditions on the human body.",
+    "question": "According to the passage, which statements are correct?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Antarctica contains most of the world's fresh water."
+      },
+      {
+        "id": "B",
+        "text": "Warm ocean water can melt parts of the West Antarctic Ice Sheet from below."
+      },
+      {
+        "id": "C",
+        "text": "Antarctica is governed by a single country."
+      },
+      {
+        "id": "D",
+        "text": "Mining is banned in Antarctica under an international treaty."
+      },
+      {
+        "id": "E",
+        "text": "Ice cores provide information about the future climate only."
+      },
+      {
+        "id": "F",
+        "text": "Melting of all Antarctic ice would happen within a few decades."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "D"
+    ]
+  },
+  {
+    "id": "r_mcma-13",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Translation is often described as the art of losing as little as possible. Words rarely have exact equivalents in other languages, and meaning depends heavily on context, culture and tone. A translator must decide whether to stay close to the original wording or to prioritise conveying the same effect to a new audience.\n\nThis challenge is especially clear in literature. Poetry relies on rhythm, sound and wordplay, which may be impossible to reproduce. Some translators choose to preserve the meaning while sacrificing the form; others create a new poem that captures the spirit of the original but differs in detail. Both approaches have defenders and critics.\n\nMachine translation has improved enormously in recent years, and it is now widely used for everyday communication and for understanding the general content of documents. However, professional translators argue that it still struggles with ambiguity, humour and cultural references, and that its output must be carefully checked when accuracy matters, such as in legal or medical documents.",
+    "question": "Which of the following does the passage state?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Translators of poetry may prioritise meaning over form, or vice versa."
+      },
+      {
+        "id": "B",
+        "text": "Machine translation has improved greatly in recent years."
+      },
+      {
+        "id": "C",
+        "text": "Words often lack exact equivalents in other languages."
+      },
+      {
+        "id": "D",
+        "text": "Machine translation no longer needs to be checked for legal documents."
+      },
+      {
+        "id": "E",
+        "text": "Poetry is the easiest type of text to translate."
+      },
+      {
+        "id": "F",
+        "text": "All translators agree on the best approach to literature."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "C"
+    ]
+  },
+  {
+    "id": "r_mcma-14",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Insects make up the majority of known animal species, and they perform essential roles in nearly every land ecosystem. They pollinate plants, break down dead material, control pests and serve as food for birds, fish and mammals. Yet a number of long-term studies have recorded significant declines in insect populations in some regions.\n\nOne frequently cited study from nature reserves in Germany found that the total mass of flying insects had fallen by more than seventy-five percent over twenty-seven years. Because the sites were protected areas, the findings suggested that factors in the surrounding landscape, such as intensive agriculture and pesticide use, might be responsible. Other likely causes include habitat loss, climate change and light pollution, which disrupts the behaviour of night-flying insects.\n\nScientists caution that data on insects are patchy, particularly in tropical regions, so the global picture remains uncertain. Nevertheless, many agree that reducing pesticide use, restoring habitats and creating corridors of wild vegetation could help insect populations recover.",
+    "question": "Which of the following are supported by the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The German study was carried out on intensive farms."
+      },
+      {
+        "id": "B",
+        "text": "Data on insects in tropical regions are limited."
+      },
+      {
+        "id": "C",
+        "text": "Scientists are certain about global insect trends."
+      },
+      {
+        "id": "D",
+        "text": "Light pollution can disrupt night-flying insects."
+      },
+      {
+        "id": "E",
+        "text": "Insects perform many essential roles in ecosystems."
+      },
+      {
+        "id": "F",
+        "text": "Insects make up only a small share of animal species."
+      }
+    ],
+    "answers": [
+      "B",
+      "D",
+      "E"
+    ]
+  },
+  {
+    "id": "r_mcma-15",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The concept of a minimum wage, a legal lower limit on hourly pay, has long been debated by economists. Traditional economic theory suggested that setting wages above the market level would reduce employment, as businesses would hire fewer workers. Some evidence supported this view, particularly when minimum wages were raised sharply.\n\nHowever, studies since the 1990s have complicated the picture. Research comparing neighbouring regions with different minimum wages often found little or no negative effect on employment from moderate increases. One explanation is that employers in some labour markets have significant power to set wages, so a minimum wage can raise pay without reducing jobs. Higher wages may also reduce staff turnover, saving employers the costs of recruiting and training new workers.\n\nMost economists now agree that the effects depend on the size of the increase and local economic conditions. A large rise in a region with low average wages may cause job losses, whereas a modest rise in a prosperous area may have few negative effects.",
+    "question": "According to the passage, which of the following are true?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Traditional theory predicted that minimum wages would reduce employment."
+      },
+      {
+        "id": "B",
+        "text": "Higher wages may reduce staff turnover."
+      },
+      {
+        "id": "C",
+        "text": "Economists agree that minimum wages always reduce employment."
+      },
+      {
+        "id": "D",
+        "text": "Employers never have power to set wages."
+      },
+      {
+        "id": "E",
+        "text": "Research since the 1990s has always found large job losses."
+      },
+      {
+        "id": "F",
+        "text": "The effects of minimum wages depend on the size of the increase and local conditions."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-16",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Humans have domesticated dogs for at least fifteen thousand years, making them the first animals to live closely with people. Genetic studies suggest that dogs descended from an extinct population of wolves. One theory proposes that some wolves began scavenging near human camps, and those less fearful of people gained access to food, gradually becoming tamer over many generations.\n\nDogs have since developed remarkable abilities to communicate with humans. Experiments show that dogs can follow a human pointing gesture to find hidden food, something even chimpanzees, our close relatives, often fail to do. Dogs also make more eye contact with humans than wolves raised by people, and this eye contact appears to increase levels of a hormone associated with bonding in both dogs and their owners.\n\nOver time, humans bred dogs for specific tasks, such as herding, guarding and hunting, producing the great variety of breeds seen today. Most modern breeds, however, were created only within the past two centuries.",
+    "question": "Which of the following statements are supported by the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Eye contact between dogs and owners may promote bonding."
+      },
+      {
+        "id": "B",
+        "text": "Chimpanzees follow pointing gestures better than dogs."
+      },
+      {
+        "id": "C",
+        "text": "Dogs may have descended from wolves that scavenged near human camps."
+      },
+      {
+        "id": "D",
+        "text": "Wolves raised by people make more eye contact than dogs."
+      },
+      {
+        "id": "E",
+        "text": "Dogs were domesticated after cattle and sheep."
+      },
+      {
+        "id": "F",
+        "text": "Most modern dog breeds are relatively recent."
+      }
+    ],
+    "answers": [
+      "A",
+      "C",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-17",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The design of a classroom can influence how students learn. Traditional classrooms, with rows of desks facing the teacher, are well suited to lectures but can discourage discussion. In recent years, many schools have experimented with flexible spaces, where furniture can be rearranged quickly for group work, presentations or individual study.\n\nStudies of classroom environments have identified several factors that affect learning. Natural light and good air quality are associated with better concentration and performance. Noise from outside or from poorly designed rooms can make it harder for students to hear and understand, particularly for younger children and those learning in a second language. Temperature also matters: rooms that are too warm can make students drowsy.\n\nHowever, researchers caution that the physical environment is only one factor. A well-designed room cannot compensate for poor teaching, and effective teachers can achieve good results in less than ideal spaces. The greatest benefits seem to come when teachers are trained to make full use of flexible spaces rather than simply being given new furniture.",
+    "question": "Which of the following does the passage mention as affecting learning?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Natural light."
+      },
+      {
+        "id": "B",
+        "text": "The colour of the walls."
+      },
+      {
+        "id": "C",
+        "text": "The number of windows facing south."
+      },
+      {
+        "id": "D",
+        "text": "The price of school furniture."
+      },
+      {
+        "id": "E",
+        "text": "Noise levels."
+      },
+      {
+        "id": "F",
+        "text": "Air quality."
+      }
+    ],
+    "answers": [
+      "A",
+      "E",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-18",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Electric vehicles are often described as zero-emission vehicles, but their environmental impact is more complex. While driving, they produce no exhaust emissions, which can significantly improve air quality in cities. However, manufacturing an electric car, particularly its battery, generally produces more emissions than manufacturing a conventional car.\n\nOver the vehicle's lifetime, the overall balance depends largely on how the electricity used for charging is generated. In countries where much of the electricity comes from renewable sources, electric cars typically produce far lower lifetime emissions than petrol cars. Where electricity is mainly generated from coal, the advantage is smaller, though studies suggest electric vehicles usually still come out ahead.\n\nOther issues include the mining of materials such as lithium and cobalt, which can have environmental and social impacts, and the need to recycle batteries at the end of their life. Some experts also argue that reducing the total number of cars, through better public transport and urban planning, is as important as changing what powers them.",
+    "question": "According to the passage, which statements are true?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Experts agree that changing fuel types is all that is needed."
+      },
+      {
+        "id": "B",
+        "text": "Electric cars always have higher lifetime emissions than petrol cars."
+      },
+      {
+        "id": "C",
+        "text": "Electric cars produce no exhaust emissions while driving."
+      },
+      {
+        "id": "D",
+        "text": "Making an electric car's battery usually produces more emissions than making a conventional car."
+      },
+      {
+        "id": "E",
+        "text": "Mining materials for batteries has no social impact."
+      },
+      {
+        "id": "F",
+        "text": "The source of electricity affects an electric car's lifetime emissions."
+      }
+    ],
+    "answers": [
+      "C",
+      "D",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-19",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The Rosetta Stone, discovered in Egypt in 1799, played a key role in deciphering ancient Egyptian hieroglyphs. The stone carries the same decree written in three scripts: hieroglyphs, a later Egyptian script called Demotic, and ancient Greek. Because scholars could read Greek, they had a starting point for understanding the other two.\n\nEven so, the task took more than twenty years. Early researchers assumed that hieroglyphs were purely symbolic, each sign representing an idea. The French scholar Jean-François Champollion made the crucial breakthrough in 1822 when he showed that many hieroglyphs represented sounds, while others represented meanings. His knowledge of Coptic, a late form of the Egyptian language, helped him identify the sounds.\n\nThe decipherment opened up thousands of years of Egyptian history, allowing scholars to read inscriptions, letters and administrative records. Today the Rosetta Stone is displayed in the British Museum, and there have been calls for it to be returned to Egypt.",
+    "question": "Which of the following statements are supported by the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The Rosetta Stone is displayed in Egypt."
+      },
+      {
+        "id": "B",
+        "text": "Champollion's knowledge of Coptic helped him."
+      },
+      {
+        "id": "C",
+        "text": "The stone was deciphered within a few months of its discovery."
+      },
+      {
+        "id": "D",
+        "text": "The Rosetta Stone contains the same text in three scripts."
+      },
+      {
+        "id": "E",
+        "text": "Knowledge of Greek gave scholars a starting point."
+      },
+      {
+        "id": "F",
+        "text": "Champollion showed that all hieroglyphs represented ideas only."
+      }
+    ],
+    "answers": [
+      "B",
+      "D",
+      "E"
+    ]
+  },
+  {
+    "id": "r_mcma-20",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "In the workplace, feedback is often delivered once a year through formal performance reviews. Many organisations have found this approach unsatisfactory. Employees can feel anxious about a single annual meeting that may affect their pay, and managers may struggle to remember events from many months earlier. As a result, feedback can feel unfair or irrelevant.\n\nSome companies have replaced or supplemented annual reviews with more frequent, informal conversations. Regular check-ins allow problems to be addressed quickly and achievements to be recognised when they happen. Research suggests that feedback is most effective when it is specific, timely and focused on behaviour that the person can change.\n\nHowever, more frequent feedback is not automatically better. If conversations become rushed or purely critical, they can increase stress. Managers need training to give constructive feedback and to listen to employees' perspectives. Some organisations also encourage peer feedback, although this requires a culture of trust to work well.",
+    "question": "Which of the following are given as problems with annual reviews?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Feedback can feel unfair or irrelevant."
+      },
+      {
+        "id": "B",
+        "text": "Managers may struggle to remember events from months earlier."
+      },
+      {
+        "id": "C",
+        "text": "Employees may feel anxious about a single meeting affecting their pay."
+      },
+      {
+        "id": "D",
+        "text": "Annual reviews happen too frequently."
+      },
+      {
+        "id": "E",
+        "text": "Annual reviews always include peer feedback."
+      },
+      {
+        "id": "F",
+        "text": "Employees receive too much praise."
+      }
+    ],
+    "answers": [
+      "A",
+      "B",
+      "C"
+    ]
+  },
+  {
+    "id": "r_mcma-21",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Sound travels through air as waves of pressure. When these waves reach the ear, they cause the eardrum to vibrate, and tiny bones in the middle ear pass the vibrations to the inner ear. There, a fluid-filled, snail-shaped structure called the cochlea contains thousands of hair cells that convert the vibrations into electrical signals sent to the brain.\n\nDifferent hair cells respond to different frequencies, allowing us to distinguish high and low sounds. Unfortunately, these cells can be damaged by loud noise, and in humans they do not regenerate. This is why exposure to loud music, machinery or other noise over long periods can cause permanent hearing loss.\n\nHearing loss is often gradual, so people may not notice it until it becomes significant. Common early signs include difficulty following conversations in noisy places. Protective measures, such as wearing ear protection in noisy environments and keeping headphone volume moderate, can greatly reduce the risk.",
+    "question": "According to the passage, which of the following are true?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The eardrum is located in the inner ear."
+      },
+      {
+        "id": "B",
+        "text": "Different hair cells respond to different frequencies."
+      },
+      {
+        "id": "C",
+        "text": "The cochlea converts vibrations into electrical signals."
+      },
+      {
+        "id": "D",
+        "text": "Human hair cells in the inner ear can regenerate."
+      },
+      {
+        "id": "E",
+        "text": "Hearing loss can develop gradually."
+      },
+      {
+        "id": "F",
+        "text": "Ear protection has no effect on hearing loss."
+      }
+    ],
+    "answers": [
+      "B",
+      "C",
+      "E"
+    ]
+  },
+  {
+    "id": "r_mcma-22",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Cities around the world are experimenting with ways to make streets safer for pedestrians and cyclists. One approach, known as traffic calming, uses physical changes such as narrower lanes, raised crossings and speed bumps to slow vehicles. Lower speeds greatly reduce the risk of serious injury: a pedestrian hit by a car at thirty kilometres per hour is far more likely to survive than one hit at fifty.\n\nAnother approach is the low-traffic neighbourhood, where through traffic is blocked from residential streets while residents can still reach their homes by car. Supporters say these schemes reduce noise and pollution and encourage walking and cycling. Critics argue that they can push traffic onto surrounding main roads, increasing congestion there, and that they may disadvantage people who rely on cars, such as some disabled residents.\n\nEvidence from several cities suggests that, over time, some drivers change their habits, reducing overall traffic. However, results vary, and careful monitoring is needed to ensure that benefits are shared fairly.",
+    "question": "Which of the following statements are supported by the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Low-traffic neighbourhoods prevent residents from reaching their homes by car."
+      },
+      {
+        "id": "B",
+        "text": "All cities have seen identical results from these schemes."
+      },
+      {
+        "id": "C",
+        "text": "Traffic calming involves making lanes wider."
+      },
+      {
+        "id": "D",
+        "text": "Lower vehicle speeds reduce the risk of serious injury."
+      },
+      {
+        "id": "E",
+        "text": "Critics say low-traffic neighbourhoods may increase congestion on main roads."
+      },
+      {
+        "id": "F",
+        "text": "Some drivers may change their habits over time."
+      }
+    ],
+    "answers": [
+      "D",
+      "E",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-23",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The ability to delay gratification, to resist an immediate reward in favour of a larger one later, has long interested psychologists. In a famous series of experiments in the 1960s and 1970s, young children were offered one marshmallow immediately or two if they could wait alone for several minutes. Follow-up studies suggested that children who waited longer later achieved better academic results.\n\nMore recent research has challenged the simple interpretation that self-control alone explains later success. A larger replication study found that the link was much weaker once factors such as family background and early cognitive abilities were taken into account. Other studies showed that children were more willing to wait when they had reason to trust that the promised reward would actually arrive.\n\nThese findings suggest that the decision to wait depends not only on self-control but also on a child's experiences and environment. For a child who has learned that promises are often broken, taking the immediate reward may be a reasonable choice.",
+    "question": "Which of the following does the passage say?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Self-control is the only factor affecting the decision to wait."
+      },
+      {
+        "id": "B",
+        "text": "The original experiments were carried out with adults."
+      },
+      {
+        "id": "C",
+        "text": "Taking the immediate reward is never a reasonable choice."
+      },
+      {
+        "id": "D",
+        "text": "A larger replication found a weaker link after considering other factors."
+      },
+      {
+        "id": "E",
+        "text": "Children waited longer when they trusted the reward would arrive."
+      },
+      {
+        "id": "F",
+        "text": "Early studies linked waiting longer with later academic results."
+      }
+    ],
+    "answers": [
+      "D",
+      "E",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-24",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Fresh water covers only a tiny fraction of the Earth's surface, and much of it is locked in ice or underground. As populations grow and climates change, many regions face increasing water stress. Agriculture accounts for around seventy percent of global freshwater use, mainly for irrigation, so improving efficiency on farms is particularly important.\n\nDrip irrigation, which delivers water directly to the roots of plants through pipes, can reduce water use considerably compared with flooding fields. Sensors that measure soil moisture allow farmers to water crops only when needed. Choosing crops suited to local conditions can also make a large difference, as some crops require far more water than others.\n\nCities are also adopting new strategies, including fixing leaking pipes, which can waste a significant share of treated water, collecting rainwater and recycling wastewater for uses such as irrigation and industry. In some places, treated wastewater is even purified to drinking standard, although public acceptance of this approach varies.",
+    "question": "Which of the following are mentioned as ways to use water more efficiently?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Increasing the flooding of fields."
+      },
+      {
+        "id": "B",
+        "text": "Fixing leaking pipes in cities."
+      },
+      {
+        "id": "C",
+        "text": "Stopping all wastewater recycling."
+      },
+      {
+        "id": "D",
+        "text": "Growing crops that need more water."
+      },
+      {
+        "id": "E",
+        "text": "Drip irrigation."
+      },
+      {
+        "id": "F",
+        "text": "Using soil moisture sensors."
+      }
+    ],
+    "answers": [
+      "B",
+      "E",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-25",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Libraries have existed for thousands of years, but their role has changed dramatically. The ancient Library of Alexandria aimed to collect copies of every book in the known world, serving scholars rather than the general public. For much of history, access to books was limited to the wealthy, religious institutions and universities.\n\nPublic libraries funded by taxes became widespread in the nineteenth century, reflecting a belief that education should be available to everyone. Industrialists and philanthropists, such as Andrew Carnegie, funded thousands of library buildings in English-speaking countries. These libraries offered working people opportunities for self-education and became important community institutions.\n\nIn the digital age, some have predicted that libraries would become unnecessary. Instead, many have adapted, offering internet access, digital resources, children's activities and help with tasks such as job applications. For people without computers at home, libraries remain one of the few places where they can get online free of charge.",
+    "question": "According to the passage, which statements are true?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Ancient libraries were open to the general public."
+      },
+      {
+        "id": "B",
+        "text": "Many libraries now offer internet access and digital resources."
+      },
+      {
+        "id": "C",
+        "text": "The Library of Alexandria mainly served scholars."
+      },
+      {
+        "id": "D",
+        "text": "Libraries have become unnecessary in the digital age."
+      },
+      {
+        "id": "E",
+        "text": "Public libraries became widespread in the nineteenth century."
+      },
+      {
+        "id": "F",
+        "text": "Andrew Carnegie opposed public libraries."
+      }
+    ],
+    "answers": [
+      "B",
+      "C",
+      "E"
+    ]
+  },
+  {
+    "id": "r_mcma-26",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Many people assume that multitasking allows them to get more done. Research suggests otherwise. When we attempt two demanding tasks at once, such as writing an email while listening to a lecture, the brain must repeatedly switch attention between them. Each switch carries a small cost in time and accuracy, and these costs add up.\n\nStudies of students show that those who frequently switch between studying and checking social media take longer to complete assignments and remember less of what they studied. Interestingly, people who multitask most often tend to overestimate their ability to do so and perform worse on tests of attention than those who multitask less.\n\nSome activities can be combined successfully, particularly when one is automatic, such as walking while talking. The problem arises when both tasks require conscious thought. Experts recommend setting aside blocks of time for focused work, turning off notifications and grouping similar tasks together.",
+    "question": "Which of the following does the passage state?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Students who switch frequently remember less of what they study."
+      },
+      {
+        "id": "B",
+        "text": "Experts recommend keeping notifications on while studying."
+      },
+      {
+        "id": "C",
+        "text": "Walking while talking can be done successfully."
+      },
+      {
+        "id": "D",
+        "text": "Switching attention between demanding tasks has costs."
+      },
+      {
+        "id": "E",
+        "text": "Heavy multitaskers perform better on attention tests."
+      },
+      {
+        "id": "F",
+        "text": "Multitasking always increases productivity."
+      }
+    ],
+    "answers": [
+      "A",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": "r_mcma-27",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Tourism can bring significant economic benefits to developing regions, creating jobs and supporting local businesses. However, the benefits are not always distributed fairly. In some destinations, a large share of tourist spending goes to international hotel chains and tour companies, leaving relatively little for local communities.\n\nCommunity-based tourism attempts to address this. In such projects, local people own and manage accommodation, guide visitors and decide how income is used, often investing in schools, health care or conservation. Visitors may stay in village homes, learn traditional skills and experience daily life in ways that conventional tourism rarely offers.\n\nCommunity-based projects face challenges, including limited marketing budgets, difficulty reaching international customers and the risk that traditions become performances staged for tourists. Successful projects often partner with non-governmental organisations or responsible travel companies, which provide training and access to markets while leaving control with the community.",
+    "question": "Which of the following are supported by the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Community-based tourism prevents visitors from experiencing daily life."
+      },
+      {
+        "id": "B",
+        "text": "Tourist spending does not always benefit local communities fairly."
+      },
+      {
+        "id": "C",
+        "text": "Partnerships can help community projects reach markets."
+      },
+      {
+        "id": "D",
+        "text": "International hotel chains always share profits equally with villages."
+      },
+      {
+        "id": "E",
+        "text": "In community-based tourism, local people manage the activities."
+      },
+      {
+        "id": "F",
+        "text": "Community-based projects usually have large marketing budgets."
+      }
+    ],
+    "answers": [
+      "B",
+      "C",
+      "E"
+    ]
+  },
+  {
+    "id": "r_mcma-28",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Volcanic eruptions are among the most dramatic natural events, but scientists have become increasingly skilled at monitoring active volcanoes. Before an eruption, magma moving beneath the surface often causes small earthquakes, changes in the shape of the ground and increases in gases such as sulphur dioxide. Instruments placed around volcanoes can detect these signs.\n\nSatellites also play an important role, measuring tiny changes in ground height over large areas and detecting heat. By combining different types of data, scientists can sometimes warn authorities days or weeks in advance, allowing evacuations that save lives.\n\nHowever, forecasting remains difficult. Some volcanoes show signs of unrest for years without erupting, while others erupt with little warning. False alarms can be costly and may reduce public trust in future warnings. Scientists therefore usually describe eruption risk in terms of probabilities rather than certainties, and work closely with local authorities to plan appropriate responses.",
+    "question": "According to the passage, which of the following are signs that may come before an eruption?",
+    "options": [
+      {
+        "id": "A",
+        "text": "A sudden drop in gas emissions to zero."
+      },
+      {
+        "id": "B",
+        "text": "Increases in gases such as sulphur dioxide."
+      },
+      {
+        "id": "C",
+        "text": "A decrease in ground temperature."
+      },
+      {
+        "id": "D",
+        "text": "Small earthquakes."
+      },
+      {
+        "id": "E",
+        "text": "Heavier rainfall around the volcano."
+      },
+      {
+        "id": "F",
+        "text": "Changes in the shape of the ground."
+      }
+    ],
+    "answers": [
+      "B",
+      "D",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-29",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The history of chocolate stretches back thousands of years to Central America, where the Olmec, Maya and Aztec peoples used cacao beans to make a bitter drink, often flavoured with spices. Cacao was highly valued; the Aztecs even used the beans as a form of currency.\n\nWhen Spanish explorers brought cacao to Europe in the sixteenth century, the drink was initially popular among the wealthy, who added sugar to suit European tastes. The industrial revolution transformed chocolate production. In the nineteenth century, new machines made it possible to press cocoa butter from the beans, leading to the creation of solid chocolate bars, and later to milk chocolate.\n\nToday, chocolate is a global industry, but most cacao is grown by small farmers in West Africa, many of whom earn very low incomes. Concerns about poverty and child labour in cacao farming have led to certification schemes and initiatives aimed at improving conditions, although critics argue that progress has been slow.",
+    "question": "Which of the following statements are supported by the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Solid chocolate bars existed before the industrial revolution."
+      },
+      {
+        "id": "B",
+        "text": "Cacao was used to make a bitter drink in Central America."
+      },
+      {
+        "id": "C",
+        "text": "Europeans removed sugar from chocolate drinks."
+      },
+      {
+        "id": "D",
+        "text": "Most cacao today is grown by small farmers in West Africa."
+      },
+      {
+        "id": "E",
+        "text": "Problems in cacao farming have been fully solved."
+      },
+      {
+        "id": "F",
+        "text": "The Aztecs used cacao beans as currency."
+      }
+    ],
+    "answers": [
+      "B",
+      "D",
+      "F"
+    ]
+  },
+  {
+    "id": "r_mcma-30",
+    "section": "reading",
+    "type": "r_mcma",
+    "title": "Multiple choice, choose multiple answers",
+    "instructions": "Read the text and answer the question by selecting all the correct responses. More than one response is correct.",
+    "scoring": "plus_minus",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Handwriting is taught less in many schools than it once was, as typing on keyboards and tablets has become the main way students produce written work. Some educators welcome this change, arguing that digital skills are more relevant to modern life and that typing allows students to write and edit more quickly.\n\nHowever, a growing body of research suggests that handwriting may have benefits that typing does not. Studies have found that students who take lecture notes by hand often remember the material better than those who type, possibly because writing by hand is slower and forces them to summarise ideas in their own words rather than copying everything. Brain imaging research also indicates that forming letters by hand activates areas involved in reading and memory in young children.\n\nMost researchers do not argue for abandoning keyboards. Instead, they suggest that schools should continue to teach handwriting in the early years and help older students choose the method that best suits each task.",
+    "question": "Which of the following statements are supported by the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Typing allows students to write and edit more quickly."
+      },
+      {
+        "id": "B",
+        "text": "Researchers recommend abandoning keyboards in schools."
+      },
+      {
+        "id": "C",
+        "text": "Students who take notes by hand may remember material better."
+      },
+      {
+        "id": "D",
+        "text": "Typing forces students to summarise ideas in their own words."
+      },
+      {
+        "id": "E",
+        "text": "Handwriting is taught more in schools today than in the past."
+      },
+      {
+        "id": "F",
+        "text": "Forming letters by hand activates reading and memory areas in young children."
+      }
+    ],
+    "answers": [
+      "A",
+      "C",
+      "F"
+    ]
+  }
+]

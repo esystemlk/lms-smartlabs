@@ -68,6 +68,7 @@ export interface Course {
   prerequisites?: string[];
   learningOutcomes?: string[];
   includesCertificate?: boolean;
+  pteTraining?: boolean; // enrolled students get PTE Academic training in Exams
 
   // New: Resource Access
   resourceAvailabilityMonths?: number; // Duration in months (e.g., 3)

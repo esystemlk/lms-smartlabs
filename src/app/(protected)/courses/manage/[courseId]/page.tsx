@@ -66,6 +66,7 @@ export default function EditCoursePage() {
     category: "",
     tags: "",
     includesCertificate: false,
+    pteTraining: false,
     resourceAvailabilityMonths: "3",
     endDate: "",
     instructorId: "",
@@ -148,6 +149,7 @@ export default function EditCoursePage() {
           category: courseData.category || "",
           tags: courseData.tags?.join(", ") || "",
           includesCertificate: courseData.includesCertificate || false,
+          pteTraining: courseData.pteTraining || false,
           resourceAvailabilityMonths: courseData.resourceAvailabilityMonths?.toString() || "3",
           endDate: courseData.endDate || "",
           instructorId: courseData.instructorId,
@@ -199,6 +201,7 @@ export default function EditCoursePage() {
         category: formData.category,
         tags: formData.tags.split(",").map(t => t.trim()).filter(Boolean),
         includesCertificate: formData.includesCertificate,
+        pteTraining: formData.pteTraining,
         resourceAvailabilityMonths: Number(formData.resourceAvailabilityMonths) || 3,
         endDate: formData.endDate,
         prerequisites: formData.prerequisites,
@@ -820,6 +823,16 @@ export default function EditCoursePage() {
                 className="w-4 h-4 text-brand-blue rounded focus:ring-brand-blue border-gray-300"
               />
               <span className="text-sm font-medium text-gray-700">Includes Certificate</span>
+            </label>
+
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.pteTraining}
+                onChange={(e) => setFormData({ ...formData, pteTraining: e.target.checked })}
+                className="w-4 h-4 text-brand-blue rounded focus:ring-brand-blue border-gray-300"
+              />
+              <span className="text-sm font-medium text-gray-700">Attach PTE Academic training</span>
             </label>
           </div>
 

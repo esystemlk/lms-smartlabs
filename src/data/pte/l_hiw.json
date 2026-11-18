@@ -1,0 +1,915 @@
+[
+  {
+    "id": "l_hiw-01",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Volunteering can benefit the volunteer as much as the people they help. Research suggests that regular volunteers report higher levels of life satisfaction and lower levels of stress. Some studies have even linked volunteering with better physical health in older adults.",
+    "displayedText": "Volunteering can benefit the volunteer as much as the people they serve. Research suggests that regular volunteers report higher levels of life satisfaction and lower levels of anxiety. Some studies have even linked volunteering with better mental health in older adults.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 11,
+        "shown": "serve",
+        "spoken": "help"
+      },
+      {
+        "index": 27,
+        "shown": "anxiety",
+        "spoken": "stress"
+      },
+      {
+        "index": 36,
+        "shown": "mental",
+        "spoken": "physical"
+      }
+    ],
+    "explanation": "Compare each shown word with the recording: serve/help, anxiety/stress, mental/physical."
+  },
+  {
+    "id": "l_hiw-02",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The Great Barrier Reef can be seen from space and is the largest structure built by living organisms. It stretches for more than two thousand kilometres along the coast of northeastern Australia and is home to thousands of species of fish, coral and molluscs.",
+    "displayedText": "The Great Barrier Reef can be seen from orbit and is the largest structure built by living creatures. It stretches for more than three thousand kilometres along the coast of northeastern Australia and is home to hundreds of species of fish, coral and molluscs.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 8,
+        "shown": "orbit",
+        "spoken": "space"
+      },
+      {
+        "index": 17,
+        "shown": "creatures",
+        "spoken": "organisms"
+      },
+      {
+        "index": 23,
+        "shown": "three",
+        "spoken": "two"
+      },
+      {
+        "index": 36,
+        "shown": "hundreds",
+        "spoken": "thousands"
+      }
+    ],
+    "explanation": "orbit/space, creatures/organisms, three/two, hundreds/thousands."
+  },
+  {
+    "id": "l_hiw-03",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Most universities now offer at least some courses online. Online study gives students more flexibility, but it also requires strong self-discipline, because there is no fixed timetable to keep learners on track. Students who set regular study hours tend to achieve better results.",
+    "displayedText": "Most universities now offer at least some courses online. Online study gives students more freedom, but it also requires strong motivation, because there is no fixed timetable to keep learners on track. Students who set regular study goals tend to achieve better results.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 14,
+        "shown": "freedom",
+        "spoken": "flexibility"
+      },
+      {
+        "index": 20,
+        "shown": "motivation",
+        "spoken": "self-discipline"
+      },
+      {
+        "index": 37,
+        "shown": "goals",
+        "spoken": "hours"
+      }
+    ],
+    "explanation": "freedom/flexibility, motivation/self-discipline, goals/hours."
+  },
+  {
+    "id": "l_hiw-04",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Tea was first grown in China thousands of years ago. It reached Europe in the seventeenth century, where it quickly became a fashionable drink among the wealthy. Today it is the most widely consumed beverage in the world after water.",
+    "displayedText": "Tea was first grown in India thousands of years ago. It reached Europe in the eighteenth century, where it quickly became a popular drink among the wealthy. Today it is the most widely consumed beverage in the world after water.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 5,
+        "shown": "India",
+        "spoken": "China"
+      },
+      {
+        "index": 15,
+        "shown": "eighteenth",
+        "spoken": "seventeenth"
+      },
+      {
+        "index": 22,
+        "shown": "popular",
+        "spoken": "fashionable"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-05",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The human heart beats around one hundred thousand times a day. It pumps blood through a network of vessels that would stretch for tens of thousands of kilometres if laid end to end.",
+    "displayedText": "The human heart beats around one hundred thousand times a week. It pushes blood through a network of vessels that would stretch for hundreds of thousands of kilometres if laid end to end.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 10,
+        "shown": "week",
+        "spoken": "day"
+      },
+      {
+        "index": 12,
+        "shown": "pushes",
+        "spoken": "pumps"
+      },
+      {
+        "index": 23,
+        "shown": "hundreds",
+        "spoken": "tens"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-06",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Recycling aluminium cans saves a great deal of energy. Producing a can from recycled material uses about ninety-five percent less energy than making one from raw ore, and aluminium can be recycled again and again without losing quality.",
+    "displayedText": "Recycling aluminium cans saves a great deal of money. Producing a can from recycled material uses about ninety-five percent less energy than making one from raw ore, and aluminium can be recycled again and again without losing strength.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 8,
+        "shown": "money",
+        "spoken": "energy"
+      },
+      {
+        "index": 37,
+        "shown": "strength",
+        "spoken": "quality"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-07",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The first university lectures were delivered in Latin, which was the common language of scholars across Europe. Students travelled between cities to hear famous teachers, and many copied entire books by hand.",
+    "displayedText": "The first university lectures were delivered in Greek, which was the common language of scholars across Europe. Students travelled between countries to hear famous teachers, and many copied entire books by hand.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 7,
+        "shown": "Greek",
+        "spoken": "Latin"
+      },
+      {
+        "index": 20,
+        "shown": "countries",
+        "spoken": "cities"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-08",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Sharks have existed for more than four hundred million years, longer than trees. Many species can detect tiny electrical signals produced by the muscles of their prey, which helps them hunt even in murky water.",
+    "displayedText": "Sharks have existed for more than four hundred million years, longer than dinosaurs. Many species can detect tiny electrical signals produced by the hearts of their prey, which helps them hunt even in dark water.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 12,
+        "shown": "dinosaurs",
+        "spoken": "trees"
+      },
+      {
+        "index": 23,
+        "shown": "hearts",
+        "spoken": "muscles"
+      },
+      {
+        "index": 33,
+        "shown": "dark",
+        "spoken": "murky"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-09",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Effective presentations usually focus on a small number of key messages. Speakers who try to include too much information often lose their audience, while those who use clear examples are more likely to be remembered.",
+    "displayedText": "Effective presentations usually focus on a large number of key messages. Speakers who try to include too much detail often lose their audience, while those who use clear examples are more likely to be remembered.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 6,
+        "shown": "large",
+        "spoken": "small"
+      },
+      {
+        "index": 18,
+        "shown": "detail",
+        "spoken": "information"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-10",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The Amazon rainforest produces a significant amount of the world's oxygen, but it also uses much of that oxygen itself. Its greatest value lies in storing carbon and supporting an extraordinary variety of plant and animal life.",
+    "displayedText": "The Amazon rainforest produces a significant amount of the world's oxygen, but it also consumes much of that oxygen itself. Its greatest value lies in storing water and supporting an extraordinary variety of plant and animal life.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 14,
+        "shown": "consumes",
+        "spoken": "uses"
+      },
+      {
+        "index": 26,
+        "shown": "water",
+        "spoken": "carbon"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-11",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Most of the world's fresh water is locked in glaciers and ice caps. Only a small fraction is found in rivers and lakes, which is why groundwater is such an important source of drinking water in many countries.",
+    "displayedText": "Most of the world's fresh water is locked in glaciers and ice sheets. Only a small fraction is found in rivers and lakes, which is why rainwater is such an important source of drinking water in many regions.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 12,
+        "shown": "sheets",
+        "spoken": "caps"
+      },
+      {
+        "index": 26,
+        "shown": "rainwater",
+        "spoken": "groundwater"
+      },
+      {
+        "index": 37,
+        "shown": "regions",
+        "spoken": "countries"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-12",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Children who read for pleasure tend to have a wider vocabulary and better writing skills. Researchers suggest that the type of book matters less than the habit of reading regularly.",
+    "displayedText": "Children who read for pleasure tend to have a larger vocabulary and better spelling skills. Researchers suggest that the length of book matters less than the habit of reading regularly.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 9,
+        "shown": "larger",
+        "spoken": "wider"
+      },
+      {
+        "index": 13,
+        "shown": "spelling",
+        "spoken": "writing"
+      },
+      {
+        "index": 19,
+        "shown": "length",
+        "spoken": "type"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-13",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The Eiffel Tower was built for the World's Fair of eighteen eighty-nine. Many artists at the time criticised its design, but it soon became the most famous symbol of Paris.",
+    "displayedText": "The Eiffel Tower was built for the World's Fair of eighteen ninety-nine. Many writers at the time criticised its design, but it soon became the most famous symbol of France.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 11,
+        "shown": "ninety-nine",
+        "spoken": "eighty-nine"
+      },
+      {
+        "index": 13,
+        "shown": "writers",
+        "spoken": "artists"
+      },
+      {
+        "index": 29,
+        "shown": "France",
+        "spoken": "Paris"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-14",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Inflation is usually measured by tracking the prices of a basket of common goods and services. When the cost of this basket rises over time, the purchasing power of money falls.",
+    "displayedText": "Inflation is usually measured by tracking the prices of a basket of common goods and services. When the value of this basket rises over time, the purchasing power of wages falls.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 18,
+        "shown": "value",
+        "spoken": "cost"
+      },
+      {
+        "index": 29,
+        "shown": "wages",
+        "spoken": "money"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-15",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Elephants communicate using low-frequency sounds that can travel several kilometres. These calls are too deep for humans to hear, but other elephants can detect them through the ground with their feet.",
+    "displayedText": "Elephants communicate using low-frequency sounds that can travel several kilometres. These calls are too quiet for humans to hear, but other elephants can detect them through the air with their ears.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 14,
+        "shown": "quiet",
+        "spoken": "deep"
+      },
+      {
+        "index": 27,
+        "shown": "air",
+        "spoken": "ground"
+      },
+      {
+        "index": 30,
+        "shown": "ears",
+        "spoken": "feet"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-16",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The printing of banknotes involves many security features, such as watermarks, special inks and tiny lettering. These features make it difficult for criminals to produce convincing copies.",
+    "displayedText": "The printing of banknotes involves many security features, such as holograms, special inks and tiny lettering. These features make it impossible for criminals to produce convincing copies.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 10,
+        "shown": "holograms",
+        "spoken": "watermarks"
+      },
+      {
+        "index": 20,
+        "shown": "impossible",
+        "spoken": "difficult"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-17",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Many students underestimate how long a research project will take. Planning backwards from the deadline and setting small weekly goals can make a large project feel far more manageable.",
+    "displayedText": "Many students overestimate how long a research project will take. Planning backwards from the deadline and setting small daily goals can make a large project feel far more manageable.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 2,
+        "shown": "overestimate",
+        "spoken": "underestimate"
+      },
+      {
+        "index": 18,
+        "shown": "daily",
+        "spoken": "weekly"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-18",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Wind turbines generate more electricity at higher altitudes, where winds are stronger and more consistent. For this reason, offshore wind farms are often more productive than those built on land.",
+    "displayedText": "Wind turbines generate more electricity at higher speeds, where winds are stronger and more consistent. For this reason, offshore wind farms are often more expensive than those built on land.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 7,
+        "shown": "speeds",
+        "spoken": "altitudes"
+      },
+      {
+        "index": 24,
+        "shown": "expensive",
+        "spoken": "productive"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-19",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The ancient Egyptians used papyrus, made from a plant that grew along the Nile, as a writing material. Sheets were joined together to form long rolls that could hold entire texts.",
+    "displayedText": "The ancient Egyptians used papyrus, made from a tree that grew along the Nile, as a writing material. Sheets were glued together to form long rolls that could hold entire texts.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 8,
+        "shown": "tree",
+        "spoken": "plant"
+      },
+      {
+        "index": 20,
+        "shown": "glued",
+        "spoken": "joined"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-20",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Customers are more likely to return to a shop where staff are friendly and helpful. Studies show that good service often matters more than small differences in price.",
+    "displayedText": "Customers are more likely to return to a shop where staff are polite and helpful. Studies show that good service often matters more than large differences in price.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 12,
+        "shown": "polite",
+        "spoken": "friendly"
+      },
+      {
+        "index": 24,
+        "shown": "large",
+        "spoken": "small"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-21",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Earthquakes occur when stress builds up along faults in the Earth's crust and is suddenly released. Scientists can measure their strength accurately, but predicting exactly when they will happen remains impossible.",
+    "displayedText": "Earthquakes occur when pressure builds up along faults in the Earth's crust and is slowly released. Scientists can measure their strength accurately, but predicting exactly where they will happen remains impossible.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 3,
+        "shown": "pressure",
+        "spoken": "stress"
+      },
+      {
+        "index": 14,
+        "shown": "slowly",
+        "spoken": "suddenly"
+      },
+      {
+        "index": 25,
+        "shown": "where",
+        "spoken": "when"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-22",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Learning a musical instrument involves many different skills at the same time, including reading notation, controlling fine movements and listening carefully. This may explain why musical training has been linked to improved memory.",
+    "displayedText": "Learning a musical instrument involves many different skills at the same time, including reading music, controlling fine movements and listening carefully. This may explain why musical training has been linked to improved attention.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 14,
+        "shown": "music",
+        "spoken": "notation"
+      },
+      {
+        "index": 32,
+        "shown": "attention",
+        "spoken": "memory"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-23",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The population of the world reached eight billion in twenty twenty-two. Growth is now slowing, and most of the increase in the coming decades is expected to take place in Africa and Asia.",
+    "displayedText": "The population of the world reached eight billion in twenty twenty-two. Growth is now rising, and most of the increase in the coming years is expected to take place in Africa and Asia.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 14,
+        "shown": "rising",
+        "spoken": "slowing"
+      },
+      {
+        "index": 23,
+        "shown": "years",
+        "spoken": "decades"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-24",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Coffee plants grow best in tropical highlands with steady temperatures and plenty of rain. Rising temperatures are expected to reduce the land suitable for coffee farming in the future.",
+    "displayedText": "Coffee plants grow best in tropical lowlands with steady temperatures and plenty of rain. Rising temperatures are expected to increase the land suitable for coffee farming in the future.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 6,
+        "shown": "lowlands",
+        "spoken": "highlands"
+      },
+      {
+        "index": 19,
+        "shown": "increase",
+        "spoken": "reduce"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-25",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "A good abstract summarises the purpose, methods and main findings of a study in a single paragraph. Many readers decide whether to read the full article based on the abstract alone.",
+    "displayedText": "A good abstract summarises the purpose, methods and main results of a study in a single page. Many readers decide whether to read the full article based on the title alone.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 9,
+        "shown": "results",
+        "spoken": "findings"
+      },
+      {
+        "index": 16,
+        "shown": "page",
+        "spoken": "paragraph"
+      },
+      {
+        "index": 29,
+        "shown": "title",
+        "spoken": "abstract"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-26",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Penguins are found almost exclusively in the Southern Hemisphere. Although they cannot fly, they are excellent swimmers and use their wings as flippers to move quickly through the water.",
+    "displayedText": "Penguins are found almost exclusively in the Southern Hemisphere. Although they cannot fly, they are excellent divers and use their wings as paddles to move quickly through the water.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 16,
+        "shown": "divers",
+        "spoken": "swimmers"
+      },
+      {
+        "index": 22,
+        "shown": "paddles",
+        "spoken": "flippers"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-27",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Public libraries now offer far more than books. Many provide free internet access, language classes and job search support, making them important community centres in towns and cities.",
+    "displayedText": "Public libraries now offer far more than books. Many provide free computer access, language classes and job search advice, making them important community centres in towns and villages.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 11,
+        "shown": "computer",
+        "spoken": "internet"
+      },
+      {
+        "index": 18,
+        "shown": "advice",
+        "spoken": "support"
+      },
+      {
+        "index": 27,
+        "shown": "villages",
+        "spoken": "cities"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-28",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "The speed of light is about three hundred thousand kilometres per second. At that speed, light from the Sun takes roughly eight minutes to reach the Earth.",
+    "displayedText": "The speed of light is about three hundred thousand kilometres per hour. At that speed, light from the Sun takes roughly eight seconds to reach the Earth.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 11,
+        "shown": "hour",
+        "spoken": "second"
+      },
+      {
+        "index": 22,
+        "shown": "seconds",
+        "spoken": "minutes"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-29",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Volunteers who join the research project will be asked to keep a daily diary of their sleep and diet for two weeks. All information will be kept confidential and used only for research purposes.",
+    "displayedText": "Volunteers who join the research project will be asked to keep a daily record of their sleep and exercise for two weeks. All information will be kept confidential and used only for research purposes.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 13,
+        "shown": "record",
+        "spoken": "diary"
+      },
+      {
+        "index": 18,
+        "shown": "exercise",
+        "spoken": "diet"
+      }
+    ]
+  },
+  {
+    "id": "l_hiw-30",
+    "section": "listening",
+    "type": "l_hiw",
+    "title": "Highlight incorrect words",
+    "instructions": "You will hear a recording. Below is a transcription of the recording. Some words in the transcription differ from what the speaker said. Please click on the words that are different.",
+    "scoring": "plus_minus",
+    "skills": [
+      "listening",
+      "reading"
+    ],
+    "prepSeconds": 10,
+    "transcript": "Bamboo is one of the fastest-growing plants on Earth. Some species can grow almost a metre in a single day, which makes bamboo a renewable material for building and furniture.",
+    "displayedText": "Bamboo is one of the fastest-growing plants on Earth. Some species can grow almost a metre in a single week, which makes bamboo a popular material for building and furniture.",
+    "audioUrl": null,
+    "answers": [
+      {
+        "index": 19,
+        "shown": "week",
+        "spoken": "day"
+      },
+      {
+        "index": 24,
+        "shown": "popular",
+        "spoken": "renewable"
+      }
+    ]
+  }
+]

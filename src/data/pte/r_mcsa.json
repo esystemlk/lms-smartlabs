@@ -1,0 +1,964 @@
+[
+  {
+    "id": "r_mcsa-01",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Many people assume that the main cause of food waste is careless shoppers who buy more than they need. While households do discard large quantities of food, a significant proportion of waste occurs much earlier in the supply chain. Fruit and vegetables are often rejected by retailers simply because they are the wrong size or shape, and produce can spoil during storage and transport, particularly in regions with limited refrigeration. Reducing waste therefore requires changes not only in consumer behaviour but also in farming, distribution and retail practices.",
+    "question": "What is the main point of the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Refrigeration is the most effective way to eliminate food waste."
+      },
+      {
+        "id": "B",
+        "text": "Food waste happens at several stages, so solutions must involve more than consumers."
+      },
+      {
+        "id": "C",
+        "text": "Retailers should only sell fruit and vegetables of a standard shape."
+      },
+      {
+        "id": "D",
+        "text": "Households are responsible for almost all food waste."
+      }
+    ],
+    "answer": "B",
+    "explanation": "The final sentence states the conclusion: changes are needed across farming, distribution and retail as well as consumers."
+  },
+  {
+    "id": "r_mcsa-02",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The term 'placebo effect' describes improvements in a patient's condition that result from their expectations rather than from the treatment itself. In clinical trials, one group of participants usually receives the real treatment, while another receives an inactive substance that looks identical. Because both groups believe they may be receiving genuine medicine, researchers can measure how much of the improvement is caused by the treatment and how much by expectation alone.",
+    "question": "Why do clinical trials give some participants an inactive substance?",
+    "options": [
+      {
+        "id": "A",
+        "text": "To test whether the inactive substance is harmful."
+      },
+      {
+        "id": "B",
+        "text": "To make sure that every participant improves."
+      },
+      {
+        "id": "C",
+        "text": "To reduce the cost of the trial."
+      },
+      {
+        "id": "D",
+        "text": "To separate the effect of the treatment from the effect of expectation."
+      }
+    ],
+    "answer": "D",
+    "explanation": "The last sentence explains the purpose: measuring treatment effect versus expectation."
+  },
+  {
+    "id": "r_mcsa-03",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Although the word 'dinosaur' brings to mind giant reptiles, many dinosaurs were small, and some were covered in feathers. In fact, birds are now widely regarded as the living descendants of a group of feathered dinosaurs. Fossils discovered in China since the 1990s show clear impressions of feathers on dinosaurs that could not fly, suggesting that feathers first evolved for purposes such as warmth or display rather than flight.",
+    "question": "What does the passage suggest about feathers?",
+    "options": [
+      {
+        "id": "A",
+        "text": "They first appeared in birds that could fly."
+      },
+      {
+        "id": "B",
+        "text": "They were discovered in China before 1900."
+      },
+      {
+        "id": "C",
+        "text": "They were found only on the largest dinosaurs."
+      },
+      {
+        "id": "D",
+        "text": "They may originally have been used for warmth or display."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": "r_mcsa-04",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "A city's public transport network is only as useful as its least convenient connection. Passengers who must wait twenty minutes to change from a train to a bus will often choose to drive instead, even if each individual service is fast and comfortable. For this reason, transport planners increasingly focus on coordinating timetables and designing stations where transfers are short and simple.",
+    "question": "Why do planners focus on coordinating timetables?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Because long waits between connections discourage people from using public transport."
+      },
+      {
+        "id": "B",
+        "text": "Because faster vehicles are too expensive."
+      },
+      {
+        "id": "C",
+        "text": "Because stations are too crowded."
+      },
+      {
+        "id": "D",
+        "text": "Because passengers prefer buses to trains."
+      }
+    ],
+    "answer": "A"
+  },
+  {
+    "id": "r_mcsa-05",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The Mediterranean diet, based on vegetables, fruit, whole grains, olive oil and fish, is often associated with lower rates of heart disease. However, researchers caution that people who follow this diet may also differ in other ways, such as being more physically active or having higher incomes. These factors make it difficult to prove that the diet itself is responsible for the health benefits.",
+    "question": "What is the main caution expressed by researchers?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The Mediterranean diet increases heart disease."
+      },
+      {
+        "id": "B",
+        "text": "Other lifestyle factors may explain the health benefits."
+      },
+      {
+        "id": "C",
+        "text": "Olive oil is unhealthy in large amounts."
+      },
+      {
+        "id": "D",
+        "text": "Only wealthy people can follow the diet."
+      }
+    ],
+    "answer": "B"
+  },
+  {
+    "id": "r_mcsa-06",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Unlike most metals, gold does not rust or tarnish, which is one reason it has been valued for thousands of years. Gold artefacts buried for millennia can be recovered looking almost exactly as they did when they were made. Today, this resistance to corrosion also makes gold useful in electronics, where it is used to coat connectors that must remain reliable for many years.",
+    "question": "Why is gold used in electronics?",
+    "options": [
+      {
+        "id": "A",
+        "text": "It does not corrode, so connections stay reliable."
+      },
+      {
+        "id": "B",
+        "text": "It is cheaper than other metals."
+      },
+      {
+        "id": "C",
+        "text": "It was used by ancient civilisations."
+      },
+      {
+        "id": "D",
+        "text": "It is easier to find than copper."
+      }
+    ],
+    "answer": "A"
+  },
+  {
+    "id": "r_mcsa-07",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Many students believe that highlighting important sentences in a textbook is an effective way to study. Research suggests otherwise. Highlighting can make students feel productive, but it rarely improves understanding or long-term recall, because it requires little active thinking. Techniques such as summarising in one's own words or testing oneself are far more effective, although they feel more difficult at the time.",
+    "question": "According to the passage, why is highlighting not very effective?",
+    "options": [
+      {
+        "id": "A",
+        "text": "It takes too much time."
+      },
+      {
+        "id": "B",
+        "text": "It makes students feel unproductive."
+      },
+      {
+        "id": "C",
+        "text": "It requires little active thinking."
+      },
+      {
+        "id": "D",
+        "text": "It damages textbooks."
+      }
+    ],
+    "answer": "C"
+  },
+  {
+    "id": "r_mcsa-08",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The town of Bath in England takes its name from the Roman baths built there almost two thousand years ago around natural hot springs. The Romans constructed an elaborate complex for bathing and worship, which fell into ruin after they left Britain. In the eighteenth century, the town became a fashionable resort once again, as wealthy visitors arrived to take the waters for their supposed health benefits.",
+    "question": "What is the passage mainly about?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Modern medical uses of spring water."
+      },
+      {
+        "id": "B",
+        "text": "The history of the town of Bath and its hot springs."
+      },
+      {
+        "id": "C",
+        "text": "The decline of tourism in England."
+      },
+      {
+        "id": "D",
+        "text": "How the Romans conquered Britain."
+      }
+    ],
+    "answer": "B"
+  },
+  {
+    "id": "r_mcsa-09",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "A start-up company's first product rarely matches its founders' original vision. Many successful businesses changed direction, or pivoted, after discovering that customers wanted something different from what they had planned. Experienced investors therefore often pay more attention to a founding team's ability to learn and adapt than to the details of its initial idea.",
+    "question": "What do experienced investors value most, according to the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "A detailed and unchangeable business plan."
+      },
+      {
+        "id": "B",
+        "text": "A product that matches the original vision."
+      },
+      {
+        "id": "C",
+        "text": "A large number of founders."
+      },
+      {
+        "id": "D",
+        "text": "The team's ability to learn and adapt."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": "r_mcsa-10",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Some animals survive harsh winters by hibernating. During hibernation, an animal's body temperature, heart rate and breathing slow dramatically, reducing its energy needs. A hibernating ground squirrel, for example, may breathe only a few times per minute. By living on stored fat, hibernating animals can survive months when food is scarce, waking when warmer weather returns.",
+    "question": "What is the main purpose of hibernation?",
+    "options": [
+      {
+        "id": "A",
+        "text": "To grow larger before spring."
+      },
+      {
+        "id": "B",
+        "text": "To find new places to live."
+      },
+      {
+        "id": "C",
+        "text": "To avoid predators in summer."
+      },
+      {
+        "id": "D",
+        "text": "To save energy when food is scarce."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": "r_mcsa-11",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "In recent decades, many museums have begun returning objects to the countries or communities from which they were taken, particularly items removed during periods of colonial rule. Supporters argue that this corrects historical injustices. Others worry about the safety of fragile objects or argue that major museums allow millions of visitors to see items from around the world. The debate often depends on how each object was originally acquired.",
+    "question": "What does the debate often depend on?",
+    "options": [
+      {
+        "id": "A",
+        "text": "How each object was originally acquired."
+      },
+      {
+        "id": "B",
+        "text": "The price of the objects today."
+      },
+      {
+        "id": "C",
+        "text": "The age of the museum building."
+      },
+      {
+        "id": "D",
+        "text": "The number of visitors to each museum."
+      }
+    ],
+    "answer": "A"
+  },
+  {
+    "id": "r_mcsa-12",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Noise pollution is often overlooked as an environmental problem, yet long-term exposure to traffic noise has been linked to sleep disturbance, stress and even heart disease. Unlike air pollution, noise leaves no visible trace, which may explain why it receives less attention. Measures such as quieter road surfaces, noise barriers and better building insulation can significantly reduce exposure.",
+    "question": "Why might noise pollution receive less attention than air pollution?",
+    "options": [
+      {
+        "id": "A",
+        "text": "It only affects rural areas."
+      },
+      {
+        "id": "B",
+        "text": "It leaves no visible trace."
+      },
+      {
+        "id": "C",
+        "text": "It cannot be reduced."
+      },
+      {
+        "id": "D",
+        "text": "It has no effect on health."
+      }
+    ],
+    "answer": "B"
+  },
+  {
+    "id": "r_mcsa-13",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The invention of the telephone is usually credited to Alexander Graham Bell, who received a patent in 1876. However, several other inventors were working on similar devices at the same time, and one, Elisha Gray, submitted his own papers to the patent office on the very same day. The question of who truly invented the telephone remains a subject of historical debate.",
+    "question": "What point does the passage make about the telephone's invention?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The telephone was invented after 1900."
+      },
+      {
+        "id": "B",
+        "text": "Who deserves credit is still debated because others were developing similar devices."
+      },
+      {
+        "id": "C",
+        "text": "Elisha Gray received the first patent."
+      },
+      {
+        "id": "D",
+        "text": "Bell invented it without any competition."
+      }
+    ],
+    "answer": "B"
+  },
+  {
+    "id": "r_mcsa-14",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Water footprints measure the total volume of fresh water used to produce goods. Producing one kilogram of beef, for example, requires far more water than producing a kilogram of vegetables, mainly because of the water needed to grow animal feed. Such comparisons help consumers and policymakers understand the hidden water costs of different foods, especially in regions facing water shortages.",
+    "question": "Why does beef have a large water footprint?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Cattle drink very large amounts of water each day."
+      },
+      {
+        "id": "B",
+        "text": "Beef must be washed many times before sale."
+      },
+      {
+        "id": "C",
+        "text": "Much water is needed to grow the feed for animals."
+      },
+      {
+        "id": "D",
+        "text": "Beef is produced only in dry regions."
+      }
+    ],
+    "answer": "C"
+  },
+  {
+    "id": "r_mcsa-15",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "For many years, scientists believed that the adult human brain could not produce new neurons. Research since the 1990s has challenged this view, finding evidence that new neurons form in certain regions, including an area important for memory. The extent of this process in adults is still debated, but the findings have changed how scientists think about learning and recovery from brain injury.",
+    "question": "What has recent research suggested?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Memory is not linked to any brain region."
+      },
+      {
+        "id": "B",
+        "text": "New neurons may form in some areas of the adult brain."
+      },
+      {
+        "id": "C",
+        "text": "The adult brain cannot change at all."
+      },
+      {
+        "id": "D",
+        "text": "Brain injuries cannot be recovered from."
+      }
+    ],
+    "answer": "B"
+  },
+  {
+    "id": "r_mcsa-16",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Fast fashion allows consumers to buy fashionable clothes at very low prices, but it has a high environmental cost. Cheap garments are often worn only a few times before being discarded, and the textile industry is a major consumer of water and producer of waste. Some brands now offer repair services and recycling schemes, encouraging customers to keep clothes for longer.",
+    "question": "What is the writer's main point?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The textile industry uses very little water."
+      },
+      {
+        "id": "B",
+        "text": "Cheap clothes last longer than expensive ones."
+      },
+      {
+        "id": "C",
+        "text": "Repair services are more expensive than new clothes."
+      },
+      {
+        "id": "D",
+        "text": "Fast fashion is environmentally costly, and some brands are trying to encourage longer use."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": "r_mcsa-17",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Before satellite navigation, sailors crossing oceans struggled to determine their longitude, their east-west position. Latitude could be found by measuring the angle of the sun, but longitude required knowing the exact time at a reference location. The problem was solved in the eighteenth century by John Harrison, who built clocks accurate enough to keep time at sea.",
+    "question": "How was the longitude problem solved?",
+    "options": [
+      {
+        "id": "A",
+        "text": "By using satellite navigation."
+      },
+      {
+        "id": "B",
+        "text": "By measuring the angle of the sun."
+      },
+      {
+        "id": "C",
+        "text": "By sailing only near the coast."
+      },
+      {
+        "id": "D",
+        "text": "By building clocks that kept accurate time at sea."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": "r_mcsa-18",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Many people check their email dozens of times a day, often interrupting other work to do so. Studies suggest that it can take several minutes to fully refocus after an interruption. Some productivity experts recommend checking email at fixed times, such as twice a day, which allows longer periods of uninterrupted concentration on demanding tasks.",
+    "question": "Why do some experts recommend checking email at fixed times?",
+    "options": [
+      {
+        "id": "A",
+        "text": "To avoid using computers."
+      },
+      {
+        "id": "B",
+        "text": "To allow longer periods of uninterrupted concentration."
+      },
+      {
+        "id": "C",
+        "text": "To reduce the number of emails received."
+      },
+      {
+        "id": "D",
+        "text": "To answer messages faster."
+      }
+    ],
+    "answer": "B"
+  },
+  {
+    "id": "r_mcsa-19",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The Sahara has not always been a desert. Around ten thousand years ago, changes in the Earth's orbit brought more rainfall to North Africa, and the region was covered with grasslands, lakes and rivers. Rock paintings from this period show giraffes, cattle and swimming people. About five thousand years ago, the climate became drier again, and the desert expanded.",
+    "question": "What evidence does the passage give that the Sahara was once wetter?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Modern satellite images."
+      },
+      {
+        "id": "B",
+        "text": "Written records from ancient Egypt."
+      },
+      {
+        "id": "C",
+        "text": "Measurements of today's rainfall."
+      },
+      {
+        "id": "D",
+        "text": "Rock paintings showing animals and swimming people."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": "r_mcsa-20",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Universities increasingly use online discussion forums to support teaching. Forums allow students to ask questions outside class and give quieter students an opportunity to contribute. However, participation is often uneven: a small number of students write most of the posts, while many simply read. Instructors who set clear expectations and respond regularly tend to see more balanced participation.",
+    "question": "What helps to produce more balanced participation in forums?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Clear expectations and regular responses from instructors."
+      },
+      {
+        "id": "B",
+        "text": "Limiting the number of posts per week."
+      },
+      {
+        "id": "C",
+        "text": "Allowing only quiet students to post."
+      },
+      {
+        "id": "D",
+        "text": "Removing the instructor from the forum."
+      }
+    ],
+    "answer": "A"
+  },
+  {
+    "id": "r_mcsa-21",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Lightning heats the air around it to temperatures several times hotter than the surface of the sun. This sudden heating causes the air to expand explosively, creating the sound we hear as thunder. Because light travels much faster than sound, we see lightning before we hear thunder, and the delay can be used to estimate how far away a storm is.",
+    "question": "What causes the sound of thunder?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Rain hitting the ground."
+      },
+      {
+        "id": "B",
+        "text": "Light travelling faster than sound."
+      },
+      {
+        "id": "C",
+        "text": "Air expanding rapidly after being heated by lightning."
+      },
+      {
+        "id": "D",
+        "text": "Clouds colliding with each other."
+      }
+    ],
+    "answer": "C"
+  },
+  {
+    "id": "r_mcsa-22",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Crowdfunding platforms allow individuals to raise money for projects by collecting small contributions from many people online. They have helped artists, inventors and community groups fund ideas that traditional lenders might reject. However, backers usually have little protection if a project fails, and some campaigns never deliver the products they promised.",
+    "question": "What risk of crowdfunding does the passage mention?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Banks may close the platforms."
+      },
+      {
+        "id": "B",
+        "text": "Contributions must be very large."
+      },
+      {
+        "id": "C",
+        "text": "Only large companies can use it."
+      },
+      {
+        "id": "D",
+        "text": "Backers may lose money if a project fails."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": "r_mcsa-23",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "In many languages, the words for 'mother' begin with an 'm' sound, such as mama, mère and mother. Linguists believe this is not because the languages are closely related, but because 'm' and 'a' are among the easiest sounds for babies to produce. Parents may then interpret these early sounds as words referring to themselves.",
+    "question": "Why do words for 'mother' often begin with an 'm' sound?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The word was borrowed from English."
+      },
+      {
+        "id": "B",
+        "text": "All languages come from the same ancient source."
+      },
+      {
+        "id": "C",
+        "text": "'M' is one of the easiest sounds for babies to make."
+      },
+      {
+        "id": "D",
+        "text": "Mothers teach their babies this sound first."
+      }
+    ],
+    "answer": "C"
+  },
+  {
+    "id": "r_mcsa-24",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Plants grown on the International Space Station face an unusual challenge: without gravity, roots do not automatically grow downwards. Experiments have shown that plants use other cues, such as light and the direction of water, to orient themselves. Understanding these processes is important for future long-duration space missions, where astronauts may need to grow their own food.",
+    "question": "Why are plant experiments in space important?",
+    "options": [
+      {
+        "id": "A",
+        "text": "They show that plants need gravity to survive."
+      },
+      {
+        "id": "B",
+        "text": "They reduce the cost of farming on Earth."
+      },
+      {
+        "id": "C",
+        "text": "They help prepare for growing food on long missions."
+      },
+      {
+        "id": "D",
+        "text": "They prove that light is unnecessary for plants."
+      }
+    ],
+    "answer": "C"
+  },
+  {
+    "id": "r_mcsa-25",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Many cities have introduced bike-sharing schemes, allowing people to rent bicycles for short trips. Studies suggest the schemes are most successful where there is a dense network of stations and safe cycling lanes. In cities without protected lanes, usage tends to remain low, as many people feel unsafe cycling alongside heavy traffic.",
+    "question": "What affects the success of bike-sharing schemes, according to the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "The price of car parking."
+      },
+      {
+        "id": "B",
+        "text": "The density of stations and safety of cycling lanes."
+      },
+      {
+        "id": "C",
+        "text": "The number of tourists."
+      },
+      {
+        "id": "D",
+        "text": "The colour of the bicycles."
+      }
+    ],
+    "answer": "B"
+  },
+  {
+    "id": "r_mcsa-26",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "The Dead Sea, located between Jordan and Israel, is so salty that people float easily on its surface. Its water level has been falling by more than a metre per year, largely because water from the Jordan River, which feeds it, is diverted for agriculture and drinking water. Proposals to stabilise the sea include piping water from the Red Sea.",
+    "question": "Why is the Dead Sea's water level falling?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Water is being piped from the Red Sea."
+      },
+      {
+        "id": "B",
+        "text": "Too many tourists swim in it."
+      },
+      {
+        "id": "C",
+        "text": "Rising temperatures increase rainfall."
+      },
+      {
+        "id": "D",
+        "text": "Water from the river that feeds it is diverted for other uses."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": "r_mcsa-27",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Critical thinking involves more than finding faults in arguments. It means examining evidence, identifying assumptions and considering alternative explanations before reaching a conclusion. A critical thinker is willing to change their mind when presented with stronger evidence, rather than defending a position simply because it is their own.",
+    "question": "Which best describes a critical thinker, according to the passage?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Someone who disagrees with every argument."
+      },
+      {
+        "id": "B",
+        "text": "Someone who weighs evidence and will change their view when evidence is stronger."
+      },
+      {
+        "id": "C",
+        "text": "Someone who always defends their first opinion."
+      },
+      {
+        "id": "D",
+        "text": "Someone who never reaches a conclusion."
+      }
+    ],
+    "answer": "B"
+  },
+  {
+    "id": "r_mcsa-28",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Smallpox is the only human disease that has been completely eradicated. A global vaccination campaign led by the World Health Organization succeeded in eliminating it by 1980. The campaign's success depended on identifying outbreaks quickly and vaccinating everyone around each case, a strategy known as ring vaccination, rather than trying to vaccinate entire populations at once.",
+    "question": "What strategy contributed to the eradication of smallpox?",
+    "options": [
+      {
+        "id": "A",
+        "text": "Vaccinating people around each identified case."
+      },
+      {
+        "id": "B",
+        "text": "Developing a new medicine to cure the disease."
+      },
+      {
+        "id": "C",
+        "text": "Closing all international borders."
+      },
+      {
+        "id": "D",
+        "text": "Vaccinating only children."
+      }
+    ],
+    "answer": "A"
+  },
+  {
+    "id": "r_mcsa-29",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Electric scooters have become common in many cities, offering a quick way to travel short distances. City authorities have mixed views about them. They can reduce short car journeys, but scooters left on pavements can obstruct pedestrians, and injuries among riders have increased. Many cities now regulate where scooters can be parked and set speed limits.",
+    "question": "How have many cities responded to electric scooters?",
+    "options": [
+      {
+        "id": "A",
+        "text": "By encouraging pavement parking."
+      },
+      {
+        "id": "B",
+        "text": "By replacing buses with scooters."
+      },
+      {
+        "id": "C",
+        "text": "By banning them completely."
+      },
+      {
+        "id": "D",
+        "text": "By regulating parking and setting speed limits."
+      }
+    ],
+    "answer": "D"
+  },
+  {
+    "id": "r_mcsa-30",
+    "section": "reading",
+    "type": "r_mcsa",
+    "title": "Multiple choice, choose single answer",
+    "instructions": "Read the text and answer the multiple-choice question by selecting the correct response. Only one response is correct.",
+    "scoring": "binary",
+    "skills": [
+      "reading"
+    ],
+    "passage": "Paper was invented in China around two thousand years ago and spread slowly westward along trade routes, reaching the Islamic world in the eighth century and Europe several centuries later. Cheaper than parchment, which was made from animal skin, paper made books and documents more affordable and later proved essential for the success of printing.",
+    "question": "Why was paper important for printing?",
+    "options": [
+      {
+        "id": "A",
+        "text": "It could only be used for religious texts."
+      },
+      {
+        "id": "B",
+        "text": "It was invented in Europe."
+      },
+      {
+        "id": "C",
+        "text": "It was cheaper than parchment, making books more affordable."
+      },
+      {
+        "id": "D",
+        "text": "It was made from animal skin."
+      }
+    ],
+    "answer": "C"
+  }
+]

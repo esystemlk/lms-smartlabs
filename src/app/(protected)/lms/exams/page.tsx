@@ -7,11 +7,21 @@ import { Quiz } from "@/lib/types";
 import { Loader2, BookOpen, Clock, Award, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
+import { pteApi } from "@/lib/pte/client";
 
 export default function ExamsPage() {
   const { userData } = useAuth();
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [loading, setLoading] = useState(true);
+  // PTE training card: only shown when the server says this user has access
+  const [pte, setPte] = useState<{ done: number; total: number } | null>(null);
+
+  useEffect(() => {
+    if (!userData) return;
+    pteApi.list()
+      .then(({ items }) => setPte({ done: items.filter((i) => i.best !== null).length, total: items.length }))
+      .catch(() => setPte(null));
+  }, [userData]);
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -49,6 +59,17 @@ export default function ExamsPage() {
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Exams & Quizzes</h1>
         <p className="text-gray-500">Test your knowledge and earn certificates.</p>
       </div>
+
+      {pte && (
+        <Link href="/lms/pte" className="sl-card sl-card-hover mb-6 p-5 flex flex-wrap items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-soft text-primary flex items-center justify-center shrink-0"><Award size={24} /></div>
+          <div className="flex-1 min-w-[200px]">
+            <h2 className="font-bold text-lg text-gray-900">PTE Academic Training</h2>
+            <p className="text-sm text-gray-500">Real-format Reading and Listening practice with instant marking · {pte.done} of {pte.total} done</p>
+          </div>
+          <span className="sl-btn sl-btn-primary">Open training <ChevronRight size={16} /></span>
+        </Link>
+      )}
 
       {quizzes.length === 0 ? (
         <div className="text-center py-20 bg-gray-50 rounded-3xl border border-dashed border-gray-200">
