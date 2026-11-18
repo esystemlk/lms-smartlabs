@@ -89,6 +89,9 @@ const withPWA = require("@ducanh2912/next-pwa").default({
 const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone", // Helpful for Electron later if we want to bundle everything
+  // Load firebase-admin from node_modules instead of bundling it: bundled, its auth module
+  // (jwks-rsa -> jose ESM) crashes every API route that verifies sign-in tokens.
+  serverExternalPackages: ["firebase-admin"],
   // Enable headers for Zoom SharedArrayBuffer support
   async headers() {
     return [
