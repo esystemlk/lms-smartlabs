@@ -7,7 +7,7 @@ import { courseService } from "@/services/courseService";
 import { bunnyService } from "@/services/bunnyService";
 import { Lesson, Course } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
-import { Loader2, Video, Calendar, Clock, Play, ExternalLink, Plus, Settings, Users, Zap, X, CloudUpload, RefreshCw, MoreVertical, Trash2, CheckCircle, BookOpen, Repeat } from "lucide-react";
+import { Loader2, Video, Calendar, Clock, Play, ExternalLink, Plus, Settings, Users, Zap, X, CloudUpload, RefreshCw, MoreVertical, Trash2, CheckCircle, BookOpen, Repeat, Pencil } from "lucide-react";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { Input } from "@/components/ui/Input";
@@ -148,6 +148,25 @@ export default function LiveClassManagementPage() {
     } catch (error) {
       console.error("Failed to delete recording:", error);
       alert("Failed to delete recording.");
+    }
+  };
+
+  // Rename a class and its recording, e.g. when Day 5's video went up under Day 6.
+  const [renameLesson, setRenameLesson] = useState<Lesson | null>(null);
+  const [renameTitle, setRenameTitle] = useState("");
+  const [renaming, setRenaming] = useState(false);
+  const handleRename = async () => {
+    if (!renameLesson?.courseId || !renameTitle.trim()) return;
+    setRenaming(true);
+    try {
+      await courseService.updateLesson(renameLesson.courseId, renameLesson.id, { title: renameTitle.trim() });
+      setRenameLesson(null);
+      fetchClasses();
+    } catch (error) {
+      console.error("Failed to rename class:", error);
+      alert("Failed to rename.");
+    } finally {
+      setRenaming(false);
     }
   };
 
@@ -617,6 +636,15 @@ export default function LiveClassManagementPage() {
                                         <Button
                                             size="sm"
                                             variant="ghost"
+                                            title="Rename this recording (fix a wrong day or name)"
+                                            onClick={() => { setRenameLesson(cls); setRenameTitle(cls.title || ""); }}
+                                            className="p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 rounded-lg"
+                                        >
+                                            <Pencil size={14} />
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant="ghost"
                                             title="Replace with a different video (fixes a wrong upload)"
                                             onClick={() => {
                                                 setSelectedLessonForUpload(cls);
@@ -824,6 +852,35 @@ export default function LiveClassManagementPage() {
         onClose={() => setEditingClass(null)}
         onSuccess={fetchClasses}
       />
+      {/* Rename Modal */}
+      {renameLesson && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={() => !renaming && setRenameLesson(null)}>
+          <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Rename recording</h2>
+                <p className="text-sm text-gray-500 mt-1">Fix a wrong name, e.g. Day 5 uploaded as Day 6. The class is renamed too; the video is not changed.</p>
+              </div>
+              <button onClick={() => setRenameLesson(null)} className="p-2 rounded-lg hover:bg-gray-100 text-gray-400"><X size={18} /></button>
+            </div>
+            <input
+              autoFocus
+              value={renameTitle}
+              onChange={(e) => setRenameTitle(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") handleRename(); }}
+              className="w-full h-11 px-3.5 rounded-xl border border-gray-200 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
+              placeholder="DAY 05 - MS LAHIRUKA NOV 24"
+            />
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setRenameLesson(null)} className="h-10 px-4 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100">Cancel</button>
+              <button onClick={handleRename} disabled={renaming || !renameTitle.trim()} className="h-10 px-5 rounded-xl text-sm font-bold bg-brand-blue text-white disabled:opacity-60 inline-flex items-center gap-2">
+                {renaming && <Loader2 size={16} className="animate-spin" />} Save name
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Video Preview Modal */}
       {previewingLesson && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">

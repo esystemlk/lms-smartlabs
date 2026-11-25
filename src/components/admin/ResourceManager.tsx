@@ -15,6 +15,7 @@ import {
   Music,
   MoreVertical,
   Trash2,
+  Pencil,
   FolderPlus,
   Upload,
   ChevronRight,
@@ -187,6 +188,25 @@ export function ResourceManager() {
     }
   };
 
+  // Rename a folder (name only; its files stay where they are).
+  const [renameFolder, setRenameFolder] = useState<ResourceFolder | null>(null);
+  const [renameFolderName, setRenameFolderName] = useState("");
+  const [renamingFolder, setRenamingFolder] = useState(false);
+  const handleRenameFolder = async () => {
+    if (!renameFolder || !renameFolderName.trim()) return;
+    setRenamingFolder(true);
+    try {
+      await resourceService.updateFolder(renameFolder.id, { name: renameFolderName.trim() });
+      toast("Folder renamed", "success");
+      setRenameFolder(null);
+      loadCourseData(selectedCourseId!);
+    } catch (error) {
+      toast("Failed to rename folder", "error");
+    } finally {
+      setRenamingFolder(false);
+    }
+  };
+
   const handleDeleteFolder = async (folderId: string) => {
     if (!confirm("Are you sure? Contents might be lost.")) return;
     try {
@@ -295,6 +315,31 @@ export function ResourceManager() {
         </div>
       </div>
 
+      {renameFolder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={() => !renamingFolder && setRenameFolder(null)}>
+          <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
+            <div>
+              <h2 className="text-xl font-bold text-gray-900">Rename folder</h2>
+              <p className="text-sm text-gray-500 mt-1">The files inside stay as they are.</p>
+            </div>
+            <input
+              autoFocus
+              value={renameFolderName}
+              onChange={(e) => setRenameFolderName(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") handleRenameFolder(); if (e.key === "Escape") setRenameFolder(null); }}
+              className="w-full h-11 px-3.5 rounded-xl border border-gray-200 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
+              placeholder="Folder name"
+            />
+            <div className="flex justify-end gap-2">
+              <button onClick={() => setRenameFolder(null)} className="h-10 px-4 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100">Cancel</button>
+              <button onClick={handleRenameFolder} disabled={renamingFolder || !renameFolderName.trim()} className="h-10 px-5 rounded-xl text-sm font-bold bg-brand-blue text-white disabled:opacity-60 inline-flex items-center gap-2">
+                {renamingFolder && <Loader2 size={16} className="animate-spin" />} Save name
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Content Area */}
       {dataLoading ? (
         <div className="py-20 flex justify-center"><Loader2 className="animate-spin text-gray-400" /></div>
@@ -309,12 +354,22 @@ export function ResourceManager() {
             >
               <div className="flex items-start justify-between">
                 <Folder className="w-10 h-10 text-brand-blue mb-3" fill="currentColor" fillOpacity={0.2} />
-                <button
-                  onClick={(e) => { e.stopPropagation(); handleDeleteFolder(folder.id); }}
-                  className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-100 text-red-500 rounded transition-all"
-                >
-                  <Trash2 size={14} />
-                </button>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setRenameFolder(folder); setRenameFolderName(folder.name || ""); }}
+                    title="Rename folder"
+                    className="sm:opacity-0 sm:group-hover:opacity-100 p-1 hover:bg-blue-100 text-brand-blue rounded transition-all"
+                  >
+                    <Pencil size={14} />
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleDeleteFolder(folder.id); }}
+                    title="Delete folder"
+                    className="sm:opacity-0 sm:group-hover:opacity-100 p-1 hover:bg-red-100 text-red-500 rounded transition-all"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
               </div>
               <h3 className="font-medium text-gray-900 truncate">{folder.name}</h3>
               <p className="text-xs text-gray-500">
