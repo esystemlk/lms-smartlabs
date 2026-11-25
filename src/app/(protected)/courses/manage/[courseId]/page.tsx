@@ -70,9 +70,6 @@ export default function EditCoursePage() {
     if (activeTab === "batches" && isAdminUser && courseId) loadPackages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab, isAdminUser, courseId]);
-  // A batch has ended when it is marked completed/closed or its end date has passed.
-  const batchEnded = (b: Batch) =>
-    b.status === "completed" || b.status === "closed" || (!!b.endDate && b.endDate < new Date().toISOString().slice(0, 10));
 
   // Form State
   const [formData, setFormData] = useState({
@@ -989,7 +986,7 @@ export default function EditCoursePage() {
                       </span>
                     </div>
 
-                    {isAdminUser && batchEnded(batch) && (() => {
+                    {isAdminUser && (() => {
                       const pkg = packages.find(p => p.batchId === batch.id);
                       return (
                         <button

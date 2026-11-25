@@ -57,7 +57,7 @@ function RecordedCoursesPageInner() {
             </span>
             <h1 className="mt-3 text-[24px] md:text-[34px] font-extrabold leading-tight">Recorded Courses</h1>
             <p className="text-[#DCE2FF] mt-1.5 text-sm md:text-base">
-              Full classes from our finished batches. Watch every lesson at your own pace, with the same resources and grammar lessons our live students get.
+              Recorded classes from our batches. Watch every lesson at your own pace, with the same resources and grammar lessons our live students get. For batches still running, new recordings appear as each class finishes.
             </p>
           </div>
           <div className="flex gap-2.5">
@@ -111,7 +111,7 @@ function RecordedCoursesPageInner() {
         <div className="sl-card p-10 text-center">
           <span className="mx-auto w-14 h-14 rounded-2xl bg-soft text-primary flex items-center justify-center"><FilmStrip size={28} weight="duotone" /></span>
           <h2 className="mt-4 font-display text-lg font-bold text-ink dark:text-white">No recorded courses yet</h2>
-          <p className="mt-1 text-sm text-ink-muted">New recordings are added when a batch finishes. Check back soon.</p>
+          <p className="mt-1 text-sm text-ink-muted">New recorded courses are added regularly. Check back soon.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
