@@ -237,6 +237,11 @@ export interface Enrollment {
   websitePaymentEmail?: string; // For website payments
   websitePaymentName?: string; // For website payments
   amount: number;
+  // Recording-package purchases (an ended batch bought on its own)
+  source?: 'recording_package';
+  packageId?: string;
+  paidAmount?: number;
+  paidCurrency?: 'LKR' | 'USD';
 
   validUntil: any; // Firestore Timestamp
   enrolledAt: any; // Firestore Timestamp

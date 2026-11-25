@@ -46,6 +46,7 @@ export default function CourseDetailsPage() {
   const [progress, setProgress] = useState(0);
   const [completedLessonIds, setCompletedLessonIds] = useState<string[]>([]);
   const [userTimeSlotId, setUserTimeSlotId] = useState<string | null>(null);
+  const [seesAllSlots, setSeesAllSlots] = useState(false);
   const [hasPendingRequest, setHasPendingRequest] = useState(false);
   const [bunnyLibraryId, setBunnyLibraryId] = useState<string>("");
 
@@ -92,7 +93,7 @@ export default function CourseDetailsPage() {
                 if (!matchesBatch) return false;
 
                 // If also restricted by time slot
-                if (lesson.timeSlotId) {
+                if (lesson.timeSlotId && enrollment.source !== 'recording_package') {
                   return lesson.timeSlotId === enrollment.timeSlotId;
                 }
               }
@@ -143,6 +144,7 @@ export default function CourseDetailsPage() {
             setProgress(enrollment?.progress || 0);
             setCompletedLessonIds(enrollment?.completedLessonIds || []);
             setUserTimeSlotId(enrollment?.timeSlotId || null);
+            setSeesAllSlots(enrollment?.source === 'recording_package');
             // Fetch Batch Details
             if (enrollment?.batchId) {
               const batch = await courseService.getBatch(courseId, enrollment.batchId);
@@ -379,7 +381,7 @@ export default function CourseDetailsPage() {
 
             // Filter recordings by timeSlot if applicable
             const filteredRecordings = (enrolledBatch.recordedClasses || []).filter(recording => {
-              if (!recording.timeSlotId) return true; // Show to everyone if no restriction
+              if (!recording.timeSlotId || seesAllSlots) return true; // No restriction, or a recording-package buyer (gets every slot)
               return recording.timeSlotId === userTimeSlotId; // Show only if matches student's slot
             });
 

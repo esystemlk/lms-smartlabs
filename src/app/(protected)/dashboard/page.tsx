@@ -26,6 +26,7 @@ import {
   ChartLineUp,
   CheckCircle,
   CircleNotch,
+  FilmStrip,
 } from "@phosphor-icons/react";
 import { useAuth } from "@/context/AuthContext";
 import { useTutorial } from "@/context/TutorialContext";
@@ -370,9 +371,14 @@ function ContinueLearning({ enrollments, loading, full }: { enrollments: Enrollm
           icon={Books}
           text="You're not enrolled in a course yet. Enrolling unlocks live classes, recordings and materials."
           cta={
-            <Link href="/courses" className="sl-btn sl-btn-primary sl-btn-sm">
-              <Storefront size={16} /> Browse courses
-            </Link>
+            <span className="flex flex-wrap justify-center gap-2">
+              <Link href="/courses" className="sl-btn sl-btn-primary sl-btn-sm">
+                <Storefront size={16} /> Browse courses
+              </Link>
+              <Link href="/recorded-courses" className="sl-btn sl-btn-soft sl-btn-sm">
+                <FilmStrip size={16} /> Recorded courses
+              </Link>
+            </span>
           }
         />
       ) : (

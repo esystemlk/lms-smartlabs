@@ -37,6 +37,8 @@ import Image from "next/image";
 
 import { QuizBuilder } from "@/components/quiz/QuizBuilder";
 import { BatchModal, LessonModal, RecordingsModal } from "@/components/admin/CourseManagementModals";
+import { RecordingPackageModal } from "@/components/admin/RecordingPackageModal";
+import { recordingPackagesApi, formatLKR, type FxRate, type RecordingPackage } from "@/lib/recordingPackages.client";
 
 export default function EditCoursePage() {
   const { userData } = useAuth();
@@ -53,6 +55,24 @@ export default function EditCoursePage() {
   const [batches, setBatches] = useState<Batch[]>([]);
   const [lecturers, setLecturers] = useState<UserData[]>([]);
   const [allCourses, setAllCourses] = useState<Course[]>([]); // For prerequisites
+
+  // Recording packages (ended batches sold on their own) — admins only
+  const isAdminUser = ["admin", "superadmin", "developer"].includes(userData?.role || "");
+  const [packages, setPackages] = useState<RecordingPackage[]>([]);
+  const [fx, setFx] = useState<FxRate | null>(null);
+  const [packageBatch, setPackageBatch] = useState<Batch | null>(null);
+  const loadPackages = () => {
+    recordingPackagesApi.forCourse(courseId)
+      .then((r) => { setPackages(r.packages); setFx(r.fx); })
+      .catch((e) => console.error("Could not load recording packages", e));
+  };
+  useEffect(() => {
+    if (activeTab === "batches" && isAdminUser && courseId) loadPackages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, isAdminUser, courseId]);
+  // A batch has ended when it is marked completed/closed or its end date has passed.
+  const batchEnded = (b: Batch) =>
+    b.status === "completed" || b.status === "closed" || (!!b.endDate && b.endDate < new Date().toISOString().slice(0, 10));
 
   // Form State
   const [formData, setFormData] = useState({
@@ -965,9 +985,28 @@ export default function EditCoursePage() {
                         ? "bg-green-100 text-green-700"
                         : "bg-gray-100 text-gray-600"
                         }`}>
-                        {batch.status === 'open' ? 'Open' : 'Closed'}
+                        {batch.status === 'open' ? 'Open' : batch.status === 'completed' ? 'Ended' : batch.status === 'ongoing' ? 'Ongoing' : 'Closed'}
                       </span>
                     </div>
+
+                    {isAdminUser && batchEnded(batch) && (() => {
+                      const pkg = packages.find(p => p.batchId === batch.id);
+                      return (
+                        <button
+                          type="button"
+                          onClick={() => setPackageBatch(batch)}
+                          className={`w-full mb-2 flex items-center justify-between gap-2 rounded-xl px-3 py-2 text-left text-[13px] font-semibold transition-colors ${pkg
+                            ? "bg-[#E6F8F1] text-[#08795A] hover:bg-[#d5f2e7]"
+                            : "bg-soft text-primary hover:bg-[#dfe5ff]"}`}
+                        >
+                          <span className="flex items-center gap-2">
+                            <PlayCircle className="w-4 h-4" />
+                            {pkg ? `${pkg.published ? "On sale" : "Draft"}: ${formatLKR(pkg.priceLKR)}${pkg.salesCount ? ` · ${pkg.salesCount} sold` : ""}` : "Sell as recording package"}
+                          </span>
+                          <span className="text-xs opacity-80">{pkg ? "Edit" : "Set up"}</span>
+                        </button>
+                      );
+                    })()}
 
                     <div className="flex items-center justify-between pt-2">
                       <div className="text-sm">
@@ -1056,6 +1095,17 @@ export default function EditCoursePage() {
           setAttachmentUploading={setAttachmentUploading}
           onClose={() => setShowLessonModal(false)}
           onSave={handleAddLesson}
+        />
+      )}
+
+      {packageBatch && course && (
+        <RecordingPackageModal
+          course={course}
+          batch={packageBatch}
+          existing={packages.find(p => p.batchId === packageBatch.id) || null}
+          fx={fx}
+          onClose={() => setPackageBatch(null)}
+          onSaved={() => { setPackageBatch(null); loadPackages(); }}
         />
       )}
 

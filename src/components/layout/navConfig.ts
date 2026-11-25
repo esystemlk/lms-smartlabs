@@ -29,6 +29,7 @@ import {
   BookOpenText,
   DotsThreeOutline,
   MonitorPlay,
+  ShoppingBag,
 } from "@phosphor-icons/react";
 
 export type Role = "student" | "lecturer" | "admin" | "superadmin" | "developer";
@@ -68,6 +69,7 @@ export const STUDENT_NAV: NavSection[] = [
       { href: "/courses", label: "My Courses", icon: Books },
       { href: "/lms/live", label: "Live Classes", icon: VideoCamera },
       { href: "/lms/my-recordings", label: "Recordings", icon: PlayCircle },
+      { href: "/recorded-courses", label: "Recorded Courses", icon: ShoppingBag },
       { href: "/lms/timetable", label: "Timetable", icon: CalendarBlank },
     ],
   },

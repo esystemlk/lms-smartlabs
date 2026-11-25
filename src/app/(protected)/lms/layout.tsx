@@ -76,6 +76,12 @@ export default function LmsLayout({
         >
           Browse Courses
         </Button>
+        <button
+          onClick={() => router.push("/recorded-courses")}
+          className="mt-4 text-sm font-semibold text-brand-blue hover:underline"
+        >
+          Or buy a recorded course and start watching today
+        </button>
       </div>
     );
   }
