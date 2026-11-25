@@ -4,7 +4,7 @@ import { useState } from "react";
 import {
     X, Loader2, Save, Plus, Trash2,
     Video, PlayCircle, Mic, Headphones,
-    PenTool, BookOpen, HelpCircle, Upload
+    PenTool, BookOpen, HelpCircle, Upload, Pencil, Check
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -325,6 +325,8 @@ interface RecordingsModalProps {
     onClose: () => void;
     onSave: (e: React.FormEvent) => void;
     onDelete: (id: string) => void;
+    /** Rename / re-date an uploaded recording (fixes e.g. Day 5 uploaded as Day 6). */
+    onRename?: (id: string, updates: { title: string; date: string }) => Promise<void>;
 }
 
 export function RecordingsModal({
@@ -339,9 +341,24 @@ export function RecordingsModal({
     setUploadProgress,
     onClose,
     onSave,
-    onDelete
+    onDelete,
+    onRename
 }: RecordingsModalProps) {
     const [uploadFile, setUploadFile] = useState<File | null>(null);
+    const [editId, setEditId] = useState<string | null>(null);
+    const [editTitle, setEditTitle] = useState("");
+    const [editDate, setEditDate] = useState("");
+    const [renaming, setRenaming] = useState(false);
+    const saveRename = async () => {
+        if (!editId || !onRename || !editTitle.trim()) return;
+        setRenaming(true);
+        try {
+            await onRename(editId, { title: editTitle.trim(), date: editDate });
+            setEditId(null);
+        } finally {
+            setRenaming(false);
+        }
+    };
 
     if (!selectedBatch) return null;
 
@@ -456,6 +473,32 @@ export function RecordingsModal({
                             <p className="text-sm text-gray-500 italic">No recordings yet.</p>
                         ) : (
                             (selectedBatch.recordedClasses || []).map((rec) => (
+                                editId === rec.id ? (
+                                <div key={rec.id} className="p-3 bg-blue-50/60 border border-blue-200 rounded-xl space-y-2">
+                                    <input
+                                        autoFocus
+                                        value={editTitle}
+                                        onChange={(e) => setEditTitle(e.target.value)}
+                                        onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); saveRename(); } if (e.key === "Escape") setEditId(null); }}
+                                        className="w-full h-10 px-3 rounded-lg border border-gray-200 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
+                                        placeholder="Recording name, e.g. DAY 05 - MS LAHIRUKA NOV 24"
+                                    />
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="date"
+                                            value={editDate}
+                                            onChange={(e) => setEditDate(e.target.value)}
+                                            className="h-9 px-3 rounded-lg border border-gray-200 text-sm"
+                                        />
+                                        <div className="ml-auto flex gap-2">
+                                            <button type="button" onClick={() => setEditId(null)} className="h-9 px-3 rounded-lg text-sm font-semibold text-gray-600 hover:bg-white">Cancel</button>
+                                            <button type="button" onClick={saveRename} disabled={renaming || !editTitle.trim()} className="h-9 px-4 rounded-lg text-sm font-bold bg-brand-blue text-white disabled:opacity-60 inline-flex items-center gap-1.5">
+                                                {renaming ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />} Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                ) : (
                                 <div key={rec.id} className="flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl">
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 bg-blue-50 text-brand-blue rounded-full flex items-center justify-center">
@@ -466,13 +509,25 @@ export function RecordingsModal({
                                             <p className="text-xs text-gray-500">{rec.date} • {rec.durationMinutes}m</p>
                                         </div>
                                     </div>
-                                    <button
-                                        onClick={() => onDelete(rec.id)}
-                                        className="p-2 text-gray-400 hover:text-red-500 transition-colors"
-                                    >
-                                        <Trash2 size={16} />
-                                    </button>
+                                    <div className="flex items-center">
+                                        {onRename && (
+                                            <button
+                                                onClick={() => { setEditId(rec.id); setEditTitle(rec.title || ""); setEditDate((rec.date || "").slice(0, 10)); }}
+                                                className="p-2 text-gray-400 hover:text-brand-blue transition-colors"
+                                                title="Rename this recording"
+                                            >
+                                                <Pencil size={16} />
+                                            </button>
+                                        )}
+                                        <button
+                                            onClick={() => onDelete(rec.id)}
+                                            className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                    </div>
                                 </div>
+                                )
                             ))
                         )}
                     </div>

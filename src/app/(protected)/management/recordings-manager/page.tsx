@@ -24,7 +24,8 @@ import {
     Layout,
     Download,
     Upload,
-    AlertCircle
+    AlertCircle,
+    Pencil
 } from "lucide-react";
 import { Menu, Transition } from "@headlessui/react";
 import { Input } from "@/components/ui/Input";
@@ -232,6 +233,42 @@ export default function RecordingManagerPage() {
         } catch (error) {
             console.error("Failed to remove recording:", error);
             toast("Failed to remove recording", "error");
+        }
+    };
+
+    // Rename: fix a recording uploaded under the wrong name (e.g. Day 5 saved as Day 6).
+    const [renameRec, setRenameRec] = useState<ManagerRecording | null>(null);
+    const [renameTitle, setRenameTitle] = useState("");
+    const [renameDate, setRenameDate] = useState("");
+    const [renaming, setRenaming] = useState(false);
+    const openRename = (rec: ManagerRecording) => {
+        setRenameRec(rec);
+        setRenameTitle(rec.title || "");
+        setRenameDate(String((rec as any).date || "").slice(0, 10));
+    };
+    const handleRename = async () => {
+        if (!renameRec || !renameTitle.trim()) return;
+        setRenaming(true);
+        try {
+            const title = renameTitle.trim();
+            if (renameRec.isAttached && renameRec.originalBatchId) {
+                await courseService.updateRecordedClassInBatch(renameRec.courseId, renameRec.originalBatchId, renameRec.id, {
+                    title,
+                    ...(renameDate ? { date: renameDate } : {}),
+                });
+            } else {
+                await courseService.updateLesson(renameRec.courseId, renameRec.id, { title });
+            }
+            setRecordings(prev => prev.map(r => (r.id === renameRec.id && r.originalBatchId === renameRec.originalBatchId
+                ? { ...r, title, ...(renameRec.isAttached && renameDate ? { date: renameDate, startTime: renameDate } : {}) }
+                : r)));
+            toast("Recording renamed", "success");
+            setRenameRec(null);
+        } catch (error) {
+            console.error("Rename failed:", error);
+            toast("Could not rename the recording", "error");
+        } finally {
+            setRenaming(false);
         }
     };
 
@@ -574,6 +611,18 @@ export default function RecordingManagerPage() {
                                                         size="sm"
                                                         variant="ghost"
                                                         className="p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-all rounded-lg"
+                                                        onClick={() => openRename(rec)}
+                                                        title="Rename this recording"
+                                                    >
+                                                        <Pencil size={16} />
+                                                    </Button>
+                                                )}
+
+                                                {(rec.bunnyVideoId || rec.recordingUrl) && (
+                                                    <Button
+                                                        size="sm"
+                                                        variant="ghost"
+                                                        className="p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 transition-all rounded-lg"
                                                         onClick={() => openReplaceModal(rec)}
                                                         title="Replace this video with a different upload"
                                                     >
@@ -625,6 +674,17 @@ export default function RecordingManagerPage() {
                                                                             <ExternalLink className="w-4 h-4 mr-3" />
                                                                             Preview Video
                                                                         </a>
+                                                                    )}
+                                                                </Menu.Item>
+                                                                 <Menu.Item>
+                                                                    {({ active }: { active: boolean }) => (
+                                                                        <button
+                                                                            onClick={() => openRename(rec)}
+                                                                            className={`${active ? 'bg-blue-50 text-brand-blue' : 'text-gray-700'} group flex rounded-lg items-center w-full px-3 py-2 text-sm transition-colors`}
+                                                                        >
+                                                                            <Pencil className="w-4 h-4 mr-3" />
+                                                                            Rename
+                                                                        </button>
                                                                     )}
                                                                 </Menu.Item>
                                                                  <Menu.Item>
@@ -760,6 +820,46 @@ export default function RecordingManagerPage() {
                                     </>
                                 ) : "Confirm Attachment"}
                             </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Rename Modal */}
+            {renameRec && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={() => !renaming && setRenameRec(null)}>
+                    <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-start justify-between gap-3">
+                            <div>
+                                <h2 className="text-xl font-bold text-gray-900">Rename recording</h2>
+                                <p className="text-sm text-gray-500 mt-1">Fix a wrong name, e.g. Day 5 uploaded as Day 6. The video itself is not changed.</p>
+                            </div>
+                            <button onClick={() => setRenameRec(null)} className="p-2 rounded-lg hover:bg-gray-100 text-gray-400"><X size={18} /></button>
+                        </div>
+                        <label className="block">
+                            <span className="text-sm font-semibold text-gray-700">Recording name</span>
+                            <input
+                                autoFocus
+                                value={renameTitle}
+                                onChange={(e) => setRenameTitle(e.target.value)}
+                                onKeyDown={(e) => { if (e.key === "Enter") handleRename(); }}
+                                className="mt-1.5 w-full h-11 px-3.5 rounded-xl border border-gray-200 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-200"
+                                placeholder="DAY 05 - MS LAHIRUKA NOV 24"
+                            />
+                        </label>
+                        {renameRec.isAttached ? (
+                            <label className="block">
+                                <span className="text-sm font-semibold text-gray-700">Class date</span>
+                                <input type="date" value={renameDate} onChange={(e) => setRenameDate(e.target.value)} className="mt-1.5 w-full h-11 px-3.5 rounded-xl border border-gray-200 text-sm" />
+                            </label>
+                        ) : (
+                            <p className="text-xs text-gray-500 bg-gray-50 rounded-xl px-3 py-2">This recording belongs to a scheduled live class, so the class is renamed too.</p>
+                        )}
+                        <div className="flex justify-end gap-2 pt-1">
+                            <button onClick={() => setRenameRec(null)} className="h-10 px-4 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100">Cancel</button>
+                            <button onClick={handleRename} disabled={renaming || !renameTitle.trim()} className="h-10 px-5 rounded-xl text-sm font-bold bg-brand-blue text-white disabled:opacity-60 inline-flex items-center gap-2">
+                                {renaming && <Loader2 size={16} className="animate-spin" />} Save name
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -467,6 +467,21 @@ export default function EditCoursePage() {
     }
   };
 
+  // Rename (and re-date) an uploaded batch recording, e.g. when Day 5 was uploaded under Day 6.
+  const handleRenameRecording = async (recordingId: string, updates: { title: string; date: string }) => {
+    if (!selectedBatch) return;
+    try {
+      const patch = { title: updates.title, ...(updates.date ? { date: updates.date } : {}) };
+      await courseService.updateRecordedClassInBatch(courseId, selectedBatch.id, recordingId, patch);
+      const updatedRecordings = (selectedBatch.recordedClasses || []).map(r => (r.id === recordingId ? { ...r, ...patch } : r));
+      setSelectedBatch({ ...selectedBatch, recordedClasses: updatedRecordings });
+      setBatches(batches.map(b => (b.id === selectedBatch.id ? { ...b, recordedClasses: updatedRecordings } : b)));
+    } catch (error) {
+      console.error("Error renaming recording:", error);
+      alert("Failed to rename recording");
+    }
+  };
+
   const handleDeleteRecording = async (recordingId: string) => {
     if (!selectedBatch) return;
     if (!confirm("Are you sure you want to delete this recording?")) return;
@@ -1120,6 +1135,7 @@ export default function EditCoursePage() {
           onClose={() => setShowRecordingsModal(false)}
           onSave={handleSaveRecording}
           onDelete={handleDeleteRecording}
+          onRename={handleRenameRecording}
         />
       )}
     </div>
