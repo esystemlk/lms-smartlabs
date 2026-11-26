@@ -1,7 +1,28 @@
 import { NextResponse } from "next/server";
+import { getStorage } from "firebase-admin/storage";
 import { getCaller } from "@/lib/recordingPackages.server";
+import { getAdminApp } from "@/lib/firebaseAdmin";
 
 export const dynamic = "force-dynamic";
+
+const SITE_ORIGINS = ["https://lms.smartlabs.lk", "http://localhost:3000"];
+let corsChecked = false;
+
+/**
+ * The browser fetches each file straight from Firebase Storage to build the ZIP, which needs the bucket
+ * to allow GET from the LMS site (CORS). Adds that rule once, keeping any rules the bucket already has.
+ */
+async function ensureStorageCors() {
+  if (corsChecked) return;
+  const bucket = getStorage(getAdminApp()).bucket(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET);
+  const [meta] = await bucket.getMetadata();
+  const cors = (meta.cors || []) as { origin?: string[]; method?: string[]; responseHeader?: string[]; maxAgeSeconds?: number }[];
+  const covered = SITE_ORIGINS.every(o => cors.some(c => (c.origin || []).some(x => x === o || x === "*") && (c.method || []).includes("GET")));
+  if (!covered) {
+    await bucket.setCorsConfiguration([...cors, { origin: SITE_ORIGINS, method: ["GET", "HEAD"], responseHeader: ["Content-Type", "Content-Length"], maxAgeSeconds: 3600 }]);
+  }
+  corsChecked = true;
+}
 
 /**
  * GET ?folderId=<id>  or  ?courseId=<id> (that course's top level)
@@ -12,6 +33,9 @@ export async function GET(req: Request) {
   const caller = await getCaller(req);
   if (!caller.ok) return NextResponse.json({ error: caller.error }, { status: caller.status });
   if (caller.role !== "developer") return NextResponse.json({ error: "Bulk download is for developers only." }, { status: 403 });
+
+  try { await ensureStorageCors(); }
+  catch (e) { console.error("[folder-download] could not set Storage CORS:", e); return NextResponse.json({ error: "Storage is not set up for bulk download yet (CORS). Check the server logs." }, { status: 500 }); }
 
   const url = new URL(req.url);
   const folderId = url.searchParams.get("folderId");
