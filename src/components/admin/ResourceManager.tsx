@@ -23,10 +23,14 @@ import {
   Loader2,
   ArrowLeft,
   Download,
-  Eye
+  Eye,
+  FolderDown
 } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { ResourceViewerModal } from "@/components/lms/ResourceViewerModal";
+import { useAuth } from "@/context/AuthContext";
+import { auth } from "@/lib/firebase";
+import { zipParts } from "@/lib/zip";
 
 // Helper to get icon by type
 const getFileIcon = (type: string) => {
@@ -44,6 +48,58 @@ const getFileIcon = (type: string) => {
 
 export function ResourceManager() {
   const { toast } = useToast();
+  const { userData } = useAuth();
+  // Bulk folder download is a developer-only tool (the server checks the role too).
+  const isDeveloper = userData?.role === "developer";
+  const [zipping, setZipping] = useState<{ label: string; done: number; total: number } | null>(null);
+
+  /** Downloads a folder (or the course's whole top level when folderId is null) as one ZIP, keeping the folder structure. */
+  const downloadFolder = async (folderId: string | null, label: string) => {
+    if (zipping || !selectedCourseId) return;
+    setZipping({ label, done: 0, total: 0 });
+    try {
+      const token = await auth.currentUser?.getIdToken();
+      const qs = folderId ? `folderId=${encodeURIComponent(folderId)}` : `courseId=${encodeURIComponent(selectedCourseId)}`;
+      const res = await fetch(`/api/resources/folder-download?${qs}`, { headers: { Authorization: `Bearer ${token}` } });
+      const list = await res.json();
+      if (!res.ok) throw new Error(list.error || "Could not list the folder");
+      const files = list.files as { path: string; url: string }[];
+      if (!files.length && !list.links.length) { toast("This folder is empty", "error"); return; }
+      setZipping({ label, done: 0, total: files.length });
+      const entries: { path: string; data: Uint8Array }[] = new Array(files.length);
+      const failed: string[] = [];
+      let next = 0, done = 0;
+      // 4 downloads at a time keeps it quick without hammering the connection.
+      await Promise.all(Array.from({ length: Math.min(4, files.length) }, async () => {
+        while (next < files.length) {
+          const i = next++;
+          try {
+            const r = await fetch(files[i].url);
+            if (!r.ok) throw new Error(String(r.status));
+            entries[i] = { path: files[i].path, data: new Uint8Array(await r.arrayBuffer()) };
+          } catch { failed.push(files[i].path); }
+          setZipping({ label, done: ++done, total: files.length });
+        }
+      }));
+      const ok = entries.filter(Boolean);
+      const extra = [
+        ...(list.links.length ? [`Web links (not files):\n${list.links.join("\n")}`] : []),
+        ...(failed.length ? [`Could not download:\n${failed.join("\n")}`] : []),
+      ];
+      if (extra.length) ok.push({ path: "_read-me.txt", data: new TextEncoder().encode(extra.join("\n\n")) });
+      const blob = new Blob(zipParts(ok) as BlobPart[], { type: "application/zip" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${list.zipName}.zip`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 60_000);
+      toast(failed.length ? `Downloaded with ${failed.length} file(s) missing — see _read-me.txt` : `Downloaded ${ok.length} file(s)`, failed.length ? "error" : "success");
+    } catch (e) {
+      toast((e as Error).message || "Download failed", "error");
+    } finally {
+      setZipping(null);
+    }
+  };
   const [courses, setCourses] = useState<Course[]>([]);
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -312,6 +368,12 @@ export function ResourceManager() {
           <Button size="sm" onClick={() => setIsBulkUpload(true)} className="flex-1 sm:flex-none">
             <Upload size={16} className="mr-2" /> Bulk Upload
           </Button>
+          {isDeveloper && (
+            <Button variant="outline" size="sm" disabled={!!zipping} onClick={() => downloadFolder(currentFolderId, currentFolderId ? (folders.find(f => f.id === currentFolderId)?.name || "Folder") : "All resources")} className="flex-1 sm:flex-none" title="Developer only: download this folder and everything inside it as a ZIP">
+              {zipping ? <Loader2 size={16} className="mr-2 animate-spin" /> : <FolderDown size={16} className="mr-2" />}
+              {zipping ? (zipping.total ? `Downloading ${zipping.done}/${zipping.total}` : "Preparing…") : currentFolderId ? "Download folder" : "Download all"}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -355,6 +417,16 @@ export function ResourceManager() {
               <div className="flex items-start justify-between">
                 <Folder className="w-10 h-10 text-brand-blue mb-3" fill="currentColor" fillOpacity={0.2} />
                 <div className="flex items-center gap-1">
+                  {isDeveloper && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); downloadFolder(folder.id, folder.name); }}
+                      disabled={!!zipping}
+                      title="Download this folder as a ZIP (developer only)"
+                      className="sm:opacity-0 sm:group-hover:opacity-100 p-1 hover:bg-blue-100 text-brand-blue rounded transition-all"
+                    >
+                      <FolderDown size={14} />
+                    </button>
+                  )}
                   <button
                     onClick={(e) => { e.stopPropagation(); setRenameFolder(folder); setRenameFolderName(folder.name || ""); }}
                     title="Rename folder"
